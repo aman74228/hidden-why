@@ -3,3 +3,4 @@ public/vo/
 out/stills/
 *.log
 .DS_Store
+__pycache__/
