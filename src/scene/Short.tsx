@@ -1,6 +1,7 @@
 import React from 'react';
 import {AbsoluteFill, Audio, Sequence, staticFile, useVideoConfig} from 'remotion';
 import {Captions, Word} from '../overlays/Captions';
+import {useFontsReady} from '../overlays/fonts';
 import {C} from '../theme';
 import {placeCaption, shotBoxesAt} from './framing';
 import {ShotScene} from './ShotScene';
@@ -18,6 +19,7 @@ export const totalFrames = (list: ShotList, fps: number) =>
 // synced captions. The last shot holds its final frame for `payoffHold`
 // seconds, then the video hard-cuts (loops back into frame 0).
 export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, words}) => {
+  useFontsReady();
   const {fps} = useVideoConfig();
   const frames = shotFrames(list, fps);
   const hold = Math.round((list.payoffHold ?? 0.5) * fps);

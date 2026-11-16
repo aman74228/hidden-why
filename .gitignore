@@ -5,3 +5,4 @@ out/stills/
 .DS_Store
 __pycache__/
 out/*.raw.mp4
+out/.chunks-*/
