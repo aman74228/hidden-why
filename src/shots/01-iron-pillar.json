@@ -9,7 +9,7 @@
    "id": "hook-pillar-rain",
    "beat": 1,
    "stillAt": 4.6,
-   "duration": 6.2,
+   "duration": 6.13,
    "set": "courtyard",
    "sky": "storm",
    "light": "storm",
@@ -93,7 +93,7 @@
   {
    "id": "scale-chotu",
    "beat": 1,
-   "duration": 3.1,
+   "duration": 1.17,
    "set": "courtyard",
    "fx": {
     "pillar": {
@@ -108,16 +108,16 @@
     "from": [
      -1.4,
      0.7,
-     9.8
+     12.9
     ],
     "to": [
      1.4,
      0.7,
-     9.8
+     12.9
     ],
     "look": [
      0,
-     3.6,
+     4.8,
      -2.5
     ]
    },
@@ -136,14 +136,14 @@
    "titleCard": {
     "label": "7 metres tall",
     "word": "6+ tonnes",
-    "at": 0.15,
-    "duration": 2.9
+    "at": 0.05,
+    "duration": 1.2
    }
   },
   {
    "id": "rusty-bicycle",
    "beat": 1,
-   "duration": 2.8,
+   "duration": 1.08,
    "set": "courtyard",
    "fx": {
     "bicycle": {
@@ -172,12 +172,19 @@
      0.55,
      -1.2
     ]
+   },
+   "titleCard": {
+    "label": "7 metres tall",
+    "word": "6+ tonnes",
+    "at": 0,
+    "duration": 0.9,
+    "intro": false
    }
   },
   {
    "id": "vik-arrives",
    "beat": 2,
-   "duration": 5.05,
+   "duration": 3.07,
    "set": "courtyard",
    "fx": {
     "pillar": {
@@ -219,11 +226,11 @@
      "facing": -1,
      "enter": {
       "from": [
-       2.8,
+       2.4,
        0.9
       ],
       "at": 0,
-      "dur": 1.0
+      "dur": 0.7
      },
      "poses": [
       {
@@ -231,7 +238,7 @@
        "pose": "cross-laugh"
       },
       {
-       "at": 3.25,
+       "at": 1.07,
        "pose": "cross-talk"
       }
      ]
@@ -241,8 +248,8 @@
   {
    "id": "coin-scratch",
    "beat": 2,
-   "stillAt": 2.4,
-   "duration": 3.6,
+   "stillAt": 1.8,
+   "duration": 2.35,
    "set": "void",
    "fx": {
     "macro": "scratch"
@@ -264,16 +271,16 @@
    "titleCard": {
     "label": "Guess 1",
     "word": "Paint",
-    "at": 0.15,
-    "duration": 3.3,
+    "at": 0.1,
+    "duration": 2.2,
     "crossed": true,
-    "crossAt": 1.45
+    "crossAt": 1.3
    }
   },
   {
    "id": "night-watch",
    "beat": 3,
-   "duration": 5.35,
+   "duration": 5.48,
    "set": "courtyard",
    "sky": "night",
    "light": "night",
@@ -337,7 +344,7 @@
     "label": "Guess 2",
     "word": "Polishing",
     "at": 0.3,
-    "duration": 5.0,
+    "duration": 5.1,
     "crossed": true,
     "crossAt": 4.2
    }
@@ -345,8 +352,8 @@
   {
    "id": "forge-wide",
    "beat": 3,
-   "stillAt": 3.6,
-   "duration": 4.35,
+   "stillAt": 3.3,
+   "duration": 4.07,
    "set": "forge",
    "grade": "flashback",
    "fx": {
@@ -382,9 +389,9 @@
     "label": "Guess 3",
     "word": "Fake",
     "at": 0.2,
-    "duration": 4.0,
+    "duration": 3.8,
     "crossed": true,
-    "crossAt": 3.0
+    "crossAt": 2.6
    },
    "sfx": [
     {
@@ -412,7 +419,7 @@
   {
    "id": "forge-close",
    "beat": 3,
-   "duration": 6.4,
+   "duration": 5.75,
    "set": "forge",
    "grade": "flashback",
    "fx": {
@@ -483,11 +490,6 @@
      "name": "clang",
      "at": 5.4,
      "volume": 0.4
-    },
-    {
-     "name": "clang",
-     "at": 6.3,
-     "volume": 0.4
     }
    ]
   },
@@ -495,7 +497,7 @@
    "id": "dada-taps",
    "beat": 4,
    "stillAt": 1.3,
-   "duration": 2.6,
+   "duration": 2.8,
    "set": "courtyard",
    "fx": {
     "pillar": {
@@ -562,7 +564,7 @@
   {
    "id": "phosphorus",
    "beat": 5,
-   "duration": 6.05,
+   "duration": 5.2,
    "set": "void",
    "fx": {
     "macro": "phosphorus"
@@ -593,14 +595,14 @@
    "titleCard": {
     "label": "Phosphorus",
     "word": "×20",
-    "at": 2.2,
-    "duration": 3.7
+    "at": 1.6,
+    "duration": 3.5
    }
   },
   {
    "id": "wet-dry",
    "beat": 5,
-   "duration": 4.7,
+   "duration": 6.1,
    "set": "void",
    "fx": {
     "macro": "skin",
@@ -609,54 +611,53 @@
    "camera": {
     "type": "static",
     "pos": [
-     0,
-     0.9,
-     3.6
+     0.1,
+     0.05,
+     1.5
     ],
     "look": [
      0,
-     0.1,
+     0.14,
      0
     ],
-    "drift": 0.3
+    "drift": 0.12
    }
   },
   {
    "id": "skin-grows",
    "beat": 5,
-   "stillAt": 2.6,
-   "duration": 4.8,
+   "stillAt": 2.4,
+   "duration": 3.56,
    "set": "void",
    "fx": {
     "macro": "skin",
-    "skinStory": 4.7,
-    "skinRust": true
+    "skinStory": 6.1
    },
    "camera": {
     "type": "static",
     "pos": [
-     -0.5,
-     0.8,
-     3.3
+     -0.15,
+     0.05,
+     1.5
     ],
     "look": [
      0,
-     0.1,
+     0.14,
      0
     ],
-    "drift": 0.3
+    "drift": 0.12
    },
    "titleCard": {
     "label": "Protective",
     "word": "Skin",
-    "at": 0.3,
-    "duration": 4.3
+    "at": 0.2,
+    "duration": 3.3
    }
   },
   {
    "id": "raincoat",
    "beat": 5,
-   "duration": 4.1,
+   "duration": 2.51,
    "set": "void",
    "fx": {
     "macro": "skin",
@@ -665,22 +666,22 @@
    "camera": {
     "type": "static",
     "pos": [
-     0.8,
-     0.75,
-     3.0
+     0.25,
+     0.05,
+     1.5
     ],
     "look": [
      0,
-     0.15,
+     0.14,
      0
     ],
-    "drift": 0.25
+    "drift": 0.12
    }
   },
   {
    "id": "split",
    "beat": 5,
-   "duration": 2.9,
+   "duration": 2.93,
    "set": "void",
    "fx": {
     "macro": "split"
@@ -715,55 +716,42 @@
   {
    "id": "gate-pushin",
    "beat": 6,
-   "stillAt": 4.0,
-   "duration": 4.25,
+   "stillAt": 1.2,
+   "duration": 5.15,
    "set": "street",
    "camera": {
     "type": "dolly",
     "from": [
-     -0.4,
-     1.0,
-     4.3
+     -0.35,
+     0.9,
+     5.6
     ],
     "to": [
-     0.15,
-     1.1,
-     1.7
+     0.2,
+     0.98,
+     0.95
     ],
     "look": [
-     -0.35,
-     1.15,
+     -0.3,
+     1.25,
      0
     ],
     "lookTo": [
-     0.2,
-     1.06,
+     0.225,
+     0.98,
      0.024
-    ]
+    ],
+    "startAt": 0.42
    },
    "cast": [
     {
      "who": "vik",
-     "pose": "cross-arms",
+     "pose": "proud",
      "pos": [
-      -0.75,
-      0.7
+      -0.62,
+      0.75
      ],
-     "facing": 1,
-     "enter": {
-      "from": [
-       -3.4,
-       1.3
-      ],
-      "at": 0,
-      "dur": 1.3
-     },
-     "poses": [
-      {
-       "at": 1.4,
-       "pose": "proud"
-      }
-     ]
+     "facing": 1
     }
    ],
    "layout": "manual"
@@ -771,7 +759,7 @@
   {
    "id": "face-drop",
    "beat": 6,
-   "duration": 2.15,
+   "duration": 2.1,
    "set": "street",
    "camera": {
     "type": "fit",
@@ -799,7 +787,7 @@
    ],
    "layout": "manual",
    "payoff": true,
-   "payoffAt": 0.15
+   "payoffAt": 0.28
   }
  ]
 }

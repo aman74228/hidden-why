@@ -36,7 +36,6 @@ export type FxSpec = {
   macro?: 'scratch' | 'phosphorus' | 'skin' | 'split';
   skinStory?: number;
   skinMode?: 'cycles' | 'seal';
-  skinRust?: boolean;
   ripple?: {pos: [number, number, number]; times: number[]};
 };
 
@@ -99,7 +98,7 @@ export const ToonSet: React.FC<
       {fx.bicycle && <Bicycle pos={fx.bicycle.pos} rotY={fx.bicycle.rotY} />}
       {fx.macro === 'scratch' && <ScratchMacro dur={dur} />}
       {fx.macro === 'phosphorus' && <PhosphorusMacro />}
-      {fx.macro === 'skin' && <SkinMacro story={fx.skinStory} mode={fx.skinMode} rust={fx.skinRust} />}
+      {fx.macro === 'skin' && <SkinMacro story={fx.skinStory} mode={fx.skinMode} />}
       {fx.macro === 'split' && <SplitMacro />}
       {fx.ripple && <TapRipple pos={fx.ripple.pos} times={fx.ripple.times} />}
       {spec.set === 'desert' && <Desert />}

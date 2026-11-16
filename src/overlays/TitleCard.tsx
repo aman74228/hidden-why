@@ -3,7 +3,7 @@ import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from
 import {C, FONT, H, W} from '../theme';
 import './fonts';
 
-export type TitleCardSpec = {label: string; word: string; at?: number; duration?: number; crossed?: boolean; crossAt?: number};
+export type TitleCardSpec = {label: string; word: string; at?: number; duration?: number; crossed?: boolean; crossAt?: number; intro?: boolean};
 
 const TOP = 0.1; // 10% from top (allowed 8–12%)
 const MIN_TOP = 0.08;
@@ -33,6 +33,7 @@ export const TitleCard: React.FC<TitleCardSpec & {frame?: number; maxBottom?: nu
   maxBottom = 1,
   crossed,
   crossAt = 0.8,
+  intro = true,
 }) => {
   const cur = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -49,7 +50,7 @@ export const TitleCard: React.FC<TitleCardSpec & {frame?: number; maxBottom?: nu
   }
   fitScale = Math.max(0.5, fitScale);
 
-  const inS = spring({frame, fps, config: {damping: 13, stiffness: 180}});
+  const inS = intro ? spring({frame, fps, config: {damping: 13, stiffness: 180}}) : 1;
   const out = interpolate(frame, [duration * fps - 6, duration * fps], [1, 0], {extrapolateLeft: 'clamp', extrapolateRight: 'clamp'});
   const scale = fitScale * interpolate(inS, [0, 1], [0.6, 1]) * interpolate(out, [0, 1], [0.9, 1]);
   return (

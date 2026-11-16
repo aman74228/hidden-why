@@ -2,16 +2,16 @@
 Slug: 01-iron-pillar · Target ~59 s
 
 ## Script (send to ElevenLabs exactly as written)
-In Delhi, there's an iron pillar that has stood in the rain for sixteen hundred years. <break time="0.4s" /> And it still hasn't rusted.
-It's seven metres tall and weighs over six tonnes. Your bicycle chain rusts in one monsoon.
-Chotu wants to know why. Vik laughs. "Easy. Somebody painted it."
-So they scratch it. Bare metal. No paint.
+In Delhi, there's an iron pillar that has stood in the rain for sixteen hundred years. <break time="0.3s" /> And it still hasn't rusted.
+Your bike chain rusts in one monsoon.
+Vik laughs. "Easy. Somebody painted it."
+So they scratch it. Bare metal.
 "Then someone polishes it every night." They watch all week. Nobody comes.
-"Fine. It's modern steel. A fake." So they test it. Old iron, hammered together from hot lumps by hand, full of stuff modern steelmakers throw away.
-Dada just taps the pillar and smiles. <break time="0.3s" />
-You see, that stuff is phosphorus. This iron has about twenty times more of it than today's iron. Every time rain wets the pillar and the sun dries it, the phosphorus helps a thin skin grow on the surface. Not flaky orange rust. A tight, hard coat that seals the iron underneath, like a raincoat the pillar made for itself.
+"Fine. It's a modern fake." So they test it. Ancient iron, hammered from hot lumps by hand, full of stuff modern steelmakers throw away.
+Dada just taps the pillar and smiles.
+You see, that stuff is phosphorus. About twenty times more than today's iron. Every time rain wets the pillar and the sun dries it, the phosphorus helps a thin skin grow on the surface. A tight, hard coat that seals the iron underneath. A raincoat the pillar made for itself.
 Modern steel is too clean to grow that coat.
-Vik storms home to his brand-new iron gate. And there it is. <break time="0.6s" /> One little orange spot.
+Vik storms home to his brand-new iron gate. And there it is. <break time="0.5s" /> One little orange spot.
 
 ## Beats
 1. Hook (0–10 s): the pillar, 1,600 years, no rust; scale vs rusty bicycle

@@ -13,13 +13,17 @@ const IRON_D = '#38354A';
 
 /* ---------------- the iron pillar ---------------- */
 export const IronPillar: React.FC<{pos?: [number, number, number]; scale?: number; sheen?: number}> = ({pos = [0, 0, 0], scale = 1, sheen = 0}) => {
-  const capital = useMemo(() => {
-    // bell-shaped (amalaka) capital profile, radius vs height
-    const pts: [number, number][] = [
-      [0.17, 0], [0.2, 0.05], [0.18, 0.1], [0.24, 0.18], [0.33, 0.32], [0.36, 0.42], [0.3, 0.5],
-      [0.2, 0.54], [0.24, 0.6], [0.3, 0.68], [0.3, 0.76], [0.22, 0.8], [0.22, 0.86], [0.26, 0.88], [0.26, 0.98], [0, 0.98],
-    ];
-    return new THREE.LatheGeometry(pts.map(([r, y]) => new THREE.Vector2(r, y)), 28);
+  // smooth stacked capital: collar → inverted-lotus bell → ring → round
+  // cushion (amalaka) → neck → square abacus. Profiles are sampled finely so
+  // the toon shading reads as clean bands, not a lumpy rock.
+  const bell = useMemo(() => {
+    const pts: THREE.Vector2[] = [];
+    for (let i = 0; i <= 24; i++) {
+      const u = i / 24;
+      pts.push(new THREE.Vector2(0.155 + 0.2 * Math.pow(u, 2.2) + 0.01 * Math.sin(u * Math.PI), u * 0.62));
+    }
+    pts.push(new THREE.Vector2(0.37, 0.64), new THREE.Vector2(0.0, 0.64));
+    return new THREE.LatheGeometry(pts, 48);
   }, []);
   return (
     <group position={pos} scale={scale}>
@@ -33,10 +37,20 @@ export const IronPillar: React.FC<{pos?: [number, number, number]; scale?: numbe
         <cylinderGeometry args={[0.196, 0.198, 0.5, 28]} />
         <Toon color="#5A5468" />
       </mesh>
-      <mesh geometry={capital} position={[0, 6.1, 0]} scale={[1, 1.1, 1]} castShadow>
+      <mesh position={[0, 6.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
+        <torusGeometry args={[0.16, 0.035, 12, 40]} />
         <Toon color={IRON_D} />
       </mesh>
-      <Box size={[0.42, 0.14, 0.42]} pos={[0, 7.22, 0]} color={IRON_D} />
+      <mesh geometry={bell} position={[0, 6.12, 0]} castShadow>
+        <Toon color={IRON_D} />
+      </mesh>
+      <Cyl r={0.24} h={0.06} pos={[0, 6.79, 0]} color={IRON} seg={40} />
+      <mesh position={[0, 6.97, 0]} scale={[1, 0.5, 1]} castShadow>
+        <sphereGeometry args={[0.3, 40, 20]} />
+        <Toon color={IRON_D} />
+      </mesh>
+      <Cyl r={0.16} h={0.1} pos={[0, 7.15, 0]} color={IRON} seg={32} />
+      <Box size={[0.46, 0.14, 0.46]} pos={[0, 7.27, 0]} color={IRON_D} />
       {sheen > 0 && (
         <mesh position={[0, 3.05, 0]}>
           <cylinderGeometry args={[0.16, 0.222, 6.1, 28]} />
@@ -172,57 +186,97 @@ export const Bicycle: React.FC<{pos?: [number, number, number]; rotY?: number; r
 };
 
 /* ---------------- Vik's brand-new gate ---------------- */
-export const GATE_SPOT: [number, number, number] = [0.225, 1.05, 0.024]; // world, gate at origin
-export const Gate: React.FC<{spot?: number}> = ({spot = 1}) => {
-  const bars = Array.from({length: 9}, (_, i) => -0.9 + i * 0.225);
-  return (
-    <group>
-      {/* house wall + door + window */}
-      <Box size={[9, 3.4, 0.3]} pos={[0, 1.7, -2.4]} color="#E7B98E" />
-      <Box size={[1.1, 2.0, 0.08]} pos={[-2.2, 1.0, -2.24]} color="#7A4A6E" />
-      <Box size={[1.0, 0.8, 0.08]} pos={[2.3, 1.7, -2.24]} color="#FFE1A8" emissive="#FFC46B" />
-      <Box size={[9.4, 0.2, 0.5]} pos={[0, 3.45, -2.3]} color="#C98F68" />
-      {/* boundary wall + posts */}
-      {[-1, 1].map((s) => (
-        <group key={s}>
-          <Box size={[0.4, 1.9, 0.4]} pos={[s * 1.2, 0.95, 0]} color="#F0D2B0" />
-          <Box size={[0.5, 0.14, 0.5]} pos={[s * 1.2, 1.97, 0]} color="#C98F68" />
-          <Box size={[2.6, 1.0, 0.3]} pos={[s * 2.7, 0.5, 0]} color="#F0D2B0" />
-        </group>
-      ))}
-      {/* shiny new gate */}
-      {bars.map((x) => (
+const BAR_X = Array.from({length: 9}, (_, i) => -0.9 + i * 0.225);
+export const GATE_SPOT: [number, number, number] = [0.225, 0.98, 0.024]; // on bar 5, world (gate at origin)
+const GATE_IRON = '#262A46';
+
+const Scroll: React.FC<{pos: [number, number, number]; flip?: boolean; r?: number}> = ({pos, flip, r = 0.07}) => (
+  <group position={pos} scale={[flip ? -1 : 1, 1, 1]}>
+    <mesh>
+      <torusGeometry args={[r, 0.011, 6, 28, Math.PI * 1.6]} />
+      <Toon color={GATE_IRON} />
+    </mesh>
+    <mesh position={[r * 0.45, -r * 0.1, 0]}>
+      <torusGeometry args={[r * 0.45, 0.009, 6, 20, Math.PI * 1.5]} />
+      <Toon color={GATE_IRON} />
+    </mesh>
+  </group>
+);
+
+const PotPlant: React.FC<{pos: [number, number, number]; s?: number}> = ({pos, s = 1}) => (
+  <group position={pos} scale={s}>
+    <Cyl r={0.2} r2={0.27} h={0.42} pos={[0, 0.21, 0]} color="#C0583A" />
+    <Box size={[0.6, 0.06, 0.6]} pos={[0, 0.44, 0]} rot={[0, 0.78, 0]} color="#A84A30" />
+    <Ball r={0.3} pos={[0, 0.72, 0]} color="#4E8F4A" />
+    <Ball r={0.22} pos={[0.2, 0.9, 0.05]} color="#5FA357" />
+    <Ball r={0.2} pos={[-0.2, 0.86, -0.05]} color="#467F44" />
+    <Ball r={0.06} pos={[0.12, 1.02, 0.18]} color="#E5533D" />
+    <Ball r={0.05} pos={[-0.16, 0.95, 0.16]} color={C.accent} />
+  </group>
+);
+
+export const Gate: React.FC<{spot?: number}> = ({spot = 1}) => (
+  <group>
+    {/* house set back so sky shows above the boundary wall */}
+    <Box size={[7, 2.6, 0.3]} pos={[0, 1.3, -5.5]} color="#E7B98E" />
+    <Box size={[7.4, 0.18, 0.5]} pos={[0, 2.66, -5.4]} color="#C98F68" />
+    <Box size={[0.9, 0.7, 0.06]} pos={[1.8, 1.5, -5.33]} color="#FFE1A8" emissive="#FFC46B" />
+    <Box size={[1.0, 1.8, 0.06]} pos={[-1.4, 0.9, -5.33]} color="#7A4A6E" />
+    {/* boundary wall + gate posts with lamp finials */}
+    {[-1, 1].map((sd) => (
+      <group key={sd}>
+        <Box size={[0.42, 1.9, 0.42]} pos={[sd * 1.21, 0.95, 0]} color="#F0D2B0" />
+        <Box size={[0.52, 0.14, 0.52]} pos={[sd * 1.21, 1.97, 0]} color="#C98F68" />
+        <Ball r={0.11} pos={[sd * 1.21, 2.15, 0]} color={C.gold} emissive="#FFB547" />
+        <Box size={[3.2, 1.25, 0.3]} pos={[sd * 3.0, 0.62, 0]} color="#F0D2B0" />
+        <Box size={[3.3, 0.1, 0.4]} pos={[sd * 3.0, 1.28, 0]} color="#C98F68" />
+      </group>
+    ))}
+    <PotPlant pos={[-1.75, 1.33, 0]} s={0.75} />
+    <PotPlant pos={[2.4, 0, 0.6]} s={1.1} />
+    <PotPlant pos={[-2.6, 0, 0.7]} s={0.95} />
+    {/* ornate new gate: bars, finials, rails, scrolls, top arch */}
+    {BAR_X.map((x, i) => {
+      const h = 1.55 + 0.18 * Math.cos(((x / 0.9) * Math.PI) / 2); // arched top line
+      return (
         <group key={x} position={[x, 0, 0]}>
-          <Cyl r={0.022} h={1.6} pos={[0, 0.9, 0]} color="#2A2E4A" seg={10} />
-          <mesh position={[0.008, 0.9, 0.02]}>
-            <boxGeometry args={[0.008, 1.5, 0.004]} />
+          <Cyl r={0.02} h={h} pos={[0, h / 2 + 0.06, 0]} color={GATE_IRON} seg={10} />
+          <mesh position={[0.007, h / 2 + 0.06, 0.018]}>
+            <boxGeometry args={[0.007, h * 0.9, 0.003]} />
             <meshBasicMaterial color="#C8D0F0" toneMapped={false} />
           </mesh>
-          <mesh position={[0, 1.76, 0]}>
-            <coneGeometry args={[0.04, 0.14, 4]} />
+          <mesh position={[0, h + 0.13, 0]}>
+            <coneGeometry args={[0.035, 0.13, 4]} />
             <Toon color={C.accent} />
           </mesh>
+          <Ball r={0.028} pos={[0, h + 0.06, 0]} color={C.accent} />
+          {i < BAR_X.length - 1 && <Scroll pos={[0.1125, 0.28, 0]} flip={i % 2 === 1} />}
+          {i < BAR_X.length - 1 && <Scroll pos={[0.1125, 1.4 + 0.1 * Math.cos(((x / 0.9) * Math.PI) / 2), 0]} flip={i % 2 === 0} r={0.06} />}
         </group>
-      ))}
-      {[0.35, 1.45].map((y) => (
-        <Box key={y} size={[1.95, 0.05, 0.05]} pos={[0, y, 0]} color="#2A2E4A" />
-      ))}
-      {/* the one little orange spot */}
-      {spot > 0 && (
-        <group position={GATE_SPOT}>
-          <mesh>
-            <circleGeometry args={[0.032 * spot, 10]} />
-            <meshBasicMaterial color="#E4692A" toneMapped={false} />
-          </mesh>
-          <mesh position={[0.008, -0.006, 0.001]}>
-            <circleGeometry args={[0.014 * spot, 8]} />
-            <meshBasicMaterial color="#9A3A16" toneMapped={false} />
-          </mesh>
-        </group>
-      )}
-    </group>
-  );
-};
+      );
+    })}
+    {[0.16, 1.24].map((y) => (
+      <Box key={y} size={[1.95, 0.045, 0.045]} pos={[0, y, 0]} color={GATE_IRON} />
+    ))}
+    <mesh position={[0, 1.3, 0]}>
+      <torusGeometry args={[0.98, 0.02, 6, 48, Math.PI]} />
+      <Toon color={GATE_IRON} />
+    </mesh>
+    {/* the one little orange spot */}
+    {spot > 0 && (
+      <group position={GATE_SPOT}>
+        <mesh>
+          <circleGeometry args={[0.03 * spot, 10]} />
+          <meshBasicMaterial color="#E4692A" toneMapped={false} />
+        </mesh>
+        <mesh position={[0.007, -0.006, 0.001]}>
+          <circleGeometry args={[0.013 * spot, 8]} />
+          <meshBasicMaterial color="#9A3A16" toneMapped={false} />
+        </mesh>
+      </group>
+    )}
+  </group>
+);
 
 /* ---------------- forge ---------------- */
 export const ANVIL: [number, number, number] = [0.72, 0, 0.12];
@@ -302,44 +356,60 @@ export const Forge: React.FC<{merge?: number; closeup?: boolean}> = ({merge = 0,
 /* ---------------- macro: coin scratch ---------------- */
 export const ScratchMacro: React.FC<{dur: number}> = ({dur}) => {
   const {t} = useScene();
-  const k = Math.min(1, Math.max(0, (t - 0.3) / Math.min(2.2, dur * 0.65)));
+  const k = Math.min(1, Math.max(0, (t - 0.25) / Math.min(1.6, dur * 0.7)));
   const e = k * k * (3 - 2 * k);
-  const from = new THREE.Vector2(-0.38, 0.42);
-  const to = new THREE.Vector2(0.16, -0.12);
+  // stays below the title card (top ~23% of frame)
+  const from = new THREE.Vector2(-0.3, 0.2);
+  const to = new THREE.Vector2(0.1, -0.22);
   const cur = from.clone().lerp(to, e);
   const len = from.distanceTo(cur);
   const ang = Math.atan2(to.y - from.y, to.x - from.x);
-  const specks = useMemo(() => {
+  // hammered texture: shallow dents with a lit rim and a shadowed rim
+  const dents = useMemo(() => {
     const r = mulberry(31);
-    return Array.from({length: 60}, () => ({x: (r() - 0.5) * 3, y: (r() - 0.5) * 3, s: 0.006 + r() * 0.02, c: r()}));
+    return Array.from({length: 150}, () => ({x: (r() - 0.5) * 1.3, y: (r() - 0.5) * 2.0, s: 0.025 + r() * 0.07, a: r() * Math.PI}));
   }, []);
   return (
     <group>
-      {/* giant iron surface (part of the pillar, seen up close) */}
-      <mesh position={[0, 0, -2.0]} rotation={[0, 0, 0]}>
-        <cylinderGeometry args={[2, 2, 6, 64, 1, true, -0.9, 1.8]} />
-        <Toon color="#4E4A5E" />
+      {/* the pillar's surface fills the frame */}
+      <mesh position={[0, 0, -0.02]}>
+        <planeGeometry args={[3, 4]} />
+        <meshBasicMaterial color="#34313F" toneMapped={false} />
       </mesh>
-      {specks.map((s, i) => (
-        <mesh key={i} position={[s.x, s.y, -0.02 - s.x * s.x * 0.12]}>
-          <circleGeometry args={[s.s, 6]} />
-          <meshBasicMaterial color={s.c > 0.5 ? '#3E3A4E' : '#5E5870'} />
-        </mesh>
+      {dents.map((d, i) => (
+        <group key={i} position={[d.x, d.y, -0.015 + i * 0.00002]} rotation={[0, 0, d.a]}>
+          <mesh position={[-d.s * 0.1, d.s * 0.1, 0]} scale={[1, 0.8, 1]}>
+            <circleGeometry args={[d.s, 18]} />
+            <meshBasicMaterial color="#3B3847" toneMapped={false} />
+          </mesh>
+          <mesh position={[0, 0, 0.00001]} scale={[1, 0.8, 1]}>
+            <circleGeometry args={[d.s * 0.88, 18]} />
+            <meshBasicMaterial color="#2F2C3A" toneMapped={false} />
+          </mesh>
+        </group>
       ))}
-      {/* shiny grey streak behind the coin */}
+      {/* bright silver streak: soft glow + bright core */}
       {len > 0.001 && (
-        <mesh position={[(from.x + cur.x) / 2, (from.y + cur.y) / 2, 0.01]} rotation={[0, 0, ang]}>
-          <planeGeometry args={[len, 0.05]} />
-          <meshBasicMaterial color="#DDE3F2" toneMapped={false} />
-        </mesh>
+        <group position={[(from.x + cur.x) / 2, (from.y + cur.y) / 2, 0.005]} rotation={[0, 0, ang]}>
+          <mesh>
+            <planeGeometry args={[len, 0.06]} />
+            <meshBasicMaterial color="#9FB0D8" transparent opacity={0.55} toneMapped={false} />
+          </mesh>
+          <mesh position={[0, 0, 0.001]}>
+            <planeGeometry args={[len, 0.024]} />
+            <meshBasicMaterial color="#F4F8FF" toneMapped={false} />
+          </mesh>
+        </group>
       )}
-      {/* Vik's flat hand holding the coin */}
-      <CharCtx.Provider value={{ow: 0.012, tint: '#FFF3DE', rim: 0, rimDir: [1, 0.5], rimColor: '#FFD58A'}}>
-        <group position={[cur.x, cur.y, 0.12]} scale={0.65}>
-          <Part s={{kind: 'circle', r: 0.085}} color="#D9D2C0" z={0.0} pos={[0, 0]} />
-          <Part s={{kind: 'circle', r: 0.06}} color="#EDE6D2" z={0.002} pos={[0, 0]} outline={false} />
-          <Part s={{kind: 'circle', r: 0.13}} color="#B9774E" z={0.01} pos={[0.12, 0.08]} />
-          <Part s={{kind: 'capsule', len: 0.9, r: 0.11}} color="#1F9E95" z={0.005} pos={[0.2, 0.14]} rot={-2.3} />
+      {/* Vik's hand enters from the bottom-right edge; coin in front, clearly visible */}
+      <CharCtx.Provider value={{ow: 0.008, tint: '#FFF3DE', rim: 0, rimDir: [1, 0.5], rimColor: '#FFD58A'}}>
+        <group position={[cur.x, cur.y, 0.05]}>
+          <Part s={{kind: 'capsule', len: 1.2, r: 0.06}} color="#1F9E95" z={0.0} pos={[0.17, -0.14]} rot={2.3} />
+          <Part s={{kind: 'ellipse', rx: 0.075, ry: 0.06}} color="#B9774E" z={0.01} pos={[0.1, -0.08]} rot={0.6} />
+          <Part s={{kind: 'capsule', len: 0.07, r: 0.022}} color="#B9774E" z={0.012} pos={[0.07, -0.03]} rot={-2.4} />
+          <Part s={{kind: 'circle', r: 0.075}} color="#D8C690" z={0.03} />
+          <Part s={{kind: 'circle', r: 0.056}} color="#F0E2A8" z={0.032} outline={false} />
+          <Part s={{kind: 'circle', r: 0.02}} color="#D8C690" z={0.034} pos={[-0.015, 0.015]} outline={false} />
         </group>
       </CharCtx.Provider>
     </group>
@@ -411,69 +481,74 @@ export const PhosphorusMacro: React.FC = () => {
 // (so the skin keeps growing across consecutive shots). mode 'seal' makes
 // raindrops bead up and roll off the finished coat.
 export const SKIN_CYCLE = 2.2;
-export const SkinMacro: React.FC<{story?: number; mode?: 'cycles' | 'seal'; rust?: boolean}> = ({story = 0, mode = 'cycles', rust}) => {
+export const SkinMacro: React.FC<{story?: number; mode?: 'cycles' | 'seal'}> = ({story = 0, mode = 'cycles'}) => {
   const {t} = useScene();
   const T = story + t;
   const cyc = Math.floor(T / SKIN_CYCLE);
   const u = (T % SKIN_CYCLE) / SKIN_CYCLE;
-  const skin = mode === 'seal' ? 1 : Math.min(1, (cyc + Math.max(0, (u - 0.5) * 2)) / 3);
+  // coat thickness steps up at the end of each dry phase
+  const skin = mode === 'seal' ? 1 : Math.min(1, (cyc + Math.min(1, Math.max(0, (u - 0.55) / 0.4))) / 3);
+  const coat = 0.006 + skin * 0.03; // stays a thin skin (~5% of frame at most)
   const drops = useMemo(() => {
     const r = mulberry(51);
-    return Array.from({length: 14}, () => ({x: (r() - 0.5) * 1.5, z: (r() - 0.5) * 1.1, s: 0.05 + r() * 0.05, d: r() * 0.15}));
+    return Array.from({length: 7}, () => ({x: (r() - 0.5) * 0.7, z: 0.18 + r() * 0.24, s: 0.04 + r() * 0.035, d: r() * 0.15}));
   }, []);
-  const specks = useMemo(() => {
-    const r = mulberry(53);
-    return Array.from({length: 40}, () => ({x: (r() - 0.5) * 3, z: (r() - 0.5) * 1.8, s: 0.02 + r() * 0.04}));
+  const grain = useMemo(() => {
+    const r = mulberry(55);
+    return Array.from({length: 160}, () => ({x: (r() - 0.5) * 2.6, y: -0.03 - r() * 1.6, s: 0.008 + r() * 0.022}));
   }, []);
   const sun = mode === 'seal' ? 0.3 : u > 0.5 ? Math.sin(((u - 0.5) / 0.5) * Math.PI) : 0;
   return (
-    <group rotation={[0.32, 0, 0]}>
-      {/* iron surface: a slab with visible edges against the dark */}
-      <mesh receiveShadow>
-        <boxGeometry args={[1.9, 0.3, 1.5]} />
-        <Toon color="#4A4658" />
+    <group>
+      {/* cross-section: dark iron block filling the lower frame */}
+      <mesh position={[0, -1.5, 0.3]}>
+        <boxGeometry args={[3, 3, 0.4]} />
+        <meshBasicMaterial color="#302D3C" toneMapped={false} />
       </mesh>
-      {specks.map((s, i) => (
-        <mesh key={i} position={[s.x * 0.6, 0.152, s.z * 0.75]} rotation={[-Math.PI / 2, 0, 0]}>
-          <circleGeometry args={[s.s, 6]} />
-          <meshBasicMaterial color={rust && i % 3 === 0 ? '#C8642D' : '#3A3648'} toneMapped={false} />
+      {grain.map((g, i) => (
+        <mesh key={i} position={[g.x, g.y, 0.501]}>
+          <circleGeometry args={[g.s, 7]} />
+          <meshBasicMaterial color={i % 2 ? '#2A2835' : '#3A3748'} toneMapped={false} />
         </mesh>
       ))}
-      {/* the protective skin: thin glassy blue layer */}
-      <mesh position={[0, 0.16 + skin * 0.02, 0]}>
-        <boxGeometry args={[1.9, 0.01 + skin * 0.04, 1.5]} />
-        <meshBasicMaterial color="#5FB6F0" transparent opacity={0.06 + skin * 0.3} depthWrite={false} toneMapped={false} />
+      {/* glossy blue coat on top, thickening each wet/dry cycle */}
+      <mesh position={[0, coat / 2, 0.3]}>
+        <boxGeometry args={[3, coat, 0.4]} />
+        <meshBasicMaterial color="#2F86D6" toneMapped={false} />
       </mesh>
-      {skin > 0.2 && (
-        <mesh position={[-0.3 + Math.sin(T * 0.6) * 0.2, 0.2 + skin * 0.04, -0.2]} rotation={[-Math.PI / 2, 0, 0.4]}>
-          <planeGeometry args={[0.9, 0.04]} />
-          <meshBasicMaterial color="#E8F6FF" transparent opacity={0.5 * skin} depthWrite={false} toneMapped={false} />
-        </mesh>
-      )}
-      {/* raindrops: fall, sit, then dry in the sun (or bead and roll off) */}
+      <mesh position={[0, coat - 0.004, 0.502]}>
+        <planeGeometry args={[3, 0.008]} />
+        <meshBasicMaterial color="#E8F6FF" toneMapped={false} />
+      </mesh>
+      {/* raindrops: fall, sit, then dry in the sun (or bead and roll off the finished coat) */}
       {drops.map((d, i) => {
         let y: number;
         let sc: number;
         let x = d.x;
         if (mode === 'seal') {
-          const k = ((T * 0.5 + d.d * 6) % 1);
-          y = k < 0.3 ? 0.2 + (1 - k / 0.3) * 2.5 : 0.22;
-          x = d.x + (k > 0.3 ? (k - 0.3) * 3 : 0);
+          const k = (T * 0.5 + d.d * 6) % 1;
+          y = k < 0.3 ? coat + d.s * 0.7 + (1 - k / 0.3) * 2.2 : coat + d.s * 0.7;
+          x = d.x + (k > 0.3 ? (k - 0.3) * 2.4 : 0);
           sc = 1;
         } else {
           const fall = Math.min(1, Math.max(0, (u - d.d) / 0.15));
-          y = 0.2 + (1 - fall) * 2.5;
+          y = coat + d.s * 0.7 + (1 - fall) * 2.2;
           sc = u < 0.5 ? 1 : Math.max(0, 1 - (u - 0.5) / 0.4);
         }
         if (sc <= 0.01) return null;
         return (
-          <mesh key={i} position={[x, y, d.z]} scale={[sc, sc * 0.7, sc]}>
-            <sphereGeometry args={[d.s, 14, 10]} />
-            <meshToonMaterial color="#8FD0FF" transparent opacity={0.85} gradientMap={toonRamp()} />
+          <mesh key={i} position={[x, y, d.z]} scale={[sc, sc * 0.75, sc]}>
+            <sphereGeometry args={[d.s, 16, 12]} />
+            <meshToonMaterial color="#9AD6FF" gradientMap={toonRamp()} />
           </mesh>
         );
       })}
-      <directionalLight position={[2, 6, 2]} color="#FFC46B" intensity={sun * 3.5} />
+      {/* the sun: glows during each dry phase */}
+      <mesh position={[0.55, 1.0, -3]}>
+        <circleGeometry args={[0.3, 32]} />
+        <meshBasicMaterial color="#FFD27A" transparent opacity={0.15 + sun * 0.85} toneMapped={false} />
+      </mesh>
+      <directionalLight position={[2, 6, 3]} color="#FFC46B" intensity={sun * 3} />
     </group>
   );
 };
