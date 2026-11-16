@@ -4,3 +4,4 @@ out/stills/
 *.log
 .DS_Store
 __pycache__/
+out/*.raw.mp4

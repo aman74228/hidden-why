@@ -187,7 +187,7 @@ export const Bicycle: React.FC<{pos?: [number, number, number]; rotY?: number; r
 
 /* ---------------- Vik's brand-new gate ---------------- */
 const BAR_X = Array.from({length: 9}, (_, i) => -0.9 + i * 0.225);
-export const GATE_SPOT: [number, number, number] = [0.225, 0.98, 0.024]; // on bar 5, world (gate at origin)
+export const GATE_SPOT: [number, number, number] = [0.225, 1.18, 0.024]; // on bar 5, world (gate at origin)
 const GATE_IRON = '#262A46';
 
 const Scroll: React.FC<{pos: [number, number, number]; flip?: boolean; r?: number}> = ({pos, flip, r = 0.07}) => (
@@ -214,6 +214,50 @@ const PotPlant: React.FC<{pos: [number, number, number]; s?: number}> = ({pos, s
     <Ball r={0.05} pos={[-0.16, 0.95, 0.16]} color={C.accent} />
   </group>
 );
+
+// Organic rust blob (smooth noisy outline) with a darker core and a tiny drip.
+const blobShape = (r: number, seed: number, wob: number) => {
+  const rnd = mulberry(seed);
+  const harm = [2, 3, 5, 7].map((k) => ({k, a: (rnd() - 0.5) * wob * (3 / k), p: rnd() * Math.PI * 2}));
+  const sh = new THREE.Shape();
+  const n = 72;
+  for (let i = 0; i <= n; i++) {
+    const a = (i / n) * Math.PI * 2;
+    const rr = r * (1 + harm.reduce((s, h) => s + h.a * Math.sin(h.k * a + h.p), 0));
+    const x = Math.cos(a) * rr;
+    const y = Math.sin(a) * rr * 1.1;
+    if (i === 0) sh.moveTo(x, y);
+    else sh.lineTo(x, y);
+  }
+  return new THREE.ShapeGeometry(sh);
+};
+const dripShape = () => {
+  const sh = new THREE.Shape();
+  sh.moveTo(-0.006, 0);
+  sh.bezierCurveTo(-0.006, -0.02, -0.004, -0.032, -0.007, -0.04);
+  sh.bezierCurveTo(-0.011, -0.05, 0.008, -0.053, 0.006, -0.041);
+  sh.bezierCurveTo(0.004, -0.032, 0.006, -0.02, 0.006, 0);
+  sh.lineTo(-0.006, 0);
+  return new THREE.ShapeGeometry(sh);
+};
+const RustSpot: React.FC<{scale?: number}> = ({scale = 1}) => {
+  const outer = useMemo(() => blobShape(0.03, 7, 0.35), []);
+  const core = useMemo(() => blobShape(0.014, 11, 0.4), []);
+  const drip = useMemo(() => dripShape(), []);
+  return (
+    <group position={GATE_SPOT} scale={scale}>
+      <mesh geometry={outer}>
+        <meshBasicMaterial color="#D8632A" toneMapped={false} />
+      </mesh>
+      <mesh geometry={core} position={[0.005, -0.004, 0.0005]}>
+        <meshBasicMaterial color="#8E3816" toneMapped={false} />
+      </mesh>
+      <mesh geometry={drip} position={[0.002, -0.026, 0.0003]}>
+        <meshBasicMaterial color="#C4562A" toneMapped={false} />
+      </mesh>
+    </group>
+  );
+};
 
 export const Gate: React.FC<{spot?: number}> = ({spot = 1}) => (
   <group>
@@ -263,18 +307,7 @@ export const Gate: React.FC<{spot?: number}> = ({spot = 1}) => (
       <Toon color={GATE_IRON} />
     </mesh>
     {/* the one little orange spot */}
-    {spot > 0 && (
-      <group position={GATE_SPOT}>
-        <mesh>
-          <circleGeometry args={[0.03 * spot, 10]} />
-          <meshBasicMaterial color="#E4692A" toneMapped={false} />
-        </mesh>
-        <mesh position={[0.007, -0.006, 0.001]}>
-          <circleGeometry args={[0.013 * spot, 8]} />
-          <meshBasicMaterial color="#9A3A16" toneMapped={false} />
-        </mesh>
-      </group>
-    )}
+    {spot > 0 && <RustSpot scale={spot} />}
   </group>
 );
 
@@ -516,10 +549,29 @@ export const SkinMacro: React.FC<{story?: number; mode?: 'cycles' | 'seal'}> = (
         <boxGeometry args={[3, coat, 0.4]} />
         <meshBasicMaterial color="#2F86D6" toneMapped={false} />
       </mesh>
-      <mesh position={[0, coat - 0.004, 0.502]}>
-        <planeGeometry args={[3, 0.008]} />
-        <meshBasicMaterial color="#E8F6FF" toneMapped={false} />
+      <mesh position={[0, coat - 0.003, 0.502]}>
+        <planeGeometry args={[3, Math.max(0.002, coat * 0.12)]} />
+        <meshBasicMaterial color="#BFE4FF" toneMapped={false} />
       </mesh>
+      {/* glossy specular glint sliding along the coat */}
+      {[0, 0.5].map((off, i) => {
+        const x = -0.6 + (((T * 0.22 + off) % 1) * 1.2);
+        return (
+          <mesh key={i} position={[x, coat * 0.62, 0.503]} scale={[1, Math.max(0.15, coat / 0.036), 1]}>
+            <circleGeometry args={[0.012, 20]} />
+            <meshBasicMaterial color="#FFFFFF" transparent opacity={0.85} toneMapped={false} />
+          </mesh>
+        );
+      })}
+      {[0, 0.5].map((off, i) => {
+        const x = -0.6 + (((T * 0.22 + off) % 1) * 1.2);
+        return (
+          <mesh key={`s${i}`} position={[x, coat * 0.62, 0.5025]} scale={[6, Math.max(0.12, (coat / 0.036) * 0.6), 1]}>
+            <circleGeometry args={[0.012, 20]} />
+            <meshBasicMaterial color="#E8F6FF" transparent opacity={0.45} toneMapped={false} />
+          </mesh>
+        );
+      })}
       {/* raindrops: fall, sit, then dry in the sun (or bead and roll off the finished coat) */}
       {drops.map((d, i) => {
         let y: number;
