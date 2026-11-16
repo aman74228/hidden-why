@@ -9,6 +9,8 @@ export type SceneState = {
   fov: number;
   heightPx: number;
   charTint: string;
+  rimDir: [number, number]; // screen-space direction towards the key light
+  rimColor: string;
 };
 
 export const SceneCtx = createContext<SceneState>({
@@ -18,6 +20,8 @@ export const SceneCtx = createContext<SceneState>({
   fov: 40,
   heightPx: 1920,
   charTint: '#ffffff',
+  rimDir: [1, 0.5],
+  rimColor: '#FFD27A',
 });
 
 export const useScene = () => useContext(SceneCtx);

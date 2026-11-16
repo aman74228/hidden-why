@@ -34,7 +34,20 @@ export const chunkWords = (words: Word[], maxChars = 12): Chunk[] => {
   });
 };
 
-export const Captions: React.FC<{words: Word[]; offset?: number}> = ({words, offset = 0}) => {
+// Caption type size (25% smaller than v1) and its box estimate as frame fractions.
+export const captionFont = (text: string) => (text.length > 9 ? 96 : 112);
+export const captionBox = (text: string) => {
+  const fs = captionFont(text);
+  return {w: Math.min(0.95, (text.length * fs * 0.62 + 40) / 1080), h: (fs * 1.15) / 1920};
+};
+
+// `placeAt(time, w, h)` returns the vertical centre (fraction from top) that
+// keeps the caption off faces/bodies; evaluated once per chunk so it never jitters.
+export const Captions: React.FC<{
+  words: Word[];
+  offset?: number;
+  placeAt?: (t: number, w: number, h: number) => number;
+}> = ({words, offset = 0, placeAt}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
   const t = frame / fps + offset;
@@ -45,12 +58,14 @@ export const Captions: React.FC<{words: Word[]; offset?: number}> = ({words, off
   const pop = spring({frame: local, fps, config: {damping: 12, stiffness: 220, mass: 0.6}});
   const scale = interpolate(pop, [0, 1], [0.7, 1]);
   const clean = cur.text.replace(/[.,;:]+$/g, '').toUpperCase();
+  const box = captionBox(clean);
+  const y = placeAt ? placeAt(cur.start - offset, box.w, box.h) : 0.6;
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <div
         style={{
           position: 'absolute',
-          top: '60%',
+          top: `${y * 100}%`,
           left: 0,
           right: 0,
           transform: `translateY(-50%) scale(${scale})`,
@@ -58,12 +73,12 @@ export const Captions: React.FC<{words: Word[]; offset?: number}> = ({words, off
           padding: '0 60px',
           fontFamily: FONT,
           fontWeight: 800,
-          fontSize: clean.length > 9 ? 128 : 150,
+          fontSize: captionFont(clean),
           lineHeight: 1,
           color: C.white,
-          WebkitTextStroke: `22px ${C.ink}`,
+          WebkitTextStroke: `17px ${C.ink}`,
           paintOrder: 'stroke fill',
-          textShadow: `0 10px 0 ${C.ink}`,
+          textShadow: `0 8px 0 ${C.ink}`,
           letterSpacing: 2,
         }}
       >

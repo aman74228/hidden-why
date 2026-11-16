@@ -10,11 +10,37 @@
       "beat": 1,
       "duration": 5,
       "set": "courtyard",
-      "camera": {"type": "dolly", "from": [-0.7, 1.0, 9.8], "to": [0.5, 0.95, 9.0], "look": [0, 1.15, 0]},
+      "camera": {
+        "type": "fit",
+        "angleDeg": 4
+      },
       "cast": [
-        {"who": "chotu", "pose": "point", "pos": [-1.25, 0.6], "facing": 1},
-        {"who": "dada", "pose": "nod", "pos": [0.05, -0.2]},
-        {"who": "vik", "pose": "cross-arms", "pos": [1.35, 0.1], "facing": -1}
+        {
+          "who": "chotu",
+          "pose": "point",
+          "pos": [
+            -0.62,
+            0.75
+          ],
+          "facing": 1
+        },
+        {
+          "who": "dada",
+          "pose": "nod",
+          "pos": [
+            0.05,
+            -0.35
+          ]
+        },
+        {
+          "who": "vik",
+          "pose": "cross-arms",
+          "pos": [
+            0.72,
+            0.15
+          ],
+          "facing": -1
+        }
       ]
     },
     {
@@ -22,8 +48,27 @@
       "beat": 2,
       "duration": 5,
       "set": "courtyard",
-      "camera": {"type": "pushIn", "target": [0.0, 1.85, 0], "fromDist": 3.6, "toDist": 2.7, "angleDeg": -12, "height": 1.55},
-      "cast": [{"who": "vik", "pose": "cross-arms", "pos": [0, 0], "facing": -1}]
+      "camera": {
+        "type": "fit",
+        "crop": 0.6,
+        "band": [
+          0.2,
+          0.97
+        ],
+        "angleDeg": -10,
+        "orbitDeg": 4
+      },
+      "cast": [
+        {
+          "who": "vik",
+          "pose": "cross-arms",
+          "pos": [
+            0,
+            0
+          ],
+          "facing": -1
+        }
+      ]
     },
     {
       "id": "title-obsidian",
@@ -33,20 +78,67 @@
       "ground": "obsidian",
       "sky": "dusk",
       "light": "dusk",
-      "camera": {"type": "orbit", "center": [0, 0, 0], "radius": 5.5, "height": 1.0, "fromDeg": -15, "toDeg": 15, "lookY": 1.0},
-      "cast": [{"who": "dada", "pose": "nod", "pos": [0, 0]}],
-      "props": [{"type": "rock", "pos": [1.4, 0, -0.6], "scale": 0.9, "color": "#2E2850"}],
-      "titleCard": {"label": "Level 3", "word": "Obsidian", "at": 0.2, "duration": 4.5}
+      "camera": {
+        "type": "fit",
+        "orbitDeg": 14
+      },
+      "cast": [
+        {
+          "who": "dada",
+          "pose": "nod",
+          "pos": [
+            0,
+            0
+          ]
+        }
+      ],
+      "props": [
+        {
+          "type": "rock",
+          "pos": [
+            1.4,
+            0,
+            -0.6
+          ],
+          "scale": 0.9,
+          "color": "#2E2850"
+        }
+      ],
+      "titleCard": {
+        "label": "Level 3",
+        "word": "Obsidian",
+        "at": 0.2,
+        "duration": 4.5
+      }
     },
     {
       "id": "captions-desert",
       "beat": 4,
       "duration": 5,
       "set": "desert",
-      "camera": {"type": "dolly", "from": [1.2, 0.9, 6.6], "to": [0.2, 0.9, 6.0], "look": [0, 1.0, 0]},
+      "camera": {
+        "type": "fit",
+        "angleDeg": -6
+      },
       "cast": [
-        {"who": "chotu", "pose": "talk", "pos": [-0.9, 0.2], "facing": 1},
-        {"who": "vik", "pose": "laugh", "pos": [0.9, -0.1], "facing": -1}
+        {
+          "who": "chotu",
+          "pose": "talk",
+          "pos": [
+            -0.75,
+            0.25
+          ],
+          "facing": 1
+        },
+        {
+          "who": "vik",
+          "pose": "laugh",
+          "pos": [
+            0.8,
+            -0.1
+          ],
+          "facing": -1
+        }
       ],
       "payoff": true
     }

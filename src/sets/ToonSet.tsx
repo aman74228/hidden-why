@@ -150,11 +150,11 @@ const Courtyard: React.FC<{g: (typeof GROUNDS)[string]}> = ({g}) => {
   return (
     <group>
       <TileFloor size={18} tile={1.1} gap={0.06} colors={tiles} origin={[0, -1]} />
-      {/* back wall with arches + dark interior behind */}
+      {/* back wall with arches + a warm lit hall behind (no flat voids) */}
       <mesh geometry={wall} position={[0, 0, -7]} castShadow receiveShadow>
         <Toon color={SANDSTONE} />
       </mesh>
-      <Box size={[18, 3.8, 0.1]} pos={[0, 1.9, -8.2]} color="#4B4596" />
+      <InnerHall />
       <Box size={[18.6, 0.35, 0.9]} pos={[0, 4.75, -6.7]} color={SANDSTONE_D} />
       <Box size={[18.6, 0.18, 0.7]} pos={[0, 4.45, -6.6]} color={C.accent} />
       {/* side walls */}
@@ -175,7 +175,7 @@ const Courtyard: React.FC<{g: (typeof GROUNDS)[string]}> = ({g}) => {
       {/* bunting between pillars */}
       <Bunting from={[-5.4, 3.7, -6.0]} to={[5.4, 3.7, -6.0]} sag={0.6} />
       {/* the well */}
-      <group position={[4.2, 0, -3.6]}>
+      <group position={[4.2, 0, -3.6]} userData={{prop: 'well'}}>
         <Cyl r={0.95} h={0.8} pos={[0, 0.4, 0]} color="#B87F4D" seg={20} />
         <Cyl r={0.72} h={0.82} pos={[0, 0.42, 0]} color="#2B2B5E" seg={20} />
         <Box size={[0.14, 2.0, 0.14]} pos={[-0.8, 1.2, 0]} color="#7A4A2E" />
@@ -194,6 +194,26 @@ const Courtyard: React.FC<{g: (typeof GROUNDS)[string]}> = ({g}) => {
     </group>
   );
 };
+
+// Warm interior seen through the arches: lit back wall, ceiling, glowing lamps.
+const InnerHall: React.FC = () => (
+  <group>
+    <Box size={[18.4, 4.8, 0.3]} pos={[0, 2.4, -10.2]} color="#E9A866" emissive="#FF9A45" />
+    <Box size={[18.4, 0.3, 3.4]} pos={[0, 4.65, -8.6]} color="#B9763F" />
+    <Box size={[0.3, 4.8, 3.4]} pos={[-9.1, 2.4, -8.6]} color="#D99050" />
+    <Box size={[0.3, 4.8, 3.4]} pos={[9.1, 2.4, -8.6]} color="#D99050" />
+    {/* lattice windows glowing on the back wall */}
+    {[-7.2, -3.6, 0, 3.6, 7.2].map((x) => (
+      <Box key={x} size={[0.9, 1.3, 0.05]} pos={[x, 2.3, -10.03]} color="#FFE2A8" emissive="#FFC46B" />
+    ))}
+    {[-7.2, -3.6, 0, 3.6, 7.2].map((x) => (
+      <group key={`l${x}`}>
+        <pointLight position={[x, 2.8, -8.7]} color="#FFB35A" intensity={9} distance={6} decay={2} />
+        <Lamp pos={[x, 3.4, -8.4]} />
+      </group>
+    ))}
+  </group>
+);
 
 const Bunting: React.FC<{from: [number, number, number]; to: [number, number, number]; sag: number}> = ({from, to, sag}) => {
   const flags = 16;
@@ -217,7 +237,7 @@ const Bunting: React.FC<{from: [number, number, number]; to: [number, number, nu
 };
 
 const Plant: React.FC<{pos: [number, number, number]; scale?: number}> = ({pos, scale = 1}) => (
-  <group position={pos} scale={scale}>
+  <group position={pos} scale={scale} userData={{prop: 'plant'}}>
     <Cyl r={0.32} r2={0.42} h={0.6} pos={[0, 0.3, 0]} color="#C0583A" />
     <Box size={[0.9, 0.08, 0.9]} pos={[0, 0.62, 0]} rot={[0, 0.78, 0]} color="#A84A30" />
     <Ball r={0.45} pos={[0, 1.05, 0]} color="#4E8F4A" />
@@ -241,14 +261,14 @@ const Desert: React.FC = () => (
     <Ball r={6} pos={[2, -4.6, -16]} scale={[2, 1, 1]} color="#EBBB78" />
     <Cone r={9} h={9} seg={4} pos={[-4, 4.5, -38]} rot={[0, Math.PI / 4, 0]} color="#E2A85E" />
     <Cone r={5.5} h={5.5} seg={4} pos={[9, 2.75, -34]} rot={[0, Math.PI / 4, 0]} color="#D99A55" />
-    <Palm pos={[-5, 0, -6]} />
-    <Palm pos={[6, 0, -9]} scale={1.2} />
+    <Palm pos={[-9, 0, -15]} scale={1.3} />
+    <Palm pos={[6.5, 0, -11]} scale={1.2} />
     <Rocks seed={3} spread={12} count={10} color="#B98A5A" />
   </group>
 );
 
 const Palm: React.FC<{pos: [number, number, number]; scale?: number}> = ({pos, scale = 1}) => (
-  <group position={pos} scale={scale}>
+  <group position={pos} scale={scale} userData={{prop: 'palm'}}>
     <Cyl r={0.14} r2={0.1} h={4} pos={[0.2, 2, 0]} rot={[0, 0, -0.1]} color="#8A5A36" />
     {[0, 1, 2, 3, 4, 5].map((i) => (
       <Cone key={i} r={0.35} h={2.2} seg={3} pos={[0.4, 4, 0]} rot={[0, (i * Math.PI) / 3, 1.9]} color={i % 2 ? '#4E8F4A' : '#5FA357'} />
@@ -270,7 +290,7 @@ const Rocks: React.FC<{seed: number; spread: number; count: number; color: strin
     <>
       {r.map((k, i) =>
         Math.abs(k.x) < 2.5 && k.z > -5 ? null : (
-          <mesh key={i} position={[k.x, k.s * 0.4, k.z]} rotation={[0.3, k.ry, 0.2]} castShadow receiveShadow>
+          <mesh key={i} position={[k.x, k.s * 0.4, k.z]} rotation={[0.3, k.ry, 0.2]} castShadow receiveShadow userData={{prop: 'rock'}}>
             <dodecahedronGeometry args={[k.s, 0]} />
             <Toon color={color} />
           </mesh>
@@ -324,7 +344,7 @@ const Plain: React.FC = () => (
 /* ---------------- reusable props ---------------- */
 const Prop: React.FC<PropSpec> = ({type, pos, scale = 1, rotY = 0, color}) => {
   const g = (child: React.ReactNode) => (
-    <group position={pos} scale={scale} rotation={[0, rotY, 0]}>
+    <group position={pos} scale={scale} rotation={[0, rotY, 0]} userData={{prop: type}}>
       {child}
     </group>
   );

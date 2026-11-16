@@ -98,7 +98,7 @@ export const CAST: Record<CastName, CastSpec> = {
     name: 'dada',
     height: 1.62,
     skin: '#B07650',
-    hair: '#F4F1EA',
+    hair: '#F3EBDD', // beard, brows, tufts — off-white
     headR: 0.3,
     headSX: 1,
     headSY: 1,

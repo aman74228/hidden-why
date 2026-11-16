@@ -8,7 +8,7 @@ export type Shot = SetSpec & {
   id: string;
   beat?: number; // brief beat (1–6); stills script renders one still per beat
   duration: number; // seconds (rule: 4–6 s per cut)
-  camera: CameraMove;
+  camera?: CameraMove; // default: auto "fit" framing
   cast?: CharacterProps[];
   titleCard?: TitleCardSpec; // `at` is seconds into this shot
   payoff?: boolean; // ding plays at this shot's start (or at payoffAt)
