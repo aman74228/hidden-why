@@ -11,13 +11,14 @@ import {TitleCard} from '../overlays/TitleCard';
 import {ToonSet, resolveSet} from '../sets/ToonSet';
 import {SceneCtx} from './ctx';
 import {FrameCheck} from './FrameCheck';
-import {effectiveCamera, faceFreeBottom} from './framing';
+import {effectiveCamera, faceFreeBottom, resolveShot} from './framing';
 import type {Shot} from './types';
 
 // One shot = one toon set + cast + camera move (+ optional title card).
 // `frames` is the shot's own length; extra frames (payoff hold) freeze on the
 // final frame.
-export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot, frames}) => {
+export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot, frames}) => {
+  const shot = useMemo(() => resolveShot(rawShot), [rawShot]);
   const raw = useCurrentFrame();
   const {fps, width, height} = useVideoConfig();
   const frame = Math.min(raw, frames - 1);
@@ -65,7 +66,7 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot, frames}
     const d = shot.duration;
     const a = (shot.titleCard.at ?? 0) / d;
     const b = ((shot.titleCard.at ?? 0) + (shot.titleCard.duration ?? 2)) / d;
-    return faceFreeBottom(shot, a, b);
+    return faceFreeBottom(rawShot, a, b);
   }, [shot]);
 
   return (

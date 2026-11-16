@@ -27,7 +27,45 @@ export const G: React.FC<{pos?: [number, number, number]; rot?: number; children
 };
 
 const OUTLINE_Z = -0.004;
-const RIM_Z = -0.03; // absolute, behind every part of the character
+const GLOW_Z = 0.001; // just above the part's own fill
+const GLOW_PX = 3; // inner edge glow width (max 3px)
+const GLOW_MAX = 0.4; // max opacity
+
+// Inner rim glow: a band just inside the outline, opaque-ish at the edge and
+// fading to nothing inward; its opacity follows how much each edge faces the
+// key light, so only the lit side glows.
+const glowGeometry = (pts: V2[], width: number, dir: V2, strength: number) => {
+  const inner = growPoints(pts, -width);
+  const n = pts.length;
+  let area = 0;
+  for (let i = 0; i < n; i++) area += pts[i][0] * pts[(i + 1) % n][1] - pts[(i + 1) % n][0] * pts[i][1];
+  const ccw = area > 0 ? 1 : -1;
+  const pos: number[] = [];
+  const col: number[] = [];
+  const idx: number[] = [];
+  for (let i = 0; i < n; i++) {
+    const a = pts[(i - 1 + n) % n];
+    const b = pts[(i + 1) % n];
+    let nx = (b[1] - a[1]) * ccw;
+    let ny = -(b[0] - a[0]) * ccw;
+    const l = Math.hypot(nx, ny) || 1;
+    nx /= l;
+    ny /= l;
+    const lit = Math.max(0, nx * dir[0] + ny * dir[1]);
+    const alpha = GLOW_MAX * strength * Math.pow(lit, 1.5);
+    pos.push(pts[i][0], pts[i][1], 0, inner[i][0], inner[i][1], 0);
+    col.push(1, 1, 1, alpha, 1, 1, 1, 0);
+  }
+  for (let i = 0; i < n; i++) {
+    const o0 = 2 * i, i0 = 2 * i + 1, o1 = 2 * ((i + 1) % n), i1 = 2 * ((i + 1) % n) + 1;
+    idx.push(o0, o1, i0, i0, o1, i1);
+  }
+  const g = new THREE.BufferGeometry();
+  g.setAttribute('position', new THREE.Float32BufferAttribute(pos, 3));
+  g.setAttribute('color', new THREE.Float32BufferAttribute(col, 4));
+  g.setIndex(idx);
+  return g;
+};
 
 const tinted = (hex: string, tint: string) => new THREE.Color(hex).multiply(new THREE.Color(tint));
 
@@ -52,18 +90,21 @@ export const Part: React.FC<{
   const pts = useMemo(() => shapePoints(s), [key]);
   const fill = useMemo(() => toGeometry(pts), [pts]);
   const line = useMemo(() => (outline ? toGeometry(growPoints(pts, owQ / sc)) : null), [pts, owQ, outline, sc]);
-  const rimW = sil && rim > 0 ? q(owQ * 1.6 * rim) : 0;
-  const rimGeo = useMemo(() => (rimW > 0 ? toGeometry(growPoints(pts, (owQ + rimW) / sc)) : null), [pts, owQ, rimW, sc]);
+  // light direction in this part's local frame (quantised to limit rebuilds)
+  const a = -(frame.rot + rot);
+  const ldx = Math.round((rimDir[0] * Math.cos(a) - rimDir[1] * Math.sin(a)) * 20) / 20;
+  const ldy = Math.round((rimDir[0] * Math.sin(a) + rimDir[1] * Math.cos(a)) * 20) / 20;
+  const glowW = (owQ * GLOW_PX) / 4 / sc; // ow is 4px → 3px
+  const rimGeo = useMemo(
+    () => (sil && rim > 0 ? glowGeometry(pts, glowW, [ldx, ldy], rim) : null),
+    [pts, glowW, ldx, ldy, rim, sil],
+  );
   useEffect(() => () => fill.dispose(), [fill]);
   useEffect(() => () => line?.dispose(), [line]);
   useEffect(() => () => rimGeo?.dispose(), [rimGeo]);
   const col = useMemo(() => tinted(color, tint), [color, tint]);
   const ink = useMemo(() => tinted(C.ink, tint), [tint]);
 
-  // light direction in this part's local frame
-  const a = -(frame.rot + rot);
-  const lx = (rimDir[0] * Math.cos(a) - rimDir[1] * Math.sin(a)) * rimW * 0.8;
-  const ly = (rimDir[0] * Math.sin(a) + rimDir[1] * Math.cos(a)) * rimW * 0.8;
 
   return (
     <group position={[pos[0], pos[1], z]} rotation={[0, 0, rot]} scale={[scale[0], scale[1], 1]}>
@@ -76,8 +117,8 @@ export const Part: React.FC<{
         </mesh>
       ) : null}
       {rimGeo ? (
-        <mesh geometry={rimGeo} position={[lx / scale[0], ly / scale[1], RIM_Z - frame.z - z]}>
-          <meshBasicMaterial color={rimColor} toneMapped={false} side={THREE.DoubleSide} />
+        <mesh geometry={rimGeo} position={[0, 0, GLOW_Z]}>
+          <meshBasicMaterial color={rimColor} vertexColors transparent depthWrite={false} toneMapped={false} side={THREE.DoubleSide} />
         </mesh>
       ) : null}
     </group>

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import {ASPECT, CamPose, CameraMove, DEFAULT_FOV, resolveMove} from '../camera/moves';
 import {CAST} from '../characters/cast';
+import {reachX} from '../characters/extents';
 import type {CharacterProps} from '../characters/Character';
 import type {Shot} from './types';
 
@@ -56,15 +57,45 @@ export const castBoxes = (pose: CamPose, fov: number, cast: CharacterProps[]): C
   });
 };
 
+// Group line-up: keep the given left→right order, put everyone on one depth
+// line (mean z), and space them by their real arm reach + gap, centred on the
+// group's original centre. Single-character shots are untouched.
+export const layoutCast = (shot: Shot): CharacterProps[] => {
+  const cast = shot.cast ?? [];
+  if (cast.length < 2 || shot.layout === 'manual') return cast;
+  const order = cast.map((c, i) => ({c, i})).sort((a, b) => (a.c.pos?.[0] ?? 0) - (b.c.pos?.[0] ?? 0));
+  const z = cast.reduce((s, c) => s + (c.pos?.[1] ?? 0), 0) / cast.length;
+  const cx = cast.reduce((s, c) => s + (c.pos?.[0] ?? 0), 0) / cast.length;
+  const gap = shot.gap ?? 0.3;
+  const xs: number[] = [];
+  let edge = 0;
+  order.forEach(({c}, k) => {
+    const [l, r] = reachX(c.who, c.pose, c.facing ?? 1, c.scale ?? 1);
+    const x = k === 0 ? 0 : edge + gap + l;
+    xs.push(x);
+    edge = x + r;
+  });
+  const mid = (xs[0] - reachX(order[0].c.who, order[0].c.pose, order[0].c.facing ?? 1, order[0].c.scale ?? 1)[0] + edge) / 2;
+  const out = [...cast];
+  order.forEach(({c, i}, k) => {
+    out[i] = {...c, pos: [cx + xs[k] - mid, z]};
+  });
+  return out;
+};
+
+// Shot as rendered: laid-out cast + effective camera.
+export const resolveShot = (shot: Shot): Shot => ({...shot, cast: layoutCast(shot), camera: effectiveCamera(shot)});
+
 // The camera a shot actually uses: `fit` by default; shots with a title card
 // frame heads lower (30%) so the card at the top never covers a face.
 export const effectiveCamera = (shot: Shot): CameraMove => {
   const m: CameraMove = shot.camera ?? {type: 'fit'};
-  if (m.type === 'fit' && shot.titleCard && !m.band) return {...m, band: [0.32, 0.84]};
+  if (m.type === 'fit' && shot.titleCard && !m.band) return {...m, band: [0.32, 0.89]};
   return m;
 };
 
-export const shotBoxesAt = (shot: Shot, p: number) => {
+export const shotBoxesAt = (raw: Shot, p: number) => {
+  const shot = resolveShot(raw);
   const m = effectiveCamera(shot);
   return castBoxes(resolveMove(m, shot.cast ?? [])(p), m.fov ?? DEFAULT_FOV, shot.cast ?? []);
 };

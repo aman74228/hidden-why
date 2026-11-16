@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import {CAST} from '../characters/cast';
+import {reachX} from '../characters/extents';
 import type {CharacterProps} from '../characters/Character';
 import {H, W} from '../theme';
 
@@ -29,7 +30,7 @@ export type CameraMove =
   | {type: 'static'; pos: V3; look: V3; drift?: number; fov?: number};
 
 export const DEFAULT_FOV = 40;
-export const DEFAULT_BAND: [number, number] = [0.25, 0.84];
+export const DEFAULT_BAND: [number, number] = [0.25, 0.89]; // ≤11% empty ground under the nearest feet
 export const ASPECT = W / H;
 
 export type CamPose = {pos: THREE.Vector3; look: THREE.Vector3};
@@ -67,7 +68,7 @@ export const staticDrift = (pos: V3, look: V3, drift = 0.25) => (p: number): Cam
 });
 
 /* ---------------- auto framing ---------------- */
-type Member = {x: number; z: number; h: number; w: number};
+type Member = {x: number; z: number; h: number; w: number; xc: number};
 
 const members = (cast: CharacterProps[], focus?: string[]): Member[] =>
   cast
@@ -75,8 +76,10 @@ const members = (cast: CharacterProps[], focus?: string[]): Member[] =>
     .map((c) => {
       const s = CAST[c.who];
       const k = c.scale ?? 1;
-      const reach = c.pose === 'point' || c.pose === 'shock' ? 0.55 : c.pose === 'talk' ? 0.35 : 0.2;
-      return {x: c.pos?.[0] ?? 0, z: c.pos?.[1] ?? 0, h: s.height * k, w: (s.body.w + reach * 2) * k};
+      const [l, r] = reachX(c.who, c.pose, c.facing ?? 1, k);
+      const x0 = c.pos?.[0] ?? 0;
+      // (x = centre of the reach box, w = its width)
+      return {x: x0 + (r - l) / 2, xc: x0, z: c.pos?.[1] ?? 0, h: s.height * k, w: l + r + 0.1};
     });
 
 const bisect = (ok: (d: number) => boolean, lo = 0.4, hi = 80) => {
@@ -102,7 +105,7 @@ export const fitPose = (cast: CharacterProps[], m: FitMove, angleDeg: number, di
   const nb = 2 * band[1] - 1;
   const span = Math.atan(nt * t) + Math.atan(nb * t);
   const hMax = Math.max(...ms.map((k) => k.h));
-  const hc = m.camHeight ?? (crop >= 1 ? Math.min(0.75, 0.42 * hMax) : hMax * (1 - crop * 0.5));
+  const hc = m.camHeight ?? (crop >= 1 ? Math.min(0.62, 0.36 * hMax) : hMax * (1 - crop * 0.5));
 
   const a = (angleDeg * Math.PI) / 180;
   const f = new THREE.Vector2(-Math.sin(a), -Math.cos(a)); // forward (x,z)

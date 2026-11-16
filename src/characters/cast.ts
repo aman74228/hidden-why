@@ -121,6 +121,6 @@ export const CAST: Record<CastName, CastSpec> = {
     mouthW: 0.065,
     eyes: 'calm',
     mouth: 'smile',
-    outfit: {body: '#8E5537', sleeve: '#8E5537', legs: '#F1E7D2', trim: '#F6E9CC', shoes: '#5A3624'},
+    outfit: {body: '#8E5537', sleeve: '#D29A72', /* bare arms: lighter than the robe */ legs: '#F1E7D2', trim: '#F6E9CC', shoes: '#5A3624'},
   },
 };

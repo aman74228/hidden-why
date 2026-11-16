@@ -10,6 +10,10 @@ export type Shot = SetSpec & {
   duration: number; // seconds (rule: 4–6 s per cut)
   camera?: CameraMove; // default: auto "fit" framing
   cast?: CharacterProps[];
+  // group shots: 'line' (default) puts everyone on one depth line, spaced so no
+  // limb overlaps another body; 'manual' uses the given positions as-is
+  layout?: 'line' | 'manual';
+  gap?: number; // metres between reach boxes in 'line' layout (default 0.3)
   titleCard?: TitleCardSpec; // `at` is seconds into this shot
   payoff?: boolean; // ding plays at this shot's start (or at payoffAt)
   payoffAt?: number; // seconds into this shot

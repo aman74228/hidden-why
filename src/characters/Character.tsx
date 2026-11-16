@@ -9,8 +9,8 @@ import {V2} from './shapes';
 
 const D = Math.PI / 180;
 const OUTLINE_PX = 4;
-// Rim-light strength per character (Dada strongest so he separates from dark backgrounds)
-const RIM: Record<CastName, number> = {chotu: 0.6, vik: 0.6, dada: 1};
+// Inner rim-glow strength per character (× 40% max opacity; Dada strongest)
+const RIM: Record<CastName, number> = {chotu: 0.65, vik: 0.65, dada: 1};
 
 export type CharacterProps = {
   who: CastName;
