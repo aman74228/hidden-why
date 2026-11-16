@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
-# Loudness-master a render: two-pass EBU R128 loudnorm to -14 LUFS / -1.5 dBTP,
-# AAC 48 kHz stereo, video stream copied untouched.
+# Loudness-master a render to about -14 LUFS integrated with true peak ≤ -1 dBTP:
+# measure → static gain to target → peak limiter (-3 dBFS, leaves headroom for
+# AAC overshoot) → AAC 192k, 48 kHz stereo. Video stream copied untouched.
 # usage: scripts/master.sh in.mp4 out.mp4
 set -euo pipefail
 in="$1"; out="$2"
-stats=$(ffmpeg -hide_banner -nostats -i "$in" -af loudnorm=I=-14:TP=-1.5:LRA=11:print_format=json -f null - 2>&1 | sed -n '/^{/,/^}/p')
-get() { echo "$stats" | python3 -c "import json,sys; print(json.load(sys.stdin)['$1'])"; }
+I=$(ffmpeg -hide_banner -nostats -i "$in" -map 0:a -af ebur128 -f null - 2>&1 | grep -E '^\s+I:' | tail -1 | awk '{print $2}')
+G=$(python3 -c "print(round(-14 - ($I) + 0.3, 2))")
 ffmpeg -hide_banner -loglevel error -y -i "$in" -c:v copy \
-  -af "loudnorm=I=-14:TP=-1.5:LRA=11:measured_I=$(get input_i):measured_TP=$(get input_tp):measured_LRA=$(get input_lra):measured_thresh=$(get input_thresh):offset=$(get target_offset):linear=true,aresample=48000" \
+  -af "aresample=48000,volume=${G}dB,alimiter=limit=0.63:level=false:attack=1:release=60" \
   -c:a aac -b:a 192k -ar 48000 -ac 2 -movflags +faststart "$out"
+ffmpeg -hide_banner -nostats -i "$out" -map 0:a -af ebur128=peak=true -f null - 2>&1 | grep -E '^\s+(I|Peak):' | tail -2 | tr -s ' ' | sed 's/^/master:/'

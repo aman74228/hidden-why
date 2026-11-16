@@ -22,8 +22,8 @@ for i in $(seq 0 $((n-1))); do
   echo "chunk $((i+1))/$n done"
 done
 ffmpeg -hide_banner -loglevel error -y -f concat -safe 0 -i "$dir/list.txt" -c copy "$dir/video.mp4"
-npx remotion render src/index.ts "$slug" "$dir/audio.wav" --codec=wav $FLAGS 2>&1 | tr '\r' '\n' | grep -E "not cleared|Error" || true
-ffmpeg -hide_banner -loglevel error -y -i "$dir/video.mp4" -i "$dir/audio.wav" -map 0:v -map 1:a -c:v copy -c:a aac -b:a 256k -shortest "out/$slug.raw.mp4"
-bash scripts/master.sh "out/$slug.raw.mp4" "out/$slug.mp4"
-rm -f "out/$slug.raw.mp4"
+python3 scripts/mix_audio.py "$slug" "$dir/audio.wav"  # same mix as Short.tsx, no frame re-render
+ffmpeg -hide_banner -loglevel error -y -i "$dir/video.mp4" -i "$dir/audio.wav" -map 0:v -map 1:a -c:v copy -c:a pcm_s16le "out/$slug.raw.mov"
+bash scripts/master.sh "out/$slug.raw.mov" "out/$slug.mp4"
+rm -f "out/$slug.raw.mov"
 echo "DONE out/$slug.mp4"

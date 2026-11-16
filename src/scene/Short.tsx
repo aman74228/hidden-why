@@ -56,7 +56,7 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
       {sfx &&
         starts.slice(1).map((s, i) => (
           <Sequence key={`w${i}`} from={Math.max(0, s - 6)} durationInFrames={30} layout="none">
-            <Audio src={staticFile('sfx/whoosh.wav')} volume={0.55} />
+            <Audio src={staticFile('sfx/whoosh.wav')} volume={0.4} />
           </Sequence>
         ))}
       {sfx &&
