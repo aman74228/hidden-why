@@ -7,6 +7,6 @@ Config.setBrowserExecutable(
 );
 Config.setChromiumOpenGlRenderer('swangle');
 Config.setVideoImageFormat('jpeg');
-Config.setConcurrency(2);
+Config.setConcurrency(1); // software WebGL already uses every core; more tabs thrash
 Config.setOverwriteOutput(true);
 Config.setDelayRenderTimeoutInMilliseconds(120000);
