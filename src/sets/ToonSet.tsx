@@ -1,10 +1,11 @@
 import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {C} from '../theme';
-import {GROUNDS, LIGHTS, SKIES} from './presets';
+import {GROUNDS, GroundPreset, LIGHTS, LightPreset, SKIES, SkyPreset} from './presets';
+import {Bicycle, Forge, Gate, IronPillar, NightSky, PhosphorusMacro, Rain, ScratchMacro, SkinMacro, SplitMacro, TapRipple} from './story';
 import {Ball, Box, Cone, Cyl, TileFloor, Toon, mulberry} from './toon';
 
-export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain';
+export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain' | 'forge' | 'street' | 'void';
 
 export type PropSpec = {
   type: 'pot' | 'rock' | 'block' | 'pillar' | 'lamp' | 'crate';
@@ -22,11 +23,31 @@ export type SetSpec = {
   props?: PropSpec[];
 };
 
+// Story effects / hero props for a shot. Two-number arrays are [start, end]
+// values interpolated over the shot.
+export type FxSpec = {
+  rain?: [number, number];
+  night?: boolean; // stars wheel + moon crosses (time-lapse)
+  pillar?: {pos: [number, number]; sheen?: number};
+  bicycle?: {pos: [number, number, number]; rotY?: number};
+  merge?: [number, number]; // forge: lumps merging 0..1
+  forgeClose?: boolean;
+  spot?: number; // street: gate's orange spot size (0 hides)
+  macro?: 'scratch' | 'phosphorus' | 'skin' | 'split';
+  skinStory?: number;
+  skinMode?: 'cycles' | 'seal';
+  skinRust?: boolean;
+  ripple?: {pos: [number, number, number]; times: number[]};
+};
+
 export const SET_DEFAULTS: Record<SetName, {sky: string; ground: string; light: string}> = {
   courtyard: {sky: 'golden', ground: 'stone', light: 'golden'},
   desert: {sky: 'golden', ground: 'sand', light: 'golden'},
   workshop: {sky: 'interior', ground: 'wood', light: 'interior'},
   plain: {sky: 'dusk', ground: 'grass', light: 'dusk'},
+  forge: {sky: 'forge', ground: 'earth', light: 'forge'},
+  street: {sky: 'golden', ground: 'stone', light: 'golden'},
+  void: {sky: 'macro', ground: 'obsidian', light: 'macro'},
 };
 
 export const resolveSet = (s: SetSpec) => {
@@ -38,8 +59,11 @@ export const resolveSet = (s: SetSpec) => {
   };
 };
 
-export const ToonSet: React.FC<SetSpec> = (spec) => {
-  const {sky, ground, light} = resolveSet(spec);
+export const ToonSet: React.FC<
+  SetSpec & {fx?: FxSpec; p?: number; dur?: number; resolved?: {sky: SkyPreset; ground: GroundPreset; light: LightPreset}}
+> = ({fx = {}, p = 0, dur = 5, resolved, ...spec}) => {
+  const {sky, ground, light} = resolved ?? resolveSet(spec);
+  const lerp = (r?: [number, number]) => (r ? r[0] + (r[1] - r[0]) * p : 0);
   return (
     <>
       <fog attach="fog" args={[light.fog, light.fogNear, light.fogFar]} />
@@ -60,11 +84,24 @@ export const ToonSet: React.FC<SetSpec> = (spec) => {
         shadow-normalBias={0.03}
       />
       <SkyDome {...sky} />
-      <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[300, 300]} />
-        <Toon color={ground.base} />
-      </mesh>
+      {spec.set !== 'void' && (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[300, 300]} />
+          <Toon color={ground.base} />
+        </mesh>
+      )}
       {spec.set === 'courtyard' && <Courtyard g={ground} />}
+      {spec.set === 'forge' && <Forge merge={lerp(fx.merge)} closeup={fx.forgeClose} />}
+      {spec.set === 'street' && <Gate spot={fx.spot ?? 1} />}
+      {fx.night && <NightSky dur={dur} />}
+      {fx.rain && <Rain intensity={lerp(fx.rain)} />}
+      {fx.pillar && <IronPillar pos={[fx.pillar.pos[0], 0, fx.pillar.pos[1]]} sheen={fx.pillar.sheen} />}
+      {fx.bicycle && <Bicycle pos={fx.bicycle.pos} rotY={fx.bicycle.rotY} />}
+      {fx.macro === 'scratch' && <ScratchMacro dur={dur} />}
+      {fx.macro === 'phosphorus' && <PhosphorusMacro />}
+      {fx.macro === 'skin' && <SkinMacro story={fx.skinStory} mode={fx.skinMode} rust={fx.skinRust} />}
+      {fx.macro === 'split' && <SplitMacro />}
+      {fx.ripple && <TapRipple pos={fx.ripple.pos} times={fx.ripple.times} />}
       {spec.set === 'desert' && <Desert />}
       {spec.set === 'workshop' && <Workshop g={ground} />}
       {spec.set === 'plain' && <Plain />}

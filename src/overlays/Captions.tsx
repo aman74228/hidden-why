@@ -57,7 +57,7 @@ export const Captions: React.FC<{
   const local = (t - cur.start) * fps;
   const pop = spring({frame: local, fps, config: {damping: 12, stiffness: 220, mass: 0.6}});
   const scale = interpolate(pop, [0, 1], [0.7, 1]);
-  const clean = cur.text.replace(/[.,;:]+$/g, '').toUpperCase();
+  const clean = cur.text.replace(/^["“‘]+/, '').replace(/["”’.,;:]+$/g, '').replace(/["“”]/g, '').toUpperCase();
   const box = captionBox(clean);
   const y = placeAt ? placeAt(cur.start - offset, box.w, box.h) : 0.6;
   return (

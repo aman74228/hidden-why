@@ -58,6 +58,19 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
           </Sequence>
         ))}
       {sfx &&
+        list.shots.flatMap((shot, i) =>
+          (shot.sfx ?? []).map((e, k) => (
+            <Sequence
+              key={`s${i}-${k}`}
+              from={starts[i] + Math.round(e.at * fps)}
+              durationInFrames={Math.round((e.dur ?? 3) * fps)}
+              layout="none"
+            >
+              <Audio src={staticFile(`sfx/${e.name}.wav`)} volume={e.volume ?? 0.6} loop={!!e.dur} />
+            </Sequence>
+          )),
+        )}
+      {sfx &&
         list.shots.map((shot, i) =>
           shot.payoff ? (
             <Sequence key={`d${i}`} from={starts[i] + Math.round((shot.payoffAt ?? 0) * fps)} durationInFrames={60} layout="none">

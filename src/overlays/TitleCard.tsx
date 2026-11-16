@@ -3,7 +3,7 @@ import {AbsoluteFill, interpolate, spring, useCurrentFrame, useVideoConfig} from
 import {C, FONT, H, W} from '../theme';
 import './fonts';
 
-export type TitleCardSpec = {label: string; word: string; at?: number; duration?: number};
+export type TitleCardSpec = {label: string; word: string; at?: number; duration?: number; crossed?: boolean; crossAt?: number};
 
 const TOP = 0.1; // 10% from top (allowed 8–12%)
 const MIN_TOP = 0.08;
@@ -31,6 +31,8 @@ export const TitleCard: React.FC<TitleCardSpec & {frame?: number; maxBottom?: nu
   duration = 2,
   frame: f,
   maxBottom = 1,
+  crossed,
+  crossAt = 0.8,
 }) => {
   const cur = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -38,6 +40,7 @@ export const TitleCard: React.FC<TitleCardSpec & {frame?: number; maxBottom?: nu
   if (frame < 0 || frame > duration * fps) return null;
 
   const {fs, h} = titleCardSize(word);
+  const strike = crossed ? Math.min(1, Math.max(0, (frame - crossAt * fps) / 8)) : 0;
   let top = TOP * H;
   let fitScale = Math.min(1, (maxBottom * H - top) / h);
   if (fitScale < 0.8) {
@@ -78,9 +81,27 @@ export const TitleCard: React.FC<TitleCardSpec & {frame?: number; maxBottom?: nu
               letterSpacing: 3,
               whiteSpace: 'nowrap',
               textShadow: `0 7px 0 ${C.ink}`,
+              position: 'relative',
+              opacity: 1 - strike * 0.35,
             }}
           >
             {word.toUpperCase()}
+            {strike > 0 ? (
+              <div
+                style={{
+                  position: 'absolute',
+                  left: '-4%',
+                  top: '48%',
+                  height: fs * 0.13,
+                  width: `${108 * strike}%`,
+                  background: '#E5533D',
+                  border: `5px solid ${C.ink}`,
+                  borderRadius: 999,
+                  transform: 'rotate(-6deg)',
+                  transformOrigin: 'left center',
+                }}
+              />
+            ) : null}
           </div>
         </div>
       </div>

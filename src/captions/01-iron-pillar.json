@@ -1,0 +1,932 @@
+[
+ {
+  "word": "In",
+  "start": 0.0,
+  "end": 0.139
+ },
+ {
+  "word": "Delhi,",
+  "start": 0.209,
+  "end": 0.662
+ },
+ {
+  "word": "there's",
+  "start": 0.766,
+  "end": 0.998
+ },
+ {
+  "word": "an",
+  "start": 1.033,
+  "end": 1.091
+ },
+ {
+  "word": "iron",
+  "start": 1.161,
+  "end": 1.416
+ },
+ {
+  "word": "pillar",
+  "start": 1.474,
+  "end": 1.718
+ },
+ {
+  "word": "that",
+  "start": 1.765,
+  "end": 1.858
+ },
+ {
+  "word": "has",
+  "start": 1.892,
+  "end": 1.974
+ },
+ {
+  "word": "stood",
+  "start": 1.997,
+  "end": 2.183
+ },
+ {
+  "word": "in",
+  "start": 2.206,
+  "end": 2.252
+ },
+ {
+  "word": "the",
+  "start": 2.276,
+  "end": 2.345
+ },
+ {
+  "word": "rain",
+  "start": 2.392,
+  "end": 2.554
+ },
+ {
+  "word": "for",
+  "start": 2.612,
+  "end": 2.717
+ },
+ {
+  "word": "sixteen",
+  "start": 2.775,
+  "end": 3.17
+ },
+ {
+  "word": "hundred",
+  "start": 3.228,
+  "end": 3.483
+ },
+ {
+  "word": "years.",
+  "start": 3.529,
+  "end": 3.982
+ },
+ {
+  "word": "And",
+  "start": 4.563,
+  "end": 4.69
+ },
+ {
+  "word": "it",
+  "start": 4.737,
+  "end": 4.795
+ },
+ {
+  "word": "still",
+  "start": 4.83,
+  "end": 5.062
+ },
+ {
+  "word": "hasn't",
+  "start": 5.12,
+  "end": 5.387
+ },
+ {
+  "word": "rusted.",
+  "start": 5.433,
+  "end": 6.026
+ },
+ {
+  "word": "It's",
+  "start": 6.327,
+  "end": 6.525
+ },
+ {
+  "word": "seven",
+  "start": 6.56,
+  "end": 6.803
+ },
+ {
+  "word": "metres",
+  "start": 6.85,
+  "end": 7.105
+ },
+ {
+  "word": "tall",
+  "start": 7.152,
+  "end": 7.43
+ },
+ {
+  "word": "and",
+  "start": 7.488,
+  "end": 7.57
+ },
+ {
+  "word": "weighs",
+  "start": 7.639,
+  "end": 7.872
+ },
+ {
+  "word": "over",
+  "start": 7.918,
+  "end": 8.081
+ },
+ {
+  "word": "six",
+  "start": 8.15,
+  "end": 8.348
+ },
+ {
+  "word": "tonnes.",
+  "start": 8.417,
+  "end": 8.975
+ },
+ {
+  "word": "Your",
+  "start": 9.532,
+  "end": 9.683
+ },
+ {
+  "word": "bicycle",
+  "start": 9.729,
+  "end": 10.089
+ },
+ {
+  "word": "chain",
+  "start": 10.112,
+  "end": 10.31
+ },
+ {
+  "word": "rusts",
+  "start": 10.379,
+  "end": 10.658
+ },
+ {
+  "word": "in",
+  "start": 10.693,
+  "end": 10.762
+ },
+ {
+  "word": "one",
+  "start": 10.844,
+  "end": 11.018
+ },
+ {
+  "word": "monsoon.",
+  "start": 11.053,
+  "end": 11.703
+ },
+ {
+  "word": "Chotu",
+  "start": 12.353,
+  "end": 12.678
+ },
+ {
+  "word": "wants",
+  "start": 12.736,
+  "end": 12.91
+ },
+ {
+  "word": "to",
+  "start": 12.945,
+  "end": 13.003
+ },
+ {
+  "word": "know",
+  "start": 13.05,
+  "end": 13.189
+ },
+ {
+  "word": "why.",
+  "start": 13.247,
+  "end": 13.746
+ },
+ {
+  "word": "Vik",
+  "start": 14.396,
+  "end": 14.582
+ },
+ {
+  "word": "laughs.",
+  "start": 14.652,
+  "end": 15.209
+ },
+ {
+  "word": "\"Easy.",
+  "start": 15.348,
+  "end": 15.941
+ },
+ {
+  "word": "Somebody",
+  "start": 15.987,
+  "end": 16.324
+ },
+ {
+  "word": "painted",
+  "start": 16.382,
+  "end": 16.66
+ },
+ {
+  "word": "it.\"",
+  "start": 16.707,
+  "end": 17.078
+ },
+ {
+  "word": "So",
+  "start": 17.241,
+  "end": 17.369
+ },
+ {
+  "word": "they",
+  "start": 17.415,
+  "end": 17.52
+ },
+ {
+  "word": "scratch",
+  "start": 17.578,
+  "end": 17.879
+ },
+ {
+  "word": "it.",
+  "start": 17.926,
+  "end": 18.228
+ },
+ {
+  "word": "Bare",
+  "start": 18.785,
+  "end": 19.04
+ },
+ {
+  "word": "metal.",
+  "start": 19.075,
+  "end": 19.505
+ },
+ {
+  "word": "No",
+  "start": 19.76,
+  "end": 19.911
+ },
+ {
+  "word": "paint.",
+  "start": 19.981,
+  "end": 20.41
+ },
+ {
+  "word": "\"Then",
+  "start": 21.061,
+  "end": 21.374
+ },
+ {
+  "word": "someone",
+  "start": 21.444,
+  "end": 21.757
+ },
+ {
+  "word": "polishes",
+  "start": 21.792,
+  "end": 22.222
+ },
+ {
+  "word": "it",
+  "start": 22.28,
+  "end": 22.361
+ },
+ {
+  "word": "every",
+  "start": 22.407,
+  "end": 22.628
+ },
+ {
+  "word": "night.\"",
+  "start": 22.674,
+  "end": 23.081
+ },
+ {
+  "word": "They",
+  "start": 23.731,
+  "end": 23.905
+ },
+ {
+  "word": "watch",
+  "start": 23.963,
+  "end": 24.184
+ },
+ {
+  "word": "all",
+  "start": 24.23,
+  "end": 24.346
+ },
+ {
+  "word": "week.",
+  "start": 24.393,
+  "end": 24.787
+ },
+ {
+  "word": "Nobody",
+  "start": 25.043,
+  "end": 25.321
+ },
+ {
+  "word": "comes.",
+  "start": 25.368,
+  "end": 25.855
+ },
+ {
+  "word": "\"Fine.",
+  "start": 26.262,
+  "end": 26.761
+ },
+ {
+  "word": "It's",
+  "start": 26.842,
+  "end": 27.028
+ },
+ {
+  "word": "modern",
+  "start": 27.063,
+  "end": 27.307
+ },
+ {
+  "word": "steel.",
+  "start": 27.342,
+  "end": 27.771
+ },
+ {
+  "word": "A",
+  "start": 27.91,
+  "end": 27.98
+ },
+ {
+  "word": "fake.\"",
+  "start": 28.05,
+  "end": 28.503
+ },
+ {
+  "word": "So",
+  "start": 29.153,
+  "end": 29.292
+ },
+ {
+  "word": "they",
+  "start": 29.35,
+  "end": 29.455
+ },
+ {
+  "word": "test",
+  "start": 29.501,
+  "end": 29.745
+ },
+ {
+  "word": "it.",
+  "start": 29.803,
+  "end": 30.07
+ },
+ {
+  "word": "Old",
+  "start": 30.72,
+  "end": 30.999
+ },
+ {
+  "word": "iron,",
+  "start": 31.068,
+  "end": 31.533
+ },
+ {
+  "word": "hammered",
+  "start": 31.603,
+  "end": 31.928
+ },
+ {
+  "word": "together",
+  "start": 31.951,
+  "end": 32.299
+ },
+ {
+  "word": "from",
+  "start": 32.346,
+  "end": 32.485
+ },
+ {
+  "word": "hot",
+  "start": 32.555,
+  "end": 32.764
+ },
+ {
+  "word": "lumps",
+  "start": 32.833,
+  "end": 33.066
+ },
+ {
+  "word": "by",
+  "start": 33.112,
+  "end": 33.24
+ },
+ {
+  "word": "hand,",
+  "start": 33.309,
+  "end": 33.716
+ },
+ {
+  "word": "full",
+  "start": 33.936,
+  "end": 34.134
+ },
+ {
+  "word": "of",
+  "start": 34.192,
+  "end": 34.25
+ },
+ {
+  "word": "stuff",
+  "start": 34.319,
+  "end": 34.61
+ },
+ {
+  "word": "modern",
+  "start": 34.691,
+  "end": 35.028
+ },
+ {
+  "word": "steelmakers",
+  "start": 35.074,
+  "end": 35.689
+ },
+ {
+  "word": "throw",
+  "start": 35.736,
+  "end": 35.968
+ },
+ {
+  "word": "away.",
+  "start": 36.026,
+  "end": 36.514
+ },
+ {
+  "word": "Dada",
+  "start": 37.164,
+  "end": 37.408
+ },
+ {
+  "word": "just",
+  "start": 37.466,
+  "end": 37.628
+ },
+ {
+  "word": "taps",
+  "start": 37.663,
+  "end": 37.953
+ },
+ {
+  "word": "the",
+  "start": 37.988,
+  "end": 38.058
+ },
+ {
+  "word": "pillar",
+  "start": 38.104,
+  "end": 38.383
+ },
+ {
+  "word": "and",
+  "start": 38.429,
+  "end": 38.511
+ },
+ {
+  "word": "smiles.",
+  "start": 38.58,
+  "end": 39.207
+ },
+ {
+  "word": "You",
+  "start": 39.614,
+  "end": 39.741
+ },
+ {
+  "word": "see,",
+  "start": 39.799,
+  "end": 40.124
+ },
+ {
+  "word": "that",
+  "start": 40.322,
+  "end": 40.519
+ },
+ {
+  "word": "stuff",
+  "start": 40.577,
+  "end": 40.879
+ },
+ {
+  "word": "is",
+  "start": 40.949,
+  "end": 41.042
+ },
+ {
+  "word": "phosphorus.",
+  "start": 41.1,
+  "end": 41.854
+ },
+ {
+  "word": "This",
+  "start": 42.214,
+  "end": 42.435
+ },
+ {
+  "word": "iron",
+  "start": 42.504,
+  "end": 42.783
+ },
+ {
+  "word": "has",
+  "start": 42.818,
+  "end": 42.946
+ },
+ {
+  "word": "about",
+  "start": 42.98,
+  "end": 43.189
+ },
+ {
+  "word": "twenty",
+  "start": 43.224,
+  "end": 43.503
+ },
+ {
+  "word": "times",
+  "start": 43.549,
+  "end": 43.793
+ },
+ {
+  "word": "more",
+  "start": 43.863,
+  "end": 44.049
+ },
+ {
+  "word": "of",
+  "start": 44.072,
+  "end": 44.118
+ },
+ {
+  "word": "it",
+  "start": 44.165,
+  "end": 44.234
+ },
+ {
+  "word": "than",
+  "start": 44.258,
+  "end": 44.374
+ },
+ {
+  "word": "today's",
+  "start": 44.408,
+  "end": 44.734
+ },
+ {
+  "word": "iron.",
+  "start": 44.792,
+  "end": 45.151
+ },
+ {
+  "word": "Every",
+  "start": 45.801,
+  "end": 46.022
+ },
+ {
+  "word": "time",
+  "start": 46.068,
+  "end": 46.277
+ },
+ {
+  "word": "rain",
+  "start": 46.335,
+  "end": 46.521
+ },
+ {
+  "word": "wets",
+  "start": 46.591,
+  "end": 46.8
+ },
+ {
+  "word": "the",
+  "start": 46.846,
+  "end": 46.916
+ },
+ {
+  "word": "pillar",
+  "start": 46.962,
+  "end": 47.264
+ },
+ {
+  "word": "and",
+  "start": 47.299,
+  "end": 47.369
+ },
+ {
+  "word": "the",
+  "start": 47.415,
+  "end": 47.485
+ },
+ {
+  "word": "sun",
+  "start": 47.531,
+  "end": 47.752
+ },
+ {
+  "word": "dries",
+  "start": 47.798,
+  "end": 48.1
+ },
+ {
+  "word": "it,",
+  "start": 48.17,
+  "end": 48.39
+ },
+ {
+  "word": "the",
+  "start": 48.553,
+  "end": 48.657
+ },
+ {
+  "word": "phosphorus",
+  "start": 48.704,
+  "end": 49.226
+ },
+ {
+  "word": "helps",
+  "start": 49.284,
+  "end": 49.493
+ },
+ {
+  "word": "a",
+  "start": 49.528,
+  "end": 49.563
+ },
+ {
+  "word": "thin",
+  "start": 49.633,
+  "end": 49.818
+ },
+ {
+  "word": "skin",
+  "start": 49.888,
+  "end": 50.109
+ },
+ {
+  "word": "grow",
+  "start": 50.178,
+  "end": 50.341
+ },
+ {
+  "word": "on",
+  "start": 50.387,
+  "end": 50.445
+ },
+ {
+  "word": "the",
+  "start": 50.48,
+  "end": 50.55
+ },
+ {
+  "word": "surface.",
+  "start": 50.585,
+  "end": 51.165
+ },
+ {
+  "word": "Not",
+  "start": 51.92,
+  "end": 52.117
+ },
+ {
+  "word": "flaky",
+  "start": 52.187,
+  "end": 52.547
+ },
+ {
+  "word": "orange",
+  "start": 52.616,
+  "end": 52.988
+ },
+ {
+  "word": "rust.",
+  "start": 53.057,
+  "end": 53.522
+ },
+ {
+  "word": "A",
+  "start": 54.079,
+  "end": 54.16
+ },
+ {
+  "word": "tight,",
+  "start": 54.242,
+  "end": 54.532
+ },
+ {
+  "word": "hard",
+  "start": 54.578,
+  "end": 54.811
+ },
+ {
+  "word": "coat",
+  "start": 54.88,
+  "end": 55.101
+ },
+ {
+  "word": "that",
+  "start": 55.147,
+  "end": 55.275
+ },
+ {
+  "word": "seals",
+  "start": 55.333,
+  "end": 55.635
+ },
+ {
+  "word": "the",
+  "start": 55.681,
+  "end": 55.751
+ },
+ {
+  "word": "iron",
+  "start": 55.821,
+  "end": 56.03
+ },
+ {
+  "word": "underneath,",
+  "start": 56.064,
+  "end": 56.645
+ },
+ {
+  "word": "like",
+  "start": 56.749,
+  "end": 56.912
+ },
+ {
+  "word": "a",
+  "start": 56.935,
+  "end": 56.958
+ },
+ {
+  "word": "raincoat",
+  "start": 57.028,
+  "end": 57.446
+ },
+ {
+  "word": "the",
+  "start": 57.481,
+  "end": 57.551
+ },
+ {
+  "word": "pillar",
+  "start": 57.585,
+  "end": 57.806
+ },
+ {
+  "word": "made",
+  "start": 57.852,
+  "end": 58.027
+ },
+ {
+  "word": "for",
+  "start": 58.061,
+  "end": 58.154
+ },
+ {
+  "word": "itself.",
+  "start": 58.212,
+  "end": 58.746
+ },
+ {
+  "word": "Modern",
+  "start": 59.396,
+  "end": 59.733
+ },
+ {
+  "word": "steel",
+  "start": 59.779,
+  "end": 60.104
+ },
+ {
+  "word": "is",
+  "start": 60.174,
+  "end": 60.29
+ },
+ {
+  "word": "too",
+  "start": 60.36,
+  "end": 60.546
+ },
+ {
+  "word": "clean",
+  "start": 60.615,
+  "end": 60.847
+ },
+ {
+  "word": "to",
+  "start": 60.882,
+  "end": 60.929
+ },
+ {
+  "word": "grow",
+  "start": 60.975,
+  "end": 61.114
+ },
+ {
+  "word": "that",
+  "start": 61.161,
+  "end": 61.289
+ },
+ {
+  "word": "coat.",
+  "start": 61.335,
+  "end": 61.718
+ },
+ {
+  "word": "Vik",
+  "start": 62.275,
+  "end": 62.461
+ },
+ {
+  "word": "storms",
+  "start": 62.531,
+  "end": 62.856
+ },
+ {
+  "word": "home",
+  "start": 62.914,
+  "end": 63.123
+ },
+ {
+  "word": "to",
+  "start": 63.169,
+  "end": 63.239
+ },
+ {
+  "word": "his",
+  "start": 63.309,
+  "end": 63.39
+ },
+ {
+  "word": "brand-new",
+  "start": 63.46,
+  "end": 63.994
+ },
+ {
+  "word": "iron",
+  "start": 64.075,
+  "end": 64.33
+ },
+ {
+  "word": "gate.",
+  "start": 64.388,
+  "end": 64.725
+ },
+ {
+  "word": "And",
+  "start": 64.981,
+  "end": 65.131
+ },
+ {
+  "word": "there",
+  "start": 65.178,
+  "end": 65.34
+ },
+ {
+  "word": "it",
+  "start": 65.375,
+  "end": 65.433
+ },
+ {
+  "word": "is.",
+  "start": 65.48,
+  "end": 65.816
+ },
+ {
+  "word": "One",
+  "start": 66.478,
+  "end": 66.676
+ },
+ {
+  "word": "little",
+  "start": 66.71,
+  "end": 66.931
+ },
+ {
+  "word": "orange",
+  "start": 66.977,
+  "end": 67.291
+ },
+ {
+  "word": "spot.",
+  "start": 67.326,
+  "end": 67.941
+ }
+]

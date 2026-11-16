@@ -3,7 +3,8 @@
 // angle folds the forearm in towards the chest. Arm A is on the side the
 // character faces (the pointing arm).
 
-export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod'] as const;
+// Core poses (CLAUDE.md) + story extras.
+export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud'] as const;
 export type PoseName = (typeof POSES)[number];
 
 export type EyeStyle = 'dot' | 'wide' | 'smug' | 'calm' | 'happy' | 'closed';
@@ -104,6 +105,72 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
         mouth: 'O',
         mouthOpen: 1,
         brow: 1,
+      };
+    }
+    case 'cross-laugh': {
+      // arms folded, smug laugh
+      const shake = s(ph * 20);
+      return {
+        ...base,
+        armA: [14, -112],
+        armB: [14, -112],
+        armsCrossed: true,
+        bodyDY: Math.abs(shake) * 0.008,
+        bodyRot: shake * 1.2,
+        headRot: 8 + shake * 3,
+        eyes: 'happy',
+        mouth: 'laugh',
+        mouthOpen: 0.7 + shake * 0.2,
+        brow: 0.4,
+      };
+    }
+    case 'cross-talk': {
+      const open = Math.max(0, s(ph * 13) * 0.5 + s(ph * 8.1) * 0.5);
+      return {...base, armsCrossed: true, headRot: 6 + s(ph * 2) * 3, mouth: 'open', mouthOpen: open, brow: 0.5};
+    }
+    case 'proud':
+      return {...base, armA: [28, -115], armB: [28, -115], headRot: 7 + s(ph * 1.2) * 1.5, mouth: 'smirk', brow: 0.5};
+    case 'sleep': {
+      const br = s(ph * 1.6);
+      return {
+        ...base,
+        armsCrossed: true,
+        bodyDY: br * 0.004,
+        bodyRot: 7,
+        headRot: 22 + br * 2,
+        headDY: -0.03,
+        eyes: 'closed',
+        mouth: 'O',
+        mouthOpen: 0.3,
+      };
+    }
+    case 'hammer': {
+      // raise slowly, strike fast: period 0.9 s, impact at phase 0
+      const per = 0.9;
+      const u = (t % per) / per;
+      const lift = u < 0.7 ? u / 0.7 : 1 - (u - 0.7) / 0.3;
+      const e = lift * lift * (3 - 2 * lift);
+      return {
+        ...base,
+        armA: [55 + 110 * e, -25 - 30 * e],
+        armB: [30, -60],
+        bodyRot: -3 + e * 4,
+        headRot: -4,
+        eyes: 'calm',
+        mouth: 'flat',
+        brow: 0.2,
+      };
+    }
+    case 'tap': {
+      // reach out to the side; two small taps at ~0.4 s and ~0.8 s
+      const tapA = Math.exp(-Math.pow((t - 0.45) / 0.07, 2)) + Math.exp(-Math.pow((t - 0.85) / 0.07, 2));
+      return {
+        ...base,
+        armA: [86 - tapA * 6, -8 + tapA * 4],
+        bodyRot: -2,
+        headRot: -3,
+        eyes: t > 1.0 ? 'happy' : 'calm',
+        mouth: 'smile',
       };
     }
     case 'nod': {

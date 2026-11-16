@@ -89,3 +89,57 @@ const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647) * 2 - 1;
   }
   writeWav('music-bed.wav', [L, R]);
 }
+
+// ring: soft metallic ring for a tap on iron, 2.2 s
+{
+  const n = Math.round(SR * 2.2);
+  const L = new Float32Array(n);
+  const partials = [[392, 1, 1.6], [1037, 0.5, 2.4], [1871, 0.3, 3.4], [2950, 0.15, 5]];
+  for (let i = 0; i < n; i++) {
+    const t = i / SR;
+    let v = 0;
+    for (const [f, a, d] of partials) v += a * Math.sin(2 * Math.PI * f * t) * Math.exp(-d * t);
+    L[i] = v * 0.3 * Math.min(1, t * 300);
+  }
+  writeWav('ring.wav', [L, L]);
+}
+
+// clang: hammer on hot iron, 0.5 s
+{
+  const n = Math.round(SR * 0.5);
+  const L = new Float32Array(n);
+  for (let i = 0; i < n; i++) {
+    const t = i / SR;
+    const noise = rnd() * Math.exp(-t * 60) * 0.6;
+    const tone = (Math.sin(2 * Math.PI * 880 * t) + 0.6 * Math.sin(2 * Math.PI * 2310 * t) + 0.35 * Math.sin(2 * Math.PI * 3720 * t)) * Math.exp(-t * 14);
+    L[i] = (noise + tone * 0.35) * 0.6;
+  }
+  writeWav('clang.wav', [L, L]);
+}
+
+// rain: loopable 6 s bed of soft hiss + random drop ticks
+{
+  const n = SR * 6;
+  const L = new Float32Array(n), R = new Float32Array(n);
+  let lp1 = 0, lp2 = 0;
+  for (let i = 0; i < n; i++) {
+    lp1 += 0.12 * (rnd() - lp1);
+    lp2 += 0.12 * (rnd() - lp2);
+    L[i] = lp1 * 0.5;
+    R[i] = lp2 * 0.5;
+  }
+  for (let k = 0; k < 900; k++) {
+    const at = Math.floor(((rnd() + 1) / 2) * (n - 800));
+    const ch = k % 2 ? L : R;
+    const f = 2000 + ((rnd() + 1) / 2) * 3000;
+    for (let j = 0; j < 600; j++) ch[at + j] += Math.sin((2 * Math.PI * f * j) / SR) * Math.exp(-j / 90) * 0.08;
+  }
+  // crossfade ends for a seamless loop
+  const xf = SR * 0.3;
+  for (let i = 0; i < xf; i++) {
+    const k = i / xf;
+    L[i] = L[i] * k + L[n - xf + i] * (1 - k);
+    R[i] = R[i] * k + R[n - xf + i] * (1 - k);
+  }
+  writeWav('rain.wav', [L.subarray(0, n - xf), R.subarray(0, n - xf)]);
+}

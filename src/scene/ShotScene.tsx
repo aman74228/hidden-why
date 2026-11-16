@@ -8,7 +8,9 @@ import {DEFAULT_FOV, resolveMove} from '../camera/moves';
 import {CAST} from '../characters/cast';
 import {Character} from '../characters/Character';
 import {TitleCard} from '../overlays/TitleCard';
+import {GROUNDS, LIGHTS, SKIES, mixLight, mixSky} from '../sets/presets';
 import {ToonSet, resolveSet} from '../sets/ToonSet';
+import {C, FONT} from '../theme';
 import {SceneCtx} from './ctx';
 import {FrameCheck} from './FrameCheck';
 import {effectiveCamera, faceFreeBottom, resolveShot} from './framing';
@@ -29,7 +31,13 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
   const move = useMemo(() => resolveMove(camMove, cast), [camMove, cast]);
   const {pos, look} = move(p);
   const fov = camMove.fov ?? DEFAULT_FOV;
-  const {light} = resolveSet(shot);
+  // lighting / sky, optionally blending to another preset (e.g. sun breaks through)
+  const base = resolveSet(shot);
+  const mixK = shot.mixAt ? Math.min(1, Math.max(0, (t - shot.mixAt[0]) / Math.max(0.01, shot.mixAt[1] - shot.mixAt[0]))) : 0;
+  const mk = mixK * mixK * (3 - 2 * mixK);
+  const light = shot.lightTo ? mixLight(base.light, LIGHTS[shot.lightTo], mk) : base.light;
+  const sky = shot.skyTo ? mixSky(base.sky, SKIES[shot.skyTo], mk) : base.sky;
+  const resolved = {sky, ground: base.ground ?? GROUNDS.stone, light};
   const samples = useMemo(() => Array.from({length: 9}, (_, i) => move(i / 8)), [move]);
 
   // rim light comes from the key light's side, in screen space
@@ -86,7 +94,7 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
       >
         <SceneCtx.Provider value={ctx}>
           <CameraRig pos={pos} look={look} fov={fov} />
-          <ToonSet set={shot.set} sky={shot.sky} ground={shot.ground} light={shot.light} props={shot.props} />
+          <ToonSet set={shot.set} props={shot.props} fx={shot.fx} p={p} dur={shot.duration} resolved={resolved} />
           {cast.map((c, i) => (
             <Character key={`${c.who}-${i}`} {...c} />
           ))}
@@ -96,6 +104,38 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
           </EffectComposer>
         </SceneCtx.Provider>
       </ThreeCanvas>
+      {shot.grade === 'flashback' ? (
+        <AbsoluteFill
+          style={{
+            background: 'radial-gradient(ellipse at 50% 45%, rgba(255,200,120,0.10) 40%, rgba(60,28,20,0.55) 100%)',
+            mixBlendMode: 'multiply',
+          }}
+        />
+      ) : null}
+      {shot.labels?.map((l, i) => (
+        <div
+          key={i}
+          style={{
+            position: 'absolute',
+            left: `${l.x * 100}%`,
+            top: `${l.y * 100}%`,
+            transform: 'translate(-50%, -50%)',
+            background: C.indigo,
+            border: `6px solid ${C.accent}`,
+            borderRadius: 22,
+            padding: '10px 24px 6px',
+            color: C.white,
+            fontFamily: FONT,
+            fontWeight: 800,
+            fontSize: 54,
+            letterSpacing: 2,
+            whiteSpace: 'nowrap',
+            boxShadow: `0 8px 0 ${C.ink}`,
+          }}
+        >
+          {l.text}
+        </div>
+      ))}
       {shot.titleCard ? <TitleCard {...shot.titleCard} frame={frame} maxBottom={cardMaxBottom} /> : null}
     </AbsoluteFill>
   );

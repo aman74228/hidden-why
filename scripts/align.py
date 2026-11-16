@@ -18,7 +18,7 @@ ROOT = Path(__file__).resolve().parent.parent
 
 def script_words(slug):
     text = (ROOT / "briefs" / f"{slug}.md").read_text(encoding="utf-8")
-    m = re.search(r"^##\s*Script\s*$(.*?)(?=^##\s|\Z)", text, re.S | re.M | re.I)
+    m = re.search(r"^##\s*Script\b[^\n]*\n(.*?)(?=^##\s|\Z)", text, re.S | re.M | re.I)
     body = m.group(1) if m else text
     body = re.sub(r"\[[^\]]*\]|\([^)]*\)|^\s*[-*>]\s*|^\s*\w+:\s", " ", body, flags=re.M)  # drop stage notes / speaker tags
     return [w for w in body.split() if re.search(r"\w", w)]

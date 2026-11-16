@@ -24,6 +24,9 @@ export const SKIES: Record<string, SkyPreset> = {
   dusk: {top: '#231E5C', horizon: '#E8735A', bottom: '#6B3C6E', sun: '#FFB27A', sunDir: [0.7, 0.06, -1]},
   night: {top: '#0F1238', horizon: '#2C3A78', bottom: '#1A2050', sun: '#E8ECFF', sunDir: [-0.4, 0.5, -1]},
   interior: {top: '#3A2A3E', horizon: '#6E4A3A', bottom: '#3A2A3E'},
+  storm: {top: '#2C3266', horizon: '#7E86A8', bottom: '#4A4E70'},
+  forge: {top: '#241C30', horizon: '#3E2A2E', bottom: '#241C30'},
+  macro: {top: '#1E2048', horizon: '#3A3466', bottom: '#1E2048'},
 };
 
 export const GROUNDS: Record<string, GroundPreset> = {
@@ -32,9 +35,29 @@ export const GROUNDS: Record<string, GroundPreset> = {
   grass: {base: '#7FA65A', tileA: '#8DB466', tileB: '#739A50', line: '#5D8048'},
   wood: {base: '#9A6440', tileA: '#A86F48', tileB: '#8E5A3A', line: '#6A4030'},
   obsidian: {base: '#3A3560', tileA: '#45407A', tileB: '#302C55', line: '#221F44'},
+  wet: {base: '#8C7A72', tileA: '#9A8578', tileB: '#7E6E6A', line: '#5E5258'},
+  earth: {base: '#5E4436', tileA: '#6A4C3C', tileB: '#543C30', line: '#3E2C26'},
 };
 
 export const LIGHTS: Record<string, LightPreset> = {
+  storm: {
+    key: '#B9C4E8', keyIntensity: 1.1, keyDir: [-3, 9, 3],
+    sky: '#8E98C4', shade: '#1E2A5A', hemi: 1.0,
+    ambient: '#2E3A80', ambientIntensity: 0.9,
+    fog: '#6E7698', fogNear: 5, fogFar: 38, charTint: '#D6DCF2', rim: '#FFD3A0',
+  },
+  forge: {
+    key: '#FF9A4A', keyIntensity: 3.2, keyDir: [-4, 3, 2],
+    sky: '#FFB066', shade: '#1E2460', hemi: 0.7,
+    ambient: '#30307A', ambientIntensity: 0.8,
+    fog: '#3A2430', fogNear: 6, fogFar: 26, charTint: '#FFE0C4', rim: '#FFB25A',
+  },
+  macro: {
+    key: '#FFD08A', keyIntensity: 2.6, keyDir: [-3, 5, 4],
+    sky: '#B8C6FF', shade: '#1E2A66', hemi: 0.9,
+    ambient: '#3442A0', ambientIntensity: 0.8,
+    fog: '#1E2048', fogNear: 30, fogFar: 90, charTint: '#FFF3DE', rim: '#FFD58A',
+  },
   golden: {
     key: '#FFC86E', keyIntensity: 2.7, keyDir: [-5, 6, 4],
     sky: '#FFE4BC', shade: '#1E3A6E', hemi: 0.75,
@@ -66,3 +89,37 @@ export const LIGHTS: Record<string, LightPreset> = {
     fog: '#6A4650', fogNear: 7, fogFar: 34, charTint: '#FFEBD0', rim: '#FFC877',
   },
 };
+
+// Blend two presets (k: 0 → a, 1 → b). Used for "sun breaks through" etc.
+const mixHex = (a: string, b: string, k: number) => {
+  const pa = parseInt(a.slice(1), 16);
+  const pb = parseInt(b.slice(1), 16);
+  const ch = (p: number, sh: number) => (p >> sh) & 255;
+  const m = (sh: number) => Math.round(ch(pa, sh) + (ch(pb, sh) - ch(pa, sh)) * k);
+  return '#' + ((m(16) << 16) | (m(8) << 8) | m(0)).toString(16).padStart(6, '0');
+};
+const mixNum = (a: number, b: number, k: number) => a + (b - a) * k;
+
+export const mixLight = (a: LightPreset, b: LightPreset, k: number): LightPreset => ({
+  key: mixHex(a.key, b.key, k),
+  keyIntensity: mixNum(a.keyIntensity, b.keyIntensity, k),
+  keyDir: [0, 1, 2].map((i) => mixNum(a.keyDir[i], b.keyDir[i], k)) as [number, number, number],
+  sky: mixHex(a.sky, b.sky, k),
+  shade: mixHex(a.shade, b.shade, k),
+  hemi: mixNum(a.hemi, b.hemi, k),
+  ambient: mixHex(a.ambient, b.ambient, k),
+  ambientIntensity: mixNum(a.ambientIntensity, b.ambientIntensity, k),
+  fog: mixHex(a.fog, b.fog, k),
+  fogNear: mixNum(a.fogNear, b.fogNear, k),
+  fogFar: mixNum(a.fogFar, b.fogFar, k),
+  charTint: mixHex(a.charTint, b.charTint, k),
+  rim: mixHex(a.rim, b.rim, k),
+});
+
+export const mixSky = (a: SkyPreset, b: SkyPreset, k: number): SkyPreset => ({
+  top: mixHex(a.top, b.top, k),
+  horizon: mixHex(a.horizon, b.horizon, k),
+  bottom: mixHex(a.bottom, b.bottom, k),
+  sun: b.sun && k > 0.5 ? b.sun : a.sun,
+  sunDir: b.sunDir ?? a.sunDir,
+});

@@ -20,6 +20,10 @@ export type CharacterProps = {
   scale?: number;
   outfit?: Partial<Outfit>;
   delay?: number; // seconds offset for animation phase
+  poses?: {at: number; pose: PoseName}[]; // pose timeline (seconds into the shot); overrides `pose` from `at`
+  enter?: {from: [number, number]; at?: number; dur?: number}; // walk in from `from` to `pos`
+  appearAt?: number; // hidden before this time (seconds into the shot)
+  holding?: 'hammer' | 'coin'; // tool in the leading hand
 };
 
 export const Character: React.FC<CharacterProps> = ({
@@ -30,13 +34,37 @@ export const Character: React.FC<CharacterProps> = ({
   scale = 1,
   outfit,
   delay = 0,
+  poses,
+  enter,
+  appearAt,
+  holding,
 }) => {
   const scene = useScene();
   const spec = CAST[who];
   const fit: Outfit = {...spec.outfit, ...outfit};
   const t = Math.max(0, scene.t - delay);
   const seed = who === 'chotu' ? 0 : who === 'vik' ? 1 : 2;
-  const p = poseAt(pose, t, seed);
+  // pose timeline
+  let curPose = pose;
+  let poseT = t;
+  for (const k of poses ?? []) {
+    if (t >= k.at) {
+      curPose = k.pose;
+      poseT = t - k.at;
+    }
+  }
+  const p = poseAt(curPose, poseT, seed);
+  // entrance walk
+  let walk = 0;
+  if (enter) {
+    const a0 = enter.at ?? 0;
+    const d = enter.dur ?? 1.2;
+    const u = Math.min(1, Math.max(0, (t - a0) / d));
+    const e = 1 - Math.pow(1 - u, 2);
+    pos = [enter.from[0] + (pos[0] - enter.from[0]) * e, enter.from[1] + (pos[1] - enter.from[1]) * e];
+    if (u > 0 && u < 1) walk = Math.abs(Math.sin(t * 11)) * 0.025;
+  }
+  p.bodyDY += walk;
 
   // Billboard towards the camera (yaw only) and keep outlines ≈4px on screen.
   const centre = new THREE.Vector3(pos[0], (spec.height * scale) / 2, pos[1]);
@@ -50,6 +78,7 @@ export const Character: React.FC<CharacterProps> = ({
     [ow, scene.charTint, who, rimDir[0], rimDir[1], scene.rimColor],
   );
 
+  if (appearAt !== undefined && t < appearAt) return null;
   const bodyLift = p.bodyDY * spec.height;
 
   return (
@@ -66,7 +95,7 @@ export const Character: React.FC<CharacterProps> = ({
             <G pos={[0, spec.hipY + bodyLift, 0]} rot={-p.bodyRot * D}>
               <G pos={[0, -spec.hipY, 0]}>
                 <Body spec={spec} fit={fit} />
-                <Arms spec={spec} fit={fit} p={p} />
+                <Arms spec={spec} fit={fit} p={p} holding={holding} />
                 <Head spec={spec} fit={fit} p={p} t={t} seed={seed} />
               </G>
             </G>
@@ -170,7 +199,20 @@ const seg = (a: P2, b: P2) => {
   return {len: Math.hypot(v[0], v[1]), rot: Math.atan2(v[0], -v[1])};
 };
 
-const Arms: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState}> = ({spec, fit, p}) => {
+const Tool: React.FC<{kind: 'hammer' | 'coin'; spec: CastSpec; at: number}> = ({kind, spec, at}) => {
+  const r = spec.armR;
+  if (kind === 'coin')
+    return <Part s={{kind: 'circle', r: r * 1.2}} color="#D9D2C0" z={0.006} pos={[r * 0.9, at - r * 0.6]} />;
+  // hammer: handle continues the forearm, head across it
+  return (
+    <>
+      <Part s={{kind: 'capsule', len: spec.lower * 0.9, r: r * 0.5}} color="#8A5A36" z={0.001} pos={[0, at + r]} />
+      <Part s={{kind: 'rrect', w: r * 5.2, h: r * 2.6, r: r * 0.5}} color="#6E7290" z={0.002} pos={[0, at - spec.lower * 0.75]} />
+    </>
+  );
+};
+
+const Arms: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState; holding?: 'hammer' | 'coin'}> = ({spec, fit, p, holding}) => {
   if (p.armsCrossed) return <CrossedArms spec={spec} fit={fit} />;
   const arm = (side: 1 | -1, [a1, a2]: [number, number], z: number, finger: boolean) => (
     <G pos={[side * spec.shoulderX, spec.shoulderY, 0]} rot={side * a1 * D}>
@@ -181,6 +223,11 @@ const Arms: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState}> = ({spec, fit,
         {finger && (
           <Part s={{kind: 'capsule', len: spec.armR * 1.8, r: spec.armR * 0.55}} color={spec.skin} z={z + 0.003} pos={[0, -spec.lower - spec.armR * 0.8]} sil />
         )}
+        {side === 1 && holding ? (
+          <group position={[0, 0, z + 0.004]}>
+            <Tool kind={holding} spec={spec} at={-spec.lower} />
+          </group>
+        ) : null}
       </G>
     </G>
   );
