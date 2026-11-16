@@ -1,0 +1,28 @@
+{
+  "name": "hidden-why-studio",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "studio": "remotion studio src/index.ts",
+    "sfx": "node scripts/sfx.mjs",
+    "align": "python3 scripts/align.py",
+    "stills": "bash scripts/stills.sh",
+    "render": "bash scripts/render.sh",
+    "typecheck": "tsc -p ."
+  },
+  "dependencies": {
+    "@fontsource/baloo-2": "^5.1.1",
+    "@react-three/fiber": "^8.17.10",
+    "@remotion/cli": "^4.0.300",
+    "@remotion/three": "^4.0.300",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.300",
+    "three": "^0.170.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/three": "^0.170.0",
+    "typescript": "^5.6.3"
+  }
+}

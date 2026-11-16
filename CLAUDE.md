@@ -1,0 +1,31 @@
+# Hidden Why — Studio Rules (read every session)
+Channel: Hidden Why — ancient engineering and everyday mysteries, explained in a minute.
+ONE reusable studio. Never create a new project per Short. Each Short = a brief in /briefs + its voiceover in /audio.
+
+## Stack
+Remotion + three.js (React Three Fiber), 1080x1920, 30 fps. No AI video generators.
+
+## Cast (reusable rigs; reskin outfits per story, keep faces/colours)
+- Chotu: asks the question in the hook. Small kid, oversized round head, orange kurta, cowlick. Wide eyes, points.
+- Vik: the mocker, guesses wrong 3 times, proven wrong at payoff. Tall, lanky, teal jacket, smug half-lidded eyes, raised eyebrow. Arms crossed, smirk.
+- Dada: old craftsman, never explains, only shows. Short, round, white beard, cream shawl, small round spectacles. Calm nod, tiny smile.
+Poses: idle, talk, point, laugh, cross-arms, shock, nod.
+
+## Look
+- Flat 2D characters (round heads, dot eyes, bean bodies, stick limbs, 4px dark outline) inside lit 3D toon sets.
+- Palette: warm saffron-gold key light, deep indigo-teal shadows, never pure black. Accent #F2A33A.
+- Camera low, wide, always gliding; a cut every 4–6 s. Helpers: dolly, orbit, push-in.
+- Captions: bold white, dark outline, 1–2 words at a time, centred at 60% height, synced to the voiceover.
+- Title cards: indigo panel, #F2A33A border, small upper label + big lower word.
+- Ending: hold payoff 0.5 s, hard cut so it loops into the first frame.
+
+## Audio
+- Voiceover is made by me on ElevenLabs and uploaded as /audio/<slug>.mp3.
+- Get word timestamps by aligning the MP3 to the brief's script (try faster-whisper; if model download is blocked, fall back to splitting words across speech segments found with ffmpeg silencedetect).
+- Music bed at -22 dB, whoosh on cuts, one "ding" on the payoff (generate simple SFX in code if no assets).
+
+## Workflow per Short
+1. Read /briefs/<slug>.md and /audio/<slug>.mp3.
+2. Build scenes exactly per the shot list.
+3. Show me 6 stills (one per beat) before the final render.
+4. Render to /out/<slug>.mp4, commit and push.
