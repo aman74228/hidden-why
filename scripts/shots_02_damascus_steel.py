@@ -65,7 +65,7 @@ HOOK_CAM_A = [-0.25, 1.32, 2.75]   # shot 1 starts here; the last shot ends here
 HOOK_CAM_B = [0.05, 1.36, 2.05]
 HOOK_LOOK_A = [0.35, 1.32, 0.0]
 HOOK_LOOK_B = [0.38, 1.38, 0.0]
-VIK_HOOK = c(VIK, pose="lean", pos=[1.0, 0.35], facing=-1)
+VIK_HOOK = c(VIK, pose="lean", pos=[0.82, 0.62], facing=-1)
 
 shots = [
   # 1 HOOK: laser sweeping the sabre on the scanner, Vik leaning in, fast push-in
@@ -81,7 +81,7 @@ shots = [
    "sfx": [{"name": "error-beep", "at": 0.25}]},
   # 3 Chotu lifts the sabre into the light; Vik behind; low angle, slow orbit
   {"id": "chotu-lifts", "set": "lab", "fx": {"lab": {"laser": 0, "sabre": "none", "screens": "scan"}},
-   "camera": {"type": "orbit", "center": [0.15, 0, 0.9], "radius": 2.6, "height": 0.6, "fromDeg": -18, "toDeg": 12, "lookY": 1.35, "fov": 44},
+   "camera": {"type": "orbit", "center": [0.15, 0, 0.9], "radius": 3.3, "height": 0.75, "fromDeg": -18, "toDeg": 12, "lookY": 1.05, "fov": 44},
    "cast": [c(CHOTU, pose="lift", pos=[0.1, 0.9], facing=1, holding="sabre"), c(VIK, pose="lean", pos=[1.35, -0.2], facing=-1)], "layout": "manual",
    "sfx": [{"name": "shimmer", "at": 0.7}]},
   # 4 museum case: the real thing, spotlit; title card
@@ -245,9 +245,9 @@ shots = [
 S = {s["id"]: s for s in shots}
 def cast(i): return S[i]["cast"]
 SABRE_SCAN = [[-0.36, 0.95, 0.05], [0.55, 0.95, -0.17]]
-HOOK = frame(SABRE_SCAN + body(VIK_HOOK, crop=0.58) + [[-0.3, 1.62, 0]], az=-14, el=-3, fov=42, push=0.22, swing=-5)
+HOOK = frame(SABRE_SCAN + [[-0.3, 1.62, 0], [0.82, 2.27, 0.62], [1.1, 1.4, 0.62], [0.55, 1.4, 0.62]], az=-22, el=-2, fov=42, push=0.22, swing=-5, box=(0.06, 0.94, 0.05, 0.9))
 S["hook-laser"]["camera"] = HOOK
-S["macro-blade"]["camera"] = {"type": "dolly", "from": [-0.22, 1.5, 0.36], "to": [0.26, 1.54, 0.3], "look": [-0.16, 1.15, -0.02], "lookTo": [0.3, 1.2, -0.06], "fov": 36}
+S["macro-blade"]["camera"] = {"type": "dolly", "from": [-0.2, 1.3, 0.42], "to": [0.26, 1.35, 0.36], "look": [-0.16, 1.18, -0.02], "lookTo": [0.3, 1.24, -0.06], "fov": 36}
 S["macro-blade"]["focusDist"] = 0.5
 # the last shot lands exactly on frame 1's camera (loop)
 S["loop-laser"]["camera"] = {"type": "dolly", "from": [round(HOOK["from"][0] - 0.35, 3), HOOK["from"][1] - 0.04, round(HOOK["from"][2] + 0.7, 3)],
@@ -286,6 +286,11 @@ S["trophy-melts"]["cast"] = [c(VIK, pose="peek", pos=[1.35, 0.85], facing=-1), c
 S["trophy-melts"]["camera"] = frame([[0.5, 0.75, 0.9], [0.5, 1.15, 0.9]] + body(cast("trophy-melts")[0], crop=0.3) + body(cast("trophy-melts")[1], crop=0.5), az=4, el=6, fov=44, push=0.2)
 S["chotu-places"]["cast"][0]["pos"] = [-0.45, 0.75]
 S["chotu-places"]["camera"] = frame(SABRE_SCAN + body(cast("chotu-places")[0]) + body(VIK_HOOK, crop=0.3), az=-6, el=3, fov=44, push=0.15)
+
+S["forge-dark"]["camera"] = frame(body(cast("forge-dark")[0]) + [[0.72, 0.6, 0.12], [1.0, 0.56, 0.12]], az=28, el=4, fov=44, push=0.15)
+S["insert-stripes"]["camera"] = {"type": "dolly", "from": [2.15, 1.85, 0.42], "to": [2.18, 1.74, 0.38], "look": [2.15, 0.95, 0.18], "lookTo": [2.18, 0.95, 0.17], "fov": 40}
+S["try1-fold"]["camera"] = {"type": "dolly", "from": [-2.25, 1.0, 2.3], "to": [-2.38, 0.95, 1.95], "look": [-2.7, 0.8, 0.9], "fov": 40}
+S["insert-ingot"]["camera"] = {"type": "dolly", "from": [2.75, 1.4, 1.15], "to": [2.7, 1.3, 0.95], "look": [2.5, 0.97, 0.25], "fov": 40}
 
 assert len(shots) == len(cuts) - 1, (len(shots), len(cuts))
 for i, s in enumerate(shots):

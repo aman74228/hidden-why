@@ -4,7 +4,7 @@ import {useScene} from '../scene/ctx';
 import {C} from '../theme';
 import {LightBeam, Motes, Sparks, Steam} from './fx';
 import {TexToon, hotIron} from './materials';
-import {Ball, Box, Cyl, Toon, mulberry} from './toon';
+import {Ball, Box, Cyl, Toon, mulberry, toonRamp} from './toon';
 import {Ground, Lantern, PlantPot, TBox, TCyl} from './world';
 
 // Short #2 (02-damascus-steel): Vik's lab, museum case, ore hillside, and the
@@ -162,9 +162,9 @@ const bladeGeo = (() => {
 export type BladeLook = 'wootz' | 'blank' | 'folded' | 'gold';
 const BladeMat: React.FC<{look: BladeLook; sheen?: number}> = ({look, sheen = 0.5}) => {
   if (look === 'gold') return <meshStandardMaterial color="#F0C048" metalness={0.85} roughness={0.22} envMapIntensity={1.1} />;
+  // toon-shaded with the pattern texture: PBR + HDRI + spot washed the pattern out to chrome up close
   const map = look === 'wootz' ? wootzTex() : look === 'folded' ? foldedTex() : blankSteelTex();
-  // matte sheen, not chrome: low metalness/env so the pattern reads (PBR + HDRI washes out up close)
-  return <meshStandardMaterial map={map} color="#ffffff" metalness={0.05} roughness={look === 'blank' ? 0.55 : 0.72} envMapIntensity={sheen * 0.25} />;
+  return <meshToonMaterial map={map} color="#ffffff" gradientMap={toonRamp()} emissive="#ffffff" emissiveMap={map} emissiveIntensity={0.18 * (sheen + 0.5)} />;
 };
 
 export const Sabre: React.FC<{pos?: V3; rot?: V3; s?: number; look?: BladeLook; hilt?: boolean; sheen?: number}> = ({
@@ -305,11 +305,11 @@ export const Crucible: React.FC<{pos?: V3; s?: number; glow?: number; open?: num
   const half = (sd: number) => (
     <group position={[sd * k * 0.07, 0, 0]} rotation={[0, 0, -sd * k * 0.35]}>
       <mesh position={[0, 0.06, 0]} castShadow>
-        <sphereGeometry args={[0.06, 20, 14, sd > 0 ? -Math.PI / 2 : Math.PI / 2, Math.PI]} />
+        <cylinderGeometry args={[0.042, 0.058, 0.12, 20, 1, false, sd > 0 ? 0 : Math.PI, Math.PI]} />
         <meshStandardMaterial color={clay} emissive="#FF6A1A" emissiveIntensity={glow * 0.3} roughness={0.9} side={THREE.DoubleSide} />
       </mesh>
-      <mesh position={[0, 0.13, 0]}>
-        <sphereGeometry args={[0.03, 12, 8, sd > 0 ? -Math.PI / 2 : Math.PI / 2, Math.PI]} />
+      <mesh position={[0, 0.128, 0]}>
+        <sphereGeometry args={[0.043, 16, 8, sd > 0 ? 0 : Math.PI, Math.PI, 0, Math.PI / 2]} />
         <meshStandardMaterial color={clay} emissive="#FF6A1A" emissiveIntensity={glow * 0.3} roughness={0.9} side={THREE.DoubleSide} />
       </mesh>
     </group>
@@ -871,7 +871,7 @@ export const LabHD: React.FC<{fx: LabFx; dur: number; p: number}> = ({fx, dur, p
           {[-0.38, 0.38].map((x) => (
             <Box key={x} size={[0.06, 0.82, 0.5]} pos={[x, 0.41, 0]} color="#7A8A98" />
           ))}
-          <Crucible pos={[0, 0.9, 0]} s={1.6} glow={items.includes('cracked') ? Math.max(0, 0.45 - (t - (fx.crackAt ?? 0)) * 0.2) : 0.5} open={items.includes('cracked') ? smooth((t - (fx.crackAt ?? 0)) / 0.25) : 0} />
+          <Crucible pos={[0, 0.9, 0]} s={1.6} glow={items.includes('cracked') ? Math.max(0, 0.3 - (t - (fx.crackAt ?? 0)) * 0.15) : 0.3} open={items.includes('cracked') ? smooth((t - (fx.crackAt ?? 0)) / 0.25) : 0} />
         </group>
       )}
       {/* trophy melting into a crucible (payoff) */}
@@ -914,11 +914,11 @@ export const Ingot: React.FC<{pos: V3; s?: number}> = ({pos, s = 1}) => (
   <group position={pos} scale={s}>
     <mesh position={[0, 0.03, 0]} castShadow receiveShadow>
       <boxGeometry args={[0.26, 0.06, 0.11]} />
-      <meshStandardMaterial color="#F4C850" metalness={0.9} roughness={0.12} envMapIntensity={1.4} />
+      <meshStandardMaterial color="#D8A030" metalness={1} roughness={0.16} envMapIntensity={2.4} />
     </mesh>
     <mesh position={[0, 0.0615, 0]} rotation={[-Math.PI / 2, 0, 0]}>
       <planeGeometry args={[0.22, 0.08]} />
-      <meshStandardMaterial color="#FFE08A" metalness={0.95} roughness={0.06} envMapIntensity={1.6} />
+      <meshStandardMaterial color="#F0C050" metalness={1} roughness={0.05} envMapIntensity={2.8} />
     </mesh>
   </group>
 );
