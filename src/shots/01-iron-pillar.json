@@ -820,36 +820,46 @@
   {
    "id": "insert-specks",
    "beat": 3,
-   "set": "void",
-   "sky": "forge",
-   "light": "forge",
+   "set": "forge",
    "grade": "flashback",
    "fx": {
-    "macro": "specks"
+    "merge": [
+     1,
+     1
+    ],
+    "forgeClose": true,
+    "noSparks": true
    },
    "camera": {
     "type": "dolly",
     "from": [
-     0.4,
-     0.5,
-     2.4
+     1.08,
+     0.92,
+     0.92
     ],
     "to": [
-     -0.1,
-     -0.1,
-     1.5
+     0.98,
+     0.84,
+     0.74
     ],
     "look": [
-     0,
-     0,
-     0
+     0.72,
+     0.61,
+     0.14
     ],
-    "fov": 40
+    "lookTo": [
+     0.72,
+     0.6,
+     0.14
+    ],
+    "fov": 38
    },
    "roll": [
     -3,
-    2
+    1
    ],
+   "dof": 2.0,
+   "focusDist": 0.7,
    "titleCard": {
     "label": "Guess 3",
     "word": "Fake",

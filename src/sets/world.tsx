@@ -3,7 +3,7 @@ import * as THREE from 'three';
 import {useScene} from '../scene/ctx';
 import {C} from '../theme';
 import {LightBeam, Motes, RainFX, Sparks, Steam} from './fx';
-import {TexName, TexPBR, TexToon} from './materials';
+import {TexName, TexPBR, TexToon, hotIron} from './materials';
 import {Ball, Box, Cyl, Toon, mulberry} from './toon';
 
 // Textured, prop-dense sets (CC0 Poly Haven textures). Every set has 8+ props.
@@ -358,7 +358,7 @@ export const CourtyardHD: React.FC<{lampGlow?: number; beams?: boolean; beamColo
 
 /* ---------------- FORGE (flashback) ---------------- */
 export const ANVIL: V3 = [0.72, 0, 0.12];
-export const ForgeHD: React.FC<{merge?: number; closeup?: boolean}> = ({merge = 0, closeup}) => {
+export const ForgeHD: React.FC<{merge?: number; closeup?: boolean; sparks?: boolean}> = ({merge = 0, closeup, sparks = true}) => {
   const {t} = useScene();
   const flick = 0.85 + 0.15 * Math.sin(t * 17) * Math.sin(t * 7.3);
   const lumpX = 0.11 * (1 - merge);
@@ -467,19 +467,20 @@ export const ForgeHD: React.FC<{merge?: number; closeup?: boolean}> = ({merge = 
         <group position={[0, 0.6, 0]}>
           {[-1, 1].map((sd) => (
             <mesh key={sd} position={[sd * lumpX, 0, 0]} scale={[1.2 - merge * 0.1 + merge * 0.5, 0.65 - merge * 0.15, 0.9]}>
-              <sphereGeometry args={[0.1, 18, 12]} />
-              <meshBasicMaterial color={new THREE.Color(sd > 0 ? '#FF8A2A' : '#FFA040').multiplyScalar(1.8)} toneMapped={false} />
+              <sphereGeometry args={[0.1, 48, 32]} />
+              {/* hot hammered iron: mottled glow (hammer facets/pits from the iron texture) */}
+              <meshBasicMaterial color={new THREE.Color('#ffffff').multiplyScalar(sd > 0 ? 1.35 : 1.5)} map={hotIron()} toneMapped={false} />
             </mesh>
           ))}
           {specks.map((s, i) => (
-            <mesh key={i} position={[s.x * (0.6 + merge * 0.5), s.y, s.z + 0.06]}>
-              <sphereGeometry args={[s.s, 6, 4]} />
+            <mesh key={i} position={[s.x * (0.45 + merge * 0.3), s.y * 0.45, 0.07 + s.z * 0.15]} rotation={[i, i * 2, 0]}>
+              <dodecahedronGeometry args={[s.s * 0.75, 0]} />
               <meshBasicMaterial color="#6E6A78" toneMapped={false} />
             </mesh>
           ))}
           <pointLight color="#FF7A2A" intensity={closeup ? 3 : 5} distance={2.5} decay={2} />
         </group>
-        <Sparks pos={[0, 0.62, 0.05]} times={impacts} />
+        {sparks && <Sparks pos={[0, 0.62, 0.05]} times={impacts} />}
       </group>
     </group>
   );

@@ -35,6 +35,7 @@ export type FxSpec = {
   bicycle?: {pos: [number, number, number]; rotY?: number};
   merge?: [number, number]; // forge: lumps merging 0..1
   forgeClose?: boolean;
+  noSparks?: boolean; // forge without the hammer (inserts)
   spot?: number; // street: gate's orange spot size (0 hides)
   macro?: 'scratch' | 'phosphorus' | 'skin' | 'split' | 'surface' | 'chain' | 'specks';
   bars?: {skin?: [number, number]; rust?: [number, number]; drops?: number};
@@ -112,7 +113,7 @@ export const ToonSet: React.FC<
       {spec.set === 'courtyard' && (
         <CourtyardHD lampGlow={night ? 1.4 : storm ? 1 : 0.6} beams={fx.beams ?? !night} beamColor={night ? '#B8C8FF' : '#FFC873'} night={night} />
       )}
-      {spec.set === 'forge' && <ForgeHD merge={lerp(fx.merge)} closeup={fx.forgeClose} />}
+      {spec.set === 'forge' && <ForgeHD merge={lerp(fx.merge)} closeup={fx.forgeClose} sparks={!fx.noSparks} />}
       {spec.set === 'street' && (
         <>
           <StreetHD />

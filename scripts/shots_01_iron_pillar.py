@@ -100,9 +100,9 @@ shots = [
    "cast": [{"who": "dada", "pose": "hammer", "pos": [0, 0], "facing": 1, "holding": "hammer", "outfit": SMITH, "props": ["apron", "headwrap"]}],
    "sfx": [{"name": "anvil", "at": round(0.88 + 0.9 * k, 2)} for k in range(2)]},
   # 13 INSERT: hot iron full of grey specks; guess 3 crossed out
-  {"id": "insert-specks", "beat": 3, "set": "void", "sky": "forge", "light": "forge", "grade": "flashback", "fx": {"macro": "specks"},
-   "camera": {"type": "dolly", "from": [0.4, 0.5, 2.4], "to": [-0.1, -0.1, 1.5], "look": [0, 0, 0], "fov": 40},
-   "roll": [-3, 2],
+  {"id": "insert-specks", "beat": 3, "set": "forge", "grade": "flashback", "fx": {"merge": [1, 1], "forgeClose": True, "noSparks": True},
+   "camera": {"type": "dolly", "from": [1.08, 0.92, 0.92], "to": [0.98, 0.84, 0.74], "look": [0.72, 0.61, 0.14], "lookTo": [0.72, 0.6, 0.14], "fov": 38},
+   "roll": [-3, 1], "dof": 2.0, "focusDist": 0.7,
    "titleCard": {"label": "Guess 3", "word": "Fake", "at": 0, "duration": 2.7, "crossed": True, "crossAt": 1.0, "intro": False}},
   # 14 Dada taps the pillar and smiles
   {"id": "dada-taps", "beat": 4, "stillAt": 1.6, "set": "courtyard", "light": "golden", "fx": {"pillar": PILLAR, "ripple": {"pos": [-0.19, 0.98, -2.42], "times": [0.85, 1.25]}},

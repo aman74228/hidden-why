@@ -1,6 +1,7 @@
 # Hidden Why — Studio Rules (read every session)
 Channel: Hidden Why — ancient engineering and everyday mysteries, explained in a minute.
 ONE reusable studio. Never create a new project per Short. Each Short = a brief in /briefs + its voiceover in /audio.
+**Before starting any Short, read LESSONS.md** (everything fixed on Short #1: hook, no voids/flat frames, inserts, mix levels, render pitfalls, partial re-render). Check against it before showing stills.
 
 ## Stack
 Remotion + three.js (React Three Fiber), 1080x1920, 30 fps. No AI video generators.
@@ -16,7 +17,7 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 - Palette: warm saffron-gold key light, deep indigo-teal shadows, never pure black. Accent #F2A33A.
 - Camera low, wide, always gliding; a cut or strong camera move every 2–3 s, 3+ object inserts per Short. Helpers: dolly, orbit, push-in.
 - Sets: CC0 textures + HDRI (scripts/fetch_assets.py), 8+ props per set, light beams, bloom, particles, subtle grain. Look playbook: .claude/skills/cartoon-3d-short.
-- Captions: bold white, dark outline, sentence case, 1–2 words at a time, ~68 px, centred at 70% height, synced to the voiceover.
+- Captions: bold white, dark outline, sentence case, 1–2 words at a time, ~68 px, centred at 70% height (nudged within 62–86% only to keep off faces), synced to the voiceover.
 - Title cards: indigo panel, #F2A33A border, small upper label + big lower word.
 - Ending: hold payoff 0.5 s, hard cut so it loops into the first frame.
 
@@ -34,7 +35,7 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 
 ### Mix (strict) — `scripts/mix.py <slug> <out.wav>` builds it and writes a .levels.json LUFS report
 - Voice -14 LUFS.
-- Music the whole time, 8–10 dB under the voice, ducked a further 3 dB under speech.
+- Music the whole time, 8–10 dB under the voice, ducked a further 3 dB under speech, never below voice -12 dB; music peaks <= -15 dBFS, 0.3 s fade-in.
 - Every SFX at least 6 dB under the voice.
 - Rain at -32 LUFS, fading out at the first cut.
 - Nothing peaks above the voice.
@@ -42,5 +43,7 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 ## Workflow per Short
 1. Read /briefs/<slug>.md and /audio/<slug>.mp3.
 2. Build scenes exactly per the shot list.
-3. Show me 6 stills (one per beat) before the final render.
-4. Render to /out/<slug>.mp4, commit and push.
+3. Show me 6 stills (one per beat) and a 10 s opening preview with the mix before the final render.
+4. QA: `python3 scripts/qa/sheet.py <slug>` must show zero flags; look at the contact sheet too.
+5. Render to /out/<slug>.mp4 (`bash scripts/render.sh <slug>`), commit and push.
+6. Later fixes: partial re-render only (`python3 scripts/splice.py <slug> <shot-id> ...`, or `--audio-only`).

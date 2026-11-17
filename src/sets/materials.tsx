@@ -165,11 +165,20 @@ const loadHdr = (name: HdriName) => {
   return hdrPending.get(name)!;
 };
 
-const pmremCache = new Map<string, THREE.Texture>();
+// PMREM textures belong to the WebGL context that built them; every shot has its
+// own canvas/context, so the cache is per renderer (a texture from another
+// context renders black — that was the dark scratch shot in the long render).
+const pmremCaches = new WeakMap<THREE.WebGLRenderer, Map<string, THREE.Texture>>();
+const cacheFor = (gl: THREE.WebGLRenderer) => {
+  let m = pmremCaches.get(gl);
+  if (!m) pmremCaches.set(gl, (m = new Map()));
+  return m;
+};
 // Holds the frame (delayRender) until the PMREM environment is built AND
 // applied to the scene, so metal never renders black on the first frame.
 export const Env: React.FC<{name: HdriName; intensity?: number}> = ({name, intensity = 1}) => {
   const {gl, scene, invalidate} = useThree();
+  const pmremCache = cacheFor(gl);
   const [env, setEnv] = useState<THREE.Texture | null>(() => pmremCache.get(name) ?? null);
   const [handle] = useState(() => (pmremCache.has(name) ? null : delayRender(`env ${name}`, {timeoutInMilliseconds: 60000})));
   useEffect(() => {
@@ -316,4 +325,32 @@ export const inscription = () => {
   inscTex = new THREE.CanvasTexture(c);
   inscTex.wrapS = THREE.RepeatWrapping;
   return inscTex;
+};
+
+// Glowing hot iron: yellow-orange with redder hammer facets and dark scale.
+let hotTex: THREE.CanvasTexture | null = null;
+export const hotIron = () => {
+  if (hotTex) return hotTex;
+  const S = 256;
+  const r = rng(53);
+  const c = document.createElement('canvas');
+  c.width = c.height = S;
+  const g = c.getContext('2d')!;
+  g.fillStyle = '#ffb455';
+  g.fillRect(0, 0, S, S);
+  for (let i = 0; i < 160; i++) {
+    g.fillStyle = r() < 0.6 ? `rgba(220,70,10,${0.15 + r() * 0.2})` : `rgba(255,230,150,${0.15 + r() * 0.2})`;
+    g.beginPath();
+    g.ellipse(r() * S, r() * S, 6 + r() * 18, 4 + r() * 12, r() * 3, 0, 6.283);
+    g.fill();
+  }
+  for (let i = 0; i < 140; i++) {
+    g.fillStyle = `rgba(90,20,5,${0.4 + r() * 0.4})`;
+    g.beginPath();
+    g.arc(r() * S, r() * S, 0.6 + r() * 1.6, 0, 6.283);
+    g.fill();
+  }
+  hotTex = new THREE.CanvasTexture(c);
+  hotTex.colorSpace = THREE.SRGBColorSpace;
+  return hotTex;
 };

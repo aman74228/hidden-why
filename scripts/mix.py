@@ -23,6 +23,7 @@ PLACEHOLDER: dict = {}  # name -> stand-in file while a library sound is missing
 V_LUFS, M_UNDER, DUCK, SFX_MOM, RAIN_LUFS = -14.0, 8.0, 3.0, -21.0, -32.0
 SFX_PEAK = -10.5  # dBFS: transients stay ~9 dB under the voice peak (no spikes)
 RAIN_PEAK = -24.0
+MUSIC_PEAK = -15.0  # dBFS
 MUSIC_FLOOR = -26.0  # music short-term loudness never below voice - 12 dB
 jsround = lambda x: math.floor(x + 0.5)
 
@@ -71,6 +72,7 @@ def main():
     ap.add_argument("slug")
     ap.add_argument("out")
     ap.add_argument("--music", default=None)
+    ap.add_argument("--stems", default=None, help="folder to also write voice/music/sfx/rain stems")
     a = ap.parse_args()
     L = json.loads((ROOT / f"src/shots/{a.slug}.json").read_text())
     words = json.loads((ROOT / f"src/captions/{a.slug}.json").read_text())
@@ -107,18 +109,40 @@ def main():
         m = np.tile(m, (reps, 1))[:N]
         # steady bed: gentle compression so quiet passages never drop out
         m = ff(m, "acompressor=threshold=-30dB:ratio=4:attack=20:release=500:makeup=6")[:len(m)]
-        # gain-ride to a constant level (400 ms RMS, 1.5 s smoothing, at most +/-6 dB)
-        W4 = int(0.4 * SR)
-        n4 = len(m) // W4
-        rms = np.sqrt((m[: n4 * W4].reshape(n4, W4, 2) ** 2).mean(axis=(1, 2))) + 1e-6
-        tgt = np.median(rms)
-        g = np.clip(tgt / rms, 0.5, 2.0)
-        g = np.convolve(np.pad(g, (2, 2), mode="edge"), np.ones(5) / 5, mode="valid")
-        gs = np.interp(np.arange(len(m)), np.arange(n4) * W4 + W4 / 2, g)
-        m = m * gs[:, None].astype(np.float32)
+        def ride(m):  # gain-ride to a constant level (1 s RMS, smoothed, at most +/-9 dB)
+            W4 = SR
+            n4 = len(m) // W4
+            rms = np.sqrt((m[: n4 * W4].reshape(n4, W4, 2) ** 2).mean(axis=(1, 2))) + 1e-6
+            g = np.clip(np.median(rms) / rms, 0.35, 2.8)
+            g = np.convolve(np.pad(g, (1, 1), mode="edge"), np.ones(3) / 3, mode="valid")
+            gs = np.interp(np.arange(len(m)), np.arange(n4) * W4 + W4 / 2, g)
+            return m * gs[:, None].astype(np.float32)
         m = level(m, V_LUFS - M_UNDER)
+        # no music hits louder than the voice: cap peaks, soft 0.3 s fade-in (the loop's first downbeat was a spike)
+        mlim = 10 ** (MUSIC_PEAK / 20)
+        for _ in range(4):  # ride, level, limit, repeat: steady loudness with peaks capped
+            m = ride(m)
+            m = level(m, V_LUFS - M_UNDER)
+            m = fit(np.clip(ff(m, f"alimiter=limit={mlim:.4f}:level=false:attack=1:release=80")[:N], -mlim, mlim))
+        fin = int(0.3 * SR)
+        m[:fin] *= np.linspace(0, 1, fin)[:, None]
         env = 1 - (1 - 10 ** (-DUCK / 20)) * mask
         music = m * env[:, None]
+        # floor: wherever the ducked bed's 3 s loudness dips under voice-12 dB, lift it there (smoothly)
+        for _ in range(3):
+            hop = SR // 2
+            pos, gain = [], []
+            for k in range(0, N - 3 * SR, hop):
+                Lk = meter(music[k:k + 3 * SR])[0]
+                pos.append(k + 1.5 * SR)
+                gain.append(10 ** (max(0.0, (MUSIC_FLOOR + 0.4) - Lk) / 20))
+            if max(gain) <= 1.0001:
+                break
+            g = np.convolve(np.pad(gain, (2, 2), mode="edge"), np.ones(5) / 5, mode="valid")
+            g = np.maximum(g, gain)
+            music = music * np.interp(np.arange(N), pos, g)[:, None].astype(np.float32)
+            music = np.clip(ff(music, f"alimiter=limit={mlim:.4f}:level=false:attack=1:release=80")[:N], -mlim, mlim)
+            music = fit(music)
         fade = int(0.3 * SR)
         music[-fade:] *= np.linspace(1, 0, fade)[:, None]
         mI, mP, _ = meter(music)
@@ -215,6 +239,11 @@ def main():
         mus_st.append(meter(music[k:k + S3])[0])
     report["checks"] = {"sfx_windows_within_6dB_of_voice": over, "music_min_short_term_lufs": round(min(mus_st), 1) if mus_st else None,
                         "music_floor_ok": bool(mus_st) and min(mus_st) >= MUSIC_FLOOR}
+    if a.stems:
+        Path(a.stems).mkdir(parents=True, exist_ok=True)
+        for nm, st in (("voice", voice), ("music", music), ("sfx", sfx), ("rain", rain)):
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "2", "-i", "-", "-c:a", "pcm_s16le",
+                            str(Path(a.stems) / f"{nm}.wav")], input=st.astype(np.float32).tobytes(), check=True)
     mix = voice + music + sfx + rain
     mix = ff(mix, "alimiter=limit=0.89:level=false:attack=2:release=60")[:N]
     fI, fP, _ = meter(mix)
