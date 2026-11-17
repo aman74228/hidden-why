@@ -115,17 +115,17 @@ export const faceFreeBottom = (shot: Shot, p0: number, p1: number, x0 = 0.125, x
 // Best vertical centre for a caption box (w,h as frame fractions): avoid
 // faces strongly, bodies moderately, legs lightly; stay near 60% and inside
 // the Shorts safe area (30–80%).
-export const placeCaption = (boxes: CastBoxes[], w: number, h: number, pref = 0.6): number => {
+export const placeCaption = (boxes: CastBoxes[], w: number, h: number, pref = 0.7, lo = 0.62, hi = 0.86): number => {
   const area = (a: Box, b: Box) =>
     Math.max(0, Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0)) * Math.max(0, Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0));
   let best = pref;
   let bestScore = Infinity;
-  for (let y = 0.3; y <= 0.8001; y += 0.01) {
+  for (let y = lo; y <= hi + 1e-4; y += 0.01) {
     const cap: Box = {x0: 0.5 - w / 2, x1: 0.5 + w / 2, y0: y - h / 2, y1: y + h / 2};
     let score = Math.abs(y - pref) * 0.02;
     for (const b of boxes) {
       const face = {x0: b.face.x0 - 0.02, x1: b.face.x1 + 0.02, y0: b.face.y0 - 0.025, y1: b.face.y1 + 0.02}; // clearance
-      score += area(cap, face) * 60 + area(cap, b.body) * 6 + area(cap, b.legs) * 1;
+      score += area(cap, face) * 60;
     }
     if (score < bestScore - 1e-9) {
       bestScore = score;

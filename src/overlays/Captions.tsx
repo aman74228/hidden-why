@@ -41,12 +41,12 @@ export const captionBox = (text: string) => {
   return {w: Math.min(0.95, (text.length * fs * 0.62 + 40) / 1080), h: (fs * 1.15) / 1920};
 };
 
-// `placeAt(time, w, h)` returns the vertical centre (fraction from top) that
+// `placeAt(t0, t1, w, h)` returns the vertical centre (fraction from top) that
 // keeps the caption off faces/bodies; evaluated once per chunk so it never jitters.
 export const Captions: React.FC<{
   words: Word[];
   offset?: number;
-  placeAt?: (t: number, w: number, h: number) => number;
+  placeAt?: (t0: number, t1: number, w: number, h: number) => number;
 }> = ({words, offset = 0, placeAt}) => {
   const frame = useCurrentFrame();
   const {fps} = useVideoConfig();
@@ -59,8 +59,9 @@ export const Captions: React.FC<{
   const scale = interpolate(pop, [0, 1], [0.7, 1]);
   // sentence case: keep the script's own capitalisation, drop quotes and trailing punctuation
   const clean = cur.text.replace(/^["“‘]+/, '').replace(/["”’.,;:]+$/g, '').replace(/\.\.\.$/, '').replace(/["“”]/g, '');
-  void placeAt;
-  const y = 0.7; // fixed: centred at 70% of frame height
+  // centred at 70% of frame height; nudged (62-86%) only if it would cover a face
+  const box = captionBox(clean);
+  const y = placeAt ? placeAt(cur.start - offset, cur.end - offset, box.w, box.h) : 0.7;
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <div

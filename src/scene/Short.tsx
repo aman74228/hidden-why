@@ -27,13 +27,17 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
   const sfx = list.sfx !== false;
 
   // caption placement: which shot is on screen at time t, where are the faces?
+  // caption placement: the boxes of every shot the chunk is on screen in
   const placeAt = React.useCallback(
-    (t: number, w: number, h: number) => {
-      const f = Math.round(t * fps);
-      let i = starts.findIndex((s, k) => f >= s && f < s + frames[k]);
-      if (i < 0) i = list.shots.length - 1;
-      const p = Math.min(1, Math.max(0, (f - starts[i]) / Math.max(1, frames[i] - 1)));
-      return placeCaption(shotBoxesAt(list.shots[i], p), w, h);
+    (t0: number, t1: number, w: number, h: number) => {
+      const boxes = [t0, (t0 + t1) / 2, t1 - 0.02].flatMap((t) => {
+        const f = Math.round(t * fps);
+        let i = starts.findIndex((s, k) => f >= s && f < s + frames[k]);
+        if (i < 0) i = list.shots.length - 1;
+        const p = Math.min(1, Math.max(0, (f - starts[i]) / Math.max(1, frames[i] - 1)));
+        return shotBoxesAt(list.shots[i], p);
+      });
+      return placeCaption(boxes, w, h);
     },
     [list, fps, starts.join(','), frames.join(',')],
   );

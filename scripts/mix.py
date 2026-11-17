@@ -20,7 +20,10 @@ ROOT = Path(__file__).resolve().parent.parent
 SR = 48000
 FPS = 30
 PLACEHOLDER: dict = {}  # name -> stand-in file while a library sound is missing
-V_LUFS, M_UNDER, DUCK, SFX_MOM, RAIN_LUFS = -14.0, 9.0, 3.0, -20.0, -32.0
+V_LUFS, M_UNDER, DUCK, SFX_MOM, RAIN_LUFS = -14.0, 8.0, 3.0, -21.0, -32.0
+SFX_PEAK = -10.5  # dBFS: transients stay ~9 dB under the voice peak (no spikes)
+RAIN_PEAK = -24.0
+MUSIC_FLOOR = -26.0  # music short-term loudness never below voice - 12 dB
 jsround = lambda x: math.floor(x + 0.5)
 
 
@@ -102,6 +105,17 @@ def main():
         m = decode(mpath)
         reps = int(math.ceil(N / len(m)))
         m = np.tile(m, (reps, 1))[:N]
+        # steady bed: gentle compression so quiet passages never drop out
+        m = ff(m, "acompressor=threshold=-30dB:ratio=4:attack=20:release=500:makeup=6")[:len(m)]
+        # gain-ride to a constant level (400 ms RMS, 1.5 s smoothing, at most +/-6 dB)
+        W4 = int(0.4 * SR)
+        n4 = len(m) // W4
+        rms = np.sqrt((m[: n4 * W4].reshape(n4, W4, 2) ** 2).mean(axis=(1, 2))) + 1e-6
+        tgt = np.median(rms)
+        g = np.clip(tgt / rms, 0.5, 2.0)
+        g = np.convolve(np.pad(g, (2, 2), mode="edge"), np.ones(5) / 5, mode="valid")
+        gs = np.interp(np.arange(len(m)), np.arange(n4) * W4 + W4 / 2, g)
+        m = m * gs[:, None].astype(np.float32)
         m = level(m, V_LUFS - M_UNDER)
         env = 1 - (1 - 10 ** (-DUCK / 20)) * mask
         music = m * env[:, None]
@@ -141,9 +155,11 @@ def main():
         if nxt is not None and not dur:  # a repeat cuts the previous one (no stacking)
             x = x[: max(int(0.06 * SR), int((nxt - at) * SR))]
         x = level(x, RAIN_LUFS, False) if is_rain else level(x, SFX_MOM, True)
-        # never peak above the voice
-        if np.abs(x).max() > v_peak * 0.89:
-            x *= v_peak * 0.89 / np.abs(x).max()
+        # never peak above the voice: soft-limit each cue's transients
+        lim = 10 ** ((RAIN_PEAK if is_rain else SFX_PEAK) / 20)
+        if np.abs(x).max() > lim:
+            x = ff(x, f"alimiter=limit={lim:.4f}:level=false:attack=0.5:release=40")[: len(x)]
+            x = np.clip(x, -lim, lim)
         g = 0.006 * SR
         x[: int(g)] *= np.linspace(0, 1, int(g))[:, None]
         x[-int(0.05 * SR):] *= np.linspace(1, 0, int(0.05 * SR))[:, None]
@@ -167,6 +183,38 @@ def main():
                      "per_cue_max_momentary_lufs": cue_lufs, "files": used, "missing_skipped": sorted(missing)}
     report["rain"] = {"lufs_while_playing": round(rI, 1), "fades_at": next((c[3] for c in cues if c[0].startswith("rain") and c[3]), None)}
 
+    # duck SFX under speech so each 400 ms window stays >= 7 dB under the voice
+    W = int(0.4 * SR)
+    nW = N // W
+    def rms_w(arr):
+        return np.sqrt((arr[: nW * W].reshape(nW, W, 2) ** 2).mean(axis=(1, 2))) + 1e-9
+    vr, sr_ = rms_w(voice), rms_w(sfx)
+    v_typ = np.median(vr[vr > 10 ** (-40 / 20)])  # typical speech level, for the gaps between lines
+    ref = np.where(vr > 10 ** (-40 / 20), vr, v_typ)
+    gw = np.minimum(1.0, (ref * 10 ** (-7 / 20)) / sr_)
+    gw = np.minimum(gw, np.convolve(np.pad(gw, (1, 1), mode="edge"), np.ones(3) / 3, mode="valid"))
+    gsm = np.concatenate([np.repeat(gw, W), np.full(N - nW * W, gw[-1] if nW else 1.0)])
+    kk = int(0.02 * SR)
+    gsm = np.minimum(gsm, np.convolve(gsm, np.ones(kk) / kk, mode="same")).astype(np.float32)
+    sfx *= gsm[:, None]
+    # moment-by-moment checks (400 ms windows)
+    W = int(0.4 * SR)
+    def win_db(a):
+        n = len(a) // W
+        r = np.sqrt((a[: n * W] ** 2).mean(axis=(1, 2)) if a.ndim == 3 else (a[: n * W].reshape(n, W, 2) ** 2).mean(axis=(1, 2)))
+        return 20 * np.log10(r + 1e-9)
+    vw, sw, rw = win_db(voice), win_db(sfx + rain), win_db(music)
+    speech_w = vw > -40
+    v_typ_db = float(np.median(vw[speech_w]))
+    bad = ((sw > vw - 6) & speech_w) | ((sw > v_typ_db - 6) & ~speech_w)
+    over = int(bad.sum())
+    report["checks_offending_seconds"] = [round(i * 0.4, 1) for i in np.nonzero(bad)[0]]
+    mus_st = []
+    S3 = 3 * SR
+    for k in range(0, N - S3 - int(0.5 * SR), SR // 2):
+        mus_st.append(meter(music[k:k + S3])[0])
+    report["checks"] = {"sfx_windows_within_6dB_of_voice": over, "music_min_short_term_lufs": round(min(mus_st), 1) if mus_st else None,
+                        "music_floor_ok": bool(mus_st) and min(mus_st) >= MUSIC_FLOOR}
     mix = voice + music + sfx + rain
     mix = ff(mix, "alimiter=limit=0.89:level=false:attack=2:release=60")[:N]
     fI, fP, _ = meter(mix)

@@ -5,27 +5,27 @@
  },
  "music": {
   "file": "public/sfx/music.mp3",
-  "lufs": -25.8,
-  "under_speech_lufs": -26.0,
-  "between_lines_lufs": -22.8,
-  "true_peak_dbtp": -9.1
+  "lufs": -24.8,
+  "under_speech_lufs": -25.0,
+  "between_lines_lufs": -22.3,
+  "true_peak_dbtp": -6.7
  },
  "sfx": {
-  "stem_lufs": -21.9,
-  "stem_max_momentary_lufs": -19.9,
-  "true_peak_dbtp": -2.5,
+  "stem_lufs": -23.5,
+  "stem_max_momentary_lufs": -20.9,
+  "true_peak_dbtp": -10.2,
   "per_cue_max_momentary_lufs": {
-   "rain-soft": -32.0,
-   "metal-ting": -20.0,
-   "drip": -23.2,
-   "coin-scrape": -20.1,
-   "crickets": -20.0,
-   "anvil": -20.0,
-   "pop-soft": -24.0,
-   "shimmer": -20.9,
-   "footsteps-stone": -20.5,
-   "gate-creak": -20.0,
-   "ding": -20.0
+   "rain-soft": -32.2,
+   "metal-ting": -21.0,
+   "drip": -26.9,
+   "coin-scrape": -21.7,
+   "crickets": -21.0,
+   "anvil": -21.0,
+   "pop-soft": -28.0,
+   "shimmer": -23.1,
+   "footsteps-stone": -26.0,
+   "gate-creak": -21.3,
+   "ding": -21.0
   },
   "files": {
    "rain-soft": "rain-soft.mp3",
@@ -43,18 +43,24 @@
   "missing_skipped": []
  },
  "rain": {
-  "lufs_while_playing": -32.1,
+  "lufs_while_playing": -32.5,
   "fades_at": 2.8
  },
+ "checks_offending_seconds": [],
+ "checks": {
+  "sfx_windows_within_6dB_of_voice": 0,
+  "music_min_short_term_lufs": -25.4,
+  "music_floor_ok": true
+ },
  "mix": {
-  "lufs": -14.1,
+  "lufs": -14.3,
   "true_peak_dbtp": -0.9,
   "seconds": 62.433
  },
  "peak_check": {
   "voice_peak_dbfs": -1.5,
-  "music_peak_dbfs": -9.1,
-  "sfx_peak_dbfs": -2.5,
-  "rain_peak_dbfs": -14.4
+  "music_peak_dbfs": -6.7,
+  "sfx_peak_dbfs": -10.5,
+  "rain_peak_dbfs": -24.0
  }
 }

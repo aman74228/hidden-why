@@ -8,13 +8,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PILLAR = {"pos": [0, -2.5]}
 BARS = [-3.4, 0, 1.2]          # stand centre (src/sets/world.tsx BARS_POS)
-BAR_P = [-2.65, 1.2, 1.2]      # pillar-style iron bar (right), mid height
-BAR_S = [-4.15, 1.2, 1.2]      # modern steel bar (left)
+BAR_P = [-3.0, 1.2, 1.2]      # pillar-style iron bar (right), mid height
+BAR_S = [-3.8, 1.2, 1.2]      # modern steel bar (left)
 SPOT = [0.225, 1.18, 0.024]    # gate rust spot
 SMITH = {"body": "#5A3E30", "trim": "#B88A5A", "legs": "#C9B48E", "shoes": "#3A2A22"}
 
 # cut points (s) on the voiceover word timings (src/captions/01-iron-pillar.json)
-cuts = [0, 2.8, 5.0, 6.75, 9.9, 12.6, 14.3, 17.45, 19.8, 23.3, 25.15, 27.85, 29.65, 32.4,
+cuts = [0, 2.8, 5.0, 6.75, 8.25, 9.9, 12.6, 14.3, 17.45, 19.8, 23.3, 25.15, 27.85, 29.65, 32.4,
         35.0, 37.2, 39.45, 42.65, 45.7, 48.55, 50.95, 53.95, 57.35, 59.7, 61.0, 61.75]
 
 VIK_RAIN = {"who": "vik", "props": ["umbrella"]}
@@ -40,16 +40,19 @@ shots = [
    "camera": {"type": "dolly", "from": [0.4, 0.25, 3.2], "to": [0.25, 0.6, 1.4], "look": [0, 2.0, -2.5], "lookTo": [0, 6.6, -2.5], "fov": 44},
    "titleCard": {"label": "Iron pillar · Delhi", "word": "1,600 years", "at": 0.2, "duration": 2.0}},
   # 3 INSERT: rain beading on the pillar's dark skin
-  {"id": "insert-surface", "beat": 1, "set": "courtyard", "sky": "storm", "light": "storm", "skyTo": "golden", "lightTo": "golden", "mixAt": [0.2, 1.6],
-   "fx": {"pillar": PILLAR, "rain": [0.6, 0.3], "beams": False},
-   "camera": {"type": "dolly", "from": [0.42, 2.3, -1.75], "to": [0.3, 1.95, -1.95], "look": [0, 2.2, -2.5], "lookTo": [0, 1.85, -2.5], "fov": 36},
-   "dof": 0},
-  # 4 INSERT: rusty bike chain
+  {"id": "insert-surface", "beat": 1, "set": "courtyard", "sky": "storm", "light": "storm", "fx": {"pillar": PILLAR, "rain": [0.7, 0.7], "beams": False},
+   "camera": {"type": "dolly", "from": [0.55, 1.35, -1.25], "to": [0.4, 1.6, -1.55], "look": [0.0, 1.55, -2.5], "lookTo": [0.0, 1.75, -2.5], "fov": 40},
+   "dof": 1.2, "focusDist": 1.0},
   {"id": "insert-chain", "beat": 1, "set": "void", "sky": "storm", "light": "golden", "fx": {"macro": "chain"},
-   "camera": {"type": "dolly", "from": [0.55, 0.45, 2.4], "to": [0.3, 0.3, 1.95], "look": [-0.25, -0.05, 0], "lookTo": [-0.15, -0.1, 0], "fov": 40},
-   "roll": [-4, -1], "dof": 1.2, "focusDist": 2.0,
-   "titleCard": {"label": "Your bike chain", "word": "1 monsoon", "at": 1.1, "duration": 2.0},
-   "sfx": [{"name": "drip", "at": 0.3}, {"name": "drip", "at": 1.6}]},
+   "camera": {"type": "dolly", "from": [0.45, 0.5, 1.45], "to": [0.2, 0.38, 1.15], "look": [-0.2, 0.08, 0], "lookTo": [-0.1, 0.05, 0], "fov": 40},
+   "roll": [-4, -2], "dof": 1.2, "focusDist": 1.2,
+   "titleCard": {"label": "Your bike chain", "word": "1 monsoon", "at": 0.3, "duration": 1.2},
+   "sfx": [{"name": "drip", "at": 0.3}]},
+  # 4b the whole rusty bike in the rain (completes "...rusts in one monsoon")
+  {"id": "bike-wide", "beat": 1, "set": "courtyard", "sky": "storm", "light": "storm", "fx": {"rain": [0.8, 0.8], "beams": False},
+   "camera": {"type": "dolly", "from": [-3.6, 0.8, -3.6], "to": [-4.3, 0.65, -4.5], "look": [-5.2, 0.55, -6.3], "lookTo": [-5.25, 0.5, -6.3], "fov": 42},
+   "titleCard": {"label": "Your bike chain", "word": "1 monsoon", "at": 0, "duration": 1.4, "intro": False},
+   "sfx": [{"name": "drip", "at": 0.6}]},
   # 5 Vik laughs
   {"id": "vik-laughs", "beat": 2, "set": "courtyard", "light": "golden", "fx": {"pillar": PILLAR, "rain": [0.25, 0.15], "beams": True},
    "camera": {"type": "fit", "focus": ["vik"], "crop": 0.6, "band": [0.24, 0.97], "angleDeg": -14, "orbitDeg": 14, "push": 0.18},
@@ -74,7 +77,7 @@ shots = [
   # 9 night time-lapse
   {"id": "night-watch", "beat": 3, "set": "courtyard", "sky": "night", "light": "night", "fx": {"pillar": PILLAR, "night": True},
    "props": [{"type": "block", "pos": [-2.1, 0, 0.05], "scale": 1.5, "color": "#C99068"}],
-   "camera": {"type": "dolly", "from": [0.6, 0.9, 7.6], "to": [-0.3, 1.0, 6.7], "look": [-1.2, 1.8, -1], "lookTo": [-1.2, 2.2, -1], "fov": 44},
+   "camera": {"type": "dolly", "from": [0.6, 0.9, 7.6], "to": [-0.3, 1.0, 6.7], "look": [-1.2, 1.35, -1], "lookTo": [-1.2, 1.6, -1], "fov": 44},
    "cast": [{"who": "vik", "pose": "sleep", "pos": [-2.0, 0.75], "facing": 1},
             c(CHOTU, pose="idle", pos=[-0.8, 1.0], facing=-1)], "layout": "manual",
    "titleCard": {"label": "Guess 2", "word": "Polishing", "at": 0, "duration": 3.4, "crossed": True, "crossAt": 2.3, "intro": False},
@@ -103,7 +106,7 @@ shots = [
    "titleCard": {"label": "Guess 3", "word": "Fake", "at": 0, "duration": 2.7, "crossed": True, "crossAt": 1.0, "intro": False}},
   # 14 Dada taps the pillar and smiles
   {"id": "dada-taps", "beat": 4, "stillAt": 1.6, "set": "courtyard", "light": "golden", "fx": {"pillar": PILLAR, "ripple": {"pos": [-0.19, 0.98, -2.42], "times": [0.85, 1.25]}},
-   "camera": {"type": "fit", "push": 0.22, "angleDeg": 8, "orbitDeg": 10},
+   "camera": {"type": "fit", "push": 0.22, "angleDeg": 8, "orbitDeg": 10, "band": [0.16, 0.78]},
    "cast": [c(DADA, pose="tap", pos=[-1.06, -2.42], facing=1, delay=-0.4),
             c(CHOTU, pose="look-up", pos=[1.0, -1.7], facing=-1),
             {"who": "vik", "pose": "cross-arms", "pos": [2.1, -1.7], "facing": -1}], "layout": "manual",
@@ -111,9 +114,9 @@ shots = [
   # 15 "You see, that stuff is phosphorus." Dada with two bars in the rain
   {"id": "bars-wide", "beat": 5, "set": "courtyard", "sky": "storm", "light": "storm",
    "fx": {"pillar": PILLAR, "rain": [0.9, 0.9], "bars": {"skin": [0, 0.08], "rust": [0, 0.12]}},
-   "camera": {"type": "dolly", "from": [-2.9, 1.0, 7.4], "to": [-3.3, 1.05, 6.5], "look": [-3.3, 1.15, 1.4], "lookTo": [-3.3, 1.15, 1.4], "fov": 52},
-   "cast": [c(DADA, pose="point", pos=[-3.4, 1.85], facing=1),
-            c(CHOTU, pose="look-up", pos=[-2.0, 2.25], facing=-1, props=["satchel", "leaf"])], "layout": "manual",
+   "camera": {"type": "dolly", "from": [-3.25, 1.05, 6.7], "to": [-3.4, 1.05, 6.15], "look": [-3.4, 0.95, 1.2], "lookTo": [-3.4, 0.95, 1.2], "fov": 56},
+   "cast": [c(DADA, pose="point", pos=[-4.5, 1.2], facing=1),
+            c(CHOTU, pose="look-up", pos=[-2.3, 1.3], facing=-1, props=["satchel", "leaf"])], "layout": "manual",
    "titleCard": {"label": "The secret", "word": "Phosphorus", "at": 0.45, "duration": 1.7},
    "sfx": [{"name": "rain-soft", "at": 0, "dur": 2.2}]},
   # 16 INSERT: phosphorus inside the iron, x20
@@ -124,27 +127,27 @@ shots = [
   # 17 every time rain wets it and the sun dries it (wet/dry cycles)
   {"id": "bars-cycles", "beat": 5, "stillAt": 1.2, "set": "courtyard", "sky": "storm", "light": "storm", "skyTo": "golden", "lightTo": "golden",
    "fx": {"pillar": PILLAR, "rain": [1, 1], "cycles": 1.5, "bars": {"skin": [0.1, 0.4], "rust": [0.15, 0.45]}},
-   "camera": {"type": "orbit", "center": BARS, "radius": 4.6, "height": 1.1, "fromDeg": -20, "toDeg": 25, "lookY": 1.05, "fov": 44},
-   "cast": [c(DADA, pose="idle", pos=[-3.4, 1.85], facing=1)], "layout": "manual"},
+   "camera": {"type": "dolly", "from": [-2.9, 1.05, 6.4], "to": [-3.9, 1.05, 6.3], "look": [-3.35, 0.95, 1.2], "lookTo": [-3.45, 0.95, 1.2], "fov": 56},
+   "cast": [c(DADA, pose="point", pos=[-4.5, 1.2], facing=1)], "layout": "manual"},
   # 18 INSERT: a thin glassy skin grows on the pillar-iron bar
   {"id": "bar-skin", "beat": 5, "set": "courtyard", "light": "golden", "fx": {"rain": [0.4, 0.4], "bars": {"skin": [0.4, 0.85], "rust": [0.45, 0.5]}},
-   "camera": {"type": "dolly", "from": [-2.45, 1.55, 2.15], "to": [-2.55, 1.3, 1.62], "look": [-2.65, 1.35, 1.2], "lookTo": [-2.65, 1.25, 1.2], "fov": 36},
+   "camera": {"type": "dolly", "from": [-2.8, 1.55, 2.15], "to": [-2.9, 1.3, 1.62], "look": [-3.0, 1.35, 1.2], "lookTo": [-3.0, 1.25, 1.2], "fov": 36},
    "dof": 2.2, "focusDist": 0.55,
    "titleCard": {"label": "It grows a", "word": "Skin", "at": 0.3, "duration": 2.6},
    "sfx": [{"name": "shimmer", "at": 0.6}]},
   # 19 tight hard coat seals the iron: drops bead off
   {"id": "bar-seal", "beat": 5, "set": "courtyard", "sky": "storm", "light": "storm", "fx": {"rain": [0.8, 0.8], "bars": {"skin": [0.85, 1], "rust": [0.5, 0.55]}},
-   "camera": {"type": "dolly", "from": [-1.95, 0.9, 2.0], "to": [-2.25, 1.5, 1.7], "look": [-2.65, 1.0, 1.2], "lookTo": [-2.65, 1.6, 1.2], "fov": 38},
+   "camera": {"type": "dolly", "from": [-2.3, 0.9, 2.0], "to": [-2.6, 1.5, 1.7], "look": [-3.0, 1.0, 1.2], "lookTo": [-3.0, 1.6, 1.2], "fov": 38},
    "roll": [-3, 1], "dof": 1.6, "focusDist": 0.8,
    "sfx": [{"name": "drip", "at": 0.5}, {"name": "drip", "at": 1.5}]},
   # 20 "A raincoat the pillar made for itself." Dada smiles, Chotu under a leaf
   {"id": "raincoat", "beat": 5, "set": "courtyard", "light": "golden", "fx": {"pillar": PILLAR, "rain": [0.3, 0.2], "bars": {"skin": [1, 1], "rust": [0.55, 0.7]}},
-   "camera": {"type": "fit", "angleDeg": -10, "orbitDeg": 12, "push": 0.2, "band": [0.22, 0.92]},
-   "cast": [c(DADA, pose="smile-nod", pos=[-3.4, 1.85], facing=1),
-            c(CHOTU, pose="laugh", pos=[-2.0, 2.25], facing=-1, props=["satchel", "leaf"])], "layout": "manual"},
+   "camera": {"type": "dolly", "from": [-3.4, 1.05, 6.8], "to": [-3.4, 1.05, 6.2], "look": [-3.4, 0.95, 1.2], "lookTo": [-3.4, 0.95, 1.2], "fov": 56},
+   "cast": [c(DADA, pose="smile-nod", pos=[-4.5, 1.2], facing=1),
+            c(CHOTU, pose="laugh", pos=[-2.3, 1.3], facing=-1, props=["satchel", "leaf"])], "layout": "manual"},
   # 21 modern steel: too clean, it rusts and flakes
   {"id": "steel-rusts", "beat": 5, "set": "courtyard", "sky": "storm", "light": "storm", "fx": {"rain": [0.9, 0.9], "bars": {"skin": [1, 1], "rust": [0.7, 1]}},
-   "camera": {"type": "dolly", "from": [-4.85, 1.0, 3.1], "to": [-4.4, 1.2, 1.95], "look": [-4.15, 1.25, 1.2], "lookTo": [-4.15, 1.2, 1.2], "fov": 38},
+   "camera": {"type": "dolly", "from": [-4.5, 1.0, 3.1], "to": [-4.05, 1.2, 1.95], "look": [-3.8, 1.25, 1.2], "lookTo": [-3.8, 1.2, 1.2], "fov": 38},
    "dof": 2.0, "focusDist": 0.8,
    "titleCard": {"label": "Modern steel", "word": "Too clean", "at": 0.5, "duration": 2.4}},
   # 22 Vik storms home to his brand-new gate
@@ -159,11 +162,11 @@ shots = [
    "roll": [-2, 0]},
   # 24 INSERT: the spot
   {"id": "insert-spot", "beat": 6, "stillAt": 0.8, "set": "street", "light": "golden", "fx": {"spot": 1},
-   "camera": {"type": "dolly", "from": [0.32, 1.23, 0.72], "to": [0.27, 1.2, 0.52], "look": SPOT, "fov": 34},
+   "camera": {"type": "dolly", "from": [0.29, 1.21, 0.5], "to": [0.26, 1.19, 0.36], "look": SPOT, "fov": 34},
    "dof": 2.0, "focusDist": 0.55},
   # 25 Vik's face drops; hold, then hard cut to frame 1
   {"id": "face-drop", "beat": 6, "payoff": True, "payoffAt": 0.0, "set": "street", "light": "golden", "fx": {"spot": 1},
-   "camera": {"type": "fit", "focus": ["vik"], "crop": 0.42, "band": [0.3, 0.98], "angleDeg": -6, "orbitDeg": 2, "push": 0.08},
+   "camera": {"type": "fit", "focus": ["vik"], "crop": 0.42, "band": [0.12, 0.88], "angleDeg": -6, "orbitDeg": 2, "push": 0.08},
    "cast": [{"who": "vik", "pose": "shock", "pos": [0.9, 1.4], "facing": -1}]},
 ]
 
