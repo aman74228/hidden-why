@@ -14,8 +14,8 @@ export const shotFrames = (list: ShotList, fps: number) => list.shots.map((s) =>
 export const totalFrames = (list: ShotList, fps: number) =>
   shotFrames(list, fps).reduce((a, b) => a + b, 0) + Math.round((list.payoffHold ?? 0.5) * fps);
 
-// The scene template: plays the shot list back-to-back with hard cuts,
-// whoosh on each cut, ding on the payoff, music bed at -22 dB, voiceover and
+// The scene template: plays the shot list back-to-back with hard cuts (no
+// whooshes, ever), ding on the payoff, music bed at -22 dB, voiceover and
 // synced captions. The last shot holds its final frame for `payoffHold`
 // seconds, then the video hard-cuts (loops back into frame 0).
 export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, words}) => {
@@ -53,12 +53,6 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
 
       {list.audio ? <Audio src={staticFile(list.audio)} /> : null}
       {list.music !== false ? <Audio src={staticFile('sfx/music-bed.wav')} volume={dB(-22)} loop /> : null}
-      {sfx &&
-        starts.slice(1).map((s, i) => (
-          <Sequence key={`w${i}`} from={Math.max(0, s - 6)} durationInFrames={30} layout="none">
-            <Audio src={staticFile('sfx/whoosh.wav')} volume={0.4} />
-          </Sequence>
-        ))}
       {sfx &&
         list.shots.flatMap((shot, i) =>
           (shot.sfx ?? []).map((e, k) => (

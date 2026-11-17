@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Builds a Short's soundtrack with ffmpeg directly from its shot list —
-identical placement to src/scene/Short.tsx (VO, music bed at -22 dB looped,
-whoosh 6 frames before each cut, per-shot sfx, ding at payoff) — without
+identical placement to src/scene/Short.tsx (VO, music bed looped, per-shot sfx,
+ding at payoff; no whooshes) — without
 re-rendering frames. usage: mix_audio.py <slug> <out.wav>"""
 import json, math, subprocess, sys
 from pathlib import Path
@@ -21,8 +21,6 @@ if L.get("audio"):
 if L.get("music", True):
     ev.append((ROOT / "public/sfx/music-bed.wav", 0.0, 10 ** (-22 / 20), total))
 if L.get("sfx", True):
-    for s in starts[1:]:
-        ev.append((ROOT / "public/sfx/whoosh.wav", max(0, s - 6) / FPS, 0.4, None))
     for i, sh in enumerate(L["shots"]):
         for e in sh.get("sfx", []):
             ev.append((ROOT / f"public/sfx/{e['name']}.wav", (starts[i] + jsround(e["at"] * FPS)) / FPS, e.get("volume", 0.6), e.get("dur")))

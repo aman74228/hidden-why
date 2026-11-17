@@ -1,5 +1,5 @@
 // Generates the studio's simple SFX in code (no assets needed):
-//   public/sfx/whoosh.wav, ding.wav, music-bed.wav (loopable 16 s drone + pulse)
+//   public/sfx/ding.wav, music-bed.wav (loopable 16 s drone + pulse)
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -25,27 +25,6 @@ const writeWav = (file, ch) => {
 
 let seed = 1;
 const rnd = () => ((seed = (seed * 16807) % 2147483647) / 2147483647) * 2 - 1;
-
-// whoosh: band-passed noise with a rising-then-falling sweep, 0.6 s
-{
-  const n = Math.round(SR * 0.6);
-  const L = new Float32Array(n), R = new Float32Array(n);
-  let lp = 0, bp = 0;
-  for (let i = 0; i < n; i++) {
-    const t = i / n;
-    const env = Math.sin(Math.PI * Math.pow(t, 0.7)) ** 2;
-    const f = 300 + 2600 * Math.sin(Math.PI * t);
-    const a = Math.min(0.99, (2 * Math.PI * f) / SR);
-    const x = rnd();
-    lp += a * (x - lp);
-    bp += a * (lp - bp);
-    const v = (lp - bp) * 2.2 * env;
-    const pan = t; // sweeps left → right
-    L[i] = v * (1 - pan * 0.6);
-    R[i] = v * (0.4 + pan * 0.6);
-  }
-  writeWav('whoosh.wav', [L, R]);
-}
 
 // ding: bell partials with exponential decay, 1.6 s
 {
