@@ -1,7 +1,7 @@
 # Hidden Why — Studio Rules (read every session)
 Channel: Hidden Why — ancient engineering and everyday mysteries, explained in a minute.
 ONE reusable studio. Never create a new project per Short. Each Short = a brief in /briefs + its voiceover in /audio.
-**Before starting any Short, read LESSONS.md** (everything fixed on Short #1: hook, no voids/flat frames, inserts, mix levels, render pitfalls, partial re-render). Check against it before showing stills.
+**Before starting any Short, read LESSONS.md** (everything fixed on Short #1: hook, no voids/flat frames, inserts, mix levels, render pitfalls, partial re-render, script & story rules). Check against it before showing stills.
 
 ## Stack
 Remotion + three.js (React Three Fiber), 1080x1920, 30 fps. No AI video generators.

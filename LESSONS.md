@@ -86,3 +86,10 @@ with CLAUDE.md before starting any Short; check each section before showing stil
    by 5 frames). Verify after every splice: same frame count, untouched frames bit-identical
    (framemd5), replaced frames different.
 5. Commit and push after every step; send the files.
+
+## 8. Script & story (from the Storytelling playbook)
+- Liam reads ~164 wpm: 155–160 spoken words for a 60 s Short.
+- Contradiction in the first 2 s; Vik's bet with a cost by 8 s; each wrong guess bigger than the last.
+- A new open question every 8–10 s; explanation ≤ 12 s, split in two with a reaction between.
+- Payoff = twist + callback to the hook; last line flows into the first for a clean loop.
+- Every insert shows the exact noun in its line.
