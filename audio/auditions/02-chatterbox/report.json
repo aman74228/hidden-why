@@ -1,0 +1,67 @@
+[
+ {
+  "name": "turbo-default",
+  "model": "turbo",
+  "exaggeration": null,
+  "cfg_weight": null,
+  "seconds": 16.52,
+  "median_hz": 226.9,
+  "range_semitones": 6.8,
+  "distance_to_ref": 20.2,
+  "render_s": 51.0,
+  "model_load_s": 14.4,
+  "realtime_factor": 3.09
+ },
+ {
+  "name": "turbo-tags",
+  "model": "turbo",
+  "exaggeration": null,
+  "cfg_weight": null,
+  "seconds": 19.76,
+  "median_hz": 224.1,
+  "range_semitones": 7.2,
+  "distance_to_ref": 19.6,
+  "render_s": 46.2,
+  "model_load_s": 15.9,
+  "realtime_factor": 2.34
+ },
+ {
+  "name": "original-ex0.5",
+  "model": "original",
+  "exaggeration": 0.5,
+  "cfg_weight": 0.3,
+  "seconds": 15.68,
+  "median_hz": 124.9,
+  "range_semitones": 14.4,
+  "distance_to_ref": 2.3,
+  "render_s": 74.9,
+  "model_load_s": 35.0,
+  "realtime_factor": 4.78
+ },
+ {
+  "name": "original-ex0.7",
+  "model": "original",
+  "exaggeration": 0.7,
+  "cfg_weight": 0.3,
+  "seconds": 14.0,
+  "median_hz": 137.1,
+  "range_semitones": 15.2,
+  "distance_to_ref": 3.0,
+  "render_s": 73.8,
+  "model_load_s": 21.0,
+  "realtime_factor": 5.27
+ },
+ {
+  "name": "original-ex0.9",
+  "model": "original",
+  "exaggeration": 0.9,
+  "cfg_weight": 0.3,
+  "seconds": 12.76,
+  "median_hz": 178.0,
+  "range_semitones": 13.5,
+  "distance_to_ref": 9.3,
+  "render_s": 63.5,
+  "model_load_s": 15.5,
+  "realtime_factor": 4.98
+ }
+]

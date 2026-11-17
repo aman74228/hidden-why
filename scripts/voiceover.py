@@ -52,12 +52,44 @@ def words_from_alignment(al):
     return [w for w in words if re.search(r"\w", w["word"])]
 
 
+CHATTERBOX_TAGS = {"advertisement", "angry", "chuckle", "clear throat", "cough", "crying", "dramatic", "fear", "gasp", "groan",
+                   "happy", "laugh", "narration", "sarcastic", "shush", "sigh", "sniff", "surprised", "whispering"}
+
+
+def chatterbox(slug, take, cfg):
+    """Chatterbox (local, no timestamps): render via the venv worker, then captions
+    come from scripts/align.py (faster-whisper). Tags: Turbo keeps its own
+    paralinguistic tags; the original model gets plain text."""
+    import re, subprocess
+    text = script_text(slug)
+    keep = CHATTERBOX_TAGS if cfg["model"] == "turbo" else set()
+    text = re.sub(r"\[([^\]]+)\]\s*", lambda m: m.group(0) if m.group(1).lower() in keep else "", text)
+    out = ROOT / "audio" / (f"takes/{slug}-{take}.mp3" if take else f"{slug}.mp3")
+    out.parent.mkdir(exist_ok=True)
+    wav = out.with_suffix(".wav")
+    r = subprocess.run([cfg["python"], str(ROOT / cfg["worker"]), cfg["model"], str(wav), str(cfg["exaggeration"]), str(cfg["cfg_weight"]),
+                        str(cfg.get("seed", 0))], input=text, capture_output=True, text=True)
+    if r.returncode:
+        sys.exit(r.stderr[-2000:])
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(wav), "-c:a", "libmp3lame", "-b:a", "192k", str(out)], check=True)
+    wav.unlink()
+    print(f"{out.relative_to(ROOT)} · chatterbox/{cfg['model']} · {r.stdout.strip().splitlines()[-1]}")
+    if not take:
+        subprocess.run([sys.executable, str(ROOT / "scripts/align.py"), slug], check=True)
+
+
 def main():
     slug = sys.argv[1]
+    cfg = json.loads((ROOT / "voice.json").read_text())
+    if "engine" in cfg:
+        if cfg["engine"] == "chatterbox":
+            return chatterbox(slug, sys.argv[2] if len(sys.argv) > 2 else None, cfg["engines"]["chatterbox"])
+        voice = cfg["engines"]["elevenlabs"]
+    else:
+        voice = cfg
     key = os.environ.get("ELEVENLABS_API_KEY")
     if not key:
         sys.exit("ELEVENLABS_API_KEY is not set")
-    voice = json.loads((ROOT / "voice.json").read_text())
     body = {
         "text": script_text(slug),
         "model_id": voice["model_id"],
