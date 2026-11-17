@@ -124,7 +124,7 @@ shots = [
   # 17 every time rain wets it and the sun dries it (wet/dry cycles)
   {"id": "bars-cycles", "beat": 5, "stillAt": 1.2, "set": "courtyard", "sky": "storm", "light": "storm", "skyTo": "golden", "lightTo": "golden",
    "fx": {"pillar": PILLAR, "rain": [1, 1], "cycles": 1.5, "bars": {"skin": [0.05, 0.35], "rust": [0, 0.15]}},
-   "camera": {"type": "orbit", "center": BARS, "radius": 2.6, "height": 1.05, "fromDeg": -35, "toDeg": 25, "lookY": 1.15},
+   "camera": {"type": "orbit", "center": BARS, "radius": 3.0, "height": 1.05, "fromDeg": 5, "toDeg": 50, "lookY": 1.15},
    "cast": [c(DADA, pose="idle", pos=[-4.3, 1.6], facing=1)], "layout": "manual"},
   # 18 INSERT: a thin glassy skin grows on the pillar-iron bar
   {"id": "bar-skin", "beat": 5, "set": "courtyard", "light": "golden", "fx": {"rain": [0.4, 0.4], "bars": {"skin": [0.35, 0.85], "rust": [0.15, 0.25]}},

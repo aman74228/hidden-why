@@ -1092,10 +1092,10 @@
      0,
      1.2
     ],
-    "radius": 2.6,
+    "radius": 3.0,
     "height": 1.05,
-    "fromDeg": -35,
-    "toDeg": 25,
+    "fromDeg": 5,
+    "toDeg": 50,
     "lookY": 1.15
    },
    "cast": [

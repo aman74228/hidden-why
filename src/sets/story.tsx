@@ -71,7 +71,7 @@ const PillarBeads: React.FC = () => {
   const {t} = useScene();
   const beads = useMemo(() => {
     const r = mulberry(121);
-    return Array.from({length: 40}, () => ({a: (r() - 0.5) * 2.4, y0: 1.4 + r() * 1.4, ph: r(), v: 0.08 + r() * 0.2, s: 0.006 + r() * 0.008}));
+    return Array.from({length: 18}, () => ({a: (r() - 0.5) * 2.4, y0: 1.4 + r() * 1.4, ph: r(), v: 0.08 + r() * 0.2, s: 0.006 + r() * 0.008}));
   }, []);
   return (
     <>
@@ -81,7 +81,7 @@ const PillarBeads: React.FC = () => {
         return (
           <mesh key={i} position={[Math.sin(b.a) * rr, y, Math.cos(b.a) * rr]} scale={[1, 1.3, 0.7]}>
             <sphereGeometry args={[b.s, 10, 8]} />
-            <meshPhysicalMaterial color="#E4F4FF" roughness={0} clearcoat={1} envMapIntensity={1.5} />
+            <meshPhysicalMaterial color="#8A9AC0" roughness={0.15} clearcoat={0.5} envMapIntensity={0.5} />
           </mesh>
         );
       })}
