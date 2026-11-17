@@ -8,4 +8,4 @@ out/*.raw.mp4
 out/.chunks-*/
 out/preview/*.mix.wav
 out/preview/*.video.mp4
-out/qa/frames/
+out/qa/*/frames/
