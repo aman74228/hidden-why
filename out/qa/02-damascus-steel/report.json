@@ -1,20 +1,4 @@
 {
  "frames": 125,
- "flagged": {
-  "3.5s (chotu-lifts)": [
-   "caption over chotu's face ('And none')",
-   "caption over chotu's face ('And none')",
-   "caption over chotu's face ('And none')",
-   "caption over chotu's face ('of them')"
-  ],
-  "4.0s (chotu-lifts)": [
-   "caption over chotu's face ('of them')",
-   "caption over chotu's face ('of them')",
-   "caption over chotu's face ('can copy')"
-  ],
-  "4.5s (chotu-lifts)": [
-   "caption over chotu's face ('can copy')",
-   "caption over chotu's face ('can copy')"
-  ]
- }
+ "flagged": {}
 }

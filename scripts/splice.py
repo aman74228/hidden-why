@@ -88,7 +88,7 @@ with tempfile.TemporaryDirectory() as td:
     shutil.copy(td / "mix.levels.json", ROOT / "out" / f"{slug}.mix.levels.json")
     final = td / "final.mp4"
     run("ffmpeg", "-v", "error", "-y", "-i", str(vid), "-i", str(mix), "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy",
-        "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", str(final))
+        "-af", "alimiter=limit=0.79:level=false:attack=1:release=60", "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", str(final))
     shutil.copy(final, video)
 
 n = int(run("ffprobe", "-v", "error", "-count_packets", "-select_streams", "v", "-show_entries", "stream=nb_read_packets",
