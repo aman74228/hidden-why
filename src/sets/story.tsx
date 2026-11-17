@@ -805,8 +805,8 @@ export const IronBars: React.FC<{pos: [number, number, number]; skin?: number; r
             </mesh>
             {/* moving highlight: a thin bright streak sliding round the bar */}
             <mesh position={[Math.sin(hlA) * (R + 0.005), 0, Math.cos(hlA) * (R + 0.005)]} rotation={[0, hlA, 0]}>
-              <planeGeometry args={[0.012, H * cover * 0.92]} />
-              <meshBasicMaterial color={new THREE.Color('#E8FAFF').multiplyScalar(1.4)} transparent opacity={0.75} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
+              <planeGeometry args={[0.004, H * cover * 0.92]} />
+              <meshBasicMaterial color={new THREE.Color('#E8FAFF').multiplyScalar(1.2)} transparent opacity={0.45} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
             </mesh>
             {/* the growing front edge glints */}
             <mesh position={[0, (H * cover) / 2, 0]}>
