@@ -64,13 +64,19 @@ with tempfile.TemporaryDirectory() as td:
             cur = e
         if cur < total:
             parts.append(("copy", cur, total))
+        # split the original exactly at the range boundaries (all keyframes) with the
+        # segment muxer: -ss/-t stream copies drag extra frames past a cut
+        cuts = sorted({x for p in parts if p[0] == "new" for x in (p[2], p[3])} - {0, total})
+        segdir = td / "old"
+        segdir.mkdir()
+        run("ffmpeg", "-v", "error", "-i", str(video), "-map", "0:v", "-c", "copy", "-f", "segment",
+            "-segment_frames", ",".join(map(str, cuts)), "-reset_timestamps", "1", str(segdir / "%03d.mp4"))
+        olds = sorted(segdir.glob("*.mp4"))
+        bounds = [0] + cuts
         lst = []
-        for k, p in enumerate(parts):
+        for p in parts:
             if p[0] == "copy":
-                out = td / f"old{k}.mp4"
-                # -ss before -i on a keyframe + stream copy = exact GOP-aligned cut, no re-encode
-                run("ffmpeg", "-v", "error", "-y", "-ss", f"{p[1] / FPS:.6f}", "-i", str(video), "-t", f"{(p[2] - p[1]) / FPS:.6f}",
-                    "-map", "0:v:0", "-c", "copy", "-avoid_negative_ts", "make_zero", str(out))
+                out = olds[bounds.index(p[1])]
             else:
                 out = p[1]
             lst.append(f"file '{out}'")
@@ -82,9 +88,9 @@ with tempfile.TemporaryDirectory() as td:
     shutil.copy(td / "mix.levels.json", ROOT / "out" / f"{slug}.mix.levels.json")
     final = td / "final.mp4"
     run("ffmpeg", "-v", "error", "-y", "-i", str(vid), "-i", str(mix), "-map", "0:v:0", "-map", "1:a:0", "-c:v", "copy",
-        "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-shortest", "-movflags", "+faststart", str(final))
+        "-c:a", "aac", "-b:a", "192k", "-ar", "48000", "-movflags", "+faststart", str(final))
     shutil.copy(final, video)
 
 n = int(run("ffprobe", "-v", "error", "-count_packets", "-select_streams", "v", "-show_entries", "stream=nb_read_packets",
-            "-of", "csv=p=0", str(video), capture_output=True, text=True).stdout.strip())
+            "-of", "csv=p=0", str(video), capture_output=True, text=True).stdout.strip().strip(","))
 print(f"{video.relative_to(ROOT)}: {n} video frames (expected {total})")

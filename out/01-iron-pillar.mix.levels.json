@@ -5,10 +5,10 @@
  },
  "music": {
   "file": "public/sfx/music.mp3",
-  "lufs": -24.8,
-  "under_speech_lufs": -25.0,
-  "between_lines_lufs": -22.3,
-  "true_peak_dbtp": -6.7
+  "lufs": -25.3,
+  "under_speech_lufs": -25.5,
+  "between_lines_lufs": -22.5,
+  "true_peak_dbtp": -14.9
  },
  "sfx": {
   "stem_lufs": -23.5,
@@ -49,17 +49,17 @@
  "checks_offending_seconds": [],
  "checks": {
   "sfx_windows_within_6dB_of_voice": 0,
-  "music_min_short_term_lufs": -25.4,
+  "music_min_short_term_lufs": -25.8,
   "music_floor_ok": true
  },
  "mix": {
-  "lufs": -14.3,
+  "lufs": -14.2,
   "true_peak_dbtp": -0.9,
   "seconds": 62.433
  },
  "peak_check": {
   "voice_peak_dbfs": -1.5,
-  "music_peak_dbfs": -6.7,
+  "music_peak_dbfs": -15.0,
   "sfx_peak_dbfs": -10.5,
   "rain_peak_dbfs": -24.0
  }

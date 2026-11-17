@@ -81,4 +81,8 @@ with CLAUDE.md before starting any Short; check each section before showing stil
    `python3 scripts/splice.py <slug> <shot-id> ...` re-renders just those shots (widened to
    the surrounding keyframes, which x264 puts on cuts), stream-copies every other GOP, and
    re-muxes the current mix. Audio-only fixes: `--audio-only` (no frames rendered).
+   Cut the old video with the segment muxer at keyframes (`-f segment -segment_frames`), never
+   `-ss/-t -c copy` (that dragged 1–2 extra frames past every cut and drifted picture vs sound
+   by 5 frames). Verify after every splice: same frame count, untouched frames bit-identical
+   (framemd5), replaced frames different.
 5. Commit and push after every step; send the files.
