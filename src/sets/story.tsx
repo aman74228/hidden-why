@@ -269,11 +269,11 @@ const dripShape = () => {
 // Small irregular stain with a thin orange streak running down the bar.
 const streakShape = () => {
   const sh = new THREE.Shape();
-  sh.moveTo(-0.0035, 0);
-  sh.bezierCurveTo(-0.003, -0.04, -0.0012, -0.09, -0.0016, -0.13);
-  sh.bezierCurveTo(-0.0012, -0.145, 0.0012, -0.145, 0.0012, -0.13);
-  sh.bezierCurveTo(0.0014, -0.09, 0.0028, -0.04, 0.0035, 0);
-  sh.lineTo(-0.0035, 0);
+  sh.moveTo(-0.002, 0);
+  sh.bezierCurveTo(-0.0017, -0.035, -0.0008, -0.07, -0.0009, -0.1);
+  sh.bezierCurveTo(-0.0007, -0.11, 0.0007, -0.11, 0.0007, -0.1);
+  sh.bezierCurveTo(0.0008, -0.07, 0.0016, -0.035, 0.002, 0);
+  sh.lineTo(-0.002, 0);
   return new THREE.ShapeGeometry(sh);
 };
 const RustSpot: React.FC<{scale?: number}> = ({scale = 1}) => {
