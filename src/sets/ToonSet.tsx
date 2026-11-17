@@ -6,9 +6,11 @@ import {Bicycle, ChainMacro, Gate, IronBars, IronPillar, NightSky, PhosphorusMac
 import {Env, HdriName} from './materials';
 import {Motes, RainFX, Sparks} from './fx';
 import {BARS_POS, CourtyardHD, ForgeHD, StreetHD} from './world';
+import {ANVIL} from './world';
+import {BandedCake, BladeLook, Grit, Hand, HammerHead, HillFx, HillsideHD, LabFx, LabHD, MuseumHD, OrePot, Sabre, WaterDrop} from './damascus';
 import {Ball, Box, Cone, Cyl, TileFloor, Toon, mulberry} from './toon';
 
-export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain' | 'forge' | 'street' | 'void';
+export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain' | 'forge' | 'street' | 'void' | 'lab' | 'museum' | 'hillside';
 
 export type PropSpec = {
   type: 'pot' | 'rock' | 'block' | 'pillar' | 'lamp' | 'crate';
@@ -48,6 +50,18 @@ export type FxSpec = {
   skinMode?: 'cycles' | 'seal';
   ripple?: {pos: [number, number, number]; times: number[]};
   rainNow?: number; // set by ShotScene for wet/dry cycles
+  // ---- 02-damascus-steel ----
+  lab?: LabFx;
+  hill?: HillFx;
+  museumDrop?: [number, number]; // water drop rolling along the museum sabre (0..1 along the blade)
+  forgeLumps?: boolean; // default true
+  forgeGlow?: [number, number]; // hearth/anvil glow over the shot (1 = normal)
+  cake?: {strikes: number[]; glow?: [number, number]; s?: number};
+  hammerHead?: {strikes: number[]};
+  anvilBlades?: boolean; // Vik's blank blade + the swirled blade side by side on the anvil
+  hand?: {pos: [number, number, number]; rot?: [number, number, number]; s?: number; open?: [number, number]; openAt?: number; grit?: boolean; point?: boolean; skin?: string; sleeve?: string};
+  orePot?: {pos: [number, number, number]; s?: number; specks?: number; glintAt?: number};
+  sabres?: {pos: [number, number, number]; rot?: [number, number, number]; s?: number; look?: BladeLook}[];
 };
 
 export const SET_DEFAULTS: Record<SetName, {sky: string; ground: string; light: string}> = {
@@ -57,6 +71,9 @@ export const SET_DEFAULTS: Record<SetName, {sky: string; ground: string; light: 
   plain: {sky: 'dusk', ground: 'grass', light: 'dusk'},
   forge: {sky: 'forge', ground: 'earth', light: 'forge'},
   street: {sky: 'golden', ground: 'stone', light: 'golden'},
+  lab: {sky: 'interior', ground: 'stone', light: 'lab'},
+  museum: {sky: 'interior', ground: 'wood', light: 'museum'},
+  hillside: {sky: 'golden', ground: 'sand', light: 'golden'},
   void: {sky: 'macro', ground: 'obsidian', light: 'macro'},
 };
 
@@ -81,7 +98,10 @@ export const ToonSet: React.FC<
   };
   const night = (spec.light ?? '') === 'night';
   const storm = (spec.light ?? '') === 'storm';
-  const hdri: HdriName = fx.hdri ?? (spec.set === 'forge' ? 'dusk' : night || storm ? 'overcast' : 'sunset');
+  const hdri: HdriName = fx.hdri ?? (spec.set === 'forge' || spec.set === 'museum' ? 'dusk' : spec.set === 'lab' || night || storm ? 'overcast' : 'sunset');
+  const fg = fx.forgeGlow ? fx.forgeGlow[0] + (fx.forgeGlow[1] - fx.forgeGlow[0]) * (p * p * (3 - 2 * p)) : 1;
+  const handOpen = fx.hand?.open ? fx.hand.open[0] + (fx.hand.open[1] - fx.hand.open[0]) * Math.min(1, Math.max(0, (p * dur - (fx.hand.openAt ?? 0)) / 0.6)) : 1;
+  const dropAlong = fx.museumDrop ? fx.museumDrop[0] + (fx.museumDrop[1] - fx.museumDrop[0]) * p : 0;
   const rainK = fx.rainNow ?? lerp(fx.rain);
   return (
     <>
@@ -104,7 +124,7 @@ export const ToonSet: React.FC<
       />
       <Env name={hdri} intensity={night ? 0.35 : 0.9} />
       <SkyDome {...sky} />
-      {spec.set !== 'void' && spec.set !== 'courtyard' && spec.set !== 'forge' && spec.set !== 'street' && (
+      {spec.set !== 'void' && spec.set !== 'courtyard' && spec.set !== 'forge' && spec.set !== 'street' && spec.set !== 'lab' && spec.set !== 'museum' && spec.set !== 'hillside' && (
         <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[300, 300]} />
           <Toon color={ground.base} />
@@ -113,7 +133,39 @@ export const ToonSet: React.FC<
       {spec.set === 'courtyard' && (
         <CourtyardHD lampGlow={night ? 1.4 : storm ? 1 : 0.6} beams={fx.beams ?? !night} beamColor={night ? '#B8C8FF' : '#FFC873'} night={night} />
       )}
-      {spec.set === 'forge' && <ForgeHD merge={lerp(fx.merge)} closeup={fx.forgeClose} sparks={!fx.noSparks} />}
+      {spec.set === 'forge' && <ForgeHD merge={lerp(fx.merge)} closeup={fx.forgeClose} sparks={!fx.noSparks} lumps={fx.forgeLumps ?? true} glow={fg} />}
+      {spec.set === 'lab' && <LabHD fx={fx.lab ?? {}} dur={dur} p={p} />}
+      {spec.set === 'museum' && (
+        <>
+          <MuseumHD />
+          {fx.museumDrop && (
+            <group position={[-0.42, 1.14, 0.0]} rotation={[-0.25, 0, 0.02]} scale={1.15}>
+              <WaterDrop along={dropAlong} />
+            </group>
+          )}
+        </>
+      )}
+      {spec.set === 'hillside' && <HillsideHD fx={fx.hill ?? {}} p={p} />}
+      {fx.cake && <BandedCake pos={[ANVIL[0], 0.56, ANVIL[2]]} strikes={fx.cake.strikes} glow={fx.cake.glow ? fx.cake.glow[0] + (fx.cake.glow[1] - fx.cake.glow[0]) * p : 1} s={fx.cake.s} />}
+      {fx.hammerHead && <HammerHead pos={[ANVIL[0], 0.6, ANVIL[2]]} strikes={fx.hammerHead.strikes} />}
+      {fx.anvilBlades && (
+        <>
+          <Sabre pos={[ANVIL[0] - 0.42, 0.565, ANVIL[2] - 0.07]} rot={[-Math.PI / 2, 0, 0]} look="blank" hilt />
+          <Sabre pos={[ANVIL[0] - 0.42, 0.575, ANVIL[2] + 0.11]} rot={[-Math.PI / 2, 0, 0]} look="wootz" hilt />
+        </>
+      )}
+      {fx.sabres?.map((b, i) => <Sabre key={i} pos={b.pos} rot={b.rot} s={b.s} look={b.look} />)}
+      {fx.hand && (
+        <group>
+          <Hand pos={fx.hand.pos} rot={fx.hand.rot} s={fx.hand.s} open={handOpen} point={fx.hand.point} skin={fx.hand.skin} sleeve={fx.hand.sleeve} />
+          {fx.hand.grit && (
+            <group position={fx.hand.pos} rotation={fx.hand.rot} scale={fx.hand.s ?? 1}>
+              <Grit pos={[0, 0.02, -0.005]} r={0.034} n={120} heap={0.016 + 0.006 * handOpen} seed={5} />
+            </group>
+          )}
+        </group>
+      )}
+      {fx.orePot && <OrePot pos={fx.orePot.pos} s={fx.orePot.s} specks={fx.orePot.specks} glintAt={fx.orePot.glintAt} />}
       {spec.set === 'street' && (
         <>
           <StreetHD />

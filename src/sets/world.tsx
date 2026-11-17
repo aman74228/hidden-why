@@ -358,9 +358,9 @@ export const CourtyardHD: React.FC<{lampGlow?: number; beams?: boolean; beamColo
 
 /* ---------------- FORGE (flashback) ---------------- */
 export const ANVIL: V3 = [0.72, 0, 0.12];
-export const ForgeHD: React.FC<{merge?: number; closeup?: boolean; sparks?: boolean}> = ({merge = 0, closeup, sparks = true}) => {
+export const ForgeHD: React.FC<{merge?: number; closeup?: boolean; sparks?: boolean; lumps?: boolean; glow?: number}> = ({merge = 0, closeup, sparks = true, lumps = true, glow = 1}) => {
   const {t} = useScene();
-  const flick = 0.85 + 0.15 * Math.sin(t * 17) * Math.sin(t * 7.3);
+  const flick = (0.85 + 0.15 * Math.sin(t * 17) * Math.sin(t * 7.3)) * glow;
   const lumpX = 0.11 * (1 - merge);
   const impacts = useMemo(() => Array.from({length: 12}, (_, i) => 0.9 * (i + 1) - 0.02), []);
   const specks = useMemo(() => {
@@ -451,7 +451,7 @@ export const ForgeHD: React.FC<{merge?: number; closeup?: boolean; sparks?: bool
       <Ball r={0.32} pos={[-4.2, 0.28, -1.0]} scale={[1, 0.9, 0.8]} color="#C8A070" />
       <Ball r={0.28} pos={[-4.4, 0.24, -0.4]} scale={[1, 0.9, 0.8]} color="#B89060" />
       {/* light shaft from the smoke hole */}
-      <LightBeam from={[1.2, 5.4, -1.4]} to={[0.8, 0, 0.4]} r0={0.35} r1={1.0} color="#FFB060" strength={0.28} />
+      <LightBeam from={[1.2, 5.4, -1.4]} to={[0.8, 0, 0.4]} r0={0.35} r1={1.0} color="#FFB060" strength={0.28 * Math.max(0.15, glow)} />
       {/* anvil + glowing lumps */}
       <group position={ANVIL}>
         <TCyl r={0.2} h={0.32} pos={[0, 0.16, 0]} tex="planks" color="#8A6040" />
@@ -464,7 +464,7 @@ export const ForgeHD: React.FC<{merge?: number; closeup?: boolean; sparks?: bool
           <coneGeometry args={[0.05, 0.16, 4]} />
           <Toon color="#5A5C76" />
         </mesh>
-        <group position={[0, 0.6, 0]}>
+        {lumps && <group position={[0, 0.6, 0]}>
           {[-1, 1].map((sd) => (
             <mesh key={sd} position={[sd * lumpX, 0, 0]} scale={[1.2 - merge * 0.1 + merge * 0.5, 0.65 - merge * 0.15, 0.9]}>
               <sphereGeometry args={[0.1, 48, 32]} />
@@ -479,8 +479,8 @@ export const ForgeHD: React.FC<{merge?: number; closeup?: boolean; sparks?: bool
             </mesh>
           ))}
           <pointLight color="#FF7A2A" intensity={closeup ? 3 : 5} distance={2.5} decay={2} />
-        </group>
-        {sparks && <Sparks pos={[0, 0.62, 0.05]} times={impacts} />}
+        </group>}
+        {sparks && lumps && <Sparks pos={[0, 0.62, 0.05]} times={impacts} />}
       </group>
     </group>
   );

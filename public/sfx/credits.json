@@ -108,5 +108,108 @@
   "url": "https://opengameart.org/content/childrens-march-theme",
   "license": "CC0",
   "note": "playful march, loops seamlessly, 64 s; no CC0 pizzicato loop found"
+ },
+ {
+  "name": "laser-hum",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Sci-fi Sounds",
+  "file": "forceField_000.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/sci-fi-sounds",
+  "download_url": "https://opengameart.org/content/sci-fi-sounds",
+  "license": "CC0",
+  "note": "looped"
+ },
+ {
+  "name": "error-beep",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Interface Sounds",
+  "file": "error_006.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/interface-sounds",
+  "download_url": "https://opengameart.org/content/interface-sounds",
+  "license": "CC0"
+ },
+ {
+  "name": "metal-clang",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Sci-fi Sounds",
+  "file": "impactMetal_000.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/sci-fi-sounds",
+  "download_url": "https://opengameart.org/content/sci-fi-sounds",
+  "license": "CC0"
+ },
+ {
+  "name": "press-thump",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Sci-fi Sounds",
+  "file": "impactMetal_003.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/sci-fi-sounds",
+  "download_url": "https://opengameart.org/content/sci-fi-sounds",
+  "license": "CC0",
+  "note": "low-passed 900 Hz"
+ },
+ {
+  "name": "box-open",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "RPG Audio",
+  "file": "metalLatch.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/rpg-audio",
+  "download_url": "https://opengameart.org/content/50-rpg-sound-effects",
+  "license": "CC0"
+ },
+ {
+  "name": "crucible-crack",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Sci-fi Sounds",
+  "file": "explosionCrunch_000.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/sci-fi-sounds",
+  "download_url": "https://opengameart.org/content/sci-fi-sounds",
+  "license": "CC0",
+  "note": "high-passed 250 Hz"
+ },
+ {
+  "name": "sizzle",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Sci-fi Sounds",
+  "file": "thrusterFire_001.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/sci-fi-sounds",
+  "download_url": "https://opengameart.org/content/sci-fi-sounds",
+  "license": "CC0",
+  "note": "high-passed 2.5 kHz, trimmed 1.6 s"
+ },
+ {
+  "name": "molten-pour",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Sci-fi Sounds",
+  "file": "slime_001.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/sci-fi-sounds",
+  "download_url": "https://opengameart.org/content/sci-fi-sounds",
+  "license": "CC0",
+  "note": "low-passed 3 kHz, trimmed 2.4 s"
+ },
+ {
+  "name": "computer-hum",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Sci-fi Sounds",
+  "file": "computerNoise_002.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/sci-fi-sounds",
+  "download_url": "https://opengameart.org/content/sci-fi-sounds",
+  "license": "CC0",
+  "note": "trimmed 3 s"
+ },
+ {
+  "name": "grit-trickle",
+  "source": "Generated in-house (scripts: filtered random micro-clicks), no third-party audio",
+  "author": "Hidden Why studio",
+  "license": "CC0",
+  "note": "fallback: Freesound (403 from this machine) and no CC0 grit/sand-pour found in the Kenney packs"
  }
 ]

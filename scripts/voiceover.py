@@ -20,7 +20,9 @@ def script_text(slug):
     m = re.search(r"^##\s*Script\b[^\n]*\n(.*?)(?=^##\s|\Z)", text, re.S | re.M)
     if not m:
         sys.exit("no '## Script' section in brief")
-    return m.group(1).strip()
+    # drop production notes written in parentheses on their own line (e.g. the loop note)
+    lines = [l for l in m.group(1).strip().splitlines() if not l.strip().startswith("(")]
+    return "\n".join(lines).strip()
 
 
 def words_from_alignment(al):

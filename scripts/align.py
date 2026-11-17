@@ -37,7 +37,11 @@ def duration(mp3):
 def with_whisper(mp3, words):
     from faster_whisper import WhisperModel  # noqa
     model = WhisperModel("small.en", device="cpu", compute_type="int8")
-    segs, _ = model.transcribe(str(mp3), word_timestamps=True, vad_filter=True)
+    # decode with ffmpeg ourselves (faster-whisper's PyAV path breaks with some av versions)
+    import numpy as np
+    pcm = np.frombuffer(subprocess.run(["ffmpeg", "-v", "error", "-i", str(mp3), "-ac", "1", "-ar", "16000", "-f", "f32le", "-"],
+                                       capture_output=True, check=True).stdout, np.float32)
+    segs, _ = model.transcribe(pcm, word_timestamps=True, vad_filter=False)
     rec = [w for s in segs for w in (s.words or [])]
     a = [norm(w) for w in words]
     b = [norm(w.word) for w in rec]
@@ -62,7 +66,7 @@ def with_whisper(mp3, words):
         step = (e - s) / max(n, 1)
         j = i - (prev if prev is not None else -1)
         times[i] = (s + step * (j - 1), s + step * j)
-    return [{"word": w, "start": round(t[0], 3), "end": round(t[1], 3)} for w, t in zip(words, times)]
+    return [{"word": w, "start": round(float(t[0]), 3), "end": round(float(t[1]), 3)} for w, t in zip(words, times)]
 
 
 def with_silence(mp3, words):
@@ -103,6 +107,20 @@ def main():
         print(f"faster-whisper unavailable ({e.__class__.__name__}: {e}); using silencedetect fallback")
         res = with_silence(mp3, words)
         how = "silencedetect"
+    # whisper often starts a word a little early, inside the pause before it:
+    # push such starts to the end of that pause (captions must hit the onset)
+    log = subprocess.run(["ffmpeg", "-hide_banner", "-i", str(mp3), "-af", "silencedetect=noise=-38dB:d=0.15", "-f", "null", "-"],
+                         capture_output=True, text=True).stderr
+    sil = list(zip([float(x) for x in re.findall(r"silence_start: (-?[\d.]+)", log)], [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]))
+    for i, w in enumerate(res):
+        if sil:
+            s0, s1 = min(sil, key=lambda q: abs(q[1] - w["start"]))  # the pause nearest this onset
+            after_punct = i > 0 and re.search(r"[.,?!;:\"…]$", res[i - 1]["word"])
+            if w["start"] < s1 and ((s0 - 0.02 <= w["start"]) or (after_punct and s0 - 0.35 <= w["start"])):
+                w["start"] = round(s1, 3)
+                if i and res[i - 1]["end"] > s0:
+                    res[i - 1]["end"] = round(max(res[i - 1]["start"] + 0.05, s0), 3)
+        w["end"] = round(max(w["end"], w["start"] + 0.05), 3)
     dst = ROOT / "src" / "captions" / f"{slug}.json"
     dst.write_text(json.dumps(res, indent=1), encoding="utf-8")
     print(f"{how}: {len(res)} words -> {dst.relative_to(ROOT)}")

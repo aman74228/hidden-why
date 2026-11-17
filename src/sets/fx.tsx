@@ -188,13 +188,14 @@ export const LightBeam: React.FC<{
 };
 
 /* ---------------- spark burst (hammer impacts, coin taps) ---------------- */
-export const Sparks: React.FC<{pos: [number, number, number]; times: number[]; color?: string; n?: number; speed?: number; life?: number}> = ({
+export const Sparks: React.FC<{pos: [number, number, number]; times: number[]; color?: string; n?: number; speed?: number; life?: number; scale?: number}> = ({
   pos,
   times,
   color = '#FFD76A',
   n = 26,
   speed = 2.4,
   life = 0.45,
+  scale = 1,
 }) => {
   const {t} = useScene();
   const ps = useMemo(() => {
@@ -212,7 +213,7 @@ export const Sparks: React.FC<{pos: [number, number, number]; times: number[]; c
             key={`${k}-${i}`}
             position={[Math.cos(p.a) * Math.cos(p.e) * p.v * speed * s, Math.sin(p.e) * p.v * speed * s - 4.5 * s * s, Math.sin(p.a) * Math.cos(p.e) * p.v * speed * s]}
           >
-            <sphereGeometry args={[p.s * (1 - u * 0.7), 5, 4]} />
+            <sphereGeometry args={[p.s * scale * (1 - u * 0.7), 5, 4]} />
             <meshBasicMaterial color={color} toneMapped={false} />
           </mesh>
         ));

@@ -1,0 +1,787 @@
+[
+ {
+  "word": "Modern",
+  "start": 0.262,
+  "end": 0.334
+ },
+ {
+  "word": "factories.",
+  "start": 0.401,
+  "end": 1.087
+ },
+ {
+  "word": "Lasers.",
+  "start": 1.343,
+  "end": 1.974
+ },
+ {
+  "word": "Supercomputers.",
+  "start": 2.214,
+  "end": 3.165
+ },
+ {
+  "word": "And",
+  "start": 3.412,
+  "end": 3.451
+ },
+ {
+  "word": "none",
+  "start": 3.451,
+  "end": 3.585
+ },
+ {
+  "word": "of",
+  "start": 3.614,
+  "end": 3.669
+ },
+ {
+  "word": "them",
+  "start": 3.703,
+  "end": 3.838
+ },
+ {
+  "word": "can",
+  "start": 3.901,
+  "end": 4.09
+ },
+ {
+  "word": "copy",
+  "start": 4.191,
+  "end": 4.594
+ },
+ {
+  "word": "this",
+  "start": 4.645,
+  "end": 4.846
+ },
+ {
+  "word": "sword.",
+  "start": 4.959,
+  "end": 5.603
+ },
+ {
+  "word": "Its",
+  "start": 5.861,
+  "end": 6.056
+ },
+ {
+  "word": "blade",
+  "start": 6.12,
+  "end": 6.441
+ },
+ {
+  "word": "is",
+  "start": 6.492,
+  "end": 6.595
+ },
+ {
+  "word": "covered",
+  "start": 6.624,
+  "end": 6.826
+ },
+ {
+  "word": "in",
+  "start": 6.877,
+  "end": 6.98
+ },
+ {
+  "word": "swirls,",
+  "start": 7.058,
+  "end": 7.597
+ },
+ {
+  "word": "like",
+  "start": 7.643,
+  "end": 7.828
+ },
+ {
+  "word": "water",
+  "start": 7.905,
+  "end": 8.291
+ },
+ {
+  "word": "frozen",
+  "start": 8.346,
+  "end": 8.676
+ },
+ {
+  "word": "inside",
+  "start": 8.731,
+  "end": 9.061
+ },
+ {
+  "word": "steel.",
+  "start": 9.139,
+  "end": 9.601
+ },
+ {
+  "word": "Vik",
+  "start": 9.858,
+  "end": 10.133
+ },
+ {
+  "word": "scoffs.",
+  "start": 10.21,
+  "end": 10.667
+ },
+ {
+  "word": "\"Give",
+  "start": 10.914,
+  "end": 10.989
+ },
+ {
+  "word": "me",
+  "start": 10.989,
+  "end": 11.099
+ },
+ {
+  "word": "one",
+  "start": 11.161,
+  "end": 11.347
+ },
+ {
+  "word": "day.",
+  "start": 11.429,
+  "end": 11.759
+ },
+ {
+  "word": "If",
+  "start": 12.01,
+  "end": 12.146
+ },
+ {
+  "word": "I",
+  "start": 12.183,
+  "end": 12.275
+ },
+ {
+  "word": "can't",
+  "start": 12.275,
+  "end": 12.514
+ },
+ {
+  "word": "copy",
+  "start": 12.573,
+  "end": 12.809
+ },
+ {
+  "word": "it,",
+  "start": 12.858,
+  "end": 13.1
+ },
+ {
+  "word": "I'll",
+  "start": 13.108,
+  "end": 13.255
+ },
+ {
+  "word": "melt",
+  "start": 13.285,
+  "end": 13.402
+ },
+ {
+  "word": "my",
+  "start": 13.476,
+  "end": 13.623
+ },
+ {
+  "word": "own",
+  "start": 13.66,
+  "end": 13.77
+ },
+ {
+  "word": "trophy.\"",
+  "start": 13.844,
+  "end": 14.433
+ },
+ {
+  "word": "Try",
+  "start": 14.689,
+  "end": 14.896
+ },
+ {
+  "word": "one.",
+  "start": 14.935,
+  "end": 15.152
+ },
+ {
+  "word": "He",
+  "start": 15.389,
+  "end": 15.439
+ },
+ {
+  "word": "folds",
+  "start": 15.439,
+  "end": 15.618
+ },
+ {
+  "word": "the",
+  "start": 15.639,
+  "end": 15.703
+ },
+ {
+  "word": "steel",
+  "start": 15.774,
+  "end": 16.128
+ },
+ {
+  "word": "again",
+  "start": 16.199,
+  "end": 16.553
+ },
+ {
+  "word": "and",
+  "start": 16.595,
+  "end": 16.723
+ },
+ {
+  "word": "again.",
+  "start": 16.794,
+  "end": 17.233
+ },
+ {
+  "word": "Pretty",
+  "start": 17.488,
+  "end": 17.706
+ },
+ {
+  "word": "lines.",
+  "start": 17.773,
+  "end": 18.178
+ },
+ {
+  "word": "Wrong",
+  "start": 18.421,
+  "end": 18.672
+ },
+ {
+  "word": "pattern.",
+  "start": 18.715,
+  "end": 19.073
+ },
+ {
+  "word": "Fake.",
+  "start": 19.31,
+  "end": 19.665
+ },
+ {
+  "word": "Try",
+  "start": 19.894,
+  "end": 20.126
+ },
+ {
+  "word": "two.",
+  "start": 20.197,
+  "end": 20.524
+ },
+ {
+  "word": "The",
+  "start": 20.772,
+  "end": 20.822
+ },
+ {
+  "word": "purest",
+  "start": 20.822,
+  "end": 21.181
+ },
+ {
+  "word": "iron",
+  "start": 21.264,
+  "end": 21.595
+ },
+ {
+  "word": "money",
+  "start": 21.65,
+  "end": 21.927
+ },
+ {
+  "word": "can",
+  "start": 21.968,
+  "end": 22.092
+ },
+ {
+  "word": "buy.",
+  "start": 22.196,
+  "end": 22.672
+ },
+ {
+  "word": "The",
+  "start": 22.92,
+  "end": 23.029
+ },
+ {
+  "word": "swirls",
+  "start": 23.098,
+  "end": 23.511
+ },
+ {
+  "word": "don't",
+  "start": 23.529,
+  "end": 23.649
+ },
+ {
+  "word": "even",
+  "start": 23.677,
+  "end": 23.787
+ },
+ {
+  "word": "show",
+  "start": 23.842,
+  "end": 24.062
+ },
+ {
+  "word": "up.",
+  "start": 24.131,
+  "end": 24.338
+ },
+ {
+  "word": "Try",
+  "start": 24.57,
+  "end": 24.809
+ },
+ {
+  "word": "three.",
+  "start": 24.867,
+  "end": 25.222
+ },
+ {
+  "word": "Same",
+  "start": 25.424,
+  "end": 25.713
+ },
+ {
+  "word": "furnace,",
+  "start": 25.781,
+  "end": 26.397
+ },
+ {
+  "word": "same",
+  "start": 26.453,
+  "end": 26.699
+ },
+ {
+  "word": "heat,",
+  "start": 26.76,
+  "end": 27.137
+ },
+ {
+  "word": "the",
+  "start": 27.137,
+  "end": 27.275
+ },
+ {
+  "word": "exact",
+  "start": 27.275,
+  "end": 27.786
+ },
+ {
+  "word": "old",
+  "start": 27.843,
+  "end": 28.016
+ },
+ {
+  "word": "recipe.",
+  "start": 28.092,
+  "end": 28.629
+ },
+ {
+  "word": "Blank.",
+  "start": 28.877,
+  "end": 29.269
+ },
+ {
+  "word": "That's",
+  "start": 29.506,
+  "end": 29.571
+ },
+ {
+  "word": "when",
+  "start": 29.578,
+  "end": 29.662
+ },
+ {
+  "word": "it",
+  "start": 29.662,
+  "end": 29.766
+ },
+ {
+  "word": "got",
+  "start": 29.805,
+  "end": 29.923
+ },
+ {
+  "word": "weird.",
+  "start": 30.001,
+  "end": 30.549
+ },
+ {
+  "word": "Dada",
+  "start": 30.805,
+  "end": 31.044
+ },
+ {
+  "word": "opens",
+  "start": 31.091,
+  "end": 31.33
+ },
+ {
+  "word": "his",
+  "start": 31.366,
+  "end": 31.473
+ },
+ {
+  "word": "hand.",
+  "start": 31.545,
+  "end": 31.903
+ },
+ {
+  "word": "A",
+  "start": 32.129,
+  "end": 32.197
+ },
+ {
+  "word": "pinch",
+  "start": 32.256,
+  "end": 32.553
+ },
+ {
+  "word": "of",
+  "start": 32.624,
+  "end": 32.767
+ },
+ {
+  "word": "dark",
+  "start": 32.838,
+  "end": 33.123
+ },
+ {
+  "word": "dirt.",
+  "start": 33.194,
+  "end": 33.582
+ },
+ {
+  "word": "You",
+  "start": 33.798,
+  "end": 33.846
+ },
+ {
+  "word": "see,",
+  "start": 34.037,
+  "end": 34.313
+ },
+ {
+  "word": "this",
+  "start": 34.36,
+  "end": 34.549
+ },
+ {
+  "word": "steel",
+  "start": 34.601,
+  "end": 34.864
+ },
+ {
+  "word": "was",
+  "start": 34.903,
+  "end": 35.021
+ },
+ {
+  "word": "made",
+  "start": 35.053,
+  "end": 35.179
+ },
+ {
+  "word": "in",
+  "start": 35.231,
+  "end": 35.336
+ },
+ {
+  "word": "India,",
+  "start": 35.415,
+  "end": 35.927
+ },
+ {
+  "word": "from",
+  "start": 35.927,
+  "end": 35.999
+ },
+ {
+  "word": "certain",
+  "start": 36.058,
+  "end": 36.472
+ },
+ {
+  "word": "ores.",
+  "start": 36.582,
+  "end": 37.205
+ },
+ {
+  "word": "And",
+  "start": 37.456,
+  "end": 37.506
+ },
+ {
+  "word": "those",
+  "start": 37.506,
+  "end": 37.655
+ },
+ {
+  "word": "ores",
+  "start": 37.751,
+  "end": 38.135
+ },
+ {
+  "word": "carried",
+  "start": 38.184,
+  "end": 38.534
+ },
+ {
+  "word": "a",
+  "start": 38.574,
+  "end": 38.614
+ },
+ {
+  "word": "tiny",
+  "start": 38.694,
+  "end": 39.013
+ },
+ {
+  "word": "secret.",
+  "start": 39.093,
+  "end": 39.733
+ },
+ {
+  "word": "Traces",
+  "start": 39.988,
+  "end": 40.361
+ },
+ {
+  "word": "of",
+  "start": 40.47,
+  "end": 40.632
+ },
+ {
+  "word": "vanadium.",
+  "start": 40.693,
+  "end": 41.448
+ },
+ {
+  "word": "While",
+  "start": 42.167,
+  "end": 42.217
+ },
+ {
+  "word": "the",
+  "start": 42.217,
+  "end": 42.248
+ },
+ {
+  "word": "smith",
+  "start": 42.248,
+  "end": 42.586
+ },
+ {
+  "word": "hammered,",
+  "start": 42.64,
+  "end": 43.235
+ },
+ {
+  "word": "those",
+  "start": 43.276,
+  "end": 43.479
+ },
+ {
+  "word": "traces",
+  "start": 43.56,
+  "end": 44.047
+ },
+ {
+  "word": "pulled",
+  "start": 44.105,
+  "end": 44.453
+ },
+ {
+  "word": "the",
+  "start": 44.473,
+  "end": 44.534
+ },
+ {
+  "word": "carbon",
+  "start": 44.604,
+  "end": 45.021
+ },
+ {
+  "word": "into",
+  "start": 45.086,
+  "end": 45.346
+ },
+ {
+  "word": "bands.",
+  "start": 45.44,
+  "end": 46.076
+ },
+ {
+  "word": "No",
+  "start": 46.323,
+  "end": 46.509
+ },
+ {
+  "word": "traces,",
+  "start": 46.591,
+  "end": 47.205
+ },
+ {
+  "word": "no",
+  "start": 47.239,
+  "end": 47.336
+ },
+ {
+  "word": "swirls.",
+  "start": 47.433,
+  "end": 48.133
+ },
+ {
+  "word": "Around",
+  "start": 48.381,
+  "end": 48.678
+ },
+ {
+  "word": "1750,",
+  "start": 48.756,
+  "end": 49.685
+ },
+ {
+  "word": "those",
+  "start": 49.736,
+  "end": 49.995
+ },
+ {
+  "word": "mines",
+  "start": 50.072,
+  "end": 50.459
+ },
+ {
+  "word": "ran",
+  "start": 50.537,
+  "end": 50.769
+ },
+ {
+  "word": "dry.",
+  "start": 50.885,
+  "end": 51.311
+ },
+ {
+  "word": "And",
+  "start": 51.548,
+  "end": 51.724
+ },
+ {
+  "word": "the",
+  "start": 51.742,
+  "end": 51.796
+ },
+ {
+  "word": "recipe",
+  "start": 51.867,
+  "end": 52.296
+ },
+ {
+  "word": "died",
+  "start": 52.396,
+  "end": 52.68
+ },
+ {
+  "word": "with",
+  "start": 52.723,
+  "end": 52.895
+ },
+ {
+  "word": "them.",
+  "start": 52.938,
+  "end": 53.181
+ },
+ {
+  "word": "Vik's",
+  "start": 53.401,
+  "end": 53.529
+ },
+ {
+  "word": "trophy?",
+  "start": 53.609,
+  "end": 54.179
+ },
+ {
+  "word": "Melting.",
+  "start": 54.433,
+  "end": 54.907
+ },
+ {
+  "word": "Perfectly",
+  "start": 55.121,
+  "end": 55.41
+ },
+ {
+  "word": "pure.",
+  "start": 55.499,
+  "end": 55.942
+ },
+ {
+  "word": "Not",
+  "start": 56.186,
+  "end": 56.338
+ },
+ {
+  "word": "a",
+  "start": 56.375,
+  "end": 56.477
+ },
+ {
+  "word": "single",
+  "start": 56.477,
+  "end": 56.858
+ },
+ {
+  "word": "swirl.",
+  "start": 56.944,
+  "end": 57.452
+ },
+ {
+  "word": "So",
+  "start": 57.648,
+  "end": 57.742
+ },
+ {
+  "word": "today,",
+  "start": 57.742,
+  "end": 58.305
+ },
+ {
+  "word": "with",
+  "start": 58.337,
+  "end": 58.466
+ },
+ {
+  "word": "all",
+  "start": 58.527,
+  "end": 58.708
+ },
+ {
+  "word": "our",
+  "start": 58.748,
+  "end": 58.869
+ },
+ {
+  "word": "factories,",
+  "start": 58.941,
+  "end": 59.754
+ },
+ {
+  "word": "lasers,",
+  "start": 59.846,
+  "end": 60.559
+ },
+ {
+  "word": "supercomputers...",
+  "start": 60.613,
+  "end": 61.687
+ }
+]
