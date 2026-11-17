@@ -93,3 +93,4 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 - A new open question every 8–10 s; explanation ≤ 12 s, split in two with a reaction between.
 - Payoff = twist + callback to the hook; last line flows into the first for a clean loop.
 - Every insert shows the exact noun in its line.
+- Scripts flow with 'but/so' links, never fragment lists. Shots cut on whole sentences. Emotion tag on nearly every line; eleven_v3 stability Creative.
