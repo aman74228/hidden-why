@@ -4,7 +4,7 @@
 set -euo pipefail
 slug="$1"
 node scripts/prep.mjs "$slug"
-python3 scripts/mix.py "$slug" "out/$slug.mix.wav" > "out/$slug.levels.json"
+python3 scripts/mix.py "$slug" "out/$slug.mix.wav" > /dev/null  # it writes out/$slug.mix.levels.json
 npx remotion render src/index.ts "$slug" "out/$slug.raw.mp4" --codec=h264 --crf=18 --muted --concurrency=1
 ffmpeg -hide_banner -loglevel error -y -i "out/$slug.raw.mp4" -i "out/$slug.mix.wav" -map 0:v:0 -map 1:a:0 \
   -c:v copy -c:a aac -b:a 192k -ar 48000 -shortest -movflags +faststart "out/$slug.mp4"
