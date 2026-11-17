@@ -8,4 +8,3 @@ if (fs.existsSync(src)) {
   fs.copyFileSync(src, `public/vo/${slug}.mp3`);
   console.log(`copied ${src} -> public/vo/${slug}.mp3`);
 } else console.warn(`no ${src} yet`);
-if (!fs.existsSync('public/sfx/music-bed.wav')) await import('./sfx.mjs');

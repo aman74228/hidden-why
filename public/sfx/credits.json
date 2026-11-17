@@ -1,0 +1,112 @@
+[
+ {
+  "name": "pop-soft",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Interface Sounds",
+  "file": "drop_003.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/interface-sounds",
+  "download_url": "https://opengameart.org/content/interface-sounds",
+  "license": "CC0"
+ },
+ {
+  "name": "ding",
+  "source": "OpenGameArt",
+  "file": "ding.1.ogg",
+  "author": "StarNinjas",
+  "url": "https://opengameart.org/content/4-metal-dingsrings",
+  "license": "CC0"
+ },
+ {
+  "name": "metal-ting",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "RPG Audio",
+  "file": "metalPot1.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/rpg-audio",
+  "download_url": "https://opengameart.org/content/50-rpg-sound-effects",
+  "license": "CC0"
+ },
+ {
+  "name": "anvil",
+  "source": "OpenGameArt",
+  "file": "forger.ogg",
+  "author": "themightyglider",
+  "url": "https://opengameart.org/content/hammer-on-anvil",
+  "license": "CC0"
+ },
+ {
+  "name": "coin-scrape",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "RPG Audio",
+  "file": "knifeSlice.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/rpg-audio",
+  "download_url": "https://opengameart.org/content/50-rpg-sound-effects",
+  "license": "CC0"
+ },
+ {
+  "name": "footsteps-stone",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "RPG Audio",
+  "file": "footstep00-07.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/rpg-audio",
+  "download_url": "https://opengameart.org/content/50-rpg-sound-effects",
+  "license": "CC0",
+  "note": "8 steps sequenced 0.42 s apart"
+ },
+ {
+  "name": "gate-creak",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "RPG Audio",
+  "file": "creak1.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/rpg-audio",
+  "download_url": "https://opengameart.org/content/50-rpg-sound-effects",
+  "license": "CC0"
+ },
+ {
+  "name": "shimmer",
+  "source": "OpenGameArt",
+  "file": "magic_words.wav",
+  "author": "Spring Spring",
+  "url": "https://opengameart.org/content/magic-words-healing-sound-effect",
+  "license": "CC0"
+ },
+ {
+  "name": "drip",
+  "source": "Kenney (via OpenGameArt mirror; kenney.nl blocks this machine)",
+  "pack": "Interface Sounds",
+  "file": "drop_004.ogg",
+  "author": "Kenney",
+  "url": "https://kenney.nl/assets/interface-sounds",
+  "download_url": "https://opengameart.org/content/interface-sounds",
+  "license": "CC0"
+ },
+ {
+  "name": "rain-soft",
+  "source": "OpenGameArt",
+  "file": "amb_rain_loop_1.mp3",
+  "author": "Kresiek The Furry",
+  "url": "https://opengameart.org/content/amb-rain-loop-1",
+  "license": "CC0"
+ },
+ {
+  "name": "crickets",
+  "source": "OpenGameArt",
+  "file": "crickets-oneloop.mp3",
+  "author": "Wolfgang_",
+  "url": "https://opengameart.org/content/crickets-ambient-noise-loopable",
+  "license": "CC0"
+ },
+ {
+  "name": "music",
+  "source": "OpenGameArt",
+  "file": "Children's March Theme.mp3",
+  "author": "CleytonKauffman",
+  "url": "https://opengameart.org/content/childrens-march-theme",
+  "license": "CC0",
+  "note": "playful march, loops seamlessly, 64 s; no CC0 pizzicato loop found"
+ }
+]
