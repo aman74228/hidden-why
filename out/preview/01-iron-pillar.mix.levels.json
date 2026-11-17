@@ -4,41 +4,46 @@
   "true_peak_dbtp": -1.4
  },
  "music": {
-  "file": "public/sfx/music-bed.wav",
+  "file": "public/sfx/music.mp3",
   "lufs": -25.8,
   "under_speech_lufs": -26.0,
-  "between_lines_lufs": -23.7,
-  "true_peak_dbtp": -10.8,
-  "placeholder": true
+  "between_lines_lufs": -22.8,
+  "true_peak_dbtp": -9.1
  },
  "sfx": {
-  "stem_lufs": -22.0,
-  "stem_max_momentary_lufs": -20.3,
-  "true_peak_dbtp": -5.3,
+  "stem_lufs": -21.9,
+  "stem_max_momentary_lufs": -19.9,
+  "true_peak_dbtp": -2.5,
   "per_cue_max_momentary_lufs": {
    "rain-soft": -32.0,
-   "metal-ting": -20.1,
-   "anvil": -20.9,
-   "ding": -20.1
+   "metal-ting": -20.0,
+   "drip": -23.2,
+   "coin-scrape": -20.1,
+   "crickets": -20.0,
+   "anvil": -20.0,
+   "pop-soft": -24.0,
+   "shimmer": -20.9,
+   "footsteps-stone": -20.5,
+   "gate-creak": -20.0,
+   "ding": -20.0
   },
   "files": {
-   "rain-soft": "rain.wav",
-   "metal-ting": "ring.wav",
-   "anvil": "clang.wav",
-   "ding": "ding.wav"
+   "rain-soft": "rain-soft.mp3",
+   "metal-ting": "metal-ting.mp3",
+   "drip": "drip.mp3",
+   "coin-scrape": "coin-scrape.mp3",
+   "crickets": "crickets.mp3",
+   "anvil": "anvil.mp3",
+   "pop-soft": "pop-soft.mp3",
+   "shimmer": "shimmer.mp3",
+   "footsteps-stone": "footsteps-stone.mp3",
+   "gate-creak": "gate-creak.mp3",
+   "ding": "ding.mp3"
   },
-  "missing_skipped": [
-   "coin-scrape",
-   "crickets",
-   "drip",
-   "footsteps-stone",
-   "gate-creak",
-   "pop-soft",
-   "shimmer"
-  ]
+  "missing_skipped": []
  },
  "rain": {
-  "lufs_while_playing": -32.3,
+  "lufs_while_playing": -32.1,
   "fades_at": 2.8
  },
  "mix": {
@@ -48,8 +53,8 @@
  },
  "peak_check": {
   "voice_peak_dbfs": -1.5,
-  "music_peak_dbfs": -10.8,
-  "sfx_peak_dbfs": -5.6,
-  "rain_peak_dbfs": -23.0
+  "music_peak_dbfs": -9.1,
+  "sfx_peak_dbfs": -2.5,
+  "rain_peak_dbfs": -14.4
  }
 }
