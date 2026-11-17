@@ -58,7 +58,7 @@ with CLAUDE.md before starting any Short; check each section before showing stil
     each 400 ms window stays >= 6 dB under the voice (`checks.sfx_windows_within_6dB_of_voice == 0`);
   - rain -32 LUFS, peaks <= -24 dBFS, fading out at the first cut;
   - nothing peaks above the voice (`peak_check`).
-- Voice: eleven_v3 + Liam with audio tags; max 3 takes; `tighten_vo.py` trims silent gaps
+- Voice: eleven_v3 + Charlie (stability Creative) with audio tags; max 3 takes; `trim_silence.py` trims silent gaps
   only (laughs/scoffs stay). Don't speed the voice up beyond what was approved.
 
 ## 6. Rendering pitfalls
@@ -88,7 +88,7 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 5. Commit and push after every step; send the files.
 
 ## 8. Script & story (from the Storytelling playbook)
-- Liam reads ~164 wpm: 155–160 spoken words for a 60 s Short.
+- Charlie reads faster than Liam did: words per minute is re-measured from the Short #2 full take (WPM_TBD).
 - Contradiction in the first 2 s; Vik's bet with a cost by 8 s; each wrong guess bigger than the last.
 - A new open question every 8–10 s; explanation ≤ 12 s, split in two with a reaction between.
 - Payoff = twist + callback to the hook; last line flows into the first for a clean loop.
