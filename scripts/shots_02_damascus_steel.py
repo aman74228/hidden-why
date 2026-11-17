@@ -1,8 +1,9 @@
 #!/usr/bin/env python3
-"""Builds src/shots/02-damascus-steel.json: 33 shots cut every 1-3 s on the
-voiceover word timings (src/captions/02-damascus-steel.json), Vik's lab /
-museum case / ore hillside / forge, 8 object inserts, crossed title cards for
-the three failed tries, and a last shot that lands on frame 1 (loop)."""
+"""Builds src/shots/02-damascus-steel.json (v2, Chatterbox voiceover): every cut lands on a
+sentence boundary (audio/02-damascus-steel.vo.json line onsets/ends + captions); each line is
+one continuous shot that reuses the v1 scenes (moves join a wide and its insert), and the short
+pauses after lines 3, 8, 10 and 11 hold the engraving insert, the silent reaction, the dying
+forge and Vik's deadpan. The last shot lands on frame 1 (loop)."""
 import json, math
 from pathlib import Path
 
@@ -58,248 +59,189 @@ def frame(pts, az=0, el=6, fov=44, push=0.15, swing=4, lookDY=0.0, box=(0.07, 0.
 def c(base, **kw):
     d = dict(base); d.update(kw); return d
 
-cuts = [0, 2.2, 3.35, 5.75, 7.5, 9.75, 11.95, 13.05, 14.6, 15.95, 17.4, 19.8, 22.75, 24.5, 26.3, 27.9, 29.5,
-        30.95, 33.75, 35.95, 37.3, 39.7, 41.5, 42.15, 43.3, 46.2, 48.3, 51.45, 53.35, 55.0, 56.45, 57.6, 59.7, 61.75]
 
-HOOK_CAM_A = [-0.25, 1.32, 2.75]   # shot 1 starts here; the last shot ends here (loop)
-HOOK_CAM_B = [0.05, 1.36, 2.05]
-HOOK_LOOK_A = [0.35, 1.32, 0.0]
-HOOK_LOOK_B = [0.38, 1.38, 0.0]
+# ---------------- v2: Chatterbox voiceover, cuts on sentence boundaries only ----------------
+VO = json.loads((ROOT / "audio/02-damascus-steel.vo.json").read_text())
+CAP = json.loads((ROOT / "src/captions/02-damascus-steel.json").read_text())
+LS = [l["start_s"] for l in VO["lines"]]                       # line onsets
+LE = [l["start_s"] + l["seconds"] for l in VO["lines"]]        # line ends (pause follows)
+def word_t(w, after=0.0):
+    """onset of the first caption word `w` at/after `after` (seconds, absolute)"""
+    return next(x["start"] for x in CAP if x["word"].strip(".,?:…").lower() == w.lower() and x["start"] >= after - 1e-6)
+PRE = 0.06                                                      # cut this far before a sentence onset (inside the pause)
+bands_end = next(x["end"] for x in CAP if x["word"] == "bands.")
+no_on = word_t("No", bands_end)
+
+def body_(m, crop=0.0): return body(m, crop)
+def path_ok(cam, cast, name):
+    """warn if a dolly passes within 0.75 m of a character (giant near-lens blobs)"""
+    if cam.get("type") != "dolly": return
+    for k in range(21):
+        u = k / 20; p = [a + (b - a) * u for a, b in zip(cam["from"], cam["to"])]
+        for m in cast:
+            if p[1] < H_[m["who"]] + 0.3 and math.hypot(p[0] - m["pos"][0], p[2] - m["pos"][1]) < 0.75:
+                print(f"WARNING {name}: camera passes {math.hypot(p[0]-m['pos'][0], p[2]-m['pos'][1]):.2f} m from {m['who']} at u={u:.2f}"); return
+
 VIK_HOOK = c(VIK, pose="lean", pos=[0.82, 0.62], facing=-1)
+SABRE_SCAN = [[-0.36, 0.95, 0.05], [0.55, 0.95, -0.17]]
+HOOK = frame(SABRE_SCAN + [[-0.3, 1.62, 0], [0.82, 2.27, 0.62], [1.1, 1.4, 0.62], [0.55, 1.4, 0.62]], az=-22, el=-2, fov=42, push=0.35, swing=-6,
+             box=(0.06, 0.94, 0.05, 0.9))
+
+# segments: (id, start, end) on sentence boundaries; short ones live in the pauses between lines
+T = lambda n: LS[n - 1]                # onset of line n
+E = lambda n: LE[n - 1]                # end of line n
+seg = [
+  ("hook-laser", 0, T(2) - PRE),
+  ("museum-macro", T(2) - PRE, T(3) - PRE),
+  ("the-bet", T(3) - PRE, E(3) + 0.04),
+  ("pause-engraving", E(3) + 0.04, T(4) - PRE),
+  ("try1-folding", T(4) - PRE, T(5) - PRE),
+  ("try2-pure-iron", T(5) - PRE, T(6) - PRE),
+  ("try3-recipe", T(6) - PRE, T(7) - PRE),
+  ("dada-dirt", T(7) - PRE, T(8) - PRE),
+  ("india-vanadium", T(8) - PRE, E(8) + 0.04),
+  ("pause-reaction", E(8) + 0.04, T(9) - PRE),
+  ("smith-bands", T(9) - PRE, no_on - PRE),
+  ("no-traces", no_on - PRE, T(10) - PRE),
+  ("mines-dry", T(10) - PRE, E(10) + 0.04),
+  ("pause-forge-dark", E(10) + 0.04, T(11) - PRE),
+  ("trophy-melts", T(11) - PRE, E(11) + 0.04),
+  ("pause-deadpan", E(11) + 0.04, T(12) - PRE),
+  ("loop-laser", T(12) - PRE, VO["total_s"]),
+]
+R = {sid: (a, b) for sid, a, b in seg}
+rel = lambda sid, t: round(t - R[sid][0], 2)       # absolute time -> seconds into the shot
+
+def path(a, b, look_a=None, look_b=None, fov=42):
+    """one continuous move from camera pose a to b (dicts from frame() or explicit)"""
+    return {"type": "dolly", "from": a["from"] if "from" in a else a["to"], "to": b["to"], "look": look_a or a["look"], "lookTo": look_b or b.get("lookTo", b["look"]), "fov": fov}
+
+# cast placements (kept clear of every camera path; see path_ok)
+BET_VIK = c(VIK, pose="slam", pos=[3.3, 0.45], facing=-1, poses=[{"at": 0.9, "pose": "proud"}])
+BET_CHOTU = c(CHOTU, pose="idle", pos=[1.75, 0.8], facing=1, poses=[{"at": 0.4, "pose": "gasp"}])
+PRESS_VIK = c(VIK_APRON, pose="hammer", pos=[-1.95, 1.2], facing=-1, holding="hammer", delay=-0.3)
+PURE_VIK = c(VIK, pose="present", pos=[3.3, 0.45], facing=-1, poses=[{"at": 0, "pose": "present"}])
+REC_CHOTU = c(CHOTU, pose="present", pos=[0.15, 0.55], facing=-1, holding="parchment")
+REC_VIK = c(VIK_APRON, pose="point", pos=[-2.5, 0.3], facing=1)
+DOOR_DADA = c(DADA_SMITH, pose="idle", pos=[-3.6, -3.35], facing=1, appearAt=0.45)
+DOOR_CHOTU = c(CHOTU, pose="look-up", pos=[-4.6, -1.2], facing=1)
+DOOR_VIK = c(VIK, pose="shock", pos=[-2.2, -0.6], facing=-1)
+HILL_DADA = c(DADA_SMITH, pose="point", pos=[-1.7, -1.55], facing=1)
+FORGE_DADA = c(DADA_SMITH, pose="hammer", pos=[0, 0], facing=1, holding="hammer", delay=-0.25)
+MELT_VIK = c(VIK, pose="peek", pos=[1.35, 0.85], facing=-1)
+MELT_CHOTU = c(CHOTU, pose="gasp", pos=[-0.4, 1.15], facing=1)
+
+press_w = frame([[-2.7, 0.75, 0.9], [-2.7, 2.35, 0.9], [-3.2, 1.2, 0.9]] + body(PRESS_VIK, crop=0.3), az=10, el=0, fov=44, push=0)
+pure_w = frame([[2.15, 1.0, 0.0], [2.45, 1.3, 0.0]] + body(PURE_VIK, crop=0.4), az=-8, el=2, fov=44, push=0)
+pure_c = frame([[1.75, 0.96, 0.56], [2.6, 0.96, 0.5]] + body(PURE_VIK, crop=0.55), az=-12, el=16, fov=44, push=0)
+rec_w = frame([[-1.55, 1.0, -1.2], [-2.5, 0.6, -1.15], [-2.5, 1.35, -1.15]] + body(REC_CHOTU) + body(REC_VIK, crop=0.3), az=14, el=2, fov=44, push=0)
+door_w = frame([[-4.35, 2.6, -3.8], [-2.85, 0.0, -3.8]] + body(DOOR_CHOTU) + body(DOOR_VIK), az=-6, el=3, fov=46, push=0.12, swing=0)
+melt_w = frame([[0.5, 0.75, 0.9], [0.5, 1.15, 0.9]] + body(MELT_VIK, crop=0.3) + body(MELT_CHOTU, crop=0.5), az=4, el=6, fov=44, push=0)
+HAND = [-3.4, 1.0, -2.55]
+strikes = [round(0.9 * k - 0.25, 2) for k in range(1, 6)]
 
 shots = [
-  # 1 HOOK: laser sweeping the sabre on the scanner, Vik leaning in, fast push-in
   {"id": "hook-laser", "beat": 1, "stillAt": 0.0, "set": "lab",
    "fx": {"lab": {"laser": 1, "laserSweep": [-0.3, 0.35], "sabre": "scanner", "screens": "scan"}},
-   "camera": {"type": "dolly", "from": HOOK_CAM_A, "to": HOOK_CAM_B, "look": HOOK_LOOK_A, "lookTo": HOOK_LOOK_B, "fov": 42},
-   "cast": [VIK_HOOK], "layout": "manual", "roll": [2, 0.5],
-   "sfx": [{"name": "laser-hum", "at": 0, "dur": 2.2}]},
-  # 2 Supercomputers: monitor wall stuck at 0% / ERROR, Vik frowning in the screen light
-  {"id": "monitors-error", "set": "lab", "fx": {"lab": {"screens": "error", "sabre": "scanner"}},
-   "camera": {"type": "dolly", "from": [3.25, 1.75, -0.55], "to": [3.05, 1.8, -0.95], "look": [1.55, 1.7, -3.3], "lookTo": [1.65, 1.72, -3.3], "fov": 44},
-   "cast": [c(VIK, pose="frown", pos=[2.95, -2.25], facing=-1)], "layout": "manual",
-   "sfx": [{"name": "error-beep", "at": 0.25}]},
-  # 3 Chotu lifts the sabre into the light; Vik behind; low angle, slow orbit
-  {"id": "chotu-lifts", "set": "lab", "fx": {"lab": {"laser": 0, "sabre": "none", "screens": "scan"}},
-   "camera": {"type": "orbit", "center": [0.15, 0, 0.9], "radius": 3.3, "height": 0.75, "fromDeg": -18, "toDeg": 12, "lookY": 1.05, "fov": 44},
-   "cast": [c(CHOTU, pose="lift", pos=[0.1, 0.9], facing=1, holding="sabre"), c(VIK, pose="lean", pos=[1.35, -0.2], facing=-1)], "layout": "manual",
-   "sfx": [{"name": "shimmer", "at": 0.7}]},
-  # 4 museum case: the real thing, spotlit; title card
-  {"id": "museum-case", "set": "museum",
-   "camera": {"type": "dolly", "from": [1.0, 1.35, 3.1], "to": [0.55, 1.35, 2.25], "look": [0.0, 1.2, 0.0], "lookTo": [0.05, 1.2, 0.0], "fov": 42},
-   "titleCard": {"label": "Damascus steel", "word": "1,000+ years", "at": 0.15, "duration": 1.6}},
-  # 5 INSERT: macro slide along the watered pattern, a water drop rolls along it
-  {"id": "macro-blade", "set": "museum", "fx": {"museumDrop": [0.18, 0.62]},
-   "camera": {"type": "dolly", "from": [-0.2, 1.33, 0.42], "to": [0.28, 1.38, 0.36], "look": [-0.16, 1.17, -0.02], "lookTo": [0.3, 1.22, -0.06], "fov": 34},
-   "dof": 1.2, "focusDist": 0.42, "roll": [-3, 1],
-   "sfx": [{"name": "drip", "at": 0.45}]},
-  # 6 Vik scoffs, slams his trophy on the workbench; push on the trophy
-  {"id": "trophy-slam", "set": "lab", "fx": {"lab": {"trophy": "drop", "trophyDropAt": 0.35, "sabre": "scanner"}},
-   "camera": {"type": "dolly", "from": [2.55, 1.45, 3.6], "to": [2.75, 1.3, 2.5], "look": [2.75, 1.3, 0.2], "lookTo": [2.85, 1.2, 0.2], "fov": 44},
-   "cast": [c(VIK, pose="slam", pos=[3.55, 0.35], facing=-1), c(CHOTU, pose="idle", pos=[1.55, 0.7], facing=1, poses=[{"at": 0.4, "pose": "shock"}])], "layout": "manual",
+   "camera": HOOK, "cast": [VIK_HOOK], "layout": "manual", "roll": [2, 0.5],
+   "sfx": [{"name": "laser-hum", "at": 0, "dur": round(R["hook-laser"][1], 2)}, {"name": "error-beep", "at": rel("hook-laser", word_t("supercomputers"))}]},
+  # line 2: one continuous push from the museum case into the watered pattern (a drop rolls along it)
+  {"id": "museum-macro", "set": "museum", "fx": {"museumDrop": [0.05, 0.65]},
+   "camera": {"type": "dolly", "from": [1.0, 1.35, 3.1], "to": [-0.02, 1.27, 0.27], "look": [0.0, 1.2, 0.0], "lookTo": [0.04, 1.18, -0.02], "fov": 38}, "dof": 0.8,
+   "titleCard": {"label": "Damascus steel", "word": "1,000+ years", "at": 0.1, "duration": 1.8},
+   "sfx": [{"name": "drip", "at": rel("museum-macro", word_t("water"))}]},
+  # line 3: the bet; the trophy slams down on the bench
+  {"id": "the-bet", "beat": 2, "stillAt": 1.4, "set": "lab", "fx": {"lab": {"trophy": "drop", "trophyDropAt": 0.35, "sabre": "scanner"}},
+   "camera": frame([[2.65, 1.45, 0.15], [2.65, 0.95, 0.15]] + body(BET_VIK, crop=0.0) + body(BET_CHOTU), az=-2, el=4, fov=44, push=0.2),
+   "cast": [BET_VIK, BET_CHOTU], "layout": "manual",
+   "titleCard": {"label": "The bet", "word": "His trophy", "at": 0.8, "duration": 1.25},
    "sfx": [{"name": "metal-clang", "at": 0.35}]},
-  # 7 INSERT: the engraving "VIK #1"
-  {"id": "insert-engraving", "set": "lab", "fx": {"lab": {"trophy": "bench", "sabre": "scanner"}},
-   "camera": {"type": "dolly", "from": [2.98, 1.12, 0.92], "to": [3.0, 1.09, 0.72], "look": [3.12, 1.04, 0.27], "fov": 34},
-   "dof": 1.6, "focusDist": 0.48,
-   "sfx": [{"name": "metal-ting", "at": 0.3}]},
-  # 8 the bet: Vik proud, Chotu gasps; card
-  {"id": "the-bet", "beat": 2, "stillAt": 0.9, "set": "lab", "fx": {"lab": {"trophy": "bench", "sabre": "scanner"}},
-   "camera": {"type": "dolly", "from": [2.45, 1.3, 4.9], "to": [2.5, 1.3, 4.3], "look": [2.5, 1.25, 0.3], "fov": 44},
-   "cast": [c(VIK, pose="proud", pos=[3.55, 0.35], facing=-1), c(CHOTU, pose="gasp", pos=[1.45, 0.75], facing=1)], "layout": "manual",
-   "titleCard": {"label": "The bet", "word": "His trophy", "at": 0.1, "duration": 1.45}},
-  # 9 Try 1: folding at the press (wide)
-  {"id": "try1-press", "set": "lab", "fx": {"lab": {"pressBar": "hot-folded", "pressHits": [0.35, 1.05]}},
-   "camera": {"type": "dolly", "from": [-1.15, 1.45, 3.7], "to": [-1.5, 1.4, 3.05], "look": [-2.3, 1.15, 0.9], "lookTo": [-2.4, 1.1, 0.9], "fov": 44},
-   "cast": [c(VIK_APRON, pose="hammer", pos=[-1.85, 1.15], facing=-1, holding="hammer", delay=-0.55)], "layout": "manual",
-   "titleCard": {"label": "Try 1", "word": "Folding", "at": 0.05, "duration": 2.6},
-   "sfx": [{"name": "press-thump", "at": 0.35}, {"name": "press-thump", "at": 1.05}]},
-  # 10 fold, hammer, fold: close on the glowing striped bar under the press
-  {"id": "try1-fold", "set": "lab", "fx": {"lab": {"pressBar": "hot-folded", "pressHits": [0.2, 0.7, 1.2]}},
-   "camera": {"type": "dolly", "from": [-2.25, 1.05, 1.95], "to": [-2.42, 0.98, 1.6], "look": [-2.7, 0.82, 0.9], "fov": 40},
-   "roll": [3, -1], "titleCard": {"label": "Try 1", "word": "Folding", "at": 0, "duration": 1.45, "intro": False},
-   "sfx": [{"name": "press-thump", "at": 0.2}, {"name": "anvil", "at": 0.7}, {"name": "press-thump", "at": 1.2}]},
-  # 11 INSERT (overhead): straight stripes vs the flowing waves, side by side
-  {"id": "insert-stripes", "beat": 3, "stillAt": 1.2, "set": "lab", "fx": {"lab": {"benchItems": ["folded-bar", "sabre"]}},
-   "camera": {"type": "dolly", "from": [2.12, 1.95, 0.42], "to": [2.18, 1.82, 0.38], "look": [2.15, 0.95, 0.14], "lookTo": [2.18, 0.95, 0.12], "fov": 40},
-   "roll": [92, 88],
-   "titleCard": {"label": "Try 1", "word": "Folding", "at": 0, "duration": 2.4, "crossed": True, "crossAt": 1.9, "intro": False}},
-  # 12 Try 2: Vik unboxes the purest iron like a prize
-  {"id": "try2-unbox", "set": "lab", "fx": {"lab": {"benchItems": ["pure-box"], "boxOpenAt": 0.85}},
-   "camera": {"type": "dolly", "from": [2.85, 1.55, 2.9], "to": [2.95, 1.5, 2.15], "look": [2.75, 1.35, 0.2], "lookTo": [2.8, 1.3, 0.2], "fov": 44},
-   "cast": [c(VIK, pose="present", pos=[3.55, 0.35], facing=-1)], "layout": "manual",
-   "titleCard": {"label": "Try 2", "word": "Pure iron", "at": 0.1, "duration": 2.8},
-   "sfx": [{"name": "box-open", "at": 0.85}, {"name": "shimmer", "at": 1.25}]},
-  # 13 INSERT then reaction: the finished blade is blank; Vik's smile drops
-  {"id": "try2-blank", "set": "lab", "fx": {"lab": {"benchItems": ["blank-blade", "pure-bar"]}},
-   "camera": {"type": "dolly", "from": [1.95, 1.3, 1.25], "to": [2.35, 1.6, 2.0], "look": [2.05, 0.97, 0.24], "lookTo": [3.1, 1.75, 0.3], "fov": 40},
-   "cast": [c(VIK, pose="proud", pos=[3.55, 0.35], facing=-1, poses=[{"at": 0.85, "pose": "deadpan"}])], "layout": "manual",
-   "titleCard": {"label": "Try 2", "word": "Pure iron", "at": 0, "duration": 1.75, "crossed": True, "crossAt": 0.6, "intro": False}},
-  # 14 Try 3: the old recipe (Chotu holds the parchment), crucible by the furnace
-  {"id": "try3-recipe", "set": "lab", "fx": {"lab": {"furnace": 0.8, "benchItems": ["crucible"], "dial": [0.5, 0.6]}},
-   "camera": {"type": "dolly", "from": [0.75, 1.35, 2.6], "to": [0.4, 1.35, 2.05], "look": [-1.6, 1.15, -1.0], "lookTo": [-1.7, 1.1, -1.0], "fov": 44},
-   "cast": [c(CHOTU, pose="present", pos=[-0.55, 0.45], facing=-1, holding="parchment"), c(VIK_APRON, pose="point", pos=[-2.05, -0.3], facing=1)], "layout": "manual",
-   "titleCard": {"label": "Try 3", "word": "The recipe", "at": 0.05, "duration": 1.75}},
-  # 15 INSERT: same heat (the furnace dial climbs)
-  {"id": "try3-dial", "set": "lab", "fx": {"lab": {"furnace": 1, "dial": [0.25, 0.9]}},
-   "camera": {"type": "dolly", "from": [-2.3, 1.22, -0.4], "to": [-2.42, 1.2, -0.62], "look": [-2.5, 1.12, -1.13], "fov": 36},
-   "dof": 1.4, "focusDist": 0.6, "roll": [-2, 2],
-   "titleCard": {"label": "Try 3", "word": "The recipe", "at": 0, "duration": 1.6, "intro": False}},
-  # 16 INSERT: crack the crucible: a plain cake. Blank.
-  {"id": "try3-crack", "set": "lab", "fx": {"lab": {"furnace": 0.6, "benchItems": ["cracked"], "crackAt": 0.98}},
-   "camera": {"type": "dolly", "from": [-1.3, 1.3, -0.5], "to": [-1.4, 1.2, -0.7], "look": [-1.55, 0.98, -1.2], "fov": 36},
-   "dof": 1.4, "focusDist": 0.6,
-   "titleCard": {"label": "Try 3", "word": "The recipe", "at": 0, "duration": 1.6, "crossed": True, "crossAt": 1.0, "intro": False},
-   "sfx": [{"name": "crucible-crack", "at": 0.98}]},
-  # 17 the forge door creaks open: warm light floods the cold lab, Dada in the doorway
-  {"id": "door-dada", "set": "lab", "fx": {"lab": {"door": [0, 1], "doorAt": 0.1, "sabre": "scanner"}},
-   "camera": {"type": "dolly", "from": [-0.6, 1.3, 4.2], "to": [-0.75, 1.35, 3.2], "look": [-0.9, 1.25, -3.6], "fov": 46},
-   "cast": [c(DADA_SMITH, pose="nod", pos=[-1.0, -3.35], facing=1, appearAt=0.45),
-            c(CHOTU, pose="look-up", pos=[-2.35, -0.6], facing=1), c(VIK, pose="shock", pos=[0.85, -0.9], facing=-1)], "layout": "manual",
-   "sfx": [{"name": "gate-creak", "at": 0.1}]},
-  # 18 INSERT: Dada's palm opens: a pinch of dark, glittering dirt
-  {"id": "insert-palm", "beat": 4, "stillAt": 2.0, "set": "lab", "fx": {"lab": {"door": [1, 1], "sabre": "scanner"},
-   "hand": {"pos": [-0.9, 1.02, -2.55], "rot": [0.35, -PI / 2, 0], "s": 2.2, "open": [0, 1], "openAt": 0.2, "grit": True, "sleeve": "#D29A72"}},
-   "camera": {"type": "dolly", "from": [-0.82, 1.5, -1.85], "to": [-0.86, 1.42, -2.02], "look": [-0.9, 1.04, -2.6], "fov": 38},
-   "dof": 1.5, "focusDist": 0.62,
-   "sfx": [{"name": "grit-trickle", "at": 0.6}]},
-  # 19 the ore hills of India (wide pan)
-  {"id": "hill-wide", "set": "hillside", "fx": {"hill": {"furnace": True}},
-   "camera": {"type": "dolly", "from": [-2.4, 1.6, 6.6], "to": [1.1, 1.7, 6.2], "look": [-0.6, 1.4, -2.2], "lookTo": [0.7, 1.3, -2.2], "fov": 46},
-   "titleCard": {"label": "Wootz steel", "word": "India", "at": 0.1, "duration": 2.0}},
-  # 20 INSERT: a clay crucible glowing in the village furnace
-  {"id": "insert-crucible", "set": "hillside", "fx": {"hill": {"furnace": True}},
-   "camera": {"type": "dolly", "from": [1.8, 0.55, 2.35], "to": [1.6, 0.45, 2.0], "look": [1.4, 0.25, 1.26], "fov": 38},
-   "dof": 1.4, "focusDist": 0.8,
-   "sfx": [{"name": "sizzle", "at": 0.2}]},
-  # 21 Dada shows the dark ore seams in the red rock
-  {"id": "ore-seams", "set": "hillside", "fx": {"hill": {"furnace": True}},
-   "camera": {"type": "dolly", "from": [0.7, 1.25, 2.5], "to": [0.35, 1.2, 1.8], "look": [-0.7, 1.15, -2.6], "lookTo": [-0.8, 1.1, -2.6], "fov": 44},
-   "cast": [c(DADA_SMITH, pose="point", pos=[-1.7, -1.55], facing=1)], "layout": "manual"},
-  # 22 INSERT: tiny violet-silver specks glint in the ore (vanadium)
-  {"id": "insert-vanadium", "set": "hillside", "fx": {"hill": {"furnace": True}, "orePot": {"pos": [-0.4, 0.32, 1.0], "s": 1.4, "specks": 9, "glintAt": 0.35}},
+  {"id": "pause-engraving", "set": "lab", "fx": {"lab": {"trophy": "bench", "sabre": "scanner"}},
+   "camera": {"type": "dolly", "from": [2.5, 1.1, 0.72], "to": [2.52, 1.08, 0.62], "look": [2.62, 1.03, 0.28], "fov": 34}, "dof": 1.6, "focusDist": 0.42,
+   "sfx": [{"name": "metal-ting", "at": 0.05}]},
+  # line 4: folding at the press, push in to the bar's straight stripes; card crossed on "stripes"
+  {"id": "try1-folding", "set": "lab", "fx": {"lab": {"pressBar": "hot-folded", "pressHits": [0.55, 1.45, 2.35]}},
+   "camera": path(press_w, {"to": [-2.85, 1.0, 2.05], "look": [-2.7, 0.82, 0.9]}),
+   "cast": [PRESS_VIK], "layout": "manual",
+   "titleCard": {"label": "Try 1", "word": "Folding", "at": 0.1, "duration": round(R["try1-folding"][1] - R["try1-folding"][0] - 0.15, 2), "crossed": True, "crossAt": rel("try1-folding", word_t("stripes")) - 0.1},
+   "sfx": [{"name": "press-thump", "at": 0.55}, {"name": "anvil", "at": 1.45}, {"name": "press-thump", "at": 2.35}]},
+  # line 5: the purest iron comes out of the box; the finished blade on the bench is blank; Vik's smile drops on "vanish"
+  {"id": "try2-pure-iron", "set": "lab", "fx": {"lab": {"benchItems": ["pure-box", "blank-blade-front"], "boxOpenAt": 0.5}},
+   "camera": path(pure_w, pure_c),
+   "cast": [c(PURE_VIK, poses=[{"at": rel("try2-pure-iron", word_t("vanish")), "pose": "deadpan"}])], "layout": "manual",
+   "titleCard": {"label": "Try 2", "word": "Pure iron", "at": 0.1, "duration": round(R["try2-pure-iron"][1] - R["try2-pure-iron"][0] - 0.15, 2), "crossed": True, "crossAt": rel("try2-pure-iron", word_t("vanish"))},
+   "sfx": [{"name": "box-open", "at": 0.5}, {"name": "shimmer", "at": 0.9}]},
+  # line 6: the old recipe; push from the wide to the crucible, which cracks open on "blank"
+  {"id": "try3-recipe", "beat": 3, "stillAt": rel("try3-recipe", word_t("blank", T(6))) + 0.35, "set": "lab",
+   "fx": {"lab": {"furnace": 0.9, "dial": [0.4, 0.9], "benchItems": ["cracked"], "crackAt": rel("try3-recipe", word_t("blank", T(6)))}},
+   "camera": path(rec_w, {"to": [-1.25, 1.35, -0.15], "look": [-1.55, 0.98, -1.2]}),
+   "cast": [REC_CHOTU, REC_VIK], "layout": "manual",
+   "titleCard": {"label": "Try 3", "word": "The recipe", "at": 0.1, "duration": round(R["try3-recipe"][1] - R["try3-recipe"][0] - 0.15, 2), "crossed": True, "crossAt": rel("try3-recipe", word_t("blank", T(6)))},
+   "sfx": [{"name": "crucible-crack", "at": rel("try3-recipe", word_t("blank", T(6)))}]},
+  # line 7: the forge door opens, Dada; push in to his open palm full of dark dirt
+  {"id": "dada-dirt", "beat": 4, "stillAt": rel("dada-dirt", word_t("dirt")), "set": "lab",
+   "fx": {"lab": {"door": [0, 1], "doorAt": 0.1, "sabre": "scanner"},
+          "hand": {"pos": HAND, "rot": [0.35, -PI / 2, 0], "s": 1.6, "open": [0, 1], "openAt": rel("dada-dirt", word_t("hand")), "grit": True, "sleeve": "#D29A72"}},
+   "camera": path(door_w, {"to": [HAND[0] + 0.1, HAND[1] + 0.48, HAND[2] + 0.4], "look": [HAND[0], HAND[1] + 0.03, HAND[2]]}, fov=44),
+   "cast": [DOOR_DADA, DOOR_CHOTU, DOOR_VIK], "layout": "manual",
+   "sfx": [{"name": "gate-creak", "at": 0.1}, {"name": "grit-trickle", "at": rel("dada-dirt", word_t("pinch"))}]},
+  # line 8: India's ore hills, Dada at the ore seams, then down into the ore: violet specks of vanadium
+  {"id": "india-vanadium", "set": "hillside", "fx": {"hill": {"furnace": True}, "orePot": {"pos": [-0.4, 0.32, 1.0], "s": 1.4, "specks": 9, "glintAt": rel("india-vanadium", word_t("traces", T(8)))}},
    "props": [{"type": "block", "pos": [-0.4, 0, 1.0], "scale": 0.4, "color": "#C98F68"}],
-   "camera": {"type": "dolly", "from": [-0.4, 0.86, 1.55], "to": [-0.4, 0.74, 1.36], "look": [-0.4, 0.48, 1.0], "fov": 36},
-   "dof": 1.4, "focusDist": 0.45,
-   "titleCard": {"label": "Vanadium", "word": "Tiny traces", "at": 0.3, "duration": 1.5},
-   "sfx": [{"name": "shimmer", "at": 0.35}]},
-  # 23 (silent) reaction: Vik's jaw drops, Chotu stares
-  {"id": "reaction", "set": "lab", "fx": {"lab": {"door": [1, 1], "sabre": "scanner"}},
-   "camera": {"type": "dolly", "from": [-0.1, 1.35, 3.0], "to": [-0.1, 1.33, 2.75], "look": [-0.1, 1.3, -0.8], "fov": 44},
-   "cast": [c(CHOTU, pose="look-up", pos=[-0.75, -0.4], facing=1), c(VIK, pose="shock", pos=[0.6, -0.8], facing=-1)], "layout": "manual"},
-  # 24 the smith hammers the glowing cake
-  {"id": "forge-hammer", "set": "forge", "grade": "flashback", "fx": {"forgeLumps": False, "cake": {"strikes": [0.9]}},
-   "camera": {"type": "fit", "angleDeg": 24, "orbitDeg": 14, "push": 0.2},
-   "cast": [c(DADA_SMITH, pose="hammer", pos=[0, 0], facing=1, holding="hammer")],
-   "sfx": [{"name": "anvil", "at": 0.9}]},
-  # 25 INSERT: bands appear in the hot steel with each strike
-  {"id": "insert-bands", "beat": 5, "stillAt": 2.6, "set": "forge", "grade": "flashback",
-   "fx": {"forgeLumps": False, "forgeClose": True, "cake": {"strikes": [0.45, 1.35, 2.25]}, "hammerHead": {"strikes": [0.45, 1.35, 2.25]},
-          "sparks": {"pos": [0.72, 0.6, 0.12], "times": [0.45, 1.35, 2.25], "color": "#FFD76A"}},
-   "camera": {"type": "dolly", "from": [1.02, 0.95, 0.78], "to": [0.94, 0.88, 0.62], "look": [0.72, 0.57, 0.12], "lookTo": [0.72, 0.57, 0.12], "fov": 38},
-   "roll": [-2, 1], "dof": 1.8, "focusDist": 0.62,
-   "sfx": [{"name": "anvil", "at": 0.45}, {"name": "anvil", "at": 1.35}, {"name": "anvil", "at": 2.25}, {"name": "sizzle", "at": 0.5}]},
-  # 26 INSERT (overhead): no traces, no swirls: blank vs swirled, Dada's finger
-  {"id": "insert-compare", "set": "forge", "grade": "flashback",
+   "camera": {"type": "dolly", "from": [-2.4, 1.6, 6.6], "to": [-0.4, 0.74, 1.36], "look": [-0.6, 1.3, -2.2], "lookTo": [-0.4, 0.48, 1.0], "fov": 44},
+   "cast": [HILL_DADA], "layout": "manual",
+   "titleCards": [{"label": "Wootz steel", "word": "India", "at": 0.3, "duration": 2.6},
+                  {"label": "Vanadium", "word": "Tiny traces", "at": rel("india-vanadium", word_t("traces", T(8))) - 0.1, "duration": round(R["india-vanadium"][1] - word_t("traces", T(8)), 2)}],
+   "sfx": [{"name": "shimmer", "at": rel("india-vanadium", word_t("traces", T(8)))}]},
+  # (pause) silent reaction
+  {"id": "pause-reaction", "set": "lab", "fx": {"lab": {"door": [1, 1], "sabre": "scanner"}},
+   "camera": frame(body(c(CHOTU, pos=[-1.1, 1.3])) + body(c(VIK, pos=[0.35, 1.25]), crop=0.4), az=0, el=3, fov=44, push=0.05, swing=1),
+   "cast": [c(CHOTU, pose="look-up", pos=[-1.1, 1.3], facing=1), c(VIK, pose="shock", pos=[0.35, 1.25], facing=-1)], "layout": "manual"},
+  # line 9a: the smith hammers; push into the cake as bands appear with each strike
+  {"id": "smith-bands", "beat": 5, "stillAt": rel("smith-bands", word_t("bands")) + 0.3, "set": "forge", "grade": "flashback",
+   "fx": {"forgeLumps": False, "cake": {"strikes": strikes}, "sparks": {"pos": [0.72, 0.6, 0.12], "times": strikes, "color": "#FFD76A"}},
+   "camera": {"type": "dolly", "from": [1.9, 1.35, 3.4], "to": [0.98, 0.86, 0.64], "look": [0.35, 0.9, 0.1], "lookTo": [0.72, 0.57, 0.12], "fov": 42},
+   "cast": [FORGE_DADA],
+   "sfx": [{"name": "anvil", "at": t} for t in strikes if t < R["smith-bands"][1] - R["smith-bands"][0]] + [{"name": "sizzle", "at": strikes[0] + 0.05}]},
+  # line 9b: no traces, no swirls (overhead, Dada's finger)
+  {"id": "no-traces", "set": "forge", "grade": "flashback",
    "fx": {"forgeLumps": False, "noSparks": True, "anvilBlades": True,
           "hand": {"pos": [0.98, 0.66, 0.52], "rot": [0, 0.2, PI], "s": 1.3, "point": True, "sleeve": "#D29A72"}},
-   "camera": {"type": "dolly", "from": [0.8, 1.62, 0.62], "to": [0.78, 1.5, 0.55], "look": [0.8, 0.57, 0.14], "fov": 40},
-   "roll": [91, 88]},
-  # 27 around 1750 the mines ran dry: the last basket scrapes bare rock
+   "camera": {"type": "dolly", "from": [0.8, 1.62, 0.62], "to": [0.78, 1.5, 0.55], "look": [0.8, 0.57, 0.14], "fov": 40}, "roll": [91, 88]},
+  # line 10: the mines ran dry
   {"id": "mines-dry", "set": "hillside", "fx": {"hill": {"empty": True, "scrape": [-1.6, 0.6], "dust": True}},
    "camera": {"type": "dolly", "from": [0.1, 0.95, 1.4], "to": [0.4, 1.7, 5.4], "look": [-0.3, 0.6, -2.4], "lookTo": [0.0, 1.2, -2.4], "fov": 44},
-   "titleCard": {"label": "Mines ran dry", "word": "~1750", "at": 0.2, "duration": 2.6},
-   "sfx": [{"name": "coin-scrape", "at": 0.4}, {"name": "coin-scrape", "at": 1.5}]},
-  # 28 the recipe died: the forge goes dark, the last ember fades
-  {"id": "forge-dark", "set": "forge", "light": "forge", "lightTo": "forge-dark", "mixAt": [0.2, 1.7], "grade": "flashback",
-   "fx": {"forgeLumps": False, "noSparks": True, "forgeGlow": [1, 0.2], "cake": {"strikes": [], "glow": [0.9, 0.12]}},
-   "camera": {"type": "dolly", "from": [1.9, 1.15, 2.6], "to": [1.6, 1.05, 2.0], "look": [0.6, 0.8, 0.1], "fov": 44},
-   "cast": [c(DADA_SMITH, pose="idle", pos=[-0.05, 0.1], facing=1)], "layout": "manual",
-   "sfx": [{"name": "sizzle", "at": 0.2}]},
-  # 29 the bet collected: Vik's trophy melts, Vik peeks through his fingers
-  {"id": "trophy-melts", "set": "lab", "fx": {"lab": {"trophy": "melt", "melt": [0.05, 0.9], "sabre": "scanner"}},
-   "camera": {"type": "dolly", "from": [0.55, 1.4, 2.3], "to": [1.05, 1.6, 2.9], "look": [0.5, 1.0, 0.9], "lookTo": [1.1, 1.45, 0.7], "fov": 44},
-   "cast": [c(VIK, pose="peek", pos=[1.55, 0.55], facing=-1), c(CHOTU, pose="gasp", pos=[-0.45, 1.25], facing=1)], "layout": "manual",
+   "titleCard": {"label": "Mines ran dry", "word": "~1750", "at": 0.2, "duration": 3.0},
+   "sfx": [{"name": "coin-scrape", "at": 0.4}, {"name": "coin-scrape", "at": 1.8}]},
+  # (pause) the secret went with them: the forge's last ember fades
+  {"id": "pause-forge-dark", "set": "forge", "light": "forge", "lightTo": "forge-dark", "mixAt": [0.0, 0.5], "grade": "flashback",
+   "fx": {"forgeLumps": False, "noSparks": True, "forgeGlow": [0.6, 0.15], "cake": {"strikes": [], "glow": [0.5, 0.08]}},
+   "camera": frame(body(c(DADA_SMITH, pos=[-0.05, 0.1])) + [[0.72, 0.6, 0.12], [1.0, 0.56, 0.12]], az=28, el=4, fov=44, push=0.06),
+   "cast": [c(DADA_SMITH, pose="idle", pos=[-0.05, 0.1], facing=1)], "layout": "manual"},
+  # line 11: the trophy melts down; ding on "swirl"
+  {"id": "trophy-melts", "beat": 6, "stillAt": rel("trophy-melts", word_t("swirl", T(11))), "set": "lab", "fx": {"lab": {"trophy": "melt", "melt": [0.05, 0.95], "sabre": "scanner"}},
+   "camera": melt_w | {"from": [round(melt_w["to"][0] - 0.3, 3), melt_w["to"][1] - 0.15, round(melt_w["to"][2] - 0.9, 3)]},
+   "cast": [MELT_VIK, MELT_CHOTU], "layout": "manual", "payoff": True, "payoffAt": rel("trophy-melts", word_t("swirl", T(11))),
    "sfx": [{"name": "molten-pour", "at": 0.1}]},
-  # 30 INSERT: the trophy ingot: shiny, plain, no swirl (next to the real thing)
-  {"id": "insert-ingot", "beat": 6, "stillAt": 1.0, "set": "lab", "fx": {"lab": {"benchItems": ["ingot", "sabre"]}},
-   "camera": {"type": "dolly", "from": [3.0, 1.32, 1.0], "to": [2.88, 1.2, 0.8], "look": [2.62, 0.98, 0.3], "fov": 38},
-   "dof": 1.4, "focusDist": 0.6},
-  # 31 Vik, deadpan. Ding.
-  {"id": "vik-deadpan", "payoff": True, "payoffAt": 0.43, "set": "lab", "fx": {"lab": {"benchItems": ["ingot", "sabre"]}},
-   "camera": {"type": "fit", "focus": ["vik"], "crop": 0.42, "band": [0.12, 0.88], "angleDeg": -8, "orbitDeg": 3, "push": 0.06},
+  # (pause) Vik, deadpan
+  {"id": "pause-deadpan", "set": "lab", "fx": {"lab": {"benchItems": ["ingot", "sabre"]}},
+   "camera": {"type": "fit", "focus": ["vik"], "crop": 0.42, "band": [0.12, 0.88], "angleDeg": -8, "orbitDeg": 2, "push": 0.04},
    "cast": [c(VIK, pose="deadpan", pos=[3.55, 0.35], facing=-1)]},
-  # 32 back in the lab: Chotu brings the sabre to the scanner
-  {"id": "chotu-places", "set": "lab", "fx": {"lab": {"laser": 0, "sabre": "none", "screens": "scan"}},
-   "camera": {"type": "dolly", "from": [0.9, 1.3, 3.6], "to": [0.7, 1.3, 3.0], "look": [0.3, 1.1, 0.0], "fov": 44},
-   "cast": [c(CHOTU, pose="point", pos=[-0.35, 0.75], facing=1, holding="sabre", enter={"from": [-1.6, 1.3], "at": 0, "dur": 1.0}), VIK_HOOK], "layout": "manual",
-   "sfx": [{"name": "footsteps-stone", "at": 0, "dur": 1.0}]},
-  # 33 the laser powers up again: push-in that lands exactly on frame 1 (loop)
+  # line 12: the laser powers up again; lands exactly on frame 1 (loop)
   {"id": "loop-laser", "set": "lab", "fx": {"lab": {"laser": 1, "laserSweep": [-0.3, -0.3], "sabre": "scanner", "screens": "scan"}},
-   "camera": {"type": "dolly", "from": [-0.55, 1.3, 3.4], "to": HOOK_CAM_A, "look": [0.32, 1.3, 0.0], "lookTo": HOOK_LOOK_A, "fov": 42},
+   "camera": {"type": "dolly", "from": [round(HOOK["from"][0] - 0.35, 3), HOOK["from"][1] - 0.04, round(HOOK["from"][2] + 0.7, 3)], "to": HOOK["from"], "look": HOOK["look"], "fov": 42},
    "cast": [VIK_HOOK], "layout": "manual", "roll": [3.5, 2],
-   "sfx": [{"name": "laser-hum", "at": 0.15, "dur": 2.0}]},
+   "sfx": [{"name": "laser-hum", "at": 0.1, "dur": round(R["loop-laser"][1] - R["loop-laser"][0], 2)}]},
 ]
 
-# ---------------- framing (auto-fit; see frame()) ----------------
-S = {s["id"]: s for s in shots}
-def cast(i): return S[i]["cast"]
-SABRE_SCAN = [[-0.36, 0.95, 0.05], [0.55, 0.95, -0.17]]
-HOOK = frame(SABRE_SCAN + [[-0.3, 1.62, 0], [0.82, 2.27, 0.62], [1.1, 1.4, 0.62], [0.55, 1.4, 0.62]], az=-22, el=-2, fov=42, push=0.22, swing=-5, box=(0.06, 0.94, 0.05, 0.9))
-S["hook-laser"]["camera"] = HOOK
-S["macro-blade"]["camera"] = {"type": "dolly", "from": [-0.2, 1.3, 0.42], "to": [0.26, 1.35, 0.36], "look": [-0.16, 1.18, -0.02], "lookTo": [0.3, 1.24, -0.06], "fov": 36}
-S["macro-blade"]["focusDist"] = 0.5
-# the last shot lands exactly on frame 1's camera (loop)
-S["loop-laser"]["camera"] = {"type": "dolly", "from": [round(HOOK["from"][0] - 0.35, 3), HOOK["from"][1] - 0.04, round(HOOK["from"][2] + 0.7, 3)],
-                             "to": HOOK["from"], "look": HOOK["look"], "fov": 42}
-S["loop-laser"]["roll"] = [3.5, 2]   # shot 1 starts at roll 2
-S["monitors-error"]["cast"][0]["pos"] = [2.55, -1.9]
-S["monitors-error"]["camera"] = frame([[1.05, 1.95, -3.32], [2.3, 1.5, -3.32], [1.05, 1.5, -3.32]] + body(S["monitors-error"]["cast"][0], crop=0.6), az=38, el=-2, fov=44, push=0.12)
-S["trophy-slam"]["cast"] = [c(VIK, pose="slam", pos=[3.3, 0.45], facing=-1), c(CHOTU, pose="idle", pos=[1.75, 0.8], facing=1, poses=[{"at": 0.4, "pose": "shock"}])]
-S["trophy-slam"]["camera"] = frame([[2.65, 1.45, 0.15], [2.65, 0.95, 0.15]] + body(cast("trophy-slam")[0], crop=0.35) + body(cast("trophy-slam")[1]), az=4, el=4, fov=44, push=0.25)
-# engraving: plate faces (-0.25, 0, 0.97)
-S["insert-engraving"]["camera"] = {"type": "dolly", "from": [2.5, 1.1, 0.76], "to": [2.53, 1.07, 0.6], "look": [2.62, 1.03, 0.28], "fov": 34}
-S["the-bet"]["cast"] = [c(VIK, pose="proud", pos=[3.3, 0.45], facing=-1), c(CHOTU, pose="gasp", pos=[1.75, 0.8], facing=1)]
-S["the-bet"]["camera"] = frame([[2.65, 1.45, 0.15]] + body(cast("the-bet")[0]) + body(cast("the-bet")[1]), az=-6, el=4, fov=44, push=0.1)
-S["try1-press"]["cast"][0]["pos"] = [-1.95, 1.2]
-S["try1-press"]["camera"] = frame([[-2.7, 0.75, 0.9], [-2.7, 2.35, 0.9], [-3.2, 1.2, 0.9]] + body(cast("try1-press")[0], crop=0.3), az=10, el=0, fov=44, push=0.15)
-S["try1-fold"]["camera"] = {"type": "dolly", "from": [-2.2, 1.15, 2.4], "to": [-2.35, 1.08, 2.05], "look": [-2.7, 0.85, 0.9], "fov": 40}
-S["try2-unbox"]["cast"][0]["pos"] = [3.3, 0.45]
-S["try2-unbox"]["camera"] = frame([[2.15, 1.0, 0.0], [2.45, 1.3, 0.0]] + body(cast("try2-unbox")[0], crop=0.4), az=-8, el=2, fov=44, push=0.2)
-S["try2-blank"]["cast"][0]["pos"] = [3.3, 0.45]
-S["try2-blank"]["camera"] = frame([[1.85, 0.96, 0.32], [2.75, 0.96, 0.15]] + body(cast("try2-blank")[0], crop=0.55), az=-10, el=16, fov=42, push=0.12)
-S["try3-recipe"]["cast"] = [c(CHOTU, pose="present", pos=[-0.75, 0.2], facing=-1, holding="parchment"), c(VIK_APRON, pose="point", pos=[-2.0, -0.35], facing=1)]
-S["try3-recipe"]["camera"] = frame([[-1.55, 1.0, -1.2], [-2.5, 0.6, -1.15], [-2.5, 1.35, -1.15]] + body(cast("try3-recipe")[0]) + body(cast("try3-recipe")[1], crop=0.3), az=14, el=2, fov=44, push=0.12)
-S["try3-crack"]["camera"] = {"type": "dolly", "from": [-1.15, 1.45, 0.1], "to": [-1.25, 1.35, -0.15], "look": [-1.55, 0.98, -1.2], "fov": 36}
-S["try3-crack"]["focusDist"] = 1.1
-# door: Dada in the doorway at the back left, Chotu and Vik turn
-S["door-dada"]["cast"] = [c(DADA_SMITH, pose="nod", pos=[-3.6, -3.35], facing=1, appearAt=0.45),
-                          c(CHOTU, pose="look-up", pos=[-4.35, -1.0], facing=1), c(VIK, pose="shock", pos=[-2.55, -0.85], facing=-1)]
-S["door-dada"]["camera"] = frame([[-4.35, 2.6, -3.8], [-2.85, 0.0, -3.8]] + body(cast("door-dada")[1]) + body(cast("door-dada")[2]), az=-6, el=3, fov=46, push=0.18, swing=0)
-S["insert-palm"]["fx"]["hand"]["pos"] = [-3.3, 1.02, -1.4]
-S["insert-palm"]["camera"] = {"type": "dolly", "from": [-3.0, 1.5, -0.62], "to": [-3.08, 1.42, -0.8], "look": [-3.3, 1.04, -1.45], "fov": 38}
-S["insert-crucible"]["camera"] = {"type": "dolly", "from": [2.0, 0.75, 3.0], "to": [1.8, 0.62, 2.6], "look": [1.4, 0.35, 1.0], "fov": 40}
-S["ore-seams"]["camera"] = frame([[-0.4, 0.8, -2.65], [-0.2, 2.0, -2.65]] + body(cast("ore-seams")[0]), az=12, el=3, fov=44, push=0.12)
-S["reaction"]["cast"] = [c(CHOTU, pose="look-up", pos=[-1.1, 1.3], facing=1), c(VIK, pose="shock", pos=[0.35, 1.25], facing=-1)]
-S["reaction"]["camera"] = frame(body(cast("reaction")[0]) + body(cast("reaction")[1], crop=0.4), az=0, el=3, fov=44, push=0.05, swing=1)
-S["trophy-melts"]["cast"] = [c(VIK, pose="peek", pos=[1.35, 0.85], facing=-1), c(CHOTU, pose="gasp", pos=[-0.4, 1.15], facing=1)]
-S["trophy-melts"]["camera"] = frame([[0.5, 0.75, 0.9], [0.5, 1.15, 0.9]] + body(cast("trophy-melts")[0], crop=0.3) + body(cast("trophy-melts")[1], crop=0.5), az=4, el=6, fov=44, push=0.2)
-S["chotu-places"]["cast"][0]["pos"] = [-0.45, 0.75]
-S["chotu-places"]["camera"] = frame(SABRE_SCAN + body(cast("chotu-places")[0]) + body(VIK_HOOK, crop=0.3), az=-6, el=3, fov=44, push=0.15)
-
-S["forge-dark"]["camera"] = frame(body(cast("forge-dark")[0]) + [[0.72, 0.6, 0.12], [1.0, 0.56, 0.12]], az=28, el=4, fov=44, push=0.15)
-S["insert-stripes"]["camera"] = {"type": "dolly", "from": [2.15, 1.85, 0.42], "to": [2.18, 1.74, 0.38], "look": [2.15, 0.95, 0.18], "lookTo": [2.18, 0.95, 0.17], "fov": 40}
-S["try1-fold"]["camera"] = {"type": "dolly", "from": [-2.25, 1.0, 2.3], "to": [-2.38, 0.95, 1.95], "look": [-2.7, 0.8, 0.9], "fov": 40}
-S["insert-ingot"]["camera"] = {"type": "dolly", "from": [2.75, 1.4, 1.15], "to": [2.7, 1.3, 0.95], "look": [2.5, 0.97, 0.25], "fov": 40}
-
-assert len(shots) == len(cuts) - 1, (len(shots), len(cuts))
+assert [s["id"] for s in shots] == [x[0] for x in seg]
+FPS = 30
+fr = [round(b * FPS) for _, _, b in seg]
 for i, s in enumerate(shots):
-    s["duration"] = round(cuts[i + 1] - cuts[i], 2)
-    for e in s.get("sfx", []):
-        e.setdefault("at", 0)
-
+    s["duration"] = round((fr[i] - (fr[i - 1] if i else 0)) / FPS, 4)
+    path_ok(s.get("camera", {}), s.get("cast", []), s["id"])
 L = {"slug": "02-damascus-steel", "title": "Why Nobody Can Copy This Ancient Sword", "audio": "vo/02-damascus-steel.mp3",
      "music": False, "sfx": False,  # soundtrack is mixed by scripts/mix.py (strict CLAUDE.md levels), not in Remotion
      "payoffHold": 0.5, "shots": shots}
 (ROOT / "src/shots/02-damascus-steel.json").write_text(json.dumps(L, indent=1, ensure_ascii=False))
-print(len(shots), "shots,", cuts[-1], "s + 0.5 s hold; max shot", max(s["duration"] for s in shots), "s; min", min(s["duration"] for s in shots))
+print(len(shots), "shots,", round(sum(s["duration"] for s in shots), 2), "s + 0.5 s hold;", " ".join(f"{s['id']}:{s['duration']:.2f}" for s in shots))

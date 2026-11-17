@@ -58,7 +58,7 @@ with CLAUDE.md before starting any Short; check each section before showing stil
     each 400 ms window stays >= 6 dB under the voice (`checks.sfx_windows_within_6dB_of_voice == 0`);
   - rain -32 LUFS, peaks <= -24 dBFS, fading out at the first cut;
   - nothing peaks above the voice (`peak_check`).
-- Voice: eleven_v3 + Charlie (stability Creative) with audio tags; max 3 takes; `trim_silence.py` trims silent gaps
+- Voice: Chatterbox original model, built-in default voice, seed 1750 (voice.json); rendered line by line with per-line exaggeration (`vo_lines.py`), max 3 tries per line; never speed up
   only (laughs/scoffs stay). Don't speed the voice up beyond what was approved.
 
 ## 6. Rendering pitfalls
@@ -88,9 +88,11 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 5. Commit and push after every step; send the files.
 
 ## 8. Script & story (from the Storytelling playbook)
-- Charlie reads faster than Liam did: words per minute is re-measured from the Short #2 full take (WPM_TBD).
+- Chatterbox voice (cfg 0.3, seed 1750) reads ~181 wpm overall incl. pauses (214 wpm speech only): 157 words = 52 s, so ~175 words fill 58 s. Raising cfg_weight speeds it up (0.5 gave 50.9 s); lower cfg for slower pacing.
 - Contradiction in the first 2 s; Vik's bet with a cost by 8 s; each wrong guess bigger than the last.
 - A new open question every 8–10 s; explanation ≤ 12 s, split in two with a reaction between.
 - Payoff = twist + callback to the hook; last line flows into the first for a clean loop.
 - Every insert shows the exact noun in its line.
-- Scripts flow with 'but/so' links, never fragment lists. Shots cut on whole sentences. Emotion tag on nearly every line; eleven_v3 stability Creative.
+- Scripts flow with 'but/so' links, never fragment lists. Shots cut on whole sentences. Emotion comes from per-line exaggeration (Chatterbox reads no tags).
+- Chatterbox ignores punctuation; always run vo_pauses.py (comma 0.18 s, colon/dash 0.30, inner full stop 0.35, question 0.40, ellipsis 0.55; values in voice.json).
+- Say numbers the way they should be heard ("seventeen fifty" in the spoken line; captions keep "1750").

@@ -18,7 +18,11 @@ const project = (v: THREE.Vector3) => {
   return {x: (p.x + 1) / 2, y: (1 - p.y) / 2, behind: p.z > 1};
 };
 
+const OFF: Box = {x0: -9, x1: -8, y0: -9, y1: -8}; // off screen
 const boxOf = (pts: THREE.Vector3[]): Box => {
+  // a character behind the camera is not on screen (projection would mirror it in)
+  const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(cam.quaternion);
+  if (pts.some((p) => p.clone().sub(cam.position).dot(fwd) <= 0.05)) return OFF;
   const ps = pts.map(project);
   return {
     x0: Math.min(...ps.map((p) => p.x)),
@@ -90,7 +94,7 @@ export const resolveShot = (shot: Shot): Shot => ({...shot, cast: layoutCast(sho
 // frame heads lower (30%) so the card at the top never covers a face.
 export const effectiveCamera = (shot: Shot): CameraMove => {
   const m: CameraMove = shot.camera ?? {type: 'fit'};
-  if (m.type === 'fit' && shot.titleCard && !m.band) return {...m, band: [0.32, 0.89]};
+  if (m.type === 'fit' && (shot.titleCard || shot.titleCards?.length) && !m.band) return {...m, band: [0.32, 0.89]};
   return m;
 };
 

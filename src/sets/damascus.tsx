@@ -303,7 +303,7 @@ export const Crucible: React.FC<{pos?: V3; s?: number; glow?: number; open?: num
   const k = smooth(open);
   const clay = new THREE.Color('#B8754A').lerp(new THREE.Color('#E8803A'), glow * 0.55);
   const half = (sd: number) => (
-    <group position={[sd * k * 0.07, 0, 0]} rotation={[0, 0, -sd * k * 0.35]}>
+    <group position={[sd * k * 0.09, 0, 0]} rotation={[0, 0, -sd * k * 0.9]}>
       <mesh position={[0, 0.06, 0]} castShadow>
         <cylinderGeometry args={[0.042, 0.058, 0.12, 20, 1, false, sd > 0 ? 0 : Math.PI, Math.PI]} />
         <meshStandardMaterial color={clay} emissive="#FF6A1A" emissiveIntensity={glow * 0.3} roughness={0.9} side={THREE.DoubleSide} />
@@ -318,7 +318,7 @@ export const Crucible: React.FC<{pos?: V3; s?: number; glow?: number; open?: num
     <group position={pos} scale={s}>
       {half(-1)}
       {half(1)}
-      {cake !== 'none' && open > 0.05 && <WootzCake pos={[0, 0.02, 0]} s={0.5} look={cake === 'molten' ? 'hot' : 'plain'} />}
+      {cake !== 'none' && open > 0.05 && <WootzCake pos={[0, 0.0, 0]} s={0.95} look={cake === 'molten' ? 'hot' : 'plain'} />}
       {glow > 0.05 && <pointLight position={[0, 0.1, 0.1]} color="#FF8A3A" intensity={glow * 0.8} distance={1.2} decay={2} />}
     </group>
   );
@@ -704,7 +704,7 @@ export type LabFx = {
   pressHits?: number[];
   furnace?: number; // furnace glow 0..1
   dial?: [number, number];
-  benchItems?: ('folded-bar' | 'pure-box' | 'pure-bar' | 'blank-blade' | 'crucible' | 'cracked' | 'ingot' | 'sabre')[];
+  benchItems?: ('folded-bar' | 'pure-box' | 'pure-bar' | 'blank-blade' | 'blank-blade-front' | 'crucible' | 'cracked' | 'ingot' | 'sabre')[];
   boxOpenAt?: number;
   crackAt?: number;
 };
@@ -842,6 +842,7 @@ export const LabHD: React.FC<{fx: LabFx; dur: number; p: number}> = ({fx, dur, p
         {items.includes('pure-bar') && <Billet pos={[-0.1, BENCH_TOP + 0.02, -0.2]} rot={[0, 0, 0]} size={[0.42, 0.04, 0.1]} look="pure" label />}
         {items.includes('pure-box') && <GiftBox pos={[-0.1, BENCH_TOP, 0.08]} openAt={fx.boxOpenAt ?? 0.4} />}
         {items.includes('blank-blade') && <Sabre pos={[-0.55, BENCH_TOP + 0.01, 0.12]} rot={[-Math.PI / 2, 0, -0.05]} look="blank" />}
+        {items.includes('blank-blade-front') && <Sabre pos={[-0.62, BENCH_TOP + 0.01, 0.36]} rot={[-Math.PI / 2, 0, -0.08]} look="blank" />}
         {items.includes('sabre') && <Sabre pos={[-0.55, BENCH_TOP + 0.01, 0.12]} rot={[-Math.PI / 2, 0, -0.05]} look="wootz" />}
         {items.includes('ingot') && <Ingot pos={[0.3, BENCH_TOP, 0.12]} />}
       </group>

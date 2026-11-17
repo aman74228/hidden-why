@@ -16,6 +16,7 @@ export type Shot = SetSpec & {
   layout?: 'line' | 'manual';
   gap?: number; // metres between reach boxes in 'line' layout (default 0.3)
   titleCard?: TitleCardSpec; // `at` is seconds into this shot
+  titleCards?: TitleCardSpec[]; // several cards in one (long, sentence-length) shot
   payoff?: boolean; // ding plays at this shot's start (or at payoffAt)
   payoffAt?: number; // seconds into this shot
   note?: string;

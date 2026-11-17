@@ -1,0 +1,80 @@
+{
+ "slug": "02-damascus-steel",
+ "cfg_weight": 0.3,
+ "note": "text = caption/script text; spoken = what the TTS reads (numbers spelled out); pause_after = silence after the line (s), the reaction shot after line 8",
+ "lines": [
+  {
+   "n": 1,
+   "text": "Why can't modern factories, lasers or supercomputers copy a sword made a thousand years ago?",
+   "exaggeration": 0.6,
+   "pause_after": 0.4
+  },
+  {
+   "n": 2,
+   "text": "Its blade is full of swirls, like water frozen in steel.",
+   "exaggeration": 0.5,
+   "pause_after": 0.4
+  },
+  {
+   "n": 3,
+   "text": "Vik bets his trophy he can copy it in a day.",
+   "exaggeration": 0.7,
+   "pause_after": 0.5
+  },
+  {
+   "n": 4,
+   "text": "First he folds the steel again and again, but gets only straight stripes.",
+   "exaggeration": 0.5,
+   "pause_after": 0.3
+  },
+  {
+   "n": 5,
+   "text": "So he buys the purest iron he can find, and the swirls vanish completely.",
+   "exaggeration": 0.5,
+   "pause_after": 0.3
+  },
+  {
+   "n": 6,
+   "text": "Then he follows the old recipe exactly, and the blade still comes out blank.",
+   "exaggeration": 0.6,
+   "pause_after": 0.6
+  },
+  {
+   "n": 7,
+   "text": "That's when Dada opens his hand and shows him a pinch of dark dirt.",
+   "exaggeration": 0.7,
+   "pause_after": 0.6
+  },
+  {
+   "n": 8,
+   "text": "You see, this steel came from certain ores in India, and those ores hid a tiny secret: traces of vanadium.",
+   "exaggeration": 0.5,
+   "pause_after": 0.5
+  },
+  {
+   "n": 9,
+   "text": "As the smith hammered, those traces pulled the carbon into bands. No traces, no swirls.",
+   "exaggeration": 0.5,
+   "pause_after": 0.4
+  },
+  {
+   "n": 10,
+   "text": "But around 1750, those mines ran dry, and the secret went with them.",
+   "spoken": "But around seventeen fifty, those mines ran dry, and the secret went with them.",
+   "exaggeration": 0.5,
+   "pause_after": 0.7
+  },
+  {
+   "n": 11,
+   "text": "So Vik's trophy melts down, perfectly pure, without a single swirl.",
+   "exaggeration": 0.7,
+   "pause_after": 0.4
+  },
+  {
+   "n": 12,
+   "text": "And next time someone asks you…",
+   "exaggeration": 0.6,
+   "pause_after": 0.0
+  }
+ ]
+}

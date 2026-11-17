@@ -16,12 +16,21 @@
     "chatterbox": {
       "model": "original",
       "voice": "built-in default (no cloning)",
-      "exaggeration": 0.7,
+      "exaggeration": 0.5,
       "cfg_weight": 0.3,
-      "seed": 0,
+      "seed": 1750,
       "python": "/root/.venvs/chatterbox/bin/python",
       "worker": "scripts/tts_chatterbox.py",
-      "note": "Resemble AI Chatterbox (MIT). Turbo ignores exaggeration/cfg_weight but reads paralinguistic tags; the original model honours exaggeration/cfg_weight and reads no tags. Settings to be confirmed after the 02-chatterbox audition."
+      "pauses": {
+        "comma": 0.18,
+        "colon": 0.3,
+        "dash": 0.3,
+        "stop": 0.35,
+        "question": 0.4,
+        "ellipsis": 0.55,
+        "fade_ms": 10
+      },
+      "note": "Channel voice (chosen in the Short #2 audition, audio/auditions/02-chatterbox): Resemble AI Chatterbox (MIT), original model, built-in default voice, fixed seed 1750 for every Short so the voice stays identical; retries of a garbled line use seed+1, seed+2. Per-line exaggeration overrides go in audio/<slug>.lines.json. Chatterbox ignores punctuation: scripts/vo_pauses.py inserts the pauses above in post."
     }
   }
 }

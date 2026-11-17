@@ -9,8 +9,14 @@ are trained on short utterances). Prints render seconds as JSON on stdout."""
 import json, re, sys, time
 import torch, torchaudio as ta
 
-model_name, out, ex, cfg, seed = sys.argv[1], sys.argv[2], float(sys.argv[3]), float(sys.argv[4]), int(sys.argv[5])
-text = sys.stdin.read().strip()
+# batch mode: tts_chatterbox.py batch <model> < [{"text","out","exaggeration","cfg_weight","seed"}, ...]  (model loaded once)
+BATCH = sys.argv[1] == "batch"
+if BATCH:
+    model_name, jobs = sys.argv[2], json.loads(sys.stdin.read())
+    out, ex, cfg, seed, text = None, 0.5, 0.3, 0, ""
+else:
+    model_name, out, ex, cfg, seed = sys.argv[1], sys.argv[2], float(sys.argv[3]), float(sys.argv[4]), int(sys.argv[5])
+    text = sys.stdin.read().strip()
 torch.manual_seed(seed)
 t0 = time.time()
 if model_name == "turbo":
@@ -21,13 +27,23 @@ else:
     model = ChatterboxTTS.from_pretrained(device="cpu")
 load_s = time.time() - t0
 
-def gen(s):
+def gen(s, ex=None, cfg=None):
+    ex = globals()["ex"] if ex is None else ex
+    cfg = globals()["cfg"] if cfg is None else cfg
     kw = {}
     import inspect
     params = inspect.signature(model.generate).parameters
     if "exaggeration" in params: kw["exaggeration"] = ex
     if "cfg_weight" in params: kw["cfg_weight"] = cfg
     return model.generate(s, **kw)
+
+if BATCH:
+    t1 = time.time()
+    for j in jobs:
+        torch.manual_seed(int(j["seed"]))
+        ta.save(j["out"], gen(j["text"], float(j["exaggeration"]), float(j["cfg_weight"])), model.sr)
+    print(json.dumps({"load_s": round(load_s, 1), "render_s": round(time.time() - t1, 1), "parts": len(jobs), "sr": model.sr}))
+    sys.exit(0)
 
 # one utterance per line (the script's lines are sentence groups); split very long lines on sentence ends
 parts = []

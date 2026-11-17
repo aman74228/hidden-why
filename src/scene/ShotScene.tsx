@@ -73,13 +73,15 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
   );
 
   // title card: top-anchored, shrinks if it would reach a face
-  const cardMaxBottom = useMemo(() => {
-    if (!shot.titleCard) return 1;
-    const d = shot.duration;
-    const a = (shot.titleCard.at ?? 0) / d;
-    const b = ((shot.titleCard.at ?? 0) + (shot.titleCard.duration ?? 2)) / d;
-    return faceFreeBottom(rawShot, a, b);
-  }, [shot]);
+  const cards = useMemo(() => shot.titleCards ?? (shot.titleCard ? [shot.titleCard] : []), [shot]);
+  const cardMaxBottoms = useMemo(
+    () =>
+      cards.map((c) => {
+        const d = shot.duration;
+        return faceFreeBottom(rawShot, (c.at ?? 0) / d, ((c.at ?? 0) + (c.duration ?? 2)) / d);
+      }),
+    [cards, shot],
+  );
 
   return (
     <AbsoluteFill>
@@ -143,7 +145,9 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
         </div>
       ))}
       <Grain frame={raw} />
-      {shot.titleCard ? <TitleCard {...shot.titleCard} frame={frame} maxBottom={cardMaxBottom} /> : null}
+      {cards.map((c, i) => (
+        <TitleCard key={i} {...c} frame={frame} maxBottom={cardMaxBottoms[i]} />
+      ))}
     </AbsoluteFill>
   );
 };

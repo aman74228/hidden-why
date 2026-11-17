@@ -2,20 +2,21 @@
 Slug: `02-damascus-steel` · Target ≤ 60 s · v2 script (but/so links, emotion tag on every line)
 Read CLAUDE.md + LESSONS.md first. Every rule there applies.
 
-## Script (send to ElevenLabs eleven_v3 + Charlie, stability Creative, exactly as written)
-[curious] Why can't modern factories, lasers or supercomputers copy a sword made a thousand years ago?
-[amazed] Its blade is full of swirls, like water frozen in steel.
-[mischievous] Vik bets his trophy he can copy it in a day.
-[confident] First he folds the steel again and again, [disappointed] but gets only straight stripes.
-[determined] So he buys the purest iron he can find, [surprised] and the swirls vanish completely.
-[frustrated] Then he follows the old recipe exactly, and the blade still comes out blank.
-[whispers] That's when Dada opens his hand… [gasps] and shows him a pinch of dark dirt.
-[warm] You see, this steel came from certain ores in India, and those ores hid a tiny secret: traces of vanadium. [excited] As the smith hammered, those traces pulled the carbon into bands. No traces, no swirls.
-[serious] But around 1750, those mines ran dry, and the secret went with them.
-[deadpan] So Vik's trophy melts down, perfectly pure, without a single swirl.
-[curious] And next time someone asks you…
+## Script (Chatterbox, original model, default voice; per-line settings in audio/02-damascus-steel.lines.json)
+Why can't modern factories, lasers or supercomputers copy a sword made a thousand years ago?
+Its blade is full of swirls, like water frozen in steel.
+Vik bets his trophy he can copy it in a day.
+First he folds the steel again and again, but gets only straight stripes.
+So he buys the purest iron he can find, and the swirls vanish completely.
+Then he follows the old recipe exactly, and the blade still comes out blank.
+That's when Dada opens his hand and shows him a pinch of dark dirt.
+You see, this steel came from certain ores in India, and those ores hid a tiny secret: traces of vanadium.
+As the smith hammered, those traces pulled the carbon into bands. No traces, no swirls.
+But around 1750, those mines ran dry, and the secret went with them.
+So Vik's trophy melts down, perfectly pure, without a single swirl.
+And next time someone asks you…
 
-(The last line flows straight into the first line: the loop. Hard cut from the last frame back to frame 1.)
+(Rendered line by line from audio/02-damascus-steel.lines.json: Chatterbox reads no tags; emotion = per-line exaggeration. The last line flows straight into the first line: the loop. Hard cut from the last frame back to frame 1.)
 
 ## Story scorecard
 - Contradiction by 2 s ✅ ("none of them can copy this sword")
@@ -26,8 +27,8 @@ Read CLAUDE.md + LESSONS.md first. Every rule there applies.
 - Payoff = bet collected + callback; last line loops into the hook ✅
 
 ## Voice
-eleven_v3 + Charlie (voice.json, stability Creative). Tags as written. Max 3 takes; pick the most expressive take ≤ 60 s; trim silences only (no speed-up). Shots cut on whole sentences, never on fragments.
-Add a 0.5 s pause (silence in the edit, not in the script) between "Traces of vanadium." and "While the smith hammered" for the reaction shot.
+Chatterbox original model, built-in default voice, seed 1750 (voice.json). Line by line (scripts/vo_lines.py), max 3 tries per line, punctuation pauses in post (scripts/vo_pauses.py). Target 52–60 s; never speed up, never pad beyond the pause table. Shots cut on sentence boundaries only.
+The 0.5 s pause after line 8 ("…traces of vanadium.") holds the silent reaction shot.
 
 ## Real-object reference (build props to look like this)
 - **Damascus sabre**: a curved Persian-style sabre (shamshir), ~85 cm blade, slim and strongly curved, plain steel crossguard, dark wooden or horn grip. The ENTIRE blade shows the "watered steel" pattern: flowing, wavy light-grey and dark-grey bands, like ripples on water or wood grain. Matte sheen, not mirror chrome.
