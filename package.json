@@ -4,7 +4,6 @@
   "type": "module",
   "scripts": {
     "studio": "remotion studio src/index.ts",
-    "sfx": "node scripts/sfx.mjs",
     "align": "python3 scripts/align.py",
     "stills": "bash scripts/stills.sh",
     "render": "bash scripts/render.sh",

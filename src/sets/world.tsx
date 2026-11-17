@@ -345,7 +345,7 @@ export const CourtyardHD: React.FC<{lampGlow?: number; beams?: boolean; beamColo
         </>
       )}
       {/* the bar stand for Dada's demonstration (two bars added by the story layer) */}
-      <TBox size={[1.5, 0.55, 0.7]} pos={[BARS_POS[0], 0.275, BARS_POS[2]]} tex="sandstone-blocks" color="#E4B488" />
+      <TBox size={[2.1, 0.55, 0.6]} pos={[BARS_POS[0], 0.275, BARS_POS[2]]} tex="sandstone-blocks" color="#E4B488" />
       {beams && (
         <>
           <LightBeam from={[-4, 5.0, -7.4]} to={[-1.2, 0, -1.0]} r0={0.5} r1={1.6} color={beamColor} strength={0.22} />

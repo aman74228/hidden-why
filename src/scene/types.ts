@@ -28,7 +28,7 @@ export type Shot = SetSpec & {
   roll?: [number, number]; // camera dutch roll in degrees over the shot
   dof?: number; // bokeh scale (0 = off)
   focusDist?: number; // metres, overrides the cast-based focus
-  sfx?: {name: string; at: number; volume?: number; dur?: number}[]; // public/sfx/<name>.wav, `at` seconds into the shot
+  sfx?: {name: string; at: number; volume?: number; dur?: number}[]; // public/sfx/<name>.mp3, `at` seconds into the shot
 };
 
 export type ShotList = {

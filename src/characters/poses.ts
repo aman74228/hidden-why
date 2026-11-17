@@ -177,10 +177,25 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
       // head tipped back, wide eyes, gazing up the pillar
       return {...base, headRot: 4 + s(ph * 0.8) * 1.5, headDY: 0.01, faceDY: 0.05, eyes: 'wide', mouth: 'O', mouthOpen: 0.4, brow: 0.8, armA: [20, -40]};
     case 'coin-tap': {
-      // arm out at chest height, little wrist taps every 0.5 s, smug face
-      const k = (t % 0.5) / 0.5;
-      const tap = Math.exp(-Math.pow((k - 0.15) / 0.08, 2));
-      return {...base, armA: [78 + tap * 6, -18 - tap * 10], bodyRot: -3, headRot: 6, eyes: 'smug', mouth: 'smirk', brow: 0.7};
+      // two clear taps of the coin on the pillar (contact at 0.55 s and 1.45 s):
+      // wind up (forearm lifts away), snap in, small rebound, then rest on the iron
+      const TAPS = [0.55, 1.45];
+      let away = 0;
+      for (const c of TAPS) {
+        const d = t - c;
+        if (d > -0.38 && d < 0) away = Math.max(away, Math.sin(((d + 0.38) / 0.32) * (Math.PI / 2)) * (d > -0.06 ? -d / 0.06 : 1));
+        if (d >= 0 && d < 0.22) away = Math.max(away, Math.sin((d / 0.22) * Math.PI) * 0.25);
+      }
+      const settled = t > 1.8 ? Math.min(1, (t - 1.8) / 0.4) : 0;
+      return {
+        ...base,
+        armA: [76 + away * 14, -16 - away * 62],
+        bodyRot: -3 - away * 2,
+        headRot: 6 + settled * 3 * Math.sin(ph * 2),
+        eyes: 'smug',
+        mouth: 'smirk',
+        brow: 0.7 + away * 0.2,
+      };
     }
     case 'stomp': {
       const k = s(ph * 9);

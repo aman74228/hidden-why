@@ -193,3 +193,127 @@ export const Env: React.FC<{name: HdriName; intensity?: number}> = ({name, inten
   }, [env, intensity, scene]);
   return null;
 };
+
+/* ---------------- hammered wrought iron (generated, deterministic) ---------------- */
+// Dark grey-brown, mottled from hand forging, with small pits; the same canvas
+// drives a bump map so the pits read under the light. Dull metallic sheen.
+const rng = (seed: number) => () => {
+  seed = (seed * 16807) % 2147483647;
+  return seed / 2147483647;
+};
+let ironTex: {map: THREE.CanvasTexture; bump: THREE.CanvasTexture} | null = null;
+export const hammeredIron = () => {
+  if (ironTex) return ironTex;
+  const S = 512;
+  const r = rng(7);
+  const col = document.createElement('canvas');
+  const bmp = document.createElement('canvas');
+  col.width = col.height = bmp.width = bmp.height = S;
+  const g = col.getContext('2d')!;
+  const b = bmp.getContext('2d')!;
+  g.fillStyle = '#4a4038';
+  g.fillRect(0, 0, S, S);
+  b.fillStyle = '#808080';
+  b.fillRect(0, 0, S, S);
+  const wrap = (fn: (x: number, y: number) => void, x: number, y: number) => {
+    for (const dx of [-S, 0, S]) for (const dy of [-S, 0, S]) fn(x + dx, y + dy);
+  };
+  // hammer facets: soft overlapping ovals, slightly lighter or darker
+  for (let i = 0; i < 520; i++) {
+    const x = r() * S, y = r() * S, rr = 10 + r() * 28, l = r();
+    const c = l < 0.5 ? `rgba(26,20,16,${0.07 + r() * 0.07})` : `rgba(140,122,104,${0.05 + r() * 0.06})`;
+    const bc = `rgba(${l < 0.5 ? 60 : 170},${l < 0.5 ? 60 : 170},${l < 0.5 ? 60 : 170},0.18)`;
+    wrap((px, py) => {
+      g.fillStyle = c;
+      g.beginPath();
+      g.ellipse(px, py, rr, rr * 0.75, r() * 3, 0, 6.283);
+      g.fill();
+      b.fillStyle = bc;
+      b.beginPath();
+      b.ellipse(px, py, rr, rr * 0.75, 0, 0, 6.283);
+      b.fill();
+    }, x, y);
+  }
+  // pits: tiny dark holes with a faint light rim
+  for (let i = 0; i < 520; i++) {
+    const x = r() * S, y = r() * S, rr = 0.6 + r() * 1.6;
+    wrap((px, py) => {
+      g.fillStyle = 'rgba(14,10,8,0.7)';
+      g.beginPath();
+      g.arc(px, py, rr, 0, 6.283);
+      g.fill();
+      b.fillStyle = '#202020';
+      b.beginPath();
+      b.arc(px, py, rr, 0, 6.283);
+      b.fill();
+    }, x, y);
+  }
+  // faint brown-grey streaks along the forging direction
+  for (let i = 0; i < 60; i++) {
+    const x = r() * S;
+    g.fillStyle = `rgba(${90 + r() * 30},${76 + r() * 20},${62 + r() * 15},0.07)`;
+    g.fillRect(x, 0, 1 + r() * 4, S);
+  }
+  const map = new THREE.CanvasTexture(col);
+  map.colorSpace = THREE.SRGBColorSpace;
+  const bump = new THREE.CanvasTexture(bmp);
+  for (const t of [map, bump]) {
+    t.wrapS = t.wrapT = THREE.RepeatWrapping;
+    t.anisotropy = 4;
+  }
+  ironTex = {map, bump};
+  return ironTex;
+};
+
+export const IronMat: React.FC<{repeat?: [number, number]; tint?: string; sheen?: number}> = ({repeat = [1, 1], tint = '#5a524b', sheen = 0.4}) => {
+  const {map, bump} = hammeredIron();
+  const [m, bm] = useMemo(() => {
+    const a = map.clone();
+    const c = bump.clone();
+    for (const t of [a, c]) {
+      t.repeat.set(repeat[0], repeat[1]);
+      t.needsUpdate = true;
+    }
+    return [a, c];
+  }, [repeat[0], repeat[1]]);
+  return <meshStandardMaterial color={tint} map={m} bumpMap={bm} bumpScale={2.4} metalness={0.6} roughness={0.5} envMapIntensity={sheen} />;
+};
+
+// Faint carved inscription band (rows of small Brahmi-like glyph strokes).
+let inscTex: THREE.CanvasTexture | null = null;
+export const inscription = () => {
+  if (inscTex) return inscTex;
+  const W = 1024, H = 128;
+  const c = document.createElement('canvas');
+  c.width = W;
+  c.height = H;
+  const g = c.getContext('2d')!;
+  g.fillStyle = '#808080';
+  g.fillRect(0, 0, W, H);
+  const r = rng(29);
+  g.strokeStyle = '#3a3a3a';
+  g.lineCap = 'round';
+  for (let row = 0; row < 4; row++) {
+    const y0 = 18 + row * 28;
+    let x = 8;
+    while (x < W - 20) {
+      const w = 10 + r() * 8;
+      g.lineWidth = 2.2;
+      g.beginPath();
+      g.moveTo(x, y0);
+      g.lineTo(x + w, y0); // head line
+      const n = 1 + Math.floor(r() * 3);
+      for (let k = 0; k < n; k++) {
+        const sx = x + r() * w;
+        g.moveTo(sx, y0);
+        if (r() < 0.5) g.lineTo(sx + (r() - 0.5) * 8, y0 + 14);
+        else g.arc(sx, y0 + 8, 4 + r() * 3, -1.5, 1.5 + r() * 2);
+      }
+      g.stroke();
+      x += w + 5 + r() * 6;
+    }
+  }
+  inscTex = new THREE.CanvasTexture(c);
+  inscTex.wrapS = THREE.RepeatWrapping;
+  return inscTex;
+};

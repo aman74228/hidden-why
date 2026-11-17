@@ -52,7 +52,7 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
       {words && words.length ? <Captions words={words} offset={list.captionOffset ?? 0} placeAt={placeAt} /> : null}
 
       {list.audio ? <Audio src={staticFile(list.audio)} /> : null}
-      {list.music !== false ? <Audio src={staticFile('sfx/music-bed.wav')} volume={dB(-22)} loop /> : null}
+      {list.music !== false ? <Audio src={staticFile('sfx/music.mp3')} volume={dB(-22)} loop /> : null}
       {sfx &&
         list.shots.flatMap((shot, i) =>
           (shot.sfx ?? []).map((e, k) => (
@@ -62,7 +62,7 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
               durationInFrames={Math.round((e.dur ?? 3) * fps)}
               layout="none"
             >
-              <Audio src={staticFile(`sfx/${e.name}.wav`)} volume={e.volume ?? 0.6} loop={!!e.dur} />
+              <Audio src={staticFile(`sfx/${e.name}.mp3`)} volume={e.volume ?? 0.6} loop={!!e.dur} />
             </Sequence>
           )),
         )}
@@ -70,7 +70,7 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
         list.shots.map((shot, i) =>
           shot.payoff ? (
             <Sequence key={`d${i}`} from={starts[i] + Math.round((shot.payoffAt ?? 0) * fps)} durationInFrames={60} layout="none">
-              <Audio src={staticFile('sfx/ding.wav')} volume={0.8} />
+              <Audio src={staticFile('sfx/ding.mp3')} volume={0.8} />
             </Sequence>
           ) : null,
         )}

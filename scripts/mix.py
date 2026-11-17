@@ -9,9 +9,8 @@ the shot list + caption word timings. Reports LUFS per stem.
   no stem peaks above the voice
 
 usage: mix.py <slug> <out.wav> [--music public/sfx/<loop>.mp3]
-Cue names are the CLAUDE.md library (public/sfx/<name>.mp3). Until a library
-file exists, a few synthesized placeholders stand in (PLACEHOLDER below) and
-anything else is skipped and listed.
+Cue names are the CLAUDE.md library (public/sfx/<name>.mp3, credits in
+public/sfx/credits.json); a missing file is skipped and listed.
 """
 import argparse, json, math, re, subprocess
 from pathlib import Path
@@ -20,7 +19,7 @@ import numpy as np
 ROOT = Path(__file__).resolve().parent.parent
 SR = 48000
 FPS = 30
-PLACEHOLDER = {"rain-soft": "rain.wav", "metal-ting": "ring.wav", "anvil": "clang.wav", "ding": "ding.wav"}
+PLACEHOLDER: dict = {}  # name -> stand-in file while a library sound is missing
 V_LUFS, M_UNDER, DUCK, SFX_MOM, RAIN_LUFS = -14.0, 9.0, 3.0, -20.0, -32.0
 jsround = lambda x: math.floor(x + 0.5)
 
@@ -54,7 +53,8 @@ def meter(arr):
 
 def level(arr, target, momentary=False):
     """static gain to `target` LUFS: integrated, or the loudest 400 ms (momentary)"""
-    I, _, M = meter(arr)
+    pad = max(0, int(0.5 * SR) - len(arr))  # clips under the 400 ms meter window: pad with silence
+    I, _, M = meter(np.pad(arr, ((0, pad), (0, 0))))
     ref = M if momentary or I <= -70 else I
     return arr * 10 ** ((target - ref) / 20)
 
@@ -96,7 +96,7 @@ def main():
 
     # ---- music ----
     report = {"voice": {"lufs": round(vI, 1), "true_peak_dbtp": round(vP, 1)}}
-    mpath = Path(a.music) if a.music else next((p for p in [ROOT / "public/sfx/music.mp3", ROOT / "public/sfx/music-bed.wav"] if p.exists()), None)
+    mpath = Path(a.music) if a.music else next((p for p in [ROOT / "public/sfx/music.mp3"] if p.exists()), None)
     music = np.zeros((N, 2), np.float32)
     if mpath:
         m = decode(mpath)
@@ -112,8 +112,7 @@ def main():
         mS = meter(music[sp])[0] if sp.any() else mI
         mQ = meter(music[~sp])[0] if (~sp).any() else mI
         report["music"] = {"file": str(mpath.relative_to(ROOT)), "lufs": round(mI, 1), "under_speech_lufs": round(mS, 1),
-                           "between_lines_lufs": round(mQ, 1), "true_peak_dbtp": round(mP, 1),
-                           "placeholder": mpath.name == "music-bed.wav"}
+                           "between_lines_lufs": round(mQ, 1), "true_peak_dbtp": round(mP, 1)}
 
     # ---- sfx ----
     cues = []
@@ -157,7 +156,8 @@ def main():
             rain[f0:f1] *= np.linspace(1, 0, f1 - f0)[:, None]
             rain[f1:] = 0
         used[name] = f.name
-        cue_lufs[name] = round(meter(x)[0] if is_rain else meter(x)[2], 1)
+        xp = np.pad(x, ((0, max(0, int(0.5 * SR) - len(x))), (0, 0)))
+        cue_lufs[name] = round(meter(xp)[0] if is_rain else meter(xp)[2], 1)
     for stem in (sfx, rain):
         if np.abs(stem).max() > v_peak * 0.89:
             stem *= v_peak * 0.89 / np.abs(stem).max()
