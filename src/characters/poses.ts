@@ -4,7 +4,7 @@
 // character faces (the pointing arm).
 
 // Core poses (CLAUDE.md) + story extras.
-export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud'] as const;
+export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod'] as const;
 export type PoseName = (typeof POSES)[number];
 
 export type EyeStyle = 'dot' | 'wide' | 'smug' | 'calm' | 'happy' | 'closed';
@@ -30,7 +30,7 @@ const s = Math.sin;
 
 export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
   const ph = t + seed * 1.7;
-  const breathe = s(ph * 2.2) * 0.006;
+  const breathe = s(ph * 2.1) * 0.01;
   const base: PoseState = {
     armA: [10 + s(ph * 1.6) * 2, -6],
     armB: [10 + s(ph * 1.6 + 1) * 2, -6],
@@ -172,6 +172,32 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
         eyes: t > 1.0 ? 'happy' : 'calm',
         mouth: 'smile',
       };
+    }
+    case 'look-up':
+      // head tipped back, wide eyes, gazing up the pillar
+      return {...base, headRot: 4 + s(ph * 0.8) * 1.5, headDY: 0.01, faceDY: 0.05, eyes: 'wide', mouth: 'O', mouthOpen: 0.4, brow: 0.8, armA: [20, -40]};
+    case 'coin-tap': {
+      // arm out at chest height, little wrist taps every 0.5 s, smug face
+      const k = (t % 0.5) / 0.5;
+      const tap = Math.exp(-Math.pow((k - 0.15) / 0.08, 2));
+      return {...base, armA: [78 + tap * 6, -18 - tap * 10], bodyRot: -3, headRot: 6, eyes: 'smug', mouth: 'smirk', brow: 0.7};
+    }
+    case 'stomp': {
+      const k = s(ph * 9);
+      return {
+        ...base,
+        armA: [18 + k * 18, -20],
+        armB: [18 - k * 18, -20],
+        bodyDY: Math.abs(k) * 0.02,
+        bodyRot: -6,
+        headRot: -4,
+        mouth: 'flat',
+        brow: -0.4,
+      };
+    }
+    case 'smile-nod': {
+      const n = Math.max(0, s(ph * 3));
+      return {...base, headDY: -n * 0.02, faceDY: -n * 0.03, eyes: 'happy', mouth: 'smile'};
     }
     case 'nod': {
       const n = Math.max(0, s(ph * 5));

@@ -25,6 +25,9 @@ export type Shot = SetSpec & {
   mixAt?: [number, number]; // seconds into the shot
   labels?: {text: string; x: number; y: number}[]; // small on-screen labels (fractions of frame)
   grade?: 'flashback';
+  roll?: [number, number]; // camera dutch roll in degrees over the shot
+  dof?: number; // bokeh scale (0 = off)
+  focusDist?: number; // metres, overrides the cast-based focus
   sfx?: {name: string; at: number; volume?: number; dur?: number}[]; // public/sfx/<name>.wav, `at` seconds into the shot
 };
 

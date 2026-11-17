@@ -34,8 +34,8 @@ export const chunkWords = (words: Word[], maxChars = 12): Chunk[] => {
   });
 };
 
-// Caption type size (25% smaller than v1) and its box estimate as frame fractions.
-export const captionFont = (text: string) => (text.length > 9 ? 96 : 112);
+// Caption type size (60% of v2) and its box estimate as frame fractions.
+export const captionFont = (text: string) => (text.length > 9 ? 60 : 68);
 export const captionBox = (text: string) => {
   const fs = captionFont(text);
   return {w: Math.min(0.95, (text.length * fs * 0.62 + 40) / 1080), h: (fs * 1.15) / 1920};
@@ -57,9 +57,10 @@ export const Captions: React.FC<{
   const local = (t - cur.start) * fps;
   const pop = spring({frame: local, fps, config: {damping: 12, stiffness: 220, mass: 0.6}});
   const scale = interpolate(pop, [0, 1], [0.7, 1]);
-  const clean = cur.text.replace(/^["“‘]+/, '').replace(/["”’.,;:]+$/g, '').replace(/["“”]/g, '').toUpperCase();
-  const box = captionBox(clean);
-  const y = placeAt ? placeAt(cur.start - offset, box.w, box.h) : 0.6;
+  // sentence case: keep the script's own capitalisation, drop quotes and trailing punctuation
+  const clean = cur.text.replace(/^["“‘]+/, '').replace(/["”’.,;:]+$/g, '').replace(/\.\.\.$/, '').replace(/["“”]/g, '');
+  void placeAt;
+  const y = 0.7; // fixed: centred at 70% of frame height
   return (
     <AbsoluteFill style={{pointerEvents: 'none'}}>
       <div
@@ -76,10 +77,10 @@ export const Captions: React.FC<{
           fontSize: captionFont(clean),
           lineHeight: 1,
           color: C.white,
-          WebkitTextStroke: `17px ${C.ink}`,
+          WebkitTextStroke: `11px ${C.ink}`,
           paintOrder: 'stroke fill',
-          textShadow: `0 8px 0 ${C.ink}`,
-          letterSpacing: 2,
+          textShadow: `0 5px 0 ${C.ink}`,
+          letterSpacing: 0.5,
         }}
       >
         {clean}

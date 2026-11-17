@@ -2,7 +2,10 @@ import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {C} from '../theme';
 import {GROUNDS, GroundPreset, LIGHTS, LightPreset, SKIES, SkyPreset} from './presets';
-import {Bicycle, Forge, Gate, IronPillar, NightSky, PhosphorusMacro, Rain, ScratchMacro, SkinMacro, SplitMacro, TapRipple} from './story';
+import {Bicycle, ChainMacro, Gate, IronBars, IronPillar, NightSky, PhosphorusMacro, PillarSurfaceMacro, ScratchMacro, SkinMacro, SpecksMacro, SplitMacro, TapRipple} from './story';
+import {Env, HdriName} from './materials';
+import {Motes, RainFX, Sparks} from './fx';
+import {BARS_POS, CourtyardHD, ForgeHD, StreetHD} from './world';
 import {Ball, Box, Cone, Cyl, TileFloor, Toon, mulberry} from './toon';
 
 export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain' | 'forge' | 'street' | 'void';
@@ -33,10 +36,17 @@ export type FxSpec = {
   merge?: [number, number]; // forge: lumps merging 0..1
   forgeClose?: boolean;
   spot?: number; // street: gate's orange spot size (0 hides)
-  macro?: 'scratch' | 'phosphorus' | 'skin' | 'split';
+  macro?: 'scratch' | 'phosphorus' | 'skin' | 'split' | 'surface' | 'chain' | 'specks';
+  bars?: {skin?: [number, number]; rust?: [number, number]; drops?: number};
+  cycles?: number; // wet/dry cycles over the shot: rain <-> sun (lighting mixes too)
+  beams?: boolean; // courtyard light shafts (default on)
+  sparks?: {pos: [number, number, number]; times: number[]; color?: string};
+  hdri?: HdriName;
+  motes?: boolean;
   skinStory?: number;
   skinMode?: 'cycles' | 'seal';
   ripple?: {pos: [number, number, number]; times: number[]};
+  rainNow?: number; // set by ShotScene for wet/dry cycles
 };
 
 export const SET_DEFAULTS: Record<SetName, {sky: string; ground: string; light: string}> = {
@@ -63,6 +73,15 @@ export const ToonSet: React.FC<
 > = ({fx = {}, p = 0, dur = 5, resolved, ...spec}) => {
   const {sky, ground, light} = resolved ?? resolveSet(spec);
   const lerp = (r?: [number, number]) => (r ? r[0] + (r[1] - r[0]) * p : 0);
+  const glide = (r?: [number, number]) => {
+    if (!r) return 0;
+    const k = p * p * (3 - 2 * p);
+    return r[0] + (r[1] - r[0]) * k;
+  };
+  const night = (spec.light ?? '') === 'night';
+  const storm = (spec.light ?? '') === 'storm';
+  const hdri: HdriName = fx.hdri ?? (spec.set === 'forge' ? 'dusk' : night || storm ? 'overcast' : 'sunset');
+  const rainK = fx.rainNow ?? lerp(fx.rain);
   return (
     <>
       <fog attach="fog" args={[light.fog, light.fogNear, light.fogFar]} />
@@ -82,24 +101,39 @@ export const ToonSet: React.FC<
         shadow-bias={-0.0008}
         shadow-normalBias={0.03}
       />
+      <Env name={hdri} intensity={night ? 0.35 : 0.9} />
       <SkyDome {...sky} />
-      {spec.set !== 'void' && (
+      {spec.set !== 'void' && spec.set !== 'courtyard' && spec.set !== 'forge' && spec.set !== 'street' && (
         <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[300, 300]} />
           <Toon color={ground.base} />
         </mesh>
       )}
-      {spec.set === 'courtyard' && <Courtyard g={ground} />}
-      {spec.set === 'forge' && <Forge merge={lerp(fx.merge)} closeup={fx.forgeClose} />}
-      {spec.set === 'street' && <Gate spot={fx.spot ?? 1} />}
+      {spec.set === 'courtyard' && (
+        <CourtyardHD lampGlow={night ? 1.4 : storm ? 1 : 0.6} beams={fx.beams ?? !night} beamColor={night ? '#B8C8FF' : '#FFC873'} night={night} />
+      )}
+      {spec.set === 'forge' && <ForgeHD merge={lerp(fx.merge)} closeup={fx.forgeClose} />}
+      {spec.set === 'street' && (
+        <>
+          <StreetHD />
+          <Gate spot={fx.spot ?? 1} />
+        </>
+      )}
       {fx.night && <NightSky dur={dur} />}
-      {fx.rain && <Rain intensity={lerp(fx.rain)} />}
+      {fx.night && <Motes count={40} box={[10, 3, 8]} center={[0, 1.5, -2]} color="#D8FF9A" size={0.07} rise={0.05} seed={41} />}
+      {rainK > 0.001 && <RainFX intensity={rainK} />}
+      {fx.bars && <IronBars pos={BARS_POS} skin={glide(fx.bars.skin)} rust={glide(fx.bars.rust)} drops={fx.bars.drops ?? 1} />}
+      {fx.sparks && <Sparks pos={fx.sparks.pos} times={fx.sparks.times} color={fx.sparks.color ?? '#FFF1C0'} n={14} speed={1.6} life={0.3} />}
+      {fx.motes && <Motes count={90} box={[8, 4, 6]} center={[0, 2, -2]} color="#FFE2A8" size={0.04} rise={0.03} />}
       {fx.pillar && <IronPillar pos={[fx.pillar.pos[0], 0, fx.pillar.pos[1]]} sheen={fx.pillar.sheen} />}
       {fx.bicycle && <Bicycle pos={fx.bicycle.pos} rotY={fx.bicycle.rotY} />}
       {fx.macro === 'scratch' && <ScratchMacro dur={dur} />}
       {fx.macro === 'phosphorus' && <PhosphorusMacro />}
       {fx.macro === 'skin' && <SkinMacro story={fx.skinStory} mode={fx.skinMode} />}
       {fx.macro === 'split' && <SplitMacro />}
+      {fx.macro === 'surface' && <PillarSurfaceMacro />}
+      {fx.macro === 'chain' && <ChainMacro />}
+      {fx.macro === 'specks' && <SpecksMacro />}
       {fx.ripple && <TapRipple pos={fx.ripple.pos} times={fx.ripple.times} />}
       {spec.set === 'desert' && <Desert />}
       {spec.set === 'workshop' && <Workshop g={ground} />}

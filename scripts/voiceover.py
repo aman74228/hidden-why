@@ -29,10 +29,10 @@ def words_from_alignment(al):
     en = al["character_end_times_seconds"]
     words, cur, s0, e0, in_tag = [], "", None, None, False
     for c, s, e in zip(chars, st, en):
-        if c == "<":
+        if c in "<[":  # SSML <break/> and eleven_v3 [audio tags] are not spoken words
             in_tag = True
         if in_tag:
-            if c == ">":
+            if c in ">]":
                 in_tag = False
             continue
         if c.isspace():
@@ -63,12 +63,20 @@ def main():
     }
     url = (f"https://api.elevenlabs.io/v1/text-to-speech/{voice['voice_id']}/with-timestamps"
            f"?output_format={voice.get('output_format', 'mp3_44100_128')}")
+    out = (ROOT / "audio" / f"{slug}.mp3")
+    if len(sys.argv) > 2:  # optional take name: audio/takes/<slug>-<take>.mp3, captions untouched
+        out = ROOT / "audio" / "takes" / f"{slug}-{sys.argv[2]}.mp3"
+        out.parent.mkdir(exist_ok=True)
     req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST",
                                  headers={"xi-api-key": key, "Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=300) as r:
         res = json.load(r)
-    (ROOT / "audio").mkdir(exist_ok=True)
-    (ROOT / "audio" / f"{slug}.mp3").write_bytes(base64.b64decode(res["audio_base64"]))
+    out.write_bytes(base64.b64decode(res["audio_base64"]))
+    if len(sys.argv) > 2:
+        out.with_suffix(".alignment.json").write_text(json.dumps(res["alignment"]))
+        w = words_from_alignment(res["alignment"])
+        print(f"{out.relative_to(ROOT)} · {len(w)} words · last word ends {w[-1]['end']:.2f}s")
+        return
     al = res.get("normalized_alignment") or res["alignment"]
     (ROOT / "audio" / f"{slug}.alignment.json").write_text(json.dumps(res["alignment"]))
     words = words_from_alignment(res["alignment"])
