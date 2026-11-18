@@ -392,21 +392,21 @@
  {
   "word": "That's",
   "start": 23.32,
-  "end": 23.6
+  "end": 23.68
  },
  {
   "word": "when",
-  "start": 23.6,
-  "end": 23.72
+  "start": 23.68,
+  "end": 23.78
  },
  {
   "word": "Gus",
-  "start": 23.72,
-  "end": 24.04
+  "start": 23.78,
+  "end": 24.02
  },
  {
   "word": "opens",
-  "start": 24.04,
+  "start": 24.02,
   "end": 24.3
  },
  {
@@ -417,47 +417,47 @@
  {
   "word": "hand",
   "start": 24.5,
-  "end": 24.76
+  "end": 24.72
  },
  {
   "word": "and",
-  "start": 24.76,
-  "end": 24.98
+  "start": 24.72,
+  "end": 24.94
  },
  {
   "word": "shows",
-  "start": 24.98,
-  "end": 25.16
+  "start": 24.94,
+  "end": 25.12
  },
  {
   "word": "him",
-  "start": 25.16,
-  "end": 25.34
+  "start": 25.12,
+  "end": 25.32
  },
  {
   "word": "a",
-  "start": 25.34,
-  "end": 25.48
+  "start": 25.32,
+  "end": 25.44
  },
  {
   "word": "pinch",
-  "start": 25.48,
-  "end": 25.62
+  "start": 25.44,
+  "end": 25.6
  },
  {
   "word": "of",
-  "start": 25.62,
+  "start": 25.6,
   "end": 25.82
  },
  {
   "word": "dark",
   "start": 25.82,
-  "end": 26.04
+  "end": 26.0
  },
  {
   "word": "dirt.",
-  "start": 26.04,
-  "end": 26.32
+  "start": 26.0,
+  "end": 26.28
  },
  {
   "word": "You",

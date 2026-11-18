@@ -120,15 +120,16 @@
   {
    "n": 7,
    "start_s": 23.32,
-   "seconds": 3.2,
-   "pause_after": 0.6,
+   "seconds": 3.11,
+   "pause_after": 0.69,
    "exaggeration": 0.7,
    "try": 1,
    "wer": 0.0,
    "diff": [],
-   "heard": "That's when Dada opens his hand and shows him a pinch of dark dirt.",
+   "heard": "That's when Gus opens his hand and shows him a pinch of dark dirt.",
    "punct_pauses": [],
-   "unmatched_punct": []
+   "unmatched_punct": [],
+   "redo": "re-rendered alone (vo_redo_line.py), seed 1750"
   },
   {
    "n": 8,

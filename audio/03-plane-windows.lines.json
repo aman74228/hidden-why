@@ -1,0 +1,85 @@
+{
+ "slug": "03-plane-windows",
+ "cfg_weight": 0.3,
+ "note": "text = caption/script text; spoken = what the TTS reads; pause_after = silence after the line (s); line 9's pause is the reaction shot; line 13 loops into line 1",
+ "lines": [
+  {
+   "n": 1,
+   "text": "Why will you never see a square window on a plane?",
+   "exaggeration": 0.6,
+   "pause_after": 0.45
+  },
+  {
+   "n": 2,
+   "text": "The first jet airliner had big, nearly square windows.",
+   "exaggeration": 0.5,
+   "pause_after": 0.35
+  },
+  {
+   "n": 3,
+   "text": "Vik bets a week of desserts that round windows are just for looks.",
+   "exaggeration": 0.7,
+   "pause_after": 0.5
+  },
+  {
+   "n": 4,
+   "text": "But this jet flew higher than any airliner before, so every flight pumped the cabin up like a balloon.",
+   "exaggeration": 0.5,
+   "pause_after": 0.4
+  },
+  {
+   "n": 5,
+   "text": "Within two years, two of them broke apart in the sky.",
+   "exaggeration": 0.45,
+   "pause_after": 0.7
+  },
+  {
+   "n": 6,
+   "text": "So engineers sank a whole plane in a water tank and pumped it up and down, again and again.",
+   "exaggeration": 0.5,
+   "pause_after": 0.3
+  },
+  {
+   "n": 7,
+   "text": "Until it burst, and the crack started at a sharp corner.",
+   "exaggeration": 0.6,
+   "pause_after": 0.6
+  },
+  {
+   "n": 8,
+   "text": "That's when Gus cuts a square hole and a round hole in paper, and pulls.",
+   "exaggeration": 0.7,
+   "pause_after": 0.4
+  },
+  {
+   "n": 9,
+   "text": "The square tears at the corner. The round one holds.",
+   "exaggeration": 0.6,
+   "pause_after": 0.5
+  },
+  {
+   "n": 10,
+   "text": "You see, a sharp corner squeezes all the stress into one tiny point, but a curve spreads it all the way around.",
+   "exaggeration": 0.5,
+   "pause_after": 0.4
+  },
+  {
+   "n": 11,
+   "text": "So every plane since has rounded windows.",
+   "exaggeration": 0.5,
+   "pause_after": 0.6
+  },
+  {
+   "n": 12,
+   "text": "And Vik's square brownie? It cracks right at the corner.",
+   "exaggeration": 0.7,
+   "pause_after": 0.4
+  },
+  {
+   "n": 13,
+   "text": "So next time you fly, look out and ask…",
+   "exaggeration": 0.6,
+   "pause_after": 0.0
+  }
+ ]
+}
