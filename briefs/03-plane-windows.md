@@ -1,5 +1,5 @@
 # Brief #3 — Why Plane Windows Can't Be Square
-Slug: `03-plane-windows` · Strand: Everyday object design · Target ≤ 60 s · 166 spoken words (Chatterbox reads ~200+ wpm; measured estimate ~58 s incl. pauses)
+Slug: `03-plane-windows` · Strand: Everyday object design · Target ≤ 60 s · 194 spoken words (v2: +28 words; Chatterbox reads ~240 wpm speech-only on this script, cfg does not slow it)
 Read CLAUDE.md + LESSONS.md first. Cast names are now **Milo** (curious kid, was Milo), **Gus** (old craftsman, was Gus), **Vik** (unchanged).
 
 ## Tone note
@@ -9,16 +9,16 @@ Two real airliners broke up in 1954 and people died. Treat that beat with respec
 | # | Line | Exag. | Pause after |
 |---|---|---|---|
 | 1 | Why will you never see a square window on a plane? | 0.6 | 0.45 s |
-| 2 | The first jet airliner had big, nearly square windows. | 0.5 | 0.35 s |
+| 2 | The very first jet airliner, back in the fifties, had big, nearly square windows, so passengers could watch the world go by. | 0.5 | 0.35 s |
 | 3 | Vik bets a week of desserts that round windows are just for looks. | 0.7 | 0.5 s |
-| 4 | But this jet flew higher than any airliner before, so every flight pumped the cabin up like a balloon. | 0.5 | 0.4 s |
-| 5 | Within two years, two of them broke apart in the sky. | 0.45 | 0.7 s |
-| 6 | So engineers sank a whole plane in a water tank and pumped it up and down, again and again. | 0.5 | 0.3 s |
+| 4 | But this jet flew higher than any airliner before, so every single flight pumped the cabin up like a balloon, and let it back down again. | 0.5 | 0.4 s |
+| 5 | Within two years, two of them broke apart in the sky. | 0.35 (lowest-pitch of 3 takes) | 0.7 s |
+| 6 | So engineers sank a whole plane in a giant water tank and pumped it up and down, again and again, thousands of times. | 0.5 | 0.3 s |
 | 7 | Until it burst, and the crack started at a sharp corner. | 0.6 | 0.6 s |
 | 8 | That's when Gus cuts a square hole and a round hole in paper, and pulls. | 0.7 | 0.4 s |
 | 9 | The square tears at the corner. The round one holds. | 0.6 | 0.5 s (reaction shot) |
-| 10 | You see, a sharp corner squeezes all the stress into one tiny point, but a curve spreads it all the way around. | 0.5 | 0.4 s |
-| 11 | So every plane since has rounded windows. | 0.5 | 0.6 s |
+| 10 | You see, a sharp corner squeezes all the stress into one tiny point, but a smooth curve spreads it gently all the way around. | 0.5 | 0.4 s |
+| 11 | So every airliner built since then has rounded windows. | 0.5 | 0.6 s |
 | 12 | And Vik's square brownie? It cracks right at the corner. | 0.7 | 0.4 s |
 | 13 | So next time you fly, look out and ask… | 0.6 | — (loop cut to line 1) |
 Target 52–60 s. If over 60 s, shorten between-sentence pauses first (min 0.25 s).

@@ -67,7 +67,28 @@ def take(cfg):
                 best[i] = {"file": j["out"], "wer": round(e, 3), "diff": diff, "try": attempt + 1, "heard": heard}
             if e > 0: nxt.append(i)
         todo = nxt
+    # pick = "lowest_pitch": render every try and keep the clean take with the lowest median pitch
+    for i, ln in enumerate(lines):
+        if ln.get("pick") != "lowest_pitch": continue
+        jobs = [{"text": ln.get("spoken", ln["text"]), "out": str(work / f"line{i+1:02d}-cfg{cfg}-try{t+1}.wav"),
+                 "exaggeration": ln["exaggeration"], "cfg_weight": cfg, "seed": V["seed"] + t} for t in range(ln.get("tries", 3))]
+        new = [j for j in jobs if not Path(j["out"]).exists()]
+        if new: timing.append(render(new))
+        cands = []
+        for t, j in enumerate(jobs):
+            heard = " ".join(w[0] for w in vp.words_of(vp.trim(vp.load(j["out"]))))
+            e, diff = wer(j["text"], heard)
+            hz = median_pitch(j["out"])
+            print(f"  line {i+1:2d} try {t+1}: WER {e:.2f} median pitch {hz:.1f} Hz", flush=True)
+            cands.append((e, hz, {"file": j["out"], "wer": round(e, 3), "diff": diff, "try": t + 1, "heard": heard, "median_pitch_hz": round(hz, 1)}))
+        best[i] = min(cands, key=lambda c: (c[0] > 0, c[0], c[1]))[2]
     return best, timing
+
+def median_pitch(path):
+    import parselmouth
+    f0 = parselmouth.Sound(str(path)).to_pitch_ac(time_step=0.01, pitch_floor=60, pitch_ceiling=500).selected_array["frequency"]
+    f0 = f0[f0 > 0]
+    return float(np.median(f0)) if len(f0) else 0.0
 
 cfg = a.cfg if a.cfg is not None else V["cfg_weight"]
 for round_ in range(2):
@@ -106,7 +127,7 @@ rep = {"slug": a.slug, "engine": f"chatterbox/{V['model']}", "seed": V["seed"], 
        "words": nwords, "wpm_overall": round(nwords / (len(y) / SR) * 60, 1), "wpm_speech_only": round(nwords / speech * 60, 1),
        "render": timing, "lines": [{"n": i + 1, "start_s": starts[i], "seconds": parts[i][1]["seconds"], "pause_after": pauses[i],
                                      "exaggeration": lines[i]["exaggeration"], "try": best[i]["try"], "wer": best[i]["wer"], "diff": best[i]["diff"],
-                                     "heard": best[i]["heard"], "punct_pauses": parts[i][1]["pauses"], "unmatched_punct": parts[i][1]["unmatched_punct"]}
+                                     "heard": best[i]["heard"], "median_pitch_hz": best[i].get("median_pitch_hz"), "punct_pauses": parts[i][1]["pauses"], "unmatched_punct": parts[i][1]["unmatched_punct"]}
                                     for i in range(len(lines))]}
 (ROOT / "audio" / f"{a.slug}.vo.json").write_text(json.dumps(rep, indent=1, ensure_ascii=False))
 print(json.dumps({k: rep[k] for k in ["total_s", "words", "wpm_overall", "wpm_speech_only", "cfg_weight"]}))

@@ -88,7 +88,10 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 5. Commit and push after every step; send the files.
 
 ## 8. Script & story (from the Storytelling playbook)
-- Chatterbox voice (cfg 0.3, seed 1750) reads ~181 wpm overall incl. pauses (214 wpm speech only): 157 words = 52 s, so ~175 words fill 58 s. Raising cfg_weight speeds it up (0.5 gave 50.9 s); lower cfg for slower pacing.
+- Chatterbox voice (cfg 0.3, seed 1750) speaks ~214–245 wpm (speech only), depending on the script: Short #2 214, Short #3 ~240. Budget ~195 words for 55–58 s.
+- cfg_weight and exaggeration do NOT slow it (Short #3 tests, lines 4 + 10: cfg 0.5 243–247 wpm, 0.3 230–244, 0.15 228–237, 0.05 218–248; exaggeration 0.35 241–250; cfg 0.0 crashes). Too short -> add words (or longer pauses), never time-stretch.
+- vo_pauses.py measures the natural gap at each punctuation mark and tops it up (or trims it) to the target; it never adds on top (a 0.32 s natural gap + 0.18 s gave a 0.55 s comma).
+- Serious beats: low exaggeration (0.35) and `"pick": "lowest_pitch"` in lines.json (all tries rendered, the clean take with the lowest median pitch kept).
 - Contradiction in the first 2 s; Vik's bet with a cost by 8 s; each wrong guess bigger than the last.
 - A new open question every 8–10 s; explanation ≤ 12 s, split in two with a reaction between.
 - Payoff = twist + callback to the hook; last line flows into the first for a clean loop.
