@@ -1,17 +1,17 @@
 # Brief #1 — Why This 1,600-Year-Old Pillar Won't Rust
 Slug: 01-iron-pillar · Target ~59 s
 
-## Script (send to ElevenLabs exactly as written)
-In Delhi, there's an iron pillar that has stood in the rain for sixteen hundred years. <break time="0.3s" /> And it still hasn't rusted.
+## Script (send to ElevenLabs exactly as written; eleven_v3 audio tags in [brackets])
+[curious] In Delhi, there's an iron pillar that has stood in the rain for sixteen hundred years... And it still hasn't rusted.
 Your bike chain rusts in one monsoon.
-Vik laughs. "Easy. Somebody painted it."
+Vik laughs. [sarcastic] "Easy. Somebody painted it."
 So they scratch it. Bare metal.
-"Then someone polishes it every night." They watch all week. Nobody comes.
-"Fine. It's a modern fake." So they test it. Ancient iron, hammered from hot lumps by hand, full of stuff modern steelmakers throw away.
+[sarcastic] "Then someone polishes it every night." They watch all week. Nobody comes.
+[sarcastic] "Fine. It's a modern fake." So they test it. Ancient iron, hammered from hot lumps by hand, full of stuff modern steelmakers throw away.
 Dada just taps the pillar and smiles.
-You see, that stuff is phosphorus. About twenty times more than today's iron. Every time rain wets the pillar and the sun dries it, the phosphorus helps a thin skin grow on the surface. A tight, hard coat that seals the iron underneath. A raincoat the pillar made for itself.
+[warm] You see, that stuff is phosphorus. About twenty times more than today's iron. Every time rain wets the pillar and the sun dries it, the phosphorus helps a thin skin grow on the surface. A tight, hard coat that seals the iron underneath. A raincoat the pillar made for itself.
 Modern steel is too clean to grow that coat.
-Vik storms home to his brand-new iron gate. And there it is. <break time="0.5s" /> One little orange spot.
+Vik storms home to his brand-new iron gate. And there it is... [deadpan] One little orange spot.
 
 ## Beats
 1. Hook (0–10 s): the pillar, 1,600 years, no rust; scale vs rusty bicycle
@@ -23,7 +23,7 @@ Vik storms home to his brand-new iron gate. And there it is. <break time="0.5s" 
 
 ## Voice direction
 Hook fast and curious. Vik's lines smug and slightly slower. "You see" section ~10% slower and warm. Final line deadpan after the pause.
-(If per-line speed can't be set, keep voice.json settings for the whole read.)
+eleven_v3 tags carry the direction: [curious] hook, [sarcastic] Vik's lines, [warm] "You see", [deadpan] last line. v3 has no <break> tags, so pauses are written as "...".
 
 ## Shot list
 | Time | Scene | Characters | Camera | On-screen text |

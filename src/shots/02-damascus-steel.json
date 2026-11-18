@@ -1,0 +1,1204 @@
+{
+ "slug": "02-damascus-steel",
+ "title": "Why Nobody Can Copy This Ancient Sword",
+ "audio": "vo/02-damascus-steel.mp3",
+ "music": false,
+ "sfx": false,
+ "payoffHold": 0.5,
+ "shots": [
+  {
+   "id": "hook-laser",
+   "beat": 1,
+   "stillAt": 0.0,
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "laser": 1,
+     "laserSweep": [
+      -0.3,
+      0.35
+     ],
+     "sabre": "scanner",
+     "screens": "scan"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -1.314,
+     1.397,
+     6.099
+    ],
+    "to": [
+     -1.326,
+     1.452,
+     4.422
+    ],
+    "look": [
+     0.37,
+     1.61,
+     0.225
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "goggles"
+     ],
+     "pose": "lean",
+     "pos": [
+      0.82,
+      0.62
+     ],
+     "facing": -1
+    }
+   ],
+   "layout": "manual",
+   "roll": [
+    2,
+    0.5
+   ],
+   "sfx": [
+    {
+     "name": "laser-hum",
+     "at": 0,
+     "dur": 4.91
+    },
+    {
+     "name": "error-beep",
+     "at": 2.0
+    }
+   ],
+   "duration": 4.9
+  },
+  {
+   "id": "museum-macro",
+   "set": "museum",
+   "fx": {
+    "museumDrop": [
+     0.05,
+     0.65
+    ]
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     1.0,
+     1.35,
+     3.1
+    ],
+    "to": [
+     -0.02,
+     1.27,
+     0.27
+    ],
+    "look": [
+     0.0,
+     1.2,
+     0.0
+    ],
+    "lookTo": [
+     0.04,
+     1.18,
+     -0.02
+    ],
+    "fov": 38
+   },
+   "dof": 0.8,
+   "titleCard": {
+    "label": "Damascus steel",
+    "word": "1,000+ years",
+    "at": 0.1,
+    "duration": 1.8
+   },
+   "sfx": [
+    {
+     "name": "drip",
+     "at": 1.92
+    }
+   ],
+   "duration": 3.4667
+  },
+  {
+   "id": "the-bet",
+   "beat": 2,
+   "stillAt": 1.4,
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "trophy": "drop",
+     "trophyDropAt": 0.35,
+     "sabre": "scanner"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     1.781,
+     1.625,
+     7.51
+    ],
+    "to": [
+     2.314,
+     1.542,
+     6.366
+    ],
+    "look": [
+     2.52,
+     1.13,
+     0.475
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "goggles"
+     ],
+     "pose": "slam",
+     "pos": [
+      3.3,
+      0.45
+     ],
+     "facing": -1,
+     "poses": [
+      {
+       "at": 0.9,
+       "pose": "proud"
+      }
+     ]
+    },
+    {
+     "who": "chotu",
+     "pose": "idle",
+     "pos": [
+      1.75,
+      0.8
+     ],
+     "facing": 1,
+     "poses": [
+      {
+       "at": 0.4,
+       "pose": "gasp"
+      }
+     ]
+    }
+   ],
+   "layout": "manual",
+   "titleCard": {
+    "label": "The bet",
+    "word": "His trophy",
+    "at": 0.8,
+    "duration": 1.25
+   },
+   "sfx": [
+    {
+     "name": "metal-clang",
+     "at": 0.35
+    }
+   ],
+   "duration": 2.1333
+  },
+  {
+   "id": "pause-engraving",
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "trophy": "bench",
+     "sabre": "scanner"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     2.5,
+     1.1,
+     0.72
+    ],
+    "to": [
+     2.52,
+     1.08,
+     0.62
+    ],
+    "look": [
+     2.62,
+     1.03,
+     0.28
+    ],
+    "fov": 34
+   },
+   "dof": 1.6,
+   "focusDist": 0.42,
+   "sfx": [
+    {
+     "name": "metal-ting",
+     "at": 0.05
+    }
+   ],
+   "duration": 0.4
+  },
+  {
+   "id": "try1-folding",
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "pressBar": "hot-folded",
+     "pressHits": [
+      0.55,
+      1.45,
+      2.35
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -1.992,
+     1.505,
+     5.172
+    ],
+    "to": [
+     -2.85,
+     1.0,
+     2.05
+    ],
+    "look": [
+     -2.425,
+     1.505,
+     1.05
+    ],
+    "lookTo": [
+     -2.7,
+     0.82,
+     0.9
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "apron",
+      "goggles"
+     ],
+     "pose": "hammer",
+     "pos": [
+      -1.95,
+      1.2
+     ],
+     "facing": -1,
+     "holding": "hammer",
+     "delay": -0.3
+    }
+   ],
+   "layout": "manual",
+   "titleCard": {
+    "label": "Try 1",
+    "word": "Folding",
+    "at": 0.1,
+    "duration": 3.82,
+    "crossed": true,
+    "crossAt": 3.04
+   },
+   "sfx": [
+    {
+     "name": "press-thump",
+     "at": 0.55
+    },
+    {
+     "name": "anvil",
+     "at": 1.45
+    },
+    {
+     "name": "press-thump",
+     "at": 2.35
+    }
+   ],
+   "duration": 3.9667
+  },
+  {
+   "id": "try2-pure-iron",
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "benchItems": [
+      "pure-box",
+      "blank-blade-front"
+     ],
+     "boxOpenAt": 0.5
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     2.039,
+     1.71,
+     4.158
+    ],
+    "to": [
+     1.743,
+     2.896,
+     4.891
+    ],
+    "look": [
+     2.875,
+     1.57,
+     0.225
+    ],
+    "lookTo": [
+     2.675,
+     1.61,
+     0.505
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "goggles"
+     ],
+     "pose": "present",
+     "pos": [
+      3.3,
+      0.45
+     ],
+     "facing": -1,
+     "poses": [
+      {
+       "at": 3.04,
+       "pose": "deadpan"
+      }
+     ]
+    }
+   ],
+   "layout": "manual",
+   "titleCard": {
+    "label": "Try 2",
+    "word": "Pure iron",
+    "at": 0.1,
+    "duration": 4.05,
+    "crossed": true,
+    "crossAt": 3.04
+   },
+   "sfx": [
+    {
+     "name": "box-open",
+     "at": 0.5
+    },
+    {
+     "name": "shimmer",
+     "at": 0.9
+    }
+   ],
+   "duration": 4.2
+  },
+  {
+   "id": "try3-recipe",
+   "beat": 3,
+   "stillAt": 3.5900000000000003,
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "furnace": 0.9,
+     "dial": [
+      0.4,
+      0.9
+     ],
+     "benchItems": [
+      "cracked"
+     ],
+     "crackAt": 3.24
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.428,
+     1.451,
+     8.736
+    ],
+    "to": [
+     -1.25,
+     1.35,
+     -0.15
+    ],
+    "look": [
+     -1.17,
+     1.13,
+     -0.325
+    ],
+    "lookTo": [
+     -1.55,
+     0.98,
+     -1.2
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "chotu",
+     "pose": "present",
+     "pos": [
+      0.15,
+      0.55
+     ],
+     "facing": -1,
+     "holding": "parchment"
+    },
+    {
+     "who": "vik",
+     "props": [
+      "apron",
+      "goggles"
+     ],
+     "pose": "point",
+     "pos": [
+      -2.5,
+      0.3
+     ],
+     "facing": 1
+    }
+   ],
+   "layout": "manual",
+   "titleCard": {
+    "label": "Try 3",
+    "word": "The recipe",
+    "at": 0.1,
+    "duration": 4.04,
+    "crossed": true,
+    "crossAt": 3.24
+   },
+   "sfx": [
+    {
+     "name": "crucible-crack",
+     "at": 3.24
+    }
+   ],
+   "duration": 4.2
+  },
+  {
+   "id": "dada-dirt",
+   "beat": 4,
+   "stillAt": 2.78,
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "door": [
+      0,
+      1
+     ],
+     "doorAt": 0.1,
+     "sabre": "scanner"
+    },
+    "hand": {
+     "pos": [
+      -3.4,
+      1.0,
+      -2.55
+     ],
+     "rot": [
+      0.35,
+      -1.5707963267948966,
+      0
+     ],
+     "s": 1.6,
+     "open": [
+      0,
+      1
+     ],
+     "openAt": 1.24,
+     "grit": true,
+     "sleeve": "#D29A72"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -4.547,
+     1.872,
+     8.664
+    ],
+    "to": [
+     -3.3,
+     1.48,
+     -2.15
+    ],
+    "look": [
+     -3.405,
+     1.3,
+     -2.2
+    ],
+    "lookTo": [
+     -3.4,
+     1.03,
+     -2.55
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "dada",
+     "outfit": {
+      "body": "#5A3E30",
+      "trim": "#B88A5A",
+      "legs": "#C9B48E",
+      "shoes": "#3A2A22"
+     },
+     "props": [
+      "apron",
+      "headwrap"
+     ],
+     "pose": "idle",
+     "pos": [
+      -3.6,
+      -3.35
+     ],
+     "facing": 1,
+     "appearAt": 0.45
+    },
+    {
+     "who": "chotu",
+     "pose": "look-up",
+     "pos": [
+      -4.6,
+      -1.2
+     ],
+     "facing": 1
+    },
+    {
+     "who": "vik",
+     "props": [
+      "goggles"
+     ],
+     "pose": "shock",
+     "pos": [
+      -2.2,
+      -0.6
+     ],
+     "facing": -1
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "gate-creak",
+     "at": 0.1
+    },
+    {
+     "name": "grit-trickle",
+     "at": 2.22
+    }
+   ],
+   "duration": 3.8
+  },
+  {
+   "id": "india-vanadium",
+   "set": "hillside",
+   "fx": {
+    "hill": {
+     "furnace": true
+    },
+    "orePot": {
+     "pos": [
+      -0.4,
+      0.32,
+      1.0
+     ],
+     "s": 1.4,
+     "specks": 9,
+     "glintAt": 5.56
+    }
+   },
+   "props": [
+    {
+     "type": "block",
+     "pos": [
+      -0.4,
+      0,
+      1.0
+     ],
+     "scale": 0.4,
+     "color": "#C98F68"
+    }
+   ],
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -2.4,
+     1.6,
+     6.6
+    ],
+    "to": [
+     -0.4,
+     0.74,
+     1.36
+    ],
+    "look": [
+     -0.6,
+     1.3,
+     -2.2
+    ],
+    "lookTo": [
+     -0.4,
+     0.48,
+     1.0
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "dada",
+     "outfit": {
+      "body": "#5A3E30",
+      "trim": "#B88A5A",
+      "legs": "#C9B48E",
+      "shoes": "#3A2A22"
+     },
+     "props": [
+      "apron",
+      "headwrap"
+     ],
+     "pose": "point",
+     "pos": [
+      -1.7,
+      -1.55
+     ],
+     "facing": 1
+    }
+   ],
+   "layout": "manual",
+   "titleCards": [
+    {
+     "label": "Wootz steel",
+     "word": "India",
+     "at": 0.3,
+     "duration": 2.6
+    },
+    {
+     "label": "Vanadium",
+     "word": "Tiny traces",
+     "at": 5.46,
+     "duration": 1.75
+    }
+   ],
+   "sfx": [
+    {
+     "name": "shimmer",
+     "at": 5.56
+    }
+   ],
+   "duration": 7.3
+  },
+  {
+   "id": "pause-reaction",
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "door": [
+      1,
+      1
+     ],
+     "sabre": "scanner"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -0.479,
+     1.427,
+     6.944
+    ],
+    "to": [
+     -0.38,
+     1.413,
+     6.675
+    ],
+    "look": [
+     -0.38,
+     1.13,
+     1.275
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "chotu",
+     "pose": "look-up",
+     "pos": [
+      -1.1,
+      1.3
+     ],
+     "facing": 1
+    },
+    {
+     "who": "vik",
+     "props": [
+      "goggles"
+     ],
+     "pose": "shock",
+     "pos": [
+      0.35,
+      1.25
+     ],
+     "facing": -1
+    }
+   ],
+   "layout": "manual",
+   "duration": 0.4
+  },
+  {
+   "id": "smith-bands",
+   "beat": 5,
+   "stillAt": 3.46,
+   "set": "forge",
+   "grade": "flashback",
+   "fx": {
+    "forgeLumps": false,
+    "cake": {
+     "strikes": [
+      0.65,
+      1.55,
+      2.45,
+      3.35,
+      4.25
+     ]
+    },
+    "sparks": {
+     "pos": [
+      0.72,
+      0.6,
+      0.12
+     ],
+     "times": [
+      0.65,
+      1.55,
+      2.45,
+      3.35,
+      4.25
+     ],
+     "color": "#FFD76A"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     1.9,
+     1.35,
+     3.4
+    ],
+    "to": [
+     0.98,
+     0.86,
+     0.64
+    ],
+    "look": [
+     0.35,
+     0.9,
+     0.1
+    ],
+    "lookTo": [
+     0.72,
+     0.57,
+     0.12
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "dada",
+     "outfit": {
+      "body": "#5A3E30",
+      "trim": "#B88A5A",
+      "legs": "#C9B48E",
+      "shoes": "#3A2A22"
+     },
+     "props": [
+      "apron",
+      "headwrap"
+     ],
+     "pose": "hammer",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "holding": "hammer",
+     "delay": -0.25
+    }
+   ],
+   "sfx": [
+    {
+     "name": "anvil",
+     "at": 0.65
+    },
+    {
+     "name": "anvil",
+     "at": 1.55
+    },
+    {
+     "name": "anvil",
+     "at": 2.45
+    },
+    {
+     "name": "anvil",
+     "at": 3.35
+    },
+    {
+     "name": "anvil",
+     "at": 4.25
+    },
+    {
+     "name": "sizzle",
+     "at": 0.7000000000000001
+    }
+   ],
+   "duration": 4.3667
+  },
+  {
+   "id": "no-traces",
+   "set": "forge",
+   "grade": "flashback",
+   "fx": {
+    "forgeLumps": false,
+    "noSparks": true,
+    "anvilBlades": true,
+    "hand": {
+     "pos": [
+      0.98,
+      0.66,
+      0.52
+     ],
+     "rot": [
+      0,
+      0.2,
+      3.141592653589793
+     ],
+     "s": 1.3,
+     "point": true,
+     "sleeve": "#D29A72"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.8,
+     1.62,
+     0.62
+    ],
+    "to": [
+     0.78,
+     1.5,
+     0.55
+    ],
+    "look": [
+     0.8,
+     0.57,
+     0.14
+    ],
+    "fov": 40
+   },
+   "roll": [
+    91,
+    88
+   ],
+   "duration": 2.3
+  },
+  {
+   "id": "mines-dry",
+   "set": "hillside",
+   "fx": {
+    "hill": {
+     "empty": true,
+     "scrape": [
+      -1.6,
+      0.6
+     ],
+     "dust": true
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.1,
+     0.95,
+     1.4
+    ],
+    "to": [
+     0.4,
+     1.7,
+     5.4
+    ],
+    "look": [
+     -0.3,
+     0.6,
+     -2.4
+    ],
+    "lookTo": [
+     0.0,
+     1.2,
+     -2.4
+    ],
+    "fov": 44
+   },
+   "titleCard": {
+    "label": "Mines ran dry",
+    "word": "~1750",
+    "at": 0.2,
+    "duration": 3.0
+   },
+   "sfx": [
+    {
+     "name": "coin-scrape",
+     "at": 0.4
+    },
+    {
+     "name": "coin-scrape",
+     "at": 1.8
+    }
+   ],
+   "duration": 4.4667
+  },
+  {
+   "id": "pause-forge-dark",
+   "set": "forge",
+   "light": "forge",
+   "lightTo": "forge-dark",
+   "mixAt": [
+    0.0,
+    0.5
+   ],
+   "grade": "flashback",
+   "fx": {
+    "forgeLumps": false,
+    "noSparks": true,
+    "forgeGlow": [
+     0.6,
+     0.15
+    ],
+    "cake": {
+     "strikes": [],
+     "glow": [
+      0.5,
+      0.08
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     1.839,
+     1.112,
+     3.667
+    ],
+    "to": [
+     1.98,
+     1.097,
+     3.353
+    ],
+    "look": [
+     0.255,
+     0.84,
+     0.11
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "dada",
+     "outfit": {
+      "body": "#5A3E30",
+      "trim": "#B88A5A",
+      "legs": "#C9B48E",
+      "shoes": "#3A2A22"
+     },
+     "props": [
+      "apron",
+      "headwrap"
+     ],
+     "pose": "idle",
+     "pos": [
+      -0.05,
+      0.1
+     ],
+     "facing": 1
+    }
+   ],
+   "layout": "manual",
+   "duration": 0.6
+  },
+  {
+   "id": "trophy-melts",
+   "beat": 6,
+   "stillAt": 3.2,
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "trophy": "melt",
+     "melt": [
+      0.05,
+      0.95
+     ],
+     "sabre": "scanner"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.592,
+     1.9460000000000002,
+     6.138
+    ],
+    "to": [
+     0.892,
+     2.096,
+     7.038
+    ],
+    "look": [
+     0.47,
+     1.46,
+     1.0
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "goggles"
+     ],
+     "pose": "peek",
+     "pos": [
+      1.35,
+      0.85
+     ],
+     "facing": -1
+    },
+    {
+     "who": "chotu",
+     "pose": "gasp",
+     "pos": [
+      -0.4,
+      1.15
+     ],
+     "facing": 1
+    }
+   ],
+   "layout": "manual",
+   "payoff": true,
+   "payoffAt": 3.2,
+   "sfx": [
+    {
+     "name": "molten-pour",
+     "at": 0.1
+    }
+   ],
+   "duration": 3.7
+  },
+  {
+   "id": "pause-deadpan",
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "benchItems": [
+      "ingot",
+      "sabre"
+     ]
+    }
+   },
+   "camera": {
+    "type": "fit",
+    "focus": [
+     "vik"
+    ],
+    "crop": 0.42,
+    "band": [
+     0.12,
+     0.88
+    ],
+    "angleDeg": -8,
+    "orbitDeg": 2,
+    "push": 0.04
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "goggles"
+     ],
+     "pose": "deadpan",
+     "pos": [
+      3.55,
+      0.35
+     ],
+     "facing": -1
+    }
+   ],
+   "duration": 0.3
+  },
+  {
+   "id": "loop-laser",
+   "set": "lab",
+   "fx": {
+    "lab": {
+     "laser": 1,
+     "laserSweep": [
+      -0.3,
+      -0.3
+     ],
+     "sabre": "scanner",
+     "screens": "scan"
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -1.664,
+     1.357,
+     6.799
+    ],
+    "to": [
+     -1.314,
+     1.397,
+     6.099
+    ],
+    "look": [
+     0.37,
+     1.61,
+     0.225
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "goggles"
+     ],
+     "pose": "lean",
+     "pos": [
+      0.82,
+      0.62
+     ],
+     "facing": -1
+    }
+   ],
+   "layout": "manual",
+   "roll": [
+    3.5,
+    2
+   ],
+   "sfx": [
+    {
+     "name": "laser-hum",
+     "at": 0.1,
+     "dur": 1.55
+    }
+   ],
+   "duration": 1.5667
+  }
+ ]
+}

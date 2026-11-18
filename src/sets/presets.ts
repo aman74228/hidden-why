@@ -82,6 +82,24 @@ export const LIGHTS: Record<string, LightPreset> = {
     ambient: '#26306E', ambientIntensity: 0.6,
     fog: '#2A3170', fogNear: 7, fogFar: 42, charTint: '#C9D2FF', rim: '#FFD3A0',
   },
+  lab: {
+    key: '#F2F8FF', keyIntensity: 2.3, keyDir: [-3, 8, 5],
+    sky: '#DFF2F2', shade: '#1F4A5A', hemi: 1.0,
+    ambient: '#2E5A7A', ambientIntensity: 0.65,
+    fog: '#CFE2E6', fogNear: 10, fogFar: 40, charTint: '#F6FBFF', rim: '#FFC877',
+  },
+  museum: {
+    key: '#FFD8A0', keyIntensity: 1.8, keyDir: [-2, 6, 4],
+    sky: '#B8A8E8', shade: '#1E2460', hemi: 0.8,
+    ambient: '#3A2E7A', ambientIntensity: 0.75,
+    fog: '#3A2E5A', fogNear: 8, fogFar: 30, charTint: '#FFEBD0', rim: '#FFC877',
+  },
+  'forge-dark': {
+    key: '#8A5A7A', keyIntensity: 0.9, keyDir: [-4, 3, 2],
+    sky: '#5A4A7A', shade: '#18204E', hemi: 0.6,
+    ambient: '#2A2E6A', ambientIntensity: 0.7,
+    fog: '#241E3E', fogNear: 5, fogFar: 22, charTint: '#C8B8D8', rim: '#FF8A4A',
+  },
   interior: {
     key: '#FFB85A', keyIntensity: 3.4, keyDir: [-4, 5, 3],
     sky: '#FFD49A', shade: '#2A2C66', hemi: 0.9,

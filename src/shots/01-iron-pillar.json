@@ -2,22 +2,125 @@
  "slug": "01-iron-pillar",
  "title": "Why This 1,600-Year-Old Pillar Won't Rust",
  "audio": "vo/01-iron-pillar.mp3",
- "music": true,
+ "music": false,
+ "sfx": false,
  "payoffHold": 0.5,
  "shots": [
   {
-   "id": "hook-pillar-rain",
+   "id": "hook-coin-tap",
    "beat": 1,
-   "stillAt": 4.6,
-   "duration": 6.13,
+   "stillAt": 0.0,
+   "set": "courtyard",
+   "sky": "storm",
+   "light": "storm",
+   "fx": {
+    "pillar": {
+     "pos": [
+      0,
+      -2.5
+     ]
+    },
+    "rain": [
+     1,
+     1
+    ],
+    "sparks": {
+     "pos": [
+      0.16,
+      1.55,
+      -2.32
+     ],
+     "times": [
+      0.55,
+      1.45
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.75,
+     0.72,
+     4.1
+    ],
+    "to": [
+     0.6,
+     0.8,
+     3.15
+    ],
+    "look": [
+     0.15,
+     1.5,
+     -2.4
+    ],
+    "lookTo": [
+     0.12,
+     1.6,
+     -2.4
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "umbrella"
+     ],
+     "pose": "coin-tap",
+     "pos": [
+      0.86,
+      -2.42
+     ],
+     "facing": -1,
+     "holding": "coin"
+    },
+    {
+     "who": "chotu",
+     "props": [
+      "satchel"
+     ],
+     "pose": "look-up",
+     "pos": [
+      -0.4,
+      -1.6
+     ],
+     "facing": 1
+    }
+   ],
+   "layout": "manual",
+   "roll": [
+    2.5,
+    1.0
+   ],
+   "sfx": [
+    {
+     "name": "rain-soft",
+     "at": 0,
+     "dur": 6.75,
+     "fadeAt": 2.8
+    },
+    {
+     "name": "metal-ting",
+     "at": 0.55
+    },
+    {
+     "name": "metal-ting",
+     "at": 1.45
+    }
+   ],
+   "duration": 2.8
+  },
+  {
+   "id": "pillar-rise",
+   "beat": 1,
    "set": "courtyard",
    "sky": "storm",
    "light": "storm",
    "skyTo": "golden",
    "lightTo": "golden",
    "mixAt": [
-    2.6,
-    4.6
+    1.2,
+    2.2
    ],
    "fx": {
     "pillar": {
@@ -28,164 +131,369 @@
     },
     "rain": [
      1,
-     0.0
+     0.6
     ]
    },
    "camera": {
     "type": "dolly",
     "from": [
-     0.6,
-     0.35,
-     6.4
+     0.4,
+     0.25,
+     3.2
     ],
     "to": [
-     0.35,
-     0.45,
-     5.6
+     0.25,
+     0.6,
+     1.4
     ],
     "look": [
      0,
-     1.4,
+     2.0,
      -2.5
     ],
     "lookTo": [
      0,
-     3.3,
+     6.6,
      -2.5
-    ]
+    ],
+    "fov": 44
    },
-   "cast": [
-    {
-     "who": "chotu",
-     "pose": "point",
-     "pos": [
-      0.75,
-      -1.7
-     ],
-     "facing": -1,
-     "appearAt": 3.2,
-     "enter": {
-      "from": [
-       1.9,
-       -1.2
-      ],
-      "at": 3.4,
-      "dur": 1.0
-     }
-    }
-   ],
-   "layout": "manual",
    "titleCard": {
     "label": "Iron pillar · Delhi",
     "word": "1,600 years",
-    "at": 0.8,
-    "duration": 5.2
+    "at": 0.2,
+    "duration": 2.0
    },
-   "sfx": [
-    {
-     "name": "rain",
-     "at": 0,
-     "dur": 5.0,
-     "volume": 0.45
-    }
-   ]
+   "duration": 2.2
   },
   {
-   "id": "scale-chotu",
+   "id": "insert-surface",
    "beat": 1,
-   "duration": 1.17,
    "set": "courtyard",
+   "sky": "storm",
+   "light": "storm",
    "fx": {
     "pillar": {
      "pos": [
       0,
       -2.5
      ]
-    }
+    },
+    "rain": [
+     0.7,
+     0.7
+    ],
+    "beams": false
    },
    "camera": {
     "type": "dolly",
     "from": [
-     -1.4,
-     0.7,
-     12.9
+     0.55,
+     1.35,
+     -1.25
     ],
     "to": [
-     1.4,
-     0.7,
-     12.9
+     0.4,
+     1.6,
+     -1.55
     ],
     "look": [
-     0,
-     4.8,
+     0.0,
+     1.55,
      -2.5
-    ]
+    ],
+    "lookTo": [
+     0.0,
+     1.75,
+     -2.5
+    ],
+    "fov": 40
+   },
+   "dof": 1.2,
+   "focusDist": 1.0,
+   "duration": 1.75
+  },
+  {
+   "id": "insert-chain",
+   "beat": 1,
+   "set": "void",
+   "sky": "storm",
+   "light": "golden",
+   "fx": {
+    "macro": "chain"
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.45,
+     0.5,
+     1.45
+    ],
+    "to": [
+     0.2,
+     0.38,
+     1.15
+    ],
+    "look": [
+     -0.2,
+     0.08,
+     0
+    ],
+    "lookTo": [
+     -0.1,
+     0.05,
+     0
+    ],
+    "fov": 40
+   },
+   "roll": [
+    -4,
+    -2
+   ],
+   "dof": 1.2,
+   "focusDist": 1.2,
+   "titleCard": {
+    "label": "Your bike chain",
+    "word": "1 monsoon",
+    "at": 0.3,
+    "duration": 1.2
+   },
+   "sfx": [
+    {
+     "name": "drip",
+     "at": 0.3
+    }
+   ],
+   "duration": 1.5
+  },
+  {
+   "id": "bike-wide",
+   "beat": 1,
+   "set": "courtyard",
+   "sky": "storm",
+   "light": "storm",
+   "fx": {
+    "rain": [
+     0.8,
+     0.8
+    ],
+    "beams": false
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -3.6,
+     0.8,
+     -3.6
+    ],
+    "to": [
+     -4.3,
+     0.65,
+     -4.5
+    ],
+    "look": [
+     -5.2,
+     0.55,
+     -6.3
+    ],
+    "lookTo": [
+     -5.25,
+     0.5,
+     -6.3
+    ],
+    "fov": 42
+   },
+   "titleCard": {
+    "label": "Your bike chain",
+    "word": "1 monsoon",
+    "at": 0,
+    "duration": 1.4,
+    "intro": false
+   },
+   "sfx": [
+    {
+     "name": "drip",
+     "at": 0.6
+    }
+   ],
+   "duration": 1.65
+  },
+  {
+   "id": "vik-laughs",
+   "beat": 2,
+   "set": "courtyard",
+   "light": "golden",
+   "fx": {
+    "pillar": {
+     "pos": [
+      0,
+      -2.5
+     ]
+    },
+    "rain": [
+     0.25,
+     0.15
+    ],
+    "beams": true
+   },
+   "camera": {
+    "type": "fit",
+    "focus": [
+     "vik"
+    ],
+    "crop": 0.6,
+    "band": [
+     0.24,
+     0.97
+    ],
+    "angleDeg": -14,
+    "orbitDeg": 14,
+    "push": 0.18
    },
    "cast": [
     {
      "who": "chotu",
-     "pose": "point",
+     "props": [
+      "satchel"
+     ],
+     "pose": "idle",
      "pos": [
-      0.9,
-      -1.9
+      -0.7,
+      0.4
+     ],
+     "facing": 1
+    },
+    {
+     "who": "vik",
+     "props": [
+      "umbrella"
+     ],
+     "pose": "laugh",
+     "pos": [
+      0.7,
+      0.5
+     ],
+     "facing": -1,
+     "enter": {
+      "from": [
+       2.6,
+       1.0
+      ],
+      "at": 0,
+      "dur": 0.8
+     }
+    }
+   ],
+   "duration": 2.7
+  },
+  {
+   "id": "vik-paint",
+   "beat": 2,
+   "set": "courtyard",
+   "light": "golden",
+   "fx": {
+    "pillar": {
+     "pos": [
+      0,
+      -2.5
+     ]
+    },
+    "rain": [
+     0.15,
+     0.1
+    ]
+   },
+   "camera": {
+    "type": "fit",
+    "focus": [
+     "vik"
+    ],
+    "crop": 0.5,
+    "band": [
+     0.3,
+     0.97
+    ],
+    "angleDeg": 12,
+    "orbitDeg": -10,
+    "push": 0.2
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "props": [
+      "umbrella"
+     ],
+     "pose": "talk",
+     "pos": [
+      0.7,
+      -1.6
      ],
      "facing": -1
     }
    ],
-   "layout": "manual",
    "titleCard": {
-    "label": "7 metres tall",
-    "word": "6+ tonnes",
-    "at": 0.05,
-    "duration": 1.2
-   }
+    "label": "Guess 1",
+    "word": "Paint",
+    "at": 0.15,
+    "duration": 3.6
+   },
+   "duration": 1.7
   },
   {
-   "id": "rusty-bicycle",
-   "beat": 1,
-   "duration": 1.08,
-   "set": "courtyard",
+   "id": "insert-scratch",
+   "beat": 2,
+   "stillAt": 2.0,
+   "set": "void",
+   "light": "macro",
    "fx": {
-    "bicycle": {
-     "pos": [
-      -3.6,
-      0,
-      -1.2
-     ],
-     "rotY": 0.25
-    }
+    "macro": "scratch"
    },
    "camera": {
     "type": "dolly",
     "from": [
-     -4.7,
-     0.65,
-     1.2
+     0.1,
+     0.05,
+     2.6
     ],
     "to": [
-     -3.1,
-     0.6,
-     1.0
+     -0.05,
+     -0.05,
+     2.0
     ],
     "look": [
-     -3.6,
-     0.55,
-     -1.2
-    ]
+     0,
+     0,
+     0
+    ],
+    "fov": 40
    },
+   "roll": [
+    3,
+    0
+   ],
    "titleCard": {
-    "label": "7 metres tall",
-    "word": "6+ tonnes",
+    "label": "Guess 1",
+    "word": "Paint",
     "at": 0,
-    "duration": 0.9,
+    "duration": 3.1,
+    "crossed": true,
+    "crossAt": 1.55,
     "intro": false
-   }
+   },
+   "sfx": [
+    {
+     "name": "coin-scrape",
+     "at": 0.25
+    }
+   ],
+   "duration": 3.15
   },
   {
-   "id": "vik-arrives",
-   "beat": 2,
-   "duration": 3.07,
+   "id": "vik-polish",
+   "beat": 3,
    "set": "courtyard",
+   "sky": "dusk",
+   "light": "dusk",
    "fx": {
     "pillar": {
      "pos": [
@@ -196,91 +504,45 @@
    },
    "camera": {
     "type": "fit",
-    "focus": [
-     "vik"
-    ],
-    "crop": 0.62,
-    "band": [
-     0.2,
-     0.97
-    ],
-    "angleDeg": -8
+    "angleDeg": -20,
+    "orbitDeg": 18,
+    "push": 0.15
    },
    "cast": [
     {
      "who": "chotu",
+     "props": [
+      "satchel"
+     ],
      "pose": "idle",
      "pos": [
-      -0.6,
-      0.6
+      -0.8,
+      -1.5
      ],
      "facing": 1
     },
     {
      "who": "vik",
-     "pose": "cross-laugh",
+     "props": [],
+     "pose": "point",
      "pos": [
-      0.6,
-      0.6
+      0.75,
+      -1.4
      ],
-     "facing": -1,
-     "enter": {
-      "from": [
-       2.4,
-       0.9
-      ],
-      "at": 0,
-      "dur": 0.7
-     },
-     "poses": [
-      {
-       "at": 0,
-       "pose": "cross-laugh"
-      },
-      {
-       "at": 1.07,
-       "pose": "cross-talk"
-      }
-     ]
+     "facing": -1
     }
-   ]
-  },
-  {
-   "id": "coin-scratch",
-   "beat": 2,
-   "stillAt": 1.8,
-   "duration": 2.35,
-   "set": "void",
-   "fx": {
-    "macro": "scratch"
-   },
-   "camera": {
-    "type": "static",
-    "pos": [
-     0,
-     0,
-     2.3
-    ],
-    "look": [
-     0,
-     0,
-     0
-    ],
-    "drift": 0.12
-   },
+   ],
    "titleCard": {
-    "label": "Guess 1",
-    "word": "Paint",
-    "at": 0.1,
-    "duration": 2.2,
-    "crossed": true,
-    "crossAt": 1.3
-   }
+    "label": "Guess 2",
+    "word": "Polishing",
+    "at": 0.15,
+    "duration": 2.2
+   },
+   "duration": 2.35
   },
   {
    "id": "night-watch",
    "beat": 3,
-   "duration": 5.48,
    "set": "courtyard",
    "sky": "night",
    "light": "night",
@@ -306,18 +568,28 @@
     }
    ],
    "camera": {
-    "type": "static",
-    "pos": [
-     0.2,
+    "type": "dolly",
+    "from": [
+     0.6,
      0.9,
      7.6
     ],
-    "look": [
-     -0.4,
-     2.1,
-     -2
+    "to": [
+     -0.3,
+     1.0,
+     6.7
     ],
-    "drift": 0.12
+    "look": [
+     -1.2,
+     1.35,
+     -1
+    ],
+    "lookTo": [
+     -1.2,
+     1.6,
+     -1
+    ],
+    "fov": 44
    },
    "cast": [
     {
@@ -331,6 +603,9 @@
     },
     {
      "who": "chotu",
+     "props": [
+      "satchel"
+     ],
      "pose": "idle",
      "pos": [
       -0.8,
@@ -343,29 +618,98 @@
    "titleCard": {
     "label": "Guess 2",
     "word": "Polishing",
-    "at": 0.3,
-    "duration": 5.1,
+    "at": 0,
+    "duration": 3.4,
     "crossed": true,
-    "crossAt": 4.2
-   }
+    "crossAt": 2.3,
+    "intro": false
+   },
+   "sfx": [
+    {
+     "name": "crickets",
+     "at": 0,
+     "dur": 3.5
+    }
+   ],
+   "duration": 3.5
+  },
+  {
+   "id": "vik-fake",
+   "beat": 3,
+   "set": "courtyard",
+   "sky": "noon",
+   "light": "noon",
+   "fx": {
+    "pillar": {
+     "pos": [
+      0,
+      -2.5
+     ]
+    },
+    "motes": true
+   },
+   "camera": {
+    "type": "fit",
+    "focus": [
+     "vik"
+    ],
+    "crop": 0.55,
+    "band": [
+     0.28,
+     0.97
+    ],
+    "angleDeg": 18,
+    "orbitDeg": -14,
+    "push": 0.2
+   },
+   "cast": [
+    {
+     "who": "chotu",
+     "props": [
+      "satchel"
+     ],
+     "pose": "idle",
+     "pos": [
+      -0.7,
+      -1.2
+     ],
+     "facing": 1
+    },
+    {
+     "who": "vik",
+     "pose": "cross-talk",
+     "pos": [
+      0.6,
+      -1.2
+     ],
+     "facing": -1
+    }
+   ],
+   "titleCard": {
+    "label": "Guess 3",
+    "word": "Fake",
+    "at": 0.1,
+    "duration": 1.9
+   },
+   "duration": 1.85
   },
   {
    "id": "forge-wide",
    "beat": 3,
-   "stillAt": 3.3,
-   "duration": 4.07,
+   "stillAt": 1.6,
    "set": "forge",
    "grade": "flashback",
    "fx": {
     "merge": [
      0,
-     0.35
+     0.3
     ]
    },
    "camera": {
     "type": "fit",
-    "angleDeg": 18,
-    "orbitDeg": 22
+    "angleDeg": 24,
+    "orbitDeg": 26,
+    "push": 0.25
    },
    "cast": [
     {
@@ -382,50 +726,45 @@
       "trim": "#B88A5A",
       "legs": "#C9B48E",
       "shoes": "#3A2A22"
-     }
+     },
+     "props": [
+      "apron",
+      "headwrap"
+     ]
     }
    ],
    "titleCard": {
     "label": "Guess 3",
     "word": "Fake",
-    "at": 0.2,
-    "duration": 3.8,
-    "crossed": true,
-    "crossAt": 2.6
+    "at": 0,
+    "duration": 2.6,
+    "intro": false
    },
    "sfx": [
     {
-     "name": "clang",
-     "at": 0.9,
-     "volume": 0.4
+     "name": "anvil",
+     "at": 0.88
     },
     {
-     "name": "clang",
-     "at": 1.8,
-     "volume": 0.4
+     "name": "anvil",
+     "at": 1.78
     },
     {
-     "name": "clang",
-     "at": 2.7,
-     "volume": 0.4
-    },
-    {
-     "name": "clang",
-     "at": 3.6,
-     "volume": 0.4
+     "name": "anvil",
+     "at": 2.68
     }
-   ]
+   ],
+   "duration": 2.7
   },
   {
    "id": "forge-close",
    "beat": 3,
-   "duration": 5.75,
    "set": "forge",
    "grade": "flashback",
    "fx": {
     "merge": [
-     0.35,
-     1
+     0.3,
+     0.8
     ],
     "forgeClose": true
    },
@@ -436,12 +775,14 @@
      0,
      0.12
     ],
-    "radius": 1.25,
-    "height": 0.95,
+    "radius": 2.1,
+    "height": 1.3,
     "fromDeg": 20,
-    "toDeg": 55,
-    "lookY": 0.6
+    "toDeg": 70,
+    "lookY": 0.95
    },
+   "dof": 2.0,
+   "focusDist": 1.9,
    "cast": [
     {
      "who": "dada",
@@ -457,48 +798,85 @@
       "trim": "#B88A5A",
       "legs": "#C9B48E",
       "shoes": "#3A2A22"
-     }
+     },
+     "props": [
+      "apron",
+      "headwrap"
+     ]
     }
    ],
    "sfx": [
     {
-     "name": "clang",
-     "at": 0.9,
-     "volume": 0.4
+     "name": "anvil",
+     "at": 0.88
     },
     {
-     "name": "clang",
-     "at": 1.8,
-     "volume": 0.4
-    },
-    {
-     "name": "clang",
-     "at": 2.7,
-     "volume": 0.4
-    },
-    {
-     "name": "clang",
-     "at": 3.6,
-     "volume": 0.4
-    },
-    {
-     "name": "clang",
-     "at": 4.5,
-     "volume": 0.4
-    },
-    {
-     "name": "clang",
-     "at": 5.4,
-     "volume": 0.4
+     "name": "anvil",
+     "at": 1.78
     }
-   ]
+   ],
+   "duration": 1.8
+  },
+  {
+   "id": "insert-specks",
+   "beat": 3,
+   "set": "forge",
+   "grade": "flashback",
+   "fx": {
+    "merge": [
+     1,
+     1
+    ],
+    "forgeClose": true,
+    "noSparks": true
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     1.08,
+     0.92,
+     0.92
+    ],
+    "to": [
+     0.98,
+     0.84,
+     0.74
+    ],
+    "look": [
+     0.72,
+     0.61,
+     0.14
+    ],
+    "lookTo": [
+     0.72,
+     0.6,
+     0.14
+    ],
+    "fov": 38
+   },
+   "roll": [
+    -3,
+    1
+   ],
+   "dof": 2.0,
+   "focusDist": 0.7,
+   "titleCard": {
+    "label": "Guess 3",
+    "word": "Fake",
+    "at": 0,
+    "duration": 2.7,
+    "crossed": true,
+    "crossAt": 1.0,
+    "intro": false
+   },
+   "duration": 2.75
   },
   {
    "id": "dada-taps",
    "beat": 4,
-   "stillAt": 1.3,
-   "duration": 2.8,
+   "stillAt": 1.6,
    "set": "courtyard",
+   "light": "golden",
    "fx": {
     "pillar": {
      "pos": [
@@ -513,29 +891,41 @@
       -2.42
      ],
      "times": [
-      0.45,
-      0.85
+      0.85,
+      1.25
      ]
     }
    },
    "camera": {
     "type": "fit",
-    "push": 0.12,
-    "angleDeg": 6
+    "push": 0.22,
+    "angleDeg": 8,
+    "orbitDeg": 10,
+    "band": [
+     0.16,
+     0.78
+    ]
    },
    "cast": [
     {
      "who": "dada",
+     "props": [
+      "stick"
+     ],
      "pose": "tap",
      "pos": [
       -1.06,
       -2.42
      ],
-     "facing": 1
+     "facing": 1,
+     "delay": -0.4
     },
     {
      "who": "chotu",
-     "pose": "idle",
+     "props": [
+      "satchel"
+     ],
+     "pose": "look-up",
      "pos": [
       1.0,
       -1.7
@@ -555,17 +945,112 @@
    "layout": "manual",
    "sfx": [
     {
-     "name": "ring",
-     "at": 0.45,
-     "volume": 0.45
+     "name": "metal-ting",
+     "at": 0.85
     }
-   ]
+   ],
+   "duration": 2.6
   },
   {
-   "id": "phosphorus",
+   "id": "bars-wide",
    "beat": 5,
-   "duration": 5.2,
+   "set": "courtyard",
+   "sky": "storm",
+   "light": "storm",
+   "fx": {
+    "pillar": {
+     "pos": [
+      0,
+      -2.5
+     ]
+    },
+    "rain": [
+     0.9,
+     0.9
+    ],
+    "bars": {
+     "skin": [
+      0,
+      0.08
+     ],
+     "rust": [
+      0,
+      0.12
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -3.25,
+     1.05,
+     6.7
+    ],
+    "to": [
+     -3.4,
+     1.05,
+     6.15
+    ],
+    "look": [
+     -3.4,
+     0.95,
+     1.2
+    ],
+    "lookTo": [
+     -3.4,
+     0.95,
+     1.2
+    ],
+    "fov": 56
+   },
+   "cast": [
+    {
+     "who": "dada",
+     "props": [
+      "stick"
+     ],
+     "pose": "point",
+     "pos": [
+      -4.5,
+      1.2
+     ],
+     "facing": 1
+    },
+    {
+     "who": "chotu",
+     "props": [
+      "satchel",
+      "leaf"
+     ],
+     "pose": "look-up",
+     "pos": [
+      -2.3,
+      1.3
+     ],
+     "facing": -1
+    }
+   ],
+   "layout": "manual",
+   "titleCard": {
+    "label": "The secret",
+    "word": "Phosphorus",
+    "at": 0.45,
+    "duration": 1.7
+   },
+   "sfx": [
+    {
+     "name": "rain-soft",
+     "at": 0,
+     "dur": 2.2
+    }
+   ],
+   "duration": 2.2
+  },
+  {
+   "id": "insert-phosphorus",
+   "beat": 5,
    "set": "void",
+   "light": "macro",
    "fx": {
     "macro": "phosphorus"
    },
@@ -574,20 +1059,15 @@
     "from": [
      0,
      0,
-     6.5
+     6
     ],
     "to": [
-     0.3,
-     0.1,
-     1.4
+     0.2,
+     0.2,
+     3.4
     ],
     "look": [
      0,
-     0,
-     -3
-    ],
-    "lookTo": [
-     0.2,
      0,
      -3
     ]
@@ -595,199 +1075,532 @@
    "titleCard": {
     "label": "Phosphorus",
     "word": "×20",
-    "at": 1.6,
-    "duration": 3.5
-   }
-  },
-  {
-   "id": "wet-dry",
-   "beat": 5,
-   "duration": 6.1,
-   "set": "void",
-   "fx": {
-    "macro": "skin",
-    "skinStory": 0
+    "at": 0.15,
+    "duration": 2.0
    },
-   "camera": {
-    "type": "static",
-    "pos": [
-     0.1,
-     0.03,
-     1.2
-    ],
-    "look": [
-     0,
-     -0.015,
-     0
-    ],
-    "drift": 0.12
-   }
-  },
-  {
-   "id": "skin-grows",
-   "beat": 5,
-   "stillAt": 2.4,
-   "duration": 3.56,
-   "set": "void",
-   "fx": {
-    "macro": "skin",
-    "skinStory": 6.1
-   },
-   "camera": {
-    "type": "static",
-    "pos": [
-     -0.15,
-     0.03,
-     1.2
-    ],
-    "look": [
-     0,
-     -0.015,
-     0
-    ],
-    "drift": 0.12
-   },
-   "titleCard": {
-    "label": "Protective",
-    "word": "Skin",
-    "at": 0.2,
-    "duration": 3.3
-   }
-  },
-  {
-   "id": "raincoat",
-   "beat": 5,
-   "duration": 2.51,
-   "set": "void",
-   "fx": {
-    "macro": "skin",
-    "skinMode": "seal"
-   },
-   "camera": {
-    "type": "static",
-    "pos": [
-     0.25,
-     0.03,
-     1.2
-    ],
-    "look": [
-     0,
-     -0.015,
-     0
-    ],
-    "drift": 0.12
-   }
-  },
-  {
-   "id": "split",
-   "beat": 5,
-   "duration": 2.93,
-   "set": "void",
-   "fx": {
-    "macro": "split"
-   },
-   "camera": {
-    "type": "static",
-    "pos": [
-     0,
-     1.25,
-     5.6
-    ],
-    "look": [
-     0,
-     1.2,
-     0
-    ],
-    "drift": 0.06
-   },
-   "labels": [
+   "sfx": [
     {
-     "text": "TOO CLEAN",
-     "x": 0.27,
-     "y": 0.13
-    },
-    {
-     "text": "SELF-SEALED",
-     "x": 0.73,
-     "y": 0.13
+     "name": "pop-soft",
+     "at": 0.4
     }
-   ]
+   ],
+   "duration": 2.25
   },
   {
-   "id": "gate-pushin",
-   "beat": 6,
+   "id": "bars-cycles",
+   "beat": 5,
    "stillAt": 1.2,
-   "duration": 5.15,
-   "set": "street",
+   "set": "courtyard",
+   "sky": "storm",
+   "light": "storm",
+   "skyTo": "golden",
+   "lightTo": "golden",
+   "fx": {
+    "pillar": {
+     "pos": [
+      0,
+      -2.5
+     ]
+    },
+    "rain": [
+     1,
+     1
+    ],
+    "cycles": 1.5,
+    "bars": {
+     "skin": [
+      0.1,
+      0.4
+     ],
+     "rust": [
+      0.15,
+      0.45
+     ]
+    }
+   },
    "camera": {
     "type": "dolly",
     "from": [
-     -0.35,
-     0.9,
-     5.6
+     -2.9,
+     1.05,
+     6.4
     ],
     "to": [
-     0.24,
-     1.12,
-     1.12
+     -3.9,
+     1.05,
+     6.3
     ],
     "look": [
-     -0.3,
-     1.25,
-     0
+     -3.35,
+     0.95,
+     1.2
     ],
     "lookTo": [
-     0.23,
-     1.12,
-     0.024
+     -3.45,
+     0.95,
+     1.2
     ],
-    "startAt": 0.42
+    "fov": 56
    },
    "cast": [
     {
-     "who": "vik",
-     "pose": "proud",
+     "who": "dada",
+     "props": [
+      "stick"
+     ],
+     "pose": "point",
      "pos": [
-      -0.62,
-      0.75
+      -4.5,
+      1.2
      ],
      "facing": 1
     }
    ],
-   "layout": "manual"
+   "layout": "manual",
+   "duration": 3.2
+  },
+  {
+   "id": "bar-skin",
+   "beat": 5,
+   "set": "courtyard",
+   "light": "golden",
+   "fx": {
+    "rain": [
+     0.4,
+     0.4
+    ],
+    "bars": {
+     "skin": [
+      0.4,
+      0.85
+     ],
+     "rust": [
+      0.45,
+      0.5
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -2.8,
+     1.55,
+     2.15
+    ],
+    "to": [
+     -2.9,
+     1.3,
+     1.62
+    ],
+    "look": [
+     -3.0,
+     1.35,
+     1.2
+    ],
+    "lookTo": [
+     -3.0,
+     1.25,
+     1.2
+    ],
+    "fov": 36
+   },
+   "dof": 2.2,
+   "focusDist": 0.55,
+   "titleCard": {
+    "label": "It grows a",
+    "word": "Skin",
+    "at": 0.3,
+    "duration": 2.6
+   },
+   "sfx": [
+    {
+     "name": "shimmer",
+     "at": 0.6
+    }
+   ],
+   "duration": 3.05
+  },
+  {
+   "id": "bar-seal",
+   "beat": 5,
+   "set": "courtyard",
+   "sky": "storm",
+   "light": "storm",
+   "fx": {
+    "rain": [
+     0.8,
+     0.8
+    ],
+    "bars": {
+     "skin": [
+      0.85,
+      1
+     ],
+     "rust": [
+      0.5,
+      0.55
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -2.3,
+     0.9,
+     2.0
+    ],
+    "to": [
+     -2.6,
+     1.5,
+     1.7
+    ],
+    "look": [
+     -3.0,
+     1.0,
+     1.2
+    ],
+    "lookTo": [
+     -3.0,
+     1.6,
+     1.2
+    ],
+    "fov": 38
+   },
+   "roll": [
+    -3,
+    1
+   ],
+   "dof": 1.6,
+   "focusDist": 0.8,
+   "sfx": [
+    {
+     "name": "drip",
+     "at": 0.5
+    },
+    {
+     "name": "drip",
+     "at": 1.5
+    }
+   ],
+   "duration": 2.85
+  },
+  {
+   "id": "raincoat",
+   "beat": 5,
+   "set": "courtyard",
+   "light": "golden",
+   "fx": {
+    "pillar": {
+     "pos": [
+      0,
+      -2.5
+     ]
+    },
+    "rain": [
+     0.3,
+     0.2
+    ],
+    "bars": {
+     "skin": [
+      1,
+      1
+     ],
+     "rust": [
+      0.55,
+      0.7
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -3.4,
+     1.05,
+     6.8
+    ],
+    "to": [
+     -3.4,
+     1.05,
+     6.2
+    ],
+    "look": [
+     -3.4,
+     0.95,
+     1.2
+    ],
+    "lookTo": [
+     -3.4,
+     0.95,
+     1.2
+    ],
+    "fov": 56
+   },
+   "cast": [
+    {
+     "who": "dada",
+     "props": [
+      "stick"
+     ],
+     "pose": "smile-nod",
+     "pos": [
+      -4.5,
+      1.2
+     ],
+     "facing": 1
+    },
+    {
+     "who": "chotu",
+     "props": [
+      "satchel",
+      "leaf"
+     ],
+     "pose": "laugh",
+     "pos": [
+      -2.3,
+      1.3
+     ],
+     "facing": -1
+    }
+   ],
+   "layout": "manual",
+   "duration": 2.4
+  },
+  {
+   "id": "steel-rusts",
+   "beat": 5,
+   "set": "courtyard",
+   "sky": "storm",
+   "light": "storm",
+   "fx": {
+    "rain": [
+     0.9,
+     0.9
+    ],
+    "bars": {
+     "skin": [
+      1,
+      1
+     ],
+     "rust": [
+      0.7,
+      1
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -4.5,
+     1.0,
+     3.1
+    ],
+    "to": [
+     -4.05,
+     1.2,
+     1.95
+    ],
+    "look": [
+     -3.8,
+     1.25,
+     1.2
+    ],
+    "lookTo": [
+     -3.8,
+     1.2,
+     1.2
+    ],
+    "fov": 38
+   },
+   "dof": 2.0,
+   "focusDist": 0.8,
+   "titleCard": {
+    "label": "Modern steel",
+    "word": "Too clean",
+    "at": 0.5,
+    "duration": 2.4
+   },
+   "duration": 3.0
+  },
+  {
+   "id": "vik-gate",
+   "beat": 6,
+   "set": "street",
+   "light": "golden",
+   "fx": {
+    "spot": 0
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     2.2,
+     0.9,
+     6.4
+    ],
+    "to": [
+     0.7,
+     1.0,
+     4.6
+    ],
+    "look": [
+     0.6,
+     1.2,
+     0.5
+    ],
+    "lookTo": [
+     0.4,
+     1.2,
+     0.5
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pose": "stomp",
+     "pos": [
+      1.15,
+      1.25
+     ],
+     "facing": -1,
+     "enter": {
+      "from": [
+       4.2,
+       2.6
+      ],
+      "at": 0,
+      "dur": 1.6
+     },
+     "poses": [
+      {
+       "at": 0,
+       "pose": "stomp"
+      },
+      {
+       "at": 1.8,
+       "pose": "proud"
+      }
+     ]
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "footsteps-stone",
+     "at": 0,
+     "dur": 1.7
+    },
+    {
+     "name": "gate-creak",
+     "at": 2.2
+    }
+   ],
+   "duration": 3.4
+  },
+  {
+   "id": "gate-pushin",
+   "beat": 6,
+   "set": "street",
+   "light": "golden",
+   "fx": {
+    "spot": 1
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -0.6,
+     1.0,
+     2.6
+    ],
+    "to": [
+     0.12,
+     1.15,
+     0.75
+    ],
+    "look": [
+     -0.2,
+     1.1,
+     0
+    ],
+    "lookTo": [
+     0.2,
+     1.18,
+     0
+    ]
+   },
+   "roll": [
+    -2,
+    0
+   ],
+   "duration": 2.35
+  },
+  {
+   "id": "insert-spot",
+   "beat": 6,
+   "stillAt": 0.8,
+   "set": "street",
+   "light": "golden",
+   "fx": {
+    "spot": 1
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.29,
+     1.21,
+     0.5
+    ],
+    "to": [
+     0.26,
+     1.19,
+     0.36
+    ],
+    "look": [
+     0.225,
+     1.18,
+     0.024
+    ],
+    "fov": 34
+   },
+   "dof": 2.0,
+   "focusDist": 0.55,
+   "duration": 1.3
   },
   {
    "id": "face-drop",
    "beat": 6,
-   "duration": 2.1,
+   "payoff": true,
+   "payoffAt": 0.0,
    "set": "street",
+   "light": "golden",
+   "fx": {
+    "spot": 1
+   },
    "camera": {
     "type": "fit",
     "focus": [
      "vik"
     ],
-    "crop": 0.55,
+    "crop": 0.42,
     "band": [
-     0.2,
-     0.97
+     0.12,
+     0.88
     ],
-    "angleDeg": 10,
-    "push": 0.04
+    "angleDeg": -6,
+    "orbitDeg": 2,
+    "push": 0.08
    },
    "cast": [
     {
      "who": "vik",
      "pose": "shock",
      "pos": [
-      -0.75,
-      0.7
+      0.9,
+      1.4
      ],
-     "facing": 1
+     "facing": -1
     }
    ],
-   "layout": "manual",
-   "payoff": true,
-   "payoffAt": 0.28
+   "duration": 0.75
   }
  ]
 }

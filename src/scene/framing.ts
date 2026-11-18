@@ -18,7 +18,11 @@ const project = (v: THREE.Vector3) => {
   return {x: (p.x + 1) / 2, y: (1 - p.y) / 2, behind: p.z > 1};
 };
 
+const OFF: Box = {x0: -9, x1: -8, y0: -9, y1: -8}; // off screen
 const boxOf = (pts: THREE.Vector3[]): Box => {
+  // a character behind the camera is not on screen (projection would mirror it in)
+  const fwd = new THREE.Vector3(0, 0, -1).applyQuaternion(cam.quaternion);
+  if (pts.some((p) => p.clone().sub(cam.position).dot(fwd) <= 0.05)) return OFF;
   const ps = pts.map(project);
   return {
     x0: Math.min(...ps.map((p) => p.x)),
@@ -90,7 +94,7 @@ export const resolveShot = (shot: Shot): Shot => ({...shot, cast: layoutCast(sho
 // frame heads lower (30%) so the card at the top never covers a face.
 export const effectiveCamera = (shot: Shot): CameraMove => {
   const m: CameraMove = shot.camera ?? {type: 'fit'};
-  if (m.type === 'fit' && shot.titleCard && !m.band) return {...m, band: [0.32, 0.89]};
+  if (m.type === 'fit' && (shot.titleCard || shot.titleCards?.length) && !m.band) return {...m, band: [0.32, 0.89]};
   return m;
 };
 
@@ -115,17 +119,17 @@ export const faceFreeBottom = (shot: Shot, p0: number, p1: number, x0 = 0.125, x
 // Best vertical centre for a caption box (w,h as frame fractions): avoid
 // faces strongly, bodies moderately, legs lightly; stay near 60% and inside
 // the Shorts safe area (30–80%).
-export const placeCaption = (boxes: CastBoxes[], w: number, h: number, pref = 0.6): number => {
+export const placeCaption = (boxes: CastBoxes[], w: number, h: number, pref = 0.7, lo = 0.62, hi = 0.86): number => {
   const area = (a: Box, b: Box) =>
     Math.max(0, Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0)) * Math.max(0, Math.min(a.y1, b.y1) - Math.max(a.y0, b.y0));
   let best = pref;
   let bestScore = Infinity;
-  for (let y = 0.3; y <= 0.8001; y += 0.01) {
+  for (let y = lo; y <= hi + 1e-4; y += 0.01) {
     const cap: Box = {x0: 0.5 - w / 2, x1: 0.5 + w / 2, y0: y - h / 2, y1: y + h / 2};
     let score = Math.abs(y - pref) * 0.02;
     for (const b of boxes) {
       const face = {x0: b.face.x0 - 0.02, x1: b.face.x1 + 0.02, y0: b.face.y0 - 0.025, y1: b.face.y1 + 0.02}; // clearance
-      score += area(cap, face) * 60 + area(cap, b.body) * 6 + area(cap, b.legs) * 1;
+      score += area(cap, face) * 60;
     }
     if (score < bestScore - 1e-9) {
       bestScore = score;

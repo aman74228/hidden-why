@@ -1,0 +1,106 @@
+[
+ {
+  "name": "sandstone-wall",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "red_sandstone_wall",
+  "url": "https://polyhaven.com/a/red_sandstone_wall",
+  "license": "CC0"
+ },
+ {
+  "name": "sandstone-paving",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "red_sandstone_pavement",
+  "url": "https://polyhaven.com/a/red_sandstone_pavement",
+  "license": "CC0"
+ },
+ {
+  "name": "sandstone-blocks",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "sandstone_blocks_08",
+  "url": "https://polyhaven.com/a/sandstone_blocks_08",
+  "license": "CC0"
+ },
+ {
+  "name": "cobbles",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "cobblestone_floor_04",
+  "url": "https://polyhaven.com/a/cobblestone_floor_04",
+  "license": "CC0"
+ },
+ {
+  "name": "plaster",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "clay_plaster",
+  "url": "https://polyhaven.com/a/clay_plaster",
+  "license": "CC0"
+ },
+ {
+  "name": "rust",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "rusty_metal_02",
+  "url": "https://polyhaven.com/a/rusty_metal_02",
+  "license": "CC0"
+ },
+ {
+  "name": "rust-coarse",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "rust_coarse_01",
+  "url": "https://polyhaven.com/a/rust_coarse_01",
+  "license": "CC0"
+ },
+ {
+  "name": "steel",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "metal_plate",
+  "url": "https://polyhaven.com/a/metal_plate",
+  "license": "CC0"
+ },
+ {
+  "name": "planks",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "brown_planks_05",
+  "url": "https://polyhaven.com/a/brown_planks_05",
+  "license": "CC0"
+ },
+ {
+  "name": "brick-floor",
+  "kind": "texture",
+  "source": "Poly Haven",
+  "id": "brick_floor",
+  "url": "https://polyhaven.com/a/brick_floor",
+  "license": "CC0"
+ },
+ {
+  "name": "sunset",
+  "kind": "hdri",
+  "source": "Poly Haven",
+  "id": "belfast_sunset_puresky",
+  "url": "https://polyhaven.com/a/belfast_sunset_puresky",
+  "license": "CC0"
+ },
+ {
+  "name": "overcast",
+  "kind": "hdri",
+  "source": "Poly Haven",
+  "id": "kloofendal_overcast_puresky",
+  "url": "https://polyhaven.com/a/kloofendal_overcast_puresky",
+  "license": "CC0"
+ },
+ {
+  "name": "dusk",
+  "kind": "hdri",
+  "source": "Poly Haven",
+  "id": "qwantani_dusk_2_puresky",
+  "url": "https://polyhaven.com/a/qwantani_dusk_2_puresky",
+  "license": "CC0"
+ }
+]

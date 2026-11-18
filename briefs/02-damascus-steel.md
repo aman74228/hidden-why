@@ -1,23 +1,22 @@
 # Brief #2 — Why Nobody Can Copy This Ancient Sword
-Slug: `02-damascus-steel` · Target ≤ 60 s · 157 spoken words (measured: ~59.4 s at Liam's 164 wpm)
+Slug: `02-damascus-steel` · Target ≤ 60 s · v2 script (but/so links, emotion tag on every line)
 Read CLAUDE.md + LESSONS.md first. Every rule there applies.
 
-## Script (send to ElevenLabs eleven_v3 + Liam exactly as written)
-[curious] Modern factories. Lasers. Supercomputers. And none of them can copy this sword.
-Its blade is covered in swirls, like water frozen inside steel.
-Vik scoffs. [sarcastic] "Give me one day. If I can't copy it, I'll melt my own trophy."
-Try one. He folds the steel again and again. Pretty lines. Wrong pattern. Fake.
-Try two. The purest iron money can buy. The swirls don't even show up.
-Try three. Same furnace, same heat, the exact old recipe. Blank.
-[intrigued] That's when it got weird.
-Dada opens his hand. A pinch of dark dirt.
-[warm] You see, this steel was made in India, from certain ores. And those ores carried a tiny secret. Traces of vanadium.
-While the smith hammered, those traces pulled the carbon into bands. No traces, no swirls.
-Around 1750, those mines ran dry. And the recipe died with them.
-[deadpan] Vik's trophy? Melting. Perfectly pure. Not a single swirl.
-[curious] So today, with all our factories, lasers, supercomputers...
+## Script (Chatterbox, original model, default voice; per-line settings in audio/02-damascus-steel.lines.json)
+Why can't modern factories, lasers or supercomputers copy a sword made a thousand years ago?
+Its blade is full of swirls, like water frozen in steel.
+Vik bets his trophy he can copy it in a day.
+First he folds the steel again and again, but gets only straight stripes.
+So he buys the purest iron he can find, and the swirls vanish completely.
+Then he follows the old recipe exactly, and the blade still comes out blank.
+That's when Dada opens his hand and shows him a pinch of dark dirt.
+You see, this steel came from certain ores in India, and those ores hid a tiny secret: traces of vanadium.
+As the smith hammered, those traces pulled the carbon into bands. No traces, no swirls.
+But around 1750, those mines ran dry, and the secret went with them.
+So Vik's trophy melts down, perfectly pure, without a single swirl.
+And next time someone asks you…
 
-(The last line flows straight into the first line: the loop. Hard cut from the last frame back to frame 1.)
+(Rendered line by line from audio/02-damascus-steel.lines.json: Chatterbox reads no tags; emotion = per-line exaggeration. The last line flows straight into the first line: the loop. Hard cut from the last frame back to frame 1.)
 
 ## Story scorecard
 - Contradiction by 2 s ✅ ("none of them can copy this sword")
@@ -28,8 +27,8 @@ Around 1750, those mines ran dry. And the recipe died with them.
 - Payoff = bet collected + callback; last line loops into the hook ✅
 
 ## Voice
-eleven_v3 + Liam (voice.json). Tags as written. Max 3 takes. Keep 157 words; if a take runs over 61 s, pick the tightest take and trim silences only (no speed-up).
-Add a 0.5 s pause (silence in the edit, not in the script) between "Traces of vanadium." and "While the smith hammered" for the reaction shot.
+Chatterbox original model, built-in default voice, seed 1750 (voice.json). Line by line (scripts/vo_lines.py), max 3 tries per line, punctuation pauses in post (scripts/vo_pauses.py). Target 52–60 s; never speed up, never pad beyond the pause table. Shots cut on sentence boundaries only.
+The 0.5 s pause after line 8 ("…traces of vanadium.") holds the silent reaction shot.
 
 ## Real-object reference (build props to look like this)
 - **Damascus sabre**: a curved Persian-style sabre (shamshir), ~85 cm blade, slim and strongly curved, plain steel crossguard, dark wooden or horn grip. The ENTIRE blade shows the "watered steel" pattern: flowing, wavy light-grey and dark-grey bands, like ripples on water or wood grain. Matte sheen, not mirror chrome.

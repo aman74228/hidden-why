@@ -1,0 +1,253 @@
+{
+ "slug": "02-damascus-steel",
+ "engine": "chatterbox/original",
+ "seed": 1750,
+ "cfg_weight": 0.3,
+ "total_s": 52.05,
+ "words": 157,
+ "wpm_overall": 181.0,
+ "wpm_speech_only": 214.3,
+ "render": [],
+ "lines": [
+  {
+   "n": 1,
+   "start_s": 0.0,
+   "seconds": 4.57,
+   "pause_after": 0.4,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Why can't modern factories, lasers, or supercomputers copy a sword made a thousand years ago?",
+   "punct_pauses": [
+    [
+     "factories,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 2,
+   "start_s": 4.97,
+   "seconds": 3.06,
+   "pause_after": 0.4,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Its blade is full of swirls, like water frozen in steel.",
+   "punct_pauses": [
+    [
+     "swirls,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 3,
+   "start_s": 8.43,
+   "seconds": 2.03,
+   "pause_after": 0.5,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Vic bets his trophy he can copy it in a day.",
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 4,
+   "start_s": 10.96,
+   "seconds": 3.67,
+   "pause_after": 0.3,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "First he folds the steel again and again, but gets only straight stripes.",
+   "punct_pauses": [
+    [
+     "again,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 5,
+   "start_s": 14.93,
+   "seconds": 3.9,
+   "pause_after": 0.3,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So he buys the purest iron he can find, and the swirls vanish completely.",
+   "punct_pauses": [
+    [
+     "find,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 6,
+   "start_s": 19.13,
+   "seconds": 3.59,
+   "pause_after": 0.6,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Then he follows the old recipe exactly, and the blade still comes out blank.",
+   "punct_pauses": [
+    [
+     "exactly,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 7,
+   "start_s": 23.32,
+   "seconds": 3.2,
+   "pause_after": 0.6,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "That's when Dada opens his hand and shows him a pinch of dark dirt.",
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 8,
+   "start_s": 27.12,
+   "seconds": 7.21,
+   "pause_after": 0.5,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "You see, this steel came from certain ores in India, and those ores hid a tiny secret traces of vanadium.",
+   "punct_pauses": [
+    [
+     "see,",
+     "comma",
+     0.18
+    ],
+    [
+     "India,",
+     "comma",
+     0.18
+    ],
+    [
+     "secret:",
+     "colon",
+     0.3
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 9,
+   "start_s": 34.83,
+   "seconds": 6.26,
+   "pause_after": 0.4,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "As the smith hammered, those traces pulled the carbon into bands. No traces, no swirls.",
+   "punct_pauses": [
+    [
+     "hammered,",
+     "comma",
+     0.18
+    ],
+    [
+     "bands.",
+     "stop",
+     0.35
+    ],
+    [
+     "traces,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 10,
+   "start_s": 41.49,
+   "seconds": 4.36,
+   "pause_after": 0.7,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "But around seventeen fifty, those mines ran dry and the secret went with them.",
+   "punct_pauses": [
+    [
+     "fifty,",
+     "comma",
+     0.18
+    ],
+    [
+     "dry,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 11,
+   "start_s": 46.55,
+   "seconds": 3.61,
+   "pause_after": 0.4,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So Vicks Trophy melts down perfectly pure without a single swirl.",
+   "punct_pauses": [
+    [
+     "down,",
+     "comma",
+     0.18
+    ],
+    [
+     "pure,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 12,
+   "start_s": 50.56,
+   "seconds": 1.49,
+   "pause_after": 0.0,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "And next time, someone asks you...",
+   "punct_pauses": [],
+   "unmatched_punct": []
+  }
+ ]
+}

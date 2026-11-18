@@ -1,0 +1,66 @@
+{
+ "voice": {
+  "lufs": -14.0,
+  "true_peak_dbtp": -1.4
+ },
+ "music": {
+  "file": "public/sfx/music.mp3",
+  "lufs": -25.3,
+  "under_speech_lufs": -25.5,
+  "between_lines_lufs": -22.5,
+  "true_peak_dbtp": -14.9
+ },
+ "sfx": {
+  "stem_lufs": -23.5,
+  "stem_max_momentary_lufs": -20.9,
+  "true_peak_dbtp": -10.2,
+  "per_cue_max_momentary_lufs": {
+   "rain-soft": -32.2,
+   "metal-ting": -21.0,
+   "drip": -26.9,
+   "coin-scrape": -21.7,
+   "crickets": -21.0,
+   "anvil": -21.0,
+   "pop-soft": -28.0,
+   "shimmer": -23.1,
+   "footsteps-stone": -26.0,
+   "gate-creak": -21.3,
+   "ding": -21.0
+  },
+  "files": {
+   "rain-soft": "rain-soft.mp3",
+   "metal-ting": "metal-ting.mp3",
+   "drip": "drip.mp3",
+   "coin-scrape": "coin-scrape.mp3",
+   "crickets": "crickets.mp3",
+   "anvil": "anvil.mp3",
+   "pop-soft": "pop-soft.mp3",
+   "shimmer": "shimmer.mp3",
+   "footsteps-stone": "footsteps-stone.mp3",
+   "gate-creak": "gate-creak.mp3",
+   "ding": "ding.mp3"
+  },
+  "missing_skipped": []
+ },
+ "rain": {
+  "lufs_while_playing": -32.5,
+  "fades_at": 2.8
+ },
+ "checks_offending_seconds": [],
+ "checks": {
+  "sfx_windows_within_6dB_of_voice": 0,
+  "music_min_short_term_lufs": -25.8,
+  "music_floor_ok": true
+ },
+ "mix": {
+  "lufs": -14.2,
+  "true_peak_dbtp": -0.9,
+  "seconds": 62.433
+ },
+ "peak_check": {
+  "voice_peak_dbfs": -1.5,
+  "music_peak_dbfs": -15.0,
+  "sfx_peak_dbfs": -10.5,
+  "rain_peak_dbfs": -24.0
+ }
+}

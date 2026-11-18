@@ -4,12 +4,14 @@ import {CharCtx, Part} from '../characters/Part';
 import {useScene} from '../scene/ctx';
 import {C} from '../theme';
 import {Ball, Box, Cyl, TileFloor, Toon, mulberry, toonRamp} from './toon';
+import {RainFX} from './fx';
+import {IronMat, TexPBR, TexToon, hammeredIron, inscription, useTex} from './materials';
 
 // Reusable story props + macro scenes. Hero props are never hidden by the
 // frame-edge check (they're meant to run off-frame, e.g. a 7 m pillar).
 
-const IRON = '#4A4658';
-const IRON_D = '#38354A';
+const IRON = '#5A4F46';
+const IRON_D = '#463D36';
 
 /* ---------------- the iron pillar ---------------- */
 export const IronPillar: React.FC<{pos?: [number, number, number]; scale?: number; sheen?: number}> = ({pos = [0, 0, 0], scale = 1, sheen = 0}) => {
@@ -29,13 +31,13 @@ export const IronPillar: React.FC<{pos?: [number, number, number]; scale?: numbe
     <group position={pos} scale={scale}>
       {/* shaft: 0.42 m at the base tapering to 0.3 m; ~6.1 m to the capital */}
       <mesh position={[0, 3.05, 0]} castShadow receiveShadow>
-        <cylinderGeometry args={[0.15, 0.21, 6.1, 28]} />
-        <Toon color={IRON} />
+        <cylinderGeometry args={[0.15, 0.21, 6.1, 36]} />
+        <IronMat repeat={[1, 8]} />
       </mesh>
       {/* inscription band */}
       <mesh position={[0, 1.6, 0]}>
-        <cylinderGeometry args={[0.196, 0.198, 0.5, 28]} />
-        <Toon color="#5A5468" />
+        <cylinderGeometry args={[0.1975, 0.1985, 0.5, 48]} />
+        <meshStandardMaterial color="#4a423c" map={hammeredIron().map} bumpMap={inscription()} bumpScale={2.5} metalness={0.6} roughness={0.5} envMapIntensity={0.3} />
       </mesh>
       <mesh position={[0, 6.1, 0]} rotation={[Math.PI / 2, 0, 0]}>
         <torusGeometry args={[0.16, 0.035, 12, 40]} />
@@ -57,9 +59,48 @@ export const IronPillar: React.FC<{pos?: [number, number, number]; scale?: numbe
           <meshBasicMaterial color="#6FB8F0" transparent opacity={0.18 * sheen} depthWrite={false} />
         </mesh>
       )}
+      <PillarBeads />
       {/* stone plinth */}
       <Cyl r={0.9} h={0.18} pos={[0, 0.09, 0]} color="#B78A63" seg={8} />
     </group>
+  );
+};
+
+// Raindrops beading and rolling down the shaft (only readable up close).
+const PillarBeads: React.FC = () => {
+  const {t} = useScene();
+  const beads = useMemo(() => {
+    const r = mulberry(121);
+    return Array.from({length: 18}, () => ({a: (r() - 0.5) * 2.4, y0: 1.4 + r() * 1.4, ph: r(), v: 0.08 + r() * 0.2, s: 0.006 + r() * 0.008}));
+  }, []);
+  const rivs = useMemo(() => {
+    const r = mulberry(127);
+    return Array.from({length: 10}, () => ({a: (r() - 0.5) * 2.2, ph: r(), v: 0.5 + r() * 0.5, len: 0.25 + r() * 0.5}));
+  }, []);
+  return (
+    <>
+      {rivs.map((v, i) => {
+        const head = 3.0 - ((t * v.v + v.ph) % 1) * 2.4;
+        const y = head + v.len / 2;
+        const rr = 0.212 - (0.06 * y) / 6.1;
+        return (
+          <mesh key={`r${i}`} position={[Math.sin(v.a) * rr, y, Math.cos(v.a) * rr]} rotation={[0, v.a, 0]}>
+            <planeGeometry args={[0.005, v.len]} />
+            <meshPhysicalMaterial color="#9aa8c0" transparent opacity={0.35} roughness={0.02} clearcoat={1} envMapIntensity={1.2} depthWrite={false} />
+          </mesh>
+        );
+      })}
+      {beads.map((b, i) => {
+        const y = b.y0 - ((t * b.v + b.ph) % 1) * 0.6;
+        const rr = 0.21 - (0.06 * y) / 6.1 + b.s * 0.5;
+        return (
+          <mesh key={i} position={[Math.sin(b.a) * rr, y, Math.cos(b.a) * rr]} scale={[1, 1.3, 0.7]}>
+            <sphereGeometry args={[b.s, 10, 8]} />
+            <meshPhysicalMaterial color="#6E7C96" roughness={0.12} clearcoat={0.5} envMapIntensity={0.35} />
+          </mesh>
+        );
+      })}
+    </>
   );
 };
 
@@ -240,20 +281,35 @@ const dripShape = () => {
   sh.lineTo(-0.006, 0);
   return new THREE.ShapeGeometry(sh);
 };
+// Small irregular stain with a thin orange streak running down the bar.
+const streakShape = () => {
+  const sh = new THREE.Shape();
+  // short, faint run-off: a soft tapering stain about 1.5x the spot's height
+  sh.moveTo(-0.0009, 0.001);
+  sh.bezierCurveTo(-0.0012, -0.005, 0.0002, -0.01, -0.0006, -0.016);
+  sh.quadraticCurveTo(-0.0002, -0.0185, 0.0003, -0.016);
+  sh.bezierCurveTo(0.0011, -0.01, 0.0004, -0.005, 0.0009, 0.001);
+  sh.lineTo(-0.0009, 0.001);
+  return new THREE.ShapeGeometry(sh);
+};
 const RustSpot: React.FC<{scale?: number}> = ({scale = 1}) => {
-  const outer = useMemo(() => blobShape(0.03, 7, 0.35), []);
-  const core = useMemo(() => blobShape(0.014, 11, 0.4), []);
-  const drip = useMemo(() => dripShape(), []);
+  const outer = useMemo(() => blobShape(0.0065, 7, 0.35), []);
+  const core = useMemo(() => blobShape(0.003, 11, 0.5), []);
+  const speck = useMemo(() => blobShape(0.0016, 13, 0.5), []);
+  const streak = useMemo(() => streakShape(), []);
   return (
     <group position={GATE_SPOT} scale={scale}>
+      <mesh geometry={streak} position={[-0.0015, -0.005, -0.0002]}>
+        <meshBasicMaterial color="#B85C2C" transparent opacity={0.3} toneMapped={false} />
+      </mesh>
       <mesh geometry={outer}>
-        <meshBasicMaterial color="#D8632A" toneMapped={false} />
+        <meshBasicMaterial color="#C95A26" toneMapped={false} />
       </mesh>
-      <mesh geometry={core} position={[0.005, -0.004, 0.0005]}>
-        <meshBasicMaterial color="#8E3816" toneMapped={false} />
+      <mesh geometry={core} position={[0.002, -0.002, 0.0005]}>
+        <meshBasicMaterial color="#7E3214" toneMapped={false} />
       </mesh>
-      <mesh geometry={drip} position={[0.002, -0.026, 0.0003]}>
-        <meshBasicMaterial color="#C4562A" toneMapped={false} />
+      <mesh geometry={speck} position={[-0.006, 0.005, 0.0003]}>
+        <meshBasicMaterial color="#B85224" toneMapped={false} />
       </mesh>
     </group>
   );
@@ -407,20 +463,8 @@ export const ScratchMacro: React.FC<{dur: number}> = ({dur}) => {
       {/* the pillar's surface fills the frame */}
       <mesh position={[0, 0, -0.02]}>
         <planeGeometry args={[3, 4]} />
-        <meshBasicMaterial color="#34313F" toneMapped={false} />
+        <IronMat repeat={[1.6, 2.1]} sheen={0.5} />
       </mesh>
-      {dents.map((d, i) => (
-        <group key={i} position={[d.x, d.y, -0.015 + i * 0.00002]} rotation={[0, 0, d.a]}>
-          <mesh position={[-d.s * 0.1, d.s * 0.1, 0]} scale={[1, 0.8, 1]}>
-            <circleGeometry args={[d.s, 18]} />
-            <meshBasicMaterial color="#3B3847" toneMapped={false} />
-          </mesh>
-          <mesh position={[0, 0, 0.00001]} scale={[1, 0.8, 1]}>
-            <circleGeometry args={[d.s * 0.88, 18]} />
-            <meshBasicMaterial color="#2F2C3A" toneMapped={false} />
-          </mesh>
-        </group>
-      ))}
       {/* bright silver streak: soft glow + bright core */}
       {len > 0.001 && (
         <group position={[(from.x + cur.x) / 2, (from.y + cur.y) / 2, 0.005]} rotation={[0, 0, ang]}>
@@ -676,6 +720,394 @@ export const TapRipple: React.FC<{pos: [number, number, number]; times: number[]
           </mesh>
         );
       })}
+    </group>
+  );
+};
+
+/* ================= rebuild additions ================= */
+
+/* ---------------- Dada's two iron bars (in the courtyard, in the rain) ---------------- */
+// Left  (x -BAR_DX) = modern clean steel: rain hits it and it flakes orange (rust 0..1).
+// Right (x +BAR_DX) = pillar-style wrought iron: stays dark; a thin glassy sheen spreads
+// up it from the base with a moving highlight (skin 0..1).
+export const BAR_DX = 0.4;
+export const IronBars: React.FC<{pos: [number, number, number]; skin?: number; rust?: number; drops?: number}> = ({pos, skin = 0, rust = 0, drops = 1}) => {
+  const {t} = useScene();
+  const H = 1.35;
+  const R = 0.065;
+  const y0 = 0.55;
+  const flakes = useMemo(() => {
+    const r = mulberry(91);
+    return Array.from({length: 18}, () => ({a: r() * 6.28, y: 0.15 + r() * 1.1, ph: r(), s: 0.02 + r() * 0.03}));
+  }, []);
+  const beads = useMemo(() => {
+    const r = mulberry(93);
+    return Array.from({length: 9}, () => ({a: -0.7 + r() * 1.4, ph: r(), s: 0.006 + r() * 0.005}));
+  }, []);
+  const hits = useMemo(() => {
+    const r = mulberry(95);
+    return Array.from({length: 6}, () => ({a: -1 + r() * 2, y: 0.1 + r() * 0.8, ph: r()}));
+  }, []);
+  const cover = Math.min(1, skin * 1.1); // fraction of the bar's height the sheen has reached
+  const hlA = t * 1.3; // highlight sweeps around the bar
+  return (
+    <group position={pos}>
+      {/* LEFT: modern steel, rusting */}
+      <group position={[-BAR_DX, y0 + H / 2, 0]}>
+        <mesh castShadow>
+          <cylinderGeometry args={[R, R, H, 32]} />
+          <TexPBR color="#8A90A4" metalness={0.8} roughness={0.32} envMapIntensity={0.5} />
+        </mesh>
+        {rust > 0.01 && (
+          <mesh>
+            <cylinderGeometry args={[R + 0.003, R + 0.003, H, 32]} />
+            <RustSkin amount={rust} />
+          </mesh>
+        )}
+        {/* raindrops landing on it: tiny splashes */}
+        {drops > 0 &&
+          hits.map((h, i) => {
+            const k = (t * 1.6 + h.ph) % 1;
+            return (
+              <mesh key={i} position={[Math.sin(h.a) * (R + 0.01), H / 2 - h.y, Math.cos(h.a) * (R + 0.01)]} scale={0.3 + k * 1.4}>
+                <ringGeometry args={[0.012, 0.016, 12]} />
+                <meshBasicMaterial color="#DDEBFF" transparent opacity={(1 - k) * 0.7} depthWrite={false} side={THREE.DoubleSide} />
+              </mesh>
+            );
+          })}
+        {rust > 0.3 &&
+          flakes.map((f, i) => {
+            const k = (t * 0.45 + f.ph) % 1;
+            if (f.ph > rust) return null;
+            return (
+              <mesh key={i} position={[Math.sin(f.a) * (R + 0.02 + k * 0.18), f.y - H / 2 - k * 1.1, Math.cos(f.a) * (R + 0.02 + k * 0.18)]} rotation={[k * 7, k * 5 + i, 0]}>
+                <planeGeometry args={[f.s, f.s * 0.7]} />
+                <meshBasicMaterial color={i % 2 ? '#D8702E' : '#A9481E'} side={THREE.DoubleSide} />
+              </mesh>
+            );
+          })}
+        <mesh position={[0, H / 2 + 0.02, 0]}>
+          <cylinderGeometry args={[R, R, 0.04, 32]} />
+          <meshStandardMaterial color={rust > 0.5 ? '#A9481E' : '#9098AC'} metalness={0.6} roughness={0.5} />
+        </mesh>
+      </group>
+      {/* RIGHT: pillar-style wrought iron + spreading glassy sheen */}
+      <group position={[BAR_DX, y0 + H / 2, 0]}>
+        <mesh castShadow>
+          <cylinderGeometry args={[R, R, H, 32]} />
+          <IronMat repeat={[0.5, 2.2]} sheen={0.45} />
+        </mesh>
+        {cover > 0.02 && (
+          <group position={[0, -H / 2 + (H * cover) / 2, 0]}>
+            <mesh>
+              <cylinderGeometry args={[R + 0.003, R + 0.003, H * cover, 40, 1, true]} />
+              <meshPhysicalMaterial color="#5FB8D8" transparent opacity={0.08} roughness={0.04} clearcoat={1} iridescence={1} iridescenceIOR={1.7} envMapIntensity={0.9} depthWrite={false} />
+            </mesh>
+            {/* moving highlight: a thin bright streak sliding round the bar */}
+            <mesh position={[Math.sin(hlA) * (R + 0.005), 0, Math.cos(hlA) * (R + 0.005)]} rotation={[0, hlA, 0]}>
+              <planeGeometry args={[0.004, H * cover * 0.92]} />
+              <meshBasicMaterial color={new THREE.Color('#E8FAFF').multiplyScalar(1.2)} transparent opacity={0.45} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
+            </mesh>
+            {/* the growing front edge glints */}
+            <mesh position={[0, (H * cover) / 2, 0]}>
+              <cylinderGeometry args={[R + 0.005, R + 0.005, 0.008, 40, 1, true]} />
+              <meshBasicMaterial color={new THREE.Color('#BFF0FF').multiplyScalar(1.3)} transparent opacity={cover < 0.99 ? 0.6 : 0} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
+            </mesh>
+            {[0, 1, 2].map((i) => {
+              const k = (t * 0.8 + i * 0.37) % 1;
+              return (
+                <sprite key={i} position={[Math.sin(i * 2.3) * R * 1.1, ((i * 0.31 + t * 0.15) % 1 - 0.5) * H * cover, R * 1.2]} scale={0.07 * Math.sin(k * Math.PI)}>
+                  <spriteMaterial map={sparkTex()} color="#DFF6FF" transparent depthWrite={false} blending={THREE.AdditiveBlending} toneMapped={false} />
+                </sprite>
+              );
+            })}
+          </group>
+        )}
+        {/* raindrops beading and rolling off */}
+        {drops > 0 &&
+          beads.map((b, i) => {
+            const k = (t * 0.5 + b.ph) % 1;
+            return (
+              <mesh key={i} position={[Math.sin(b.a) * (R + 0.006), H / 2 - k * H, Math.cos(b.a) * (R + 0.006)]}>
+                <sphereGeometry args={[b.s, 10, 8]} />
+                <meshPhysicalMaterial color="#7A8AA0" roughness={0.1} clearcoat={0.6} envMapIntensity={0.4} />
+              </mesh>
+            );
+          })}
+        <mesh position={[0, H / 2 + 0.02, 0]}>
+          <cylinderGeometry args={[R, R, 0.04, 32]} />
+          <meshStandardMaterial color="#4a4038" metalness={0.6} roughness={0.5} />
+        </mesh>
+      </group>
+    </group>
+  );
+};
+
+// Rust that spreads from blotches as `amount` grows (alpha-masked rust texture).
+const RustSkin: React.FC<{amount: number}> = ({amount}) => {
+  const map = useTex('rust-coarse', 'diff', [0.6, 2]);
+  const mat = useMemo(
+    () =>
+      new THREE.ShaderMaterial({
+        transparent: true,
+        lights: false,
+        uniforms: {uMap: {value: null}, uAmt: {value: 0}},
+        vertexShader: `varying vec2 vUv; void main(){ vUv = uv; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0); }`,
+        fragmentShader: `uniform sampler2D uMap; uniform float uAmt; varying vec2 vUv;
+          float h(vec2 p){ return fract(sin(dot(p, vec2(127.1,311.7)))*43758.5453); }
+          float n(vec2 p){ vec2 i=floor(p), f=fract(p); f=f*f*(3.0-2.0*f);
+            return mix(mix(h(i),h(i+vec2(1,0)),f.x), mix(h(i+vec2(0,1)),h(i+vec2(1,1)),f.x), f.y); }
+          void main(){ vec2 uv = vUv*vec2(0.6,2.0);
+            float m = n(vUv*vec2(6.0,18.0))*0.6 + n(vUv*vec2(14.0,40.0))*0.4;
+            float a = smoothstep(1.0-uAmt, 1.0-uAmt+0.12, m);
+            vec3 c = texture2D(uMap, uv).rgb * vec3(1.35,1.0,0.8);
+            gl_FragColor = vec4(c, a);
+            #include <colorspace_fragment>
+          }`,
+      }),
+    [],
+  );
+  mat.uniforms.uMap.value = map;
+  mat.uniforms.uAmt.value = map ? Math.min(1, amount * 1.35) : 0;
+  return <primitive object={mat} attach="material" />;
+};
+
+let spark: THREE.CanvasTexture | null = null;
+export const sparkTex = () => {
+  if (spark) return spark;
+  const c = document.createElement('canvas');
+  c.width = c.height = 64;
+  const g = c.getContext('2d')!;
+  const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32);
+  grd.addColorStop(0, 'rgba(255,255,255,1)');
+  grd.addColorStop(0.2, 'rgba(255,255,255,0.5)');
+  grd.addColorStop(1, 'rgba(255,255,255,0)');
+  g.fillStyle = grd;
+  g.fillRect(0, 0, 64, 64);
+  g.fillStyle = 'rgba(255,255,255,0.9)';
+  g.fillRect(30, 4, 4, 56);
+  g.fillRect(4, 30, 56, 4);
+  spark = new THREE.CanvasTexture(c);
+  return spark;
+};
+
+/* ---------------- insert: rain on the pillar's surface (no rust) ---------------- */
+// A big curved patch of the pillar's hammered iron, lit by its own soft key and
+// a cool rim so it reads clearly; water rivulets run down it, beads catch light.
+const SurfaceIron: React.FC = () => {
+  const nor = useTex('rust', 'nor', [3, 8]);
+  const {map} = hammeredIron();
+  const m = useMemo(() => {
+    const c = map.clone();
+    c.repeat.set(3, 8);
+    c.needsUpdate = true;
+    return c;
+  }, [map]);
+  const ns = useMemo(() => new THREE.Vector2(1.6, 1.6), []);
+  return <meshStandardMaterial key={nor ? 'n' : 'x'} color="#7a7068" map={m} normalMap={nor} normalScale={ns} metalness={0.55} roughness={0.4} envMapIntensity={0.6} />;
+};
+
+export const PillarSurfaceMacro: React.FC = () => {
+  const {t} = useScene();
+  const R = 1.6;
+  const rivs = useMemo(() => {
+    const r = mulberry(141);
+    return Array.from({length: 14}, () => ({a: (r() - 0.5) * 1.1, ph: r(), v: 0.25 + r() * 0.35, len: 0.5 + r() * 1.2, w: 0.004 + r() * 0.005}));
+  }, []);
+  const beads = useMemo(() => {
+    const r = mulberry(143);
+    return Array.from({length: 30}, () => ({a: (r() - 0.5) * 1.1, y: (r() - 0.5) * 3.2, s: 0.012 + r() * 0.022, ph: r()}));
+  }, []);
+  const on = (a: number, y: number, lift = 0): [number, number, number] => [Math.sin(a) * (R + lift), y, Math.cos(a) * (R + lift) - R];
+  return (
+    <group>
+      <mesh position={[0, 0, -R]}>
+        <cylinderGeometry args={[R, R, 5, 96, 1, true, -0.8, 1.6]} />
+        <SurfaceIron />
+      </mesh>
+      {rivs.map((v, i) => {
+        const head = 2.3 - ((t * v.v + v.ph) % 1) * 4.6;
+        const mid = head + v.len / 2;
+        const [x, , z] = on(v.a, 0, 0.004);
+        return (
+          <mesh key={i} position={[x, mid, z]} rotation={[0, v.a, 0]}>
+            <planeGeometry args={[v.w, v.len]} />
+            <meshPhysicalMaterial color="#8a9ab4" transparent opacity={0.22} roughness={0.02} clearcoat={1} envMapIntensity={0.9} depthWrite={false} />
+          </mesh>
+        );
+      })}
+      {beads.map((b, i) => {
+        const y = b.y - ((t * 0.05 + b.ph) % 1) * 0.15;
+        return (
+          <mesh key={i} position={on(b.a, y, b.s * 0.4)} scale={[1, 1.25, 0.6]}>
+            <sphereGeometry args={[b.s, 14, 10]} />
+            <meshPhysicalMaterial color="#dbe8f5" roughness={0.02} clearcoat={1} envMapIntensity={1.4} />
+          </mesh>
+        );
+      })}
+      {/* grazing key from the side reveals the hammer facets and pits; cool fill */}
+      <directionalLight position={[-4, 1.2, 0.6]} color="#FFD6A0" intensity={2.6} />
+      <directionalLight position={[3, 2, 2]} color="#8FB4FF" intensity={0.8} />
+    </group>
+  );
+};
+
+/* ---------------- insert: rusty bike chain on its sprocket ---------------- */
+// Chain links wrap the top of the sprocket and run off to the right; the
+// sprocket turns slowly and the chain creeps with it. Wet, orange rust.
+const SPROCKET_R = 0.62;
+const PITCH = 0.127;
+const TEETH = Math.round((2 * Math.PI * SPROCKET_R) / PITCH);
+const chainPath = (s: number): [number, number, number] => {
+  // s = distance along the chain from the left side of the sprocket, over the top, then straight right
+  // over the top-left of the sprocket, then straight off to the right (towards the rear wheel)
+  const a0 = Math.PI * 0.95;
+  const arc = (a0 - Math.PI / 2) * SPROCKET_R;
+  if (s < arc) {
+    const a = a0 - s / SPROCKET_R;
+    return [Math.cos(a) * SPROCKET_R, Math.sin(a) * SPROCKET_R, a - Math.PI / 2];
+  }
+  return [s - arc, SPROCKET_R, 0];
+};
+const plateShape = (pitch: number, r: number) => {
+  const sh = new THREE.Shape();
+  const w = r * 0.62; // waist
+  sh.absarc(0, 0, r, Math.PI / 2, (3 * Math.PI) / 2, false);
+  sh.quadraticCurveTo(pitch / 2, -w, pitch, -r);
+  sh.absarc(pitch, 0, r, -Math.PI / 2, Math.PI / 2, false);
+  sh.quadraticCurveTo(pitch / 2, w, 0, r);
+  const g = new THREE.ExtrudeGeometry(sh, {depth: 0.012, bevelEnabled: true, bevelSize: 0.004, bevelThickness: 0.004, bevelSegments: 2, curveSegments: 16});
+  g.translate(-pitch / 2, 0, -0.006);
+  return g;
+};
+const sprocketRing = () => {
+  const sh = new THREE.Shape();
+  sh.absarc(0, 0, SPROCKET_R - 0.02, 0, Math.PI * 2, false);
+  const hole = new THREE.Path();
+  hole.absarc(0, 0, SPROCKET_R - 0.12, 0, Math.PI * 2, true);
+  sh.holes.push(hole);
+  const g = new THREE.ExtrudeGeometry(sh, {depth: 0.03, bevelEnabled: false, curveSegments: 64});
+  g.translate(0, 0, -0.015);
+  return g;
+};
+export const ChainMacro: React.FC = () => {
+  const {t} = useScene();
+  const ringGeo = useMemo(() => sprocketRing(), []);
+  const plateO = useMemo(() => plateShape(PITCH, 0.048), []);
+  const plateI = useMemo(() => plateShape(PITCH, 0.04), []);
+  const spin = t * 0.25;
+  const shift = (spin * SPROCKET_R) % (2 * PITCH);
+  const links = 30;
+  const drips = useMemo(() => {
+    const r = mulberry(131);
+    return Array.from({length: 4}, () => ({s: 0.3 + r() * 2.2, ph: r()}));
+  }, []);
+  return (
+    <group position={[-0.35, -0.5, 0]} rotation={[0, -0.3, 0.05]}>
+      {/* sprocket: toothed ring on five spider arms around a hub */}
+      <group rotation={[0, 0, -spin]}>
+        <mesh geometry={ringGeo}>
+          <TexToon tex="rust-coarse" color="#E8946A" repeat={[1.2, 1.2]} normal={1.4} />
+        </mesh>
+        {[0, 1, 2, 3, 4].map((i) => {
+          const a = (i / 5) * 6.283;
+          return (
+            <mesh key={i} position={[Math.cos(a) * 0.29, Math.sin(a) * 0.29, 0]} rotation={[0, 0, a]}>
+              <boxGeometry args={[0.46, 0.075, 0.03]} />
+              <TexToon tex="rust-coarse" color="#D88458" repeat={[0.6, 0.2]} normal={1.2} />
+            </mesh>
+          );
+        })}
+        <mesh rotation={[Math.PI / 2, 0, 0]}>
+          <cylinderGeometry args={[0.1, 0.1, 0.06, 24]} />
+          <TexToon tex="rust" color="#A86A48" />
+        </mesh>
+        <mesh position={[0, 0, 0.032]}>
+          <circleGeometry args={[0.035, 16]} />
+          <meshStandardMaterial color="#3a3030" />
+        </mesh>
+        {Array.from({length: TEETH}).map((_, i) => {
+          const a = (i / TEETH) * 6.283;
+          return (
+            <mesh key={i} position={[Math.cos(a) * (SPROCKET_R - 0.005), Math.sin(a) * (SPROCKET_R - 0.005), 0]} rotation={[0, 0, a - Math.PI / 2]}>
+              <cylinderGeometry args={[0.012, 0.03, 0.06, 4, 1]} />
+              <TexToon tex="rust-coarse" color="#E08A5A" />
+            </mesh>
+          );
+        })}
+      </group>
+      {/* chain: alternating outer/inner plates with pins */}
+      {Array.from({length: links}).map((_, i) => {
+        const [x, y, rot] = chainPath(i * PITCH + shift);
+        const outer = i % 2 === 0;
+        return (
+          <group key={i} position={[x, y, 0]} rotation={[0, 0, rot]}>
+            {[-1, 1].map((sd) => (
+              <mesh key={sd} geometry={outer ? plateO : plateI} position={[0, 0, sd * (outer ? 0.042 : 0.028)]}>
+                <TexToon tex="rust-coarse" color={outer ? '#F2A06A' : '#C8683A'} repeat={[3, 3]} normal={1.2} />
+              </mesh>
+            ))}
+            {/* roller between the inner plates */}
+            <mesh position={[PITCH / 2, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+              <cylinderGeometry args={[0.03, 0.03, 0.05, 14]} />
+              <TexToon tex="rust" color="#8A4A2E" />
+            </mesh>
+            <mesh position={[PITCH / 2, 0, 0]} rotation={[Math.PI / 2, 0, 0]}>
+              <cylinderGeometry args={[0.022, 0.022, 0.1, 10]} />
+              <TexToon tex="rust" color="#9A5A3A" />
+            </mesh>
+          </group>
+        );
+      })}
+      {/* wet drips falling off the chain */}
+      {drips.map((d, i) => {
+        const [x, y] = chainPath(d.s);
+        const k = (t * 0.8 + d.ph) % 1;
+        return (
+          <mesh key={i} position={[x, y - 0.04 - k * 1.2, 0.05]} scale={[1, 1.4, 1]}>
+            <sphereGeometry args={[0.014, 10, 8]} />
+            <meshPhysicalMaterial color="#F0C0A0" roughness={0.05} clearcoat={1} transparent opacity={1 - k * 0.6} />
+          </mesh>
+        );
+      })}
+      {/* soft background: wet courtyard wall */}
+      <mesh position={[0.4, 0, -1.6]}>
+        <planeGeometry args={[10, 10]} />
+        <TexToon tex="sandstone-wall" color="#8A6A80" repeat={[4, 4]} />
+      </mesh>
+    </group>
+  );
+};
+
+/* ---------------- insert: hot iron with grey specks ---------------- */
+export const SpecksMacro: React.FC = () => {
+  const {t} = useScene();
+  const specks = useMemo(() => {
+    const r = mulberry(111);
+    return Array.from({length: 40}, () => ({x: (r() - 0.5) * 2.4, y: (r() - 0.5) * 3, s: 0.03 + r() * 0.05, ph: r() * 6}));
+  }, []);
+  const glow = 0.7 + 0.3 * Math.sin(t * 2);
+  return (
+    <group>
+      <mesh position={[0, 0, 0]}>
+        <planeGeometry args={[4, 5]} />
+        <TexToon tex="rust" color="#FFA070" emissive="#FF5A10" emissiveIntensity={0.5 * glow} repeat={[1.5, 2]} normal={1.4} />
+      </mesh>
+      {specks.map((s, i) => (
+        <group key={i} position={[s.x, s.y, 0.01]}>
+          <mesh>
+            <circleGeometry args={[s.s, 10]} />
+            <meshBasicMaterial color="#7C7890" toneMapped={false} />
+          </mesh>
+          {i % 3 === 0 && (
+            <mesh position={[0, 0, 0.002]} scale={1 + 0.25 * Math.sin(t * 4 + s.ph)}>
+              <ringGeometry args={[s.s * 1.6, s.s * 1.9, 20]} />
+              <meshBasicMaterial color={new THREE.Color('#FFE6A0').multiplyScalar(1.5)} transparent opacity={0.8} toneMapped={false} />
+            </mesh>
+          )}
+        </group>
+      ))}
+      <pointLight position={[0, 0, 1]} color="#FF8A3A" intensity={3} distance={4} />
     </group>
   );
 };

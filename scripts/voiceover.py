@@ -20,7 +20,9 @@ def script_text(slug):
     m = re.search(r"^##\s*Script\b[^\n]*\n(.*?)(?=^##\s|\Z)", text, re.S | re.M)
     if not m:
         sys.exit("no '## Script' section in brief")
-    return m.group(1).strip()
+    # drop production notes written in parentheses on their own line (e.g. the loop note)
+    lines = [l for l in m.group(1).strip().splitlines() if not l.strip().startswith("(")]
+    return "\n".join(lines).strip()
 
 
 def words_from_alignment(al):
@@ -29,10 +31,10 @@ def words_from_alignment(al):
     en = al["character_end_times_seconds"]
     words, cur, s0, e0, in_tag = [], "", None, None, False
     for c, s, e in zip(chars, st, en):
-        if c == "<":
+        if c in "<[":  # SSML <break/> and eleven_v3 [audio tags] are not spoken words
             in_tag = True
         if in_tag:
-            if c == ">":
+            if c in ">]":
                 in_tag = False
             continue
         if c.isspace():
@@ -50,12 +52,44 @@ def words_from_alignment(al):
     return [w for w in words if re.search(r"\w", w["word"])]
 
 
+CHATTERBOX_TAGS = {"advertisement", "angry", "chuckle", "clear throat", "cough", "crying", "dramatic", "fear", "gasp", "groan",
+                   "happy", "laugh", "narration", "sarcastic", "shush", "sigh", "sniff", "surprised", "whispering"}
+
+
+def chatterbox(slug, take, cfg):
+    """Chatterbox (local, no timestamps): render via the venv worker, then captions
+    come from scripts/align.py (faster-whisper). Tags: Turbo keeps its own
+    paralinguistic tags; the original model gets plain text."""
+    import re, subprocess
+    text = script_text(slug)
+    keep = CHATTERBOX_TAGS if cfg["model"] == "turbo" else set()
+    text = re.sub(r"\[([^\]]+)\]\s*", lambda m: m.group(0) if m.group(1).lower() in keep else "", text)
+    out = ROOT / "audio" / (f"takes/{slug}-{take}.mp3" if take else f"{slug}.mp3")
+    out.parent.mkdir(exist_ok=True)
+    wav = out.with_suffix(".wav")
+    r = subprocess.run([cfg["python"], str(ROOT / cfg["worker"]), cfg["model"], str(wav), str(cfg["exaggeration"]), str(cfg["cfg_weight"]),
+                        str(cfg.get("seed", 0))], input=text, capture_output=True, text=True)
+    if r.returncode:
+        sys.exit(r.stderr[-2000:])
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(wav), "-c:a", "libmp3lame", "-b:a", "192k", str(out)], check=True)
+    wav.unlink()
+    print(f"{out.relative_to(ROOT)} · chatterbox/{cfg['model']} · {r.stdout.strip().splitlines()[-1]}")
+    if not take:
+        subprocess.run([sys.executable, str(ROOT / "scripts/align.py"), slug], check=True)
+
+
 def main():
     slug = sys.argv[1]
+    cfg = json.loads((ROOT / "voice.json").read_text())
+    if "engine" in cfg:
+        if cfg["engine"] == "chatterbox":
+            return chatterbox(slug, sys.argv[2] if len(sys.argv) > 2 else None, cfg["engines"]["chatterbox"])
+        voice = cfg["engines"]["elevenlabs"]
+    else:
+        voice = cfg
     key = os.environ.get("ELEVENLABS_API_KEY")
     if not key:
         sys.exit("ELEVENLABS_API_KEY is not set")
-    voice = json.loads((ROOT / "voice.json").read_text())
     body = {
         "text": script_text(slug),
         "model_id": voice["model_id"],
@@ -63,12 +97,20 @@ def main():
     }
     url = (f"https://api.elevenlabs.io/v1/text-to-speech/{voice['voice_id']}/with-timestamps"
            f"?output_format={voice.get('output_format', 'mp3_44100_128')}")
+    out = (ROOT / "audio" / f"{slug}.mp3")
+    if len(sys.argv) > 2:  # optional take name: audio/takes/<slug>-<take>.mp3, captions untouched
+        out = ROOT / "audio" / "takes" / f"{slug}-{sys.argv[2]}.mp3"
+        out.parent.mkdir(exist_ok=True)
     req = urllib.request.Request(url, data=json.dumps(body).encode(), method="POST",
                                  headers={"xi-api-key": key, "Content-Type": "application/json"})
     with urllib.request.urlopen(req, timeout=300) as r:
         res = json.load(r)
-    (ROOT / "audio").mkdir(exist_ok=True)
-    (ROOT / "audio" / f"{slug}.mp3").write_bytes(base64.b64decode(res["audio_base64"]))
+    out.write_bytes(base64.b64decode(res["audio_base64"]))
+    if len(sys.argv) > 2:
+        out.with_suffix(".alignment.json").write_text(json.dumps(res["alignment"]))
+        w = words_from_alignment(res["alignment"])
+        print(f"{out.relative_to(ROOT)} · {len(w)} words · last word ends {w[-1]['end']:.2f}s")
+        return
     al = res.get("normalized_alignment") or res["alignment"]
     (ROOT / "audio" / f"{slug}.alignment.json").write_text(json.dumps(res["alignment"]))
     words = words_from_alignment(res["alignment"])

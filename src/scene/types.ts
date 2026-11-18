@@ -16,6 +16,7 @@ export type Shot = SetSpec & {
   layout?: 'line' | 'manual';
   gap?: number; // metres between reach boxes in 'line' layout (default 0.3)
   titleCard?: TitleCardSpec; // `at` is seconds into this shot
+  titleCards?: TitleCardSpec[]; // several cards in one (long, sentence-length) shot
   payoff?: boolean; // ding plays at this shot's start (or at payoffAt)
   payoffAt?: number; // seconds into this shot
   note?: string;
@@ -25,7 +26,10 @@ export type Shot = SetSpec & {
   mixAt?: [number, number]; // seconds into the shot
   labels?: {text: string; x: number; y: number}[]; // small on-screen labels (fractions of frame)
   grade?: 'flashback';
-  sfx?: {name: string; at: number; volume?: number; dur?: number}[]; // public/sfx/<name>.wav, `at` seconds into the shot
+  roll?: [number, number]; // camera dutch roll in degrees over the shot
+  dof?: number; // bokeh scale (0 = off)
+  focusDist?: number; // metres, overrides the cast-based focus
+  sfx?: {name: string; at: number; volume?: number; dur?: number}[]; // public/sfx/<name>.mp3, `at` seconds into the shot
 };
 
 export type ShotList = {

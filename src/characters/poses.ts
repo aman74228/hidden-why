@@ -4,7 +4,7 @@
 // character faces (the pointing arm).
 
 // Core poses (CLAUDE.md) + story extras.
-export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud'] as const;
+export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown'] as const;
 export type PoseName = (typeof POSES)[number];
 
 export type EyeStyle = 'dot' | 'wide' | 'smug' | 'calm' | 'happy' | 'closed';
@@ -30,7 +30,7 @@ const s = Math.sin;
 
 export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
   const ph = t + seed * 1.7;
-  const breathe = s(ph * 2.2) * 0.006;
+  const breathe = s(ph * 2.1) * 0.01;
   const base: PoseState = {
     armA: [10 + s(ph * 1.6) * 2, -6],
     armB: [10 + s(ph * 1.6 + 1) * 2, -6],
@@ -173,6 +173,76 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
         mouth: 'smile',
       };
     }
+    case 'look-up':
+      // head tipped back, wide eyes, gazing up the pillar
+      return {...base, headRot: 4 + s(ph * 0.8) * 1.5, headDY: 0.01, faceDY: 0.05, eyes: 'wide', mouth: 'O', mouthOpen: 0.4, brow: 0.8, armA: [20, -40]};
+    case 'coin-tap': {
+      // two clear taps of the coin on the pillar (contact at 0.55 s and 1.45 s):
+      // wind up (forearm lifts away), snap in, small rebound, then rest on the iron
+      const TAPS = [0.55, 1.45];
+      let away = 0;
+      for (const c of TAPS) {
+        const d = t - c;
+        if (d > -0.38 && d < 0) away = Math.max(away, Math.sin(((d + 0.38) / 0.32) * (Math.PI / 2)) * (d > -0.06 ? -d / 0.06 : 1));
+        if (d >= 0 && d < 0.22) away = Math.max(away, Math.sin((d / 0.22) * Math.PI) * 0.25);
+      }
+      const settled = t > 1.8 ? Math.min(1, (t - 1.8) / 0.4) : 0;
+      return {
+        ...base,
+        armA: [76 + away * 14, -16 - away * 62],
+        bodyRot: -3 - away * 2,
+        headRot: 6 + settled * 3 * Math.sin(ph * 2),
+        eyes: 'smug',
+        mouth: 'smirk',
+        brow: 0.7 + away * 0.2,
+      };
+    }
+    case 'stomp': {
+      const k = s(ph * 9);
+      return {
+        ...base,
+        armA: [18 + k * 18, -20],
+        armB: [18 - k * 18, -20],
+        bodyDY: Math.abs(k) * 0.02,
+        bodyRot: -6,
+        headRot: -4,
+        mouth: 'flat',
+        brow: -0.4,
+      };
+    }
+    case 'smile-nod': {
+      const n = Math.max(0, s(ph * 3));
+      return {...base, headDY: -n * 0.02, faceDY: -n * 0.03, eyes: 'happy', mouth: 'smile'};
+    }
+    case 'peek': {
+      // both hands over the face, fingers parted: peeking at something awful
+      const tr = s(ph * 14) * 1.5;
+      return {...base, armA: [62 + tr, -150], armB: [62 - tr, -150], bodyRot: -3, headRot: -6 + tr, headDY: -0.02, eyes: 'wide', mouth: 'O', mouthOpen: 0.5, brow: 1};
+    }
+    case 'gasp': {
+      // hands fly to the cheeks, mouth O
+      const k = Math.min(1, t / 0.25);
+      return {...base, armA: [20 + 40 * k, -40 - 100 * k], armB: [20 + 40 * k, -40 - 100 * k], bodyDY: 0.012 * k, eyes: 'wide', mouth: 'O', mouthOpen: 0.9, brow: 1};
+    }
+    case 'present':
+      // both arms forward, holding something out proudly
+      return {...base, armA: [70 + s(ph * 2) * 3, -20], armB: [55, -35], bodyRot: -2, headRot: 6, eyes: 'smug', mouth: 'grin', mouthOpen: 0.3, brow: 0.6};
+    case 'slam': {
+      // arm high, then slams down at 0.35 s; smug after
+      const u = Math.min(1, t / 0.35);
+      const down = u < 1 ? 160 - 120 * u * u : 40 + Math.max(0, 0.3 - (t - 0.35)) * 40;
+      return {...base, armA: [down, -10], bodyRot: u < 1 ? 4 - 10 * u : -4, headRot: 6, eyes: 'smug', mouth: t > 0.4 ? 'smirk' : 'open', mouthOpen: 0.5, brow: 0.8};
+    }
+    case 'lean':
+      // leaning in to watch closely
+      return {...base, armA: [30, -70], armB: [24, -60], bodyRot: -9 + s(ph * 1.2) * 1.5, headRot: -10 + s(ph * 1.4) * 2, eyes: 'smug', mouth: 'smirk', brow: 0.6};
+    case 'deadpan':
+      return {...base, bodyRot: s(ph * 0.9) * 0.6, headRot: s(ph * 0.7) * 0.8, eyes: 'dot', mouth: 'flat', brow: -0.2};
+    case 'frown':
+      return {...base, armA: [12, -88], armB: [18, -100], armsCrossed: true, headRot: -4 + s(ph * 1.3) * 1.5, eyes: 'smug', mouth: 'flat', brow: -0.5};
+    case 'lift':
+      // arm raised high, holding something up into the light, awed
+      return {...base, armA: [150 + s(ph * 1.5) * 3, -12], armB: [25, -30], headRot: 10, headDY: 0.01, faceDY: 0.04, eyes: 'wide', mouth: 'O', mouthOpen: 0.5, brow: 0.9};
     case 'nod': {
       const n = Math.max(0, s(ph * 5));
       return {

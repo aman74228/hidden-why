@@ -1,4 +1,5 @@
-import {DepthOfField, EffectComposer} from '@react-three/postprocessing';
+import {Bloom, DepthOfField, EffectComposer, Vignette} from '@react-three/postprocessing';
+import {Grain} from '../overlays/Grain';
 import {ThreeCanvas} from '@remotion/three';
 import React, {useMemo} from 'react';
 import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
@@ -34,7 +35,10 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
   // lighting / sky, optionally blending to another preset (e.g. sun breaks through)
   const base = resolveSet(shot);
   const mixK = shot.mixAt ? Math.min(1, Math.max(0, (t - shot.mixAt[0]) / Math.max(0.01, shot.mixAt[1] - shot.mixAt[0]))) : 0;
-  const mk = mixK * mixK * (3 - 2 * mixK);
+  // wet/dry cycles: 0 = rain (base preset), 1 = sun (lightTo preset)
+  const cyc = shot.fx?.cycles;
+  const mk = cyc ? Math.pow(0.5 - 0.5 * Math.cos(2 * Math.PI * cyc * p), 1.5) : mixK * mixK * (3 - 2 * mixK);
+  const fxNow = useMemo(() => (cyc ? {...shot.fx, rainNow: Math.max(0, 1 - mk * 1.6)} : shot.fx), [shot.fx, cyc, mk]);
   const light = shot.lightTo ? mixLight(base.light, LIGHTS[shot.lightTo], mk) : base.light;
   const sky = shot.skyTo ? mixSky(base.sky, SKIES[shot.skyTo], mk) : base.sky;
   const resolved = {sky, ground: base.ground ?? GROUNDS.stone, light};
@@ -69,13 +73,15 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
   );
 
   // title card: top-anchored, shrinks if it would reach a face
-  const cardMaxBottom = useMemo(() => {
-    if (!shot.titleCard) return 1;
-    const d = shot.duration;
-    const a = (shot.titleCard.at ?? 0) / d;
-    const b = ((shot.titleCard.at ?? 0) + (shot.titleCard.duration ?? 2)) / d;
-    return faceFreeBottom(rawShot, a, b);
-  }, [shot]);
+  const cards = useMemo(() => shot.titleCards ?? (shot.titleCard ? [shot.titleCard] : []), [shot]);
+  const cardMaxBottoms = useMemo(
+    () =>
+      cards.map((c) => {
+        const d = shot.duration;
+        return faceFreeBottom(rawShot, (c.at ?? 0) / d, ((c.at ?? 0) + (c.duration ?? 2)) / d);
+      }),
+    [cards, shot],
+  );
 
   return (
     <AbsoluteFill>
@@ -93,14 +99,16 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
         }}
       >
         <SceneCtx.Provider value={ctx}>
-          <CameraRig pos={pos} look={look} fov={fov} />
-          <ToonSet set={shot.set} props={shot.props} fx={shot.fx} p={p} dur={shot.duration} resolved={resolved} />
+          <CameraRig pos={pos} look={look} fov={fov} roll={shot.roll ? shot.roll[0] + (shot.roll[1] - shot.roll[0]) * p : 0} />
+          <ToonSet set={shot.set} props={shot.props} fx={fxNow} p={p} dur={shot.duration} resolved={resolved} />
           {cast.map((c, i) => (
             <Character key={`${c.who}-${i}`} {...c} />
           ))}
           <FrameCheck samples={samples} fov={fov} shotId={shot.id} />
           <EffectComposer multisampling={2}>
-            <DepthOfField worldFocusDistance={focus.dist} worldFocusRange={focus.range} bokehScale={2.2} />
+            <DepthOfField worldFocusDistance={shot.focusDist ?? focus.dist} worldFocusRange={shot.focusDist ? 1.2 : focus.range} bokehScale={shot.dof ?? 2.2} />
+            <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.2} intensity={0.85} mipmapBlur radius={0.7} />
+            <Vignette offset={0.32} darkness={0.5} />
           </EffectComposer>
         </SceneCtx.Provider>
       </ThreeCanvas>
@@ -136,7 +144,10 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
           {l.text}
         </div>
       ))}
-      {shot.titleCard ? <TitleCard {...shot.titleCard} frame={frame} maxBottom={cardMaxBottom} /> : null}
+      <Grain frame={raw} />
+      {cards.map((c, i) => (
+        <TitleCard key={i} {...c} frame={frame} maxBottom={cardMaxBottoms[i]} />
+      ))}
     </AbsoluteFill>
   );
 };
