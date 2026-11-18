@@ -7,11 +7,11 @@
   "file": "public/sfx/music.mp3",
   "lufs": -25.1,
   "under_speech_lufs": -25.6,
-  "between_lines_lufs": -23.1,
+  "between_lines_lufs": -23.0,
   "true_peak_dbtp": -14.5
  },
  "sfx": {
-  "stem_lufs": -23.4,
+  "stem_lufs": -23.3,
   "stem_max_momentary_lufs": -18.0,
   "true_peak_dbtp": -7.0,
   "per_cue_max_momentary_lufs": {
