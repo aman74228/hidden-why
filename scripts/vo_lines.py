@@ -8,7 +8,7 @@ reads  audio/<slug>.lines.json  ({text, spoken?, exaggeration, pause_after} per 
    re-rendered (max 3 tries) and the best try kept
 3. scripts/vo_pauses.py inserts punctuation pauses (no time-stretching)
 4. joins with each line's pause_after; if the total is under --min (52 s) the whole
-   take is re-rendered with cfg 0.5; if over --max (60 s) the between-line pauses
+   take is NOT re-rendered (cfg 0.5 is faster); a warning is printed; if over --max (60 s) the between-line pauses
    shrink first (never below 0.25 s), comma pauses never
 writes audio/<slug>.mp3, audio/<slug>.vo.json (report), captions via scripts/align.py
 usage: vo_lines.py <slug> [--min 52] [--max 60]"""
@@ -80,8 +80,8 @@ for round_ in range(2):
     pauses = [ln["pause_after"] for ln in lines]
     total = sum(p[1]["seconds"] for p in parts) + sum(pauses)
     print(f"cfg {cfg}: total {total:.2f}s")
-    if total < a.min and cfg < 0.5 and a.cfg is None:
-        cfg = 0.5; print("under the minimum: re-rendering with cfg 0.5"); continue
+    if total < a.min:  # cfg 0.5 only speeds Chatterbox up (LESSONS 8): never retry faster; report it
+        print(f"WARNING: {total:.2f}s is under the {a.min}s minimum (slower pacing needs a LOWER cfg via --cfg, or longer pauses)")
     break
 if total > a.max:  # shrink between-line pauses first (min 0.25 s), proportionally
     over = total - a.max

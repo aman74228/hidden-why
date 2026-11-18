@@ -1,0 +1,247 @@
+{
+ "slug": "03-plane-windows",
+ "engine": "chatterbox/original",
+ "seed": 1750,
+ "cfg_weight": 0.3,
+ "total_s": 49.14,
+ "words": 166,
+ "wpm_overall": 202.7,
+ "wpm_speech_only": 241.9,
+ "render": [],
+ "lines": [
+  {
+   "n": 1,
+   "start_s": 0.0,
+   "seconds": 2.7,
+   "pause_after": 0.45,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Why will you never see a square window on a plane?",
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 2,
+   "start_s": 3.15,
+   "seconds": 2.94,
+   "pause_after": 0.35,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "The first jet airliner had big, nearly square windows.",
+   "punct_pauses": [
+    [
+     "big,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 3,
+   "start_s": 6.44,
+   "seconds": 2.66,
+   "pause_after": 0.5,
+   "exaggeration": 0.7,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Vic bets a week of desserts that round windows are just for looks.",
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 4,
+   "start_s": 9.6,
+   "seconds": 5.13,
+   "pause_after": 0.4,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "But this jet flew higher than any airliner before, so every flight pumped the cabin up like a balloon.",
+   "punct_pauses": [
+    [
+     "before,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 5,
+   "start_s": 15.13,
+   "seconds": 2.59,
+   "pause_after": 0.7,
+   "exaggeration": 0.45,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Within two years, two of them broke apart in the sky.",
+   "punct_pauses": [
+    [
+     "years,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 6,
+   "start_s": 18.42,
+   "seconds": 4.8,
+   "pause_after": 0.3,
+   "exaggeration": 0.5,
+   "try": 3,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So engineers sank a whole plane in a water tank and pumped it up and down, again and again.",
+   "punct_pauses": [
+    [
+     "down,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 7,
+   "start_s": 23.52,
+   "seconds": 2.76,
+   "pause_after": 0.6,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "until it burst and the crack started at a sharp corner.",
+   "punct_pauses": [
+    [
+     "burst,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 8,
+   "start_s": 26.88,
+   "seconds": 3.66,
+   "pause_after": 0.4,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "That's when Gus cuts a square hole and a round hole in paper and pulls.",
+   "punct_pauses": [
+    [
+     "paper,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 9,
+   "start_s": 30.94,
+   "seconds": 2.88,
+   "pause_after": 0.5,
+   "exaggeration": 0.6,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "The square tears at the corner, the round one holds.",
+   "punct_pauses": [
+    [
+     "corner.",
+     "stop",
+     0.35
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 10,
+   "start_s": 34.32,
+   "seconds": 5.77,
+   "pause_after": 0.4,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "You see, a sharp corner squeezes all the stress into one tiny point, but a curve spreads it all the way around.",
+   "punct_pauses": [
+    [
+     "see,",
+     "comma",
+     0.18
+    ],
+    [
+     "point,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 11,
+   "start_s": 40.49,
+   "seconds": 2.42,
+   "pause_after": 0.6,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So every plane since has rounded windows.",
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 12,
+   "start_s": 43.51,
+   "seconds": 2.91,
+   "pause_after": 0.4,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "And Vic's Square Brownie, it cracks right at the corner.",
+   "punct_pauses": [
+    [
+     "brownie?",
+     "question",
+     0.4
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 13,
+   "start_s": 46.82,
+   "seconds": 2.32,
+   "pause_after": 0.0,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So next time you fly, look out and ask.",
+   "punct_pauses": [
+    [
+     "fly,",
+     "comma",
+     0.18
+    ]
+   ],
+   "unmatched_punct": []
+  }
+ ]
+}
