@@ -57,776 +57,916 @@
  {
   "word": "The",
   "start": 3.15,
-  "end": 3.31
+  "end": 3.29
+ },
+ {
+  "word": "very",
+  "start": 3.29,
+  "end": 3.53
  },
  {
   "word": "first",
-  "start": 3.31,
-  "end": 3.49
+  "start": 3.53,
+  "end": 3.81
  },
  {
   "word": "jet",
-  "start": 3.49,
-  "end": 3.67
- },
- {
-  "word": "airliner",
-  "start": 3.67,
+  "start": 3.81,
   "end": 4.03
  },
  {
-  "word": "had",
+  "word": "airliner,",
   "start": 4.03,
-  "end": 4.33
+  "end": 4.45
+ },
+ {
+  "word": "back",
+  "start": 4.82,
+  "end": 5.0
+ },
+ {
+  "word": "in",
+  "start": 5.0,
+  "end": 5.14
+ },
+ {
+  "word": "the",
+  "start": 5.14,
+  "end": 5.22
+ },
+ {
+  "word": "fifties,",
+  "start": 5.22,
+  "end": 5.7
+ },
+ {
+  "word": "had",
+  "start": 5.77,
+  "end": 5.99
  },
  {
   "word": "big,",
-  "start": 4.33,
-  "end": 4.57
+  "start": 5.99,
+  "end": 6.23
  },
  {
   "word": "nearly",
-  "start": 4.93,
-  "end": 5.13
+  "start": 6.55,
+  "end": 6.71
  },
  {
   "word": "square",
-  "start": 5.13,
-  "end": 5.45
+  "start": 6.71,
+  "end": 7.05
  },
  {
-  "word": "windows.",
-  "start": 5.45,
-  "end": 5.81
- },
- {
-  "word": "Vik",
-  "start": 6.44,
-  "end": 6.64
- },
- {
-  "word": "bets",
-  "start": 6.64,
-  "end": 6.84
- },
- {
-  "word": "a",
-  "start": 6.84,
-  "end": 6.96
- },
- {
-  "word": "week",
-  "start": 6.96,
-  "end": 7.1
- },
- {
-  "word": "of",
-  "start": 7.1,
-  "end": 7.22
- },
- {
-  "word": "desserts",
-  "start": 7.22,
-  "end": 7.5
- },
- {
-  "word": "that",
-  "start": 7.5,
-  "end": 7.74
- },
- {
-  "word": "round",
-  "start": 7.74,
-  "end": 7.92
- },
- {
-  "word": "windows",
-  "start": 7.92,
-  "end": 8.2
- },
- {
-  "word": "are",
-  "start": 8.2,
-  "end": 8.38
- },
- {
-  "word": "just",
-  "start": 8.38,
-  "end": 8.56
- },
- {
-  "word": "for",
-  "start": 8.56,
-  "end": 8.7
- },
- {
-  "word": "looks.",
-  "start": 8.7,
-  "end": 8.9
- },
- {
-  "word": "But",
-  "start": 9.6,
-  "end": 9.8
- },
- {
-  "word": "this",
-  "start": 9.8,
-  "end": 10.0
- },
- {
-  "word": "jet",
-  "start": 10.0,
-  "end": 10.18
- },
- {
-  "word": "flew",
-  "start": 10.18,
-  "end": 10.38
- },
- {
-  "word": "higher",
-  "start": 10.38,
-  "end": 10.62
- },
- {
-  "word": "than",
-  "start": 10.62,
-  "end": 10.82
- },
- {
-  "word": "any",
-  "start": 10.82,
-  "end": 11.12
- },
- {
-  "word": "airliner",
-  "start": 11.12,
-  "end": 11.48
- },
- {
-  "word": "before,",
-  "start": 11.48,
-  "end": 11.92
+  "word": "windows,",
+  "start": 7.05,
+  "end": 7.43
  },
  {
   "word": "so",
-  "start": 12.3,
-  "end": 12.62
+  "start": 7.75,
+  "end": 7.93
  },
  {
-  "word": "every",
-  "start": 12.62,
-  "end": 12.9
+  "word": "passengers",
+  "start": 7.93,
+  "end": 8.29
  },
  {
-  "word": "flight",
-  "start": 12.9,
-  "end": 13.14
+  "word": "could",
+  "start": 8.29,
+  "end": 8.55
  },
  {
-  "word": "pumped",
-  "start": 13.14,
-  "end": 13.36
+  "word": "watch",
+  "start": 8.55,
+  "end": 8.75
  },
  {
   "word": "the",
-  "start": 13.36,
-  "end": 13.54
+  "start": 8.75,
+  "end": 8.89
  },
  {
-  "word": "cabin",
-  "start": 13.54,
-  "end": 13.74
+  "word": "world",
+  "start": 8.89,
+  "end": 9.05
  },
  {
-  "word": "up",
-  "start": 13.74,
-  "end": 13.96
+  "word": "go",
+  "start": 9.05,
+  "end": 9.21
  },
  {
-  "word": "like",
-  "start": 13.96,
-  "end": 14.12
+  "word": "by.",
+  "start": 9.21,
+  "end": 9.47
+ },
+ {
+  "word": "Vik",
+  "start": 9.99,
+  "end": 10.19
+ },
+ {
+  "word": "bets",
+  "start": 10.19,
+  "end": 10.39
  },
  {
   "word": "a",
-  "start": 14.12,
-  "end": 14.22
+  "start": 10.39,
+  "end": 10.51
  },
  {
-  "word": "balloon.",
-  "start": 14.22,
-  "end": 14.42
- },
- {
-  "word": "Within",
-  "start": 15.13,
-  "end": 15.37
- },
- {
-  "word": "two",
-  "start": 15.37,
-  "end": 15.59
- },
- {
-  "word": "years,",
-  "start": 15.59,
-  "end": 15.95
- },
- {
-  "word": "two",
-  "start": 16.45,
-  "end": 16.53
+  "word": "week",
+  "start": 10.51,
+  "end": 10.65
  },
  {
   "word": "of",
-  "start": 16.53,
-  "end": 16.65
+  "start": 10.65,
+  "end": 10.77
  },
  {
-  "word": "them",
-  "start": 16.65,
-  "end": 16.77
+  "word": "desserts",
+  "start": 10.77,
+  "end": 11.05
  },
  {
-  "word": "broke",
-  "start": 16.77,
-  "end": 16.91
+  "word": "that",
+  "start": 11.05,
+  "end": 11.29
  },
  {
-  "word": "apart",
-  "start": 16.91,
-  "end": 17.15
+  "word": "round",
+  "start": 11.29,
+  "end": 11.47
  },
  {
-  "word": "in",
-  "start": 17.15,
-  "end": 17.29
+  "word": "windows",
+  "start": 11.47,
+  "end": 11.75
  },
  {
-  "word": "the",
-  "start": 17.29,
-  "end": 17.37
+  "word": "are",
+  "start": 11.75,
+  "end": 11.93
  },
  {
-  "word": "sky.",
-  "start": 17.37,
-  "end": 17.55
+  "word": "just",
+  "start": 11.93,
+  "end": 12.11
  },
  {
-  "word": "So",
-  "start": 18.42,
-  "end": 18.62
+  "word": "for",
+  "start": 12.11,
+  "end": 12.25
  },
  {
-  "word": "engineers",
-  "start": 18.62,
-  "end": 19.0
+  "word": "looks.",
+  "start": 12.25,
+  "end": 12.45
  },
  {
-  "word": "sank",
-  "start": 19.0,
-  "end": 19.3
+  "word": "But",
+  "start": 13.15,
+  "end": 13.41
  },
  {
-  "word": "a",
-  "start": 19.3,
-  "end": 19.44
+  "word": "this",
+  "start": 13.41,
+  "end": 13.69
  },
  {
-  "word": "whole",
-  "start": 19.44,
-  "end": 19.62
+  "word": "jet",
+  "start": 13.69,
+  "end": 13.89
  },
  {
-  "word": "plane",
-  "start": 19.62,
-  "end": 19.82
+  "word": "flew",
+  "start": 13.89,
+  "end": 14.09
  },
  {
-  "word": "in",
-  "start": 19.82,
-  "end": 19.98
+  "word": "higher",
+  "start": 14.09,
+  "end": 14.33
  },
  {
-  "word": "a",
-  "start": 19.98,
-  "end": 20.08
+  "word": "than",
+  "start": 14.33,
+  "end": 14.57
  },
  {
-  "word": "water",
-  "start": 20.08,
-  "end": 20.26
+  "word": "any",
+  "start": 14.57,
+  "end": 14.81
  },
  {
-  "word": "tank",
-  "start": 20.26,
-  "end": 20.58
+  "word": "airliner",
+  "start": 14.81,
+  "end": 15.13
  },
  {
-  "word": "and",
-  "start": 20.58,
-  "end": 20.82
+  "word": "before,",
+  "start": 15.13,
+  "end": 15.57
+ },
+ {
+  "word": "so",
+  "start": 15.8,
+  "end": 16.02
+ },
+ {
+  "word": "every",
+  "start": 16.02,
+  "end": 16.3
+ },
+ {
+  "word": "single",
+  "start": 16.3,
+  "end": 16.54
+ },
+ {
+  "word": "flight",
+  "start": 16.54,
+  "end": 16.82
  },
  {
   "word": "pumped",
-  "start": 20.82,
-  "end": 20.98
+  "start": 16.82,
+  "end": 17.12
  },
  {
-  "word": "it",
-  "start": 20.98,
-  "end": 21.14
+  "word": "the",
+  "start": 17.12,
+  "end": 17.3
+ },
+ {
+  "word": "cabin",
+  "start": 17.3,
+  "end": 17.52
  },
  {
   "word": "up",
-  "start": 21.14,
-  "end": 21.28
+  "start": 17.52,
+  "end": 17.8
+ },
+ {
+  "word": "like",
+  "start": 17.8,
+  "end": 17.96
+ },
+ {
+  "word": "a",
+  "start": 17.96,
+  "end": 18.08
+ },
+ {
+  "word": "balloon,",
+  "start": 18.08,
+  "end": 18.36
  },
  {
   "word": "and",
-  "start": 21.28,
-  "end": 21.44
+  "start": 18.36,
+  "end": 18.92
  },
  {
-  "word": "down,",
-  "start": 21.44,
-  "end": 21.7
+  "word": "let",
+  "start": 18.92,
+  "end": 19.22
  },
  {
-  "word": "again",
-  "start": 22.1,
+  "word": "it",
+  "start": 19.22,
+  "end": 19.32
+ },
+ {
+  "word": "back",
+  "start": 19.32,
+  "end": 19.46
+ },
+ {
+  "word": "down",
+  "start": 19.46,
+  "end": 19.68
+ },
+ {
+  "word": "again.",
+  "start": 19.68,
+  "end": 19.9
+ },
+ {
+  "word": "Within",
+  "start": 20.5,
+  "end": 20.78
+ },
+ {
+  "word": "two",
+  "start": 20.78,
+  "end": 21.02
+ },
+ {
+  "word": "years,",
+  "start": 21.02,
+  "end": 21.42
+ },
+ {
+  "word": "two",
+  "start": 21.74,
+  "end": 21.88
+ },
+ {
+  "word": "of",
+  "start": 21.88,
+  "end": 22.02
+ },
+ {
+  "word": "them",
+  "start": 22.02,
+  "end": 22.18
+ },
+ {
+  "word": "broke",
+  "start": 22.18,
   "end": 22.38
  },
  {
-  "word": "and",
+  "word": "apart",
   "start": 22.38,
   "end": 22.7
  },
  {
-  "word": "again.",
-  "start": 22.7,
-  "end": 23.0
- },
- {
-  "word": "Until",
-  "start": 23.52,
-  "end": 23.74
- },
- {
-  "word": "it",
-  "start": 23.74,
-  "end": 23.88
- },
- {
-  "word": "burst,",
-  "start": 23.88,
-  "end": 24.12
- },
- {
-  "word": "and",
-  "start": 24.12,
-  "end": 24.7
- },
- {
-  "word": "the",
-  "start": 24.7,
-  "end": 24.8
- },
- {
-  "word": "crack",
-  "start": 24.8,
-  "end": 25.02
- },
- {
-  "word": "started",
-  "start": 25.02,
-  "end": 25.34
- },
- {
-  "word": "at",
-  "start": 25.34,
-  "end": 25.52
- },
- {
-  "word": "a",
-  "start": 25.52,
-  "end": 25.62
- },
- {
-  "word": "sharp",
-  "start": 25.62,
-  "end": 25.8
- },
- {
-  "word": "corner.",
-  "start": 25.8,
-  "end": 26.12
- },
- {
-  "word": "That's",
-  "start": 26.88,
-  "end": 27.16
- },
- {
-  "word": "when",
-  "start": 27.16,
-  "end": 27.28
- },
- {
-  "word": "Gus",
-  "start": 27.28,
-  "end": 27.52
- },
- {
-  "word": "cuts",
-  "start": 27.52,
-  "end": 27.7
- },
- {
-  "word": "a",
-  "start": 27.7,
-  "end": 27.88
- },
- {
-  "word": "square",
-  "start": 27.88,
-  "end": 28.08
- },
- {
-  "word": "hole",
-  "start": 28.08,
-  "end": 28.36
- },
- {
-  "word": "and",
-  "start": 28.36,
-  "end": 28.56
- },
- {
-  "word": "a",
-  "start": 28.56,
-  "end": 28.68
- },
- {
-  "word": "round",
-  "start": 28.68,
-  "end": 28.86
- },
- {
-  "word": "hole",
-  "start": 28.86,
-  "end": 29.06
- },
- {
   "word": "in",
-  "start": 29.06,
-  "end": 29.2
- },
- {
-  "word": "paper,",
-  "start": 29.2,
-  "end": 29.62
- },
- {
-  "word": "and",
-  "start": 29.62,
-  "end": 30.0
- },
- {
-  "word": "pulls.",
-  "start": 30.0,
-  "end": 30.24
- },
- {
-  "word": "The",
-  "start": 30.94,
-  "end": 31.08
- },
- {
-  "word": "square",
-  "start": 31.08,
-  "end": 31.34
- },
- {
-  "word": "tears",
-  "start": 31.34,
-  "end": 31.62
- },
- {
-  "word": "at",
-  "start": 31.62,
-  "end": 31.78
+  "start": 22.7,
+  "end": 22.88
  },
  {
   "word": "the",
-  "start": 31.78,
-  "end": 31.88
+  "start": 22.88,
+  "end": 22.96
  },
  {
-  "word": "corner.",
-  "start": 31.88,
-  "end": 32.16
- },
- {
-  "word": "The",
-  "start": 32.89,
-  "end": 32.97
- },
- {
-  "word": "round",
-  "start": 32.97,
-  "end": 33.17
- },
- {
-  "word": "one",
-  "start": 33.17,
-  "end": 33.35
- },
- {
-  "word": "holds.",
-  "start": 33.35,
-  "end": 33.61
- },
- {
-  "word": "You",
-  "start": 34.32,
-  "end": 34.44
- },
- {
-  "word": "see,",
-  "start": 34.44,
-  "end": 34.62
- },
- {
-  "word": "a",
-  "start": 34.92,
-  "end": 35.0
- },
- {
-  "word": "sharp",
-  "start": 35.0,
-  "end": 35.2
- },
- {
-  "word": "corner",
-  "start": 35.2,
-  "end": 35.54
- },
- {
-  "word": "squeezes",
-  "start": 35.54,
-  "end": 36.0
- },
- {
-  "word": "all",
-  "start": 36.0,
-  "end": 36.22
- },
- {
-  "word": "the",
-  "start": 36.22,
-  "end": 36.34
- },
- {
-  "word": "stress",
-  "start": 36.34,
-  "end": 36.6
- },
- {
-  "word": "into",
-  "start": 36.6,
-  "end": 36.88
- },
- {
-  "word": "one",
-  "start": 36.88,
-  "end": 37.14
- },
- {
-  "word": "tiny",
-  "start": 37.14,
-  "end": 37.38
- },
- {
-  "word": "point,",
-  "start": 37.38,
-  "end": 37.74
- },
- {
-  "word": "but",
-  "start": 38.24,
-  "end": 38.44
- },
- {
-  "word": "a",
-  "start": 38.44,
-  "end": 38.56
- },
- {
-  "word": "curve",
-  "start": 38.56,
-  "end": 38.78
- },
- {
-  "word": "spreads",
-  "start": 38.78,
-  "end": 39.04
- },
- {
-  "word": "it",
-  "start": 39.04,
-  "end": 39.18
- },
- {
-  "word": "all",
-  "start": 39.18,
-  "end": 39.36
- },
- {
-  "word": "the",
-  "start": 39.36,
-  "end": 39.46
- },
- {
-  "word": "way",
-  "start": 39.46,
-  "end": 39.56
- },
- {
-  "word": "around.",
-  "start": 39.56,
-  "end": 39.86
+  "word": "sky.",
+  "start": 22.96,
+  "end": 23.22
  },
  {
   "word": "So",
-  "start": 40.49,
-  "end": 40.69
+  "start": 24.09,
+  "end": 24.31
  },
  {
-  "word": "every",
-  "start": 40.69,
-  "end": 41.01
+  "word": "engineers",
+  "start": 24.31,
+  "end": 24.73
+ },
+ {
+  "word": "sank",
+  "start": 24.73,
+  "end": 24.99
+ },
+ {
+  "word": "a",
+  "start": 24.99,
+  "end": 25.13
+ },
+ {
+  "word": "whole",
+  "start": 25.13,
+  "end": 25.29
  },
  {
   "word": "plane",
-  "start": 41.01,
-  "end": 41.23
+  "start": 25.29,
+  "end": 25.55
  },
  {
-  "word": "since",
-  "start": 41.23,
-  "end": 41.49
+  "word": "in",
+  "start": 25.55,
+  "end": 25.71
  },
  {
-  "word": "has",
-  "start": 41.49,
-  "end": 41.79
+  "word": "a",
+  "start": 25.71,
+  "end": 25.81
  },
  {
-  "word": "rounded",
-  "start": 41.79,
-  "end": 42.13
+  "word": "giant",
+  "start": 25.81,
+  "end": 25.99
  },
  {
-  "word": "windows.",
-  "start": 42.13,
-  "end": 42.53
+  "word": "water",
+  "start": 25.99,
+  "end": 26.25
  },
  {
-  "word": "And",
-  "start": 43.51,
-  "end": 43.77
- },
- {
-  "word": "Vik's",
-  "start": 43.77,
-  "end": 44.15
- },
- {
-  "word": "square",
-  "start": 44.15,
-  "end": 44.35
- },
- {
-  "word": "brownie?",
-  "start": 44.35,
-  "end": 44.77
- },
- {
-  "word": "It",
-  "start": 45.35,
-  "end": 45.45
- },
- {
-  "word": "cracks",
-  "start": 45.45,
-  "end": 45.67
- },
- {
-  "word": "right",
-  "start": 45.67,
-  "end": 45.89
- },
- {
-  "word": "at",
-  "start": 45.89,
-  "end": 46.01
- },
- {
-  "word": "the",
-  "start": 46.01,
-  "end": 46.07
- },
- {
-  "word": "corner.",
-  "start": 46.07,
-  "end": 46.23
- },
- {
-  "word": "So",
-  "start": 46.82,
-  "end": 46.98
- },
- {
-  "word": "next",
-  "start": 46.98,
-  "end": 47.1
- },
- {
-  "word": "time",
-  "start": 47.1,
-  "end": 47.32
- },
- {
-  "word": "you",
-  "start": 47.32,
-  "end": 47.42
- },
- {
-  "word": "fly,",
-  "start": 47.42,
-  "end": 47.7
- },
- {
-  "word": "look",
-  "start": 48.18,
-  "end": 48.26
- },
- {
-  "word": "out",
-  "start": 48.26,
-  "end": 48.48
+  "word": "tank",
+  "start": 26.25,
+  "end": 26.51
  },
  {
   "word": "and",
-  "start": 48.48,
-  "end": 48.74
+  "start": 26.51,
+  "end": 26.69
+ },
+ {
+  "word": "pumped",
+  "start": 26.69,
+  "end": 26.85
+ },
+ {
+  "word": "it",
+  "start": 26.85,
+  "end": 26.97
+ },
+ {
+  "word": "up",
+  "start": 26.97,
+  "end": 27.09
+ },
+ {
+  "word": "and",
+  "start": 27.09,
+  "end": 27.23
+ },
+ {
+  "word": "down,",
+  "start": 27.23,
+  "end": 27.47
+ },
+ {
+  "word": "again",
+  "start": 27.82,
+  "end": 28.02
+ },
+ {
+  "word": "and",
+  "start": 28.02,
+  "end": 28.14
+ },
+ {
+  "word": "again,",
+  "start": 28.14,
+  "end": 28.48
+ },
+ {
+  "word": "thousands",
+  "start": 28.8,
+  "end": 29.0
+ },
+ {
+  "word": "of",
+  "start": 29.0,
+  "end": 29.26
+ },
+ {
+  "word": "times.",
+  "start": 29.26,
+  "end": 29.56
+ },
+ {
+  "word": "Until",
+  "start": 30.09,
+  "end": 30.31
+ },
+ {
+  "word": "it",
+  "start": 30.31,
+  "end": 30.45
+ },
+ {
+  "word": "burst,",
+  "start": 30.45,
+  "end": 30.69
+ },
+ {
+  "word": "and",
+  "start": 30.69,
+  "end": 31.27
+ },
+ {
+  "word": "the",
+  "start": 31.27,
+  "end": 31.37
+ },
+ {
+  "word": "crack",
+  "start": 31.37,
+  "end": 31.59
+ },
+ {
+  "word": "started",
+  "start": 31.59,
+  "end": 31.91
+ },
+ {
+  "word": "at",
+  "start": 31.91,
+  "end": 32.09
+ },
+ {
+  "word": "a",
+  "start": 32.09,
+  "end": 32.19
+ },
+ {
+  "word": "sharp",
+  "start": 32.19,
+  "end": 32.37
+ },
+ {
+  "word": "corner.",
+  "start": 32.37,
+  "end": 32.69
+ },
+ {
+  "word": "That's",
+  "start": 33.45,
+  "end": 33.73
+ },
+ {
+  "word": "when",
+  "start": 33.73,
+  "end": 33.85
+ },
+ {
+  "word": "Gus",
+  "start": 33.85,
+  "end": 34.09
+ },
+ {
+  "word": "cuts",
+  "start": 34.09,
+  "end": 34.27
+ },
+ {
+  "word": "a",
+  "start": 34.27,
+  "end": 34.45
+ },
+ {
+  "word": "square",
+  "start": 34.45,
+  "end": 34.65
+ },
+ {
+  "word": "hole",
+  "start": 34.65,
+  "end": 34.93
+ },
+ {
+  "word": "and",
+  "start": 34.93,
+  "end": 35.13
+ },
+ {
+  "word": "a",
+  "start": 35.13,
+  "end": 35.25
+ },
+ {
+  "word": "round",
+  "start": 35.25,
+  "end": 35.43
+ },
+ {
+  "word": "hole",
+  "start": 35.43,
+  "end": 35.63
+ },
+ {
+  "word": "in",
+  "start": 35.63,
+  "end": 35.77
+ },
+ {
+  "word": "paper,",
+  "start": 35.77,
+  "end": 36.19
+ },
+ {
+  "word": "and",
+  "start": 36.19,
+  "end": 36.57
+ },
+ {
+  "word": "pulls.",
+  "start": 36.57,
+  "end": 36.81
+ },
+ {
+  "word": "The",
+  "start": 37.51,
+  "end": 37.65
+ },
+ {
+  "word": "square",
+  "start": 37.65,
+  "end": 37.91
+ },
+ {
+  "word": "tears",
+  "start": 37.91,
+  "end": 38.19
+ },
+ {
+  "word": "at",
+  "start": 38.19,
+  "end": 38.35
+ },
+ {
+  "word": "the",
+  "start": 38.35,
+  "end": 38.45
+ },
+ {
+  "word": "corner.",
+  "start": 38.45,
+  "end": 38.73
+ },
+ {
+  "word": "The",
+  "start": 39.16,
+  "end": 39.24
+ },
+ {
+  "word": "round",
+  "start": 39.24,
+  "end": 39.44
+ },
+ {
+  "word": "one",
+  "start": 39.44,
+  "end": 39.62
+ },
+ {
+  "word": "holds.",
+  "start": 39.62,
+  "end": 39.88
+ },
+ {
+  "word": "You",
+  "start": 40.59,
+  "end": 40.71
+ },
+ {
+  "word": "see,",
+  "start": 40.71,
+  "end": 40.93
+ },
+ {
+  "word": "a",
+  "start": 41.24,
+  "end": 41.3
+ },
+ {
+  "word": "sharp",
+  "start": 41.3,
+  "end": 41.52
+ },
+ {
+  "word": "corner",
+  "start": 41.52,
+  "end": 41.82
+ },
+ {
+  "word": "squeezes",
+  "start": 41.82,
+  "end": 42.26
+ },
+ {
+  "word": "all",
+  "start": 42.26,
+  "end": 42.52
+ },
+ {
+  "word": "the",
+  "start": 42.52,
+  "end": 42.66
+ },
+ {
+  "word": "stress",
+  "start": 42.66,
+  "end": 42.9
+ },
+ {
+  "word": "into",
+  "start": 42.9,
+  "end": 43.16
+ },
+ {
+  "word": "one",
+  "start": 43.16,
+  "end": 43.44
+ },
+ {
+  "word": "tiny",
+  "start": 43.44,
+  "end": 43.66
+ },
+ {
+  "word": "point,",
+  "start": 43.66,
+  "end": 44.0
+ },
+ {
+  "word": "but",
+  "start": 44.43,
+  "end": 44.57
+ },
+ {
+  "word": "a",
+  "start": 44.57,
+  "end": 44.69
+ },
+ {
+  "word": "smooth",
+  "start": 44.69,
+  "end": 44.93
+ },
+ {
+  "word": "curve",
+  "start": 44.93,
+  "end": 45.25
+ },
+ {
+  "word": "spreads",
+  "start": 45.25,
+  "end": 45.51
+ },
+ {
+  "word": "it",
+  "start": 45.51,
+  "end": 45.71
+ },
+ {
+  "word": "gently",
+  "start": 45.71,
+  "end": 45.93
+ },
+ {
+  "word": "all",
+  "start": 45.93,
+  "end": 46.19
+ },
+ {
+  "word": "the",
+  "start": 46.19,
+  "end": 46.27
+ },
+ {
+  "word": "way",
+  "start": 46.27,
+  "end": 46.39
+ },
+ {
+  "word": "around.",
+  "start": 46.39,
+  "end": 46.69
+ },
+ {
+  "word": "So",
+  "start": 47.3,
+  "end": 47.48
+ },
+ {
+  "word": "every",
+  "start": 47.48,
+  "end": 47.8
+ },
+ {
+  "word": "airliner",
+  "start": 47.8,
+  "end": 48.14
+ },
+ {
+  "word": "built",
+  "start": 48.14,
+  "end": 48.44
+ },
+ {
+  "word": "since",
+  "start": 48.44,
+  "end": 48.68
+ },
+ {
+  "word": "then",
+  "start": 48.68,
+  "end": 48.94
+ },
+ {
+  "word": "has",
+  "start": 48.94,
+  "end": 49.1
+ },
+ {
+  "word": "rounded",
+  "start": 49.1,
+  "end": 49.38
+ },
+ {
+  "word": "windows.",
+  "start": 49.38,
+  "end": 49.74
+ },
+ {
+  "word": "And",
+  "start": 50.64,
+  "end": 50.9
+ },
+ {
+  "word": "Vik's",
+  "start": 50.9,
+  "end": 51.28
+ },
+ {
+  "word": "square",
+  "start": 51.28,
+  "end": 51.48
+ },
+ {
+  "word": "brownie?",
+  "start": 51.48,
+  "end": 51.9
+ },
+ {
+  "word": "It",
+  "start": 52.29,
+  "end": 52.39
+ },
+ {
+  "word": "cracks",
+  "start": 52.39,
+  "end": 52.61
+ },
+ {
+  "word": "right",
+  "start": 52.61,
+  "end": 52.83
+ },
+ {
+  "word": "at",
+  "start": 52.83,
+  "end": 52.95
+ },
+ {
+  "word": "the",
+  "start": 52.95,
+  "end": 53.01
+ },
+ {
+  "word": "corner.",
+  "start": 53.01,
+  "end": 53.17
+ },
+ {
+  "word": "So",
+  "start": 53.76,
+  "end": 53.92
+ },
+ {
+  "word": "next",
+  "start": 53.92,
+  "end": 54.04
+ },
+ {
+  "word": "time",
+  "start": 54.04,
+  "end": 54.26
+ },
+ {
+  "word": "you",
+  "start": 54.26,
+  "end": 54.36
+ },
+ {
+  "word": "fly,",
+  "start": 54.36,
+  "end": 54.64
+ },
+ {
+  "word": "look",
+  "start": 55.05,
+  "end": 55.13
+ },
+ {
+  "word": "out",
+  "start": 55.13,
+  "end": 55.35
+ },
+ {
+  "word": "and",
+  "start": 55.35,
+  "end": 55.61
  },
  {
   "word": "ask…",
-  "start": 48.74,
-  "end": 48.96
+  "start": 55.61,
+  "end": 55.83
  }
 ]

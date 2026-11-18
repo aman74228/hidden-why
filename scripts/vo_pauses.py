@@ -30,7 +30,8 @@ def save(x, path):
     subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "1", "-i", "-", str(path)], input=x.astype(np.float32).tobytes(), check=True)
 
 
-norm = lambda w: re.sub(r"[^a-z0-9']", "", w.lower())
+ALIAS = {"50s": "fifties"}  # whisper writes some spoken words as numbers
+norm = lambda w: (lambda n: ALIAS.get(n, n))(re.sub(r"[^a-z0-9']", "", w.lower()))
 
 
 def kind(tok):

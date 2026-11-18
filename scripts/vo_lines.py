@@ -27,7 +27,7 @@ spec = json.loads((ROOT / "audio" / f"{a.slug}.lines.json").read_text())
 lines = spec["lines"]
 work = ROOT / "audio" / "takes" / f"{a.slug}-lines"; work.mkdir(parents=True, exist_ok=True)
 SAME = {"vic": "vik", "vick": "vik", "vics": "viks", "vicks": "viks", "dadda": "dada", "data": "dada", "darda": "dada", "guss": "gus", "gust": "gus", "gas": "gus", "goose": "gus"}
-NUM = {"1750": ["seventeen", "fifty"]}
+NUM = {"1750": ["seventeen", "fifty"], "50s": ["fifties"]}
 
 def words(s):
     out = []
