@@ -4,7 +4,8 @@
 For one rendered sentence: get word timings (faster-whisper), map the script's
 punctuation onto them, and at each inner punctuation mark cut at the word
 boundary (quietest 10 ms near the gap, nearest zero crossing) and insert
-silence: comma / colon / dash / inner full stop / question / ellipsis, values
+silence topped up to the target (the measured natural gap counts; an over-long gap
+is trimmed to it): comma / colon / dash / inner full stop / question / ellipsis, values
 from voice.json (engines.chatterbox.pauses). 10 ms fades at every cut. Leading
 and trailing silence is trimmed to 40 ms. The speech itself is never stretched.
 
@@ -95,6 +96,16 @@ def cut_point(x, t0, t1):
     return (max(0, bi - 240) + zc[np.argmin(np.abs(zc - 240))]) if len(zc) else bi
 
 
+def silent_span(x, c, lo, hi, thr_db=-42):
+    """silent run around sample c (10 ms windows under thr_db), kept inside lo..hi"""
+    win = int(0.01 * SR)
+    quiet = lambda i: 20 * np.log10(np.sqrt((x[i:i + win] ** 2).mean()) + 1e-9) < thr_db
+    a = b = c
+    while a - win >= lo and quiet(a - win): a -= win
+    while b + win <= hi and quiet(b): b += win
+    return a, b
+
+
 def process(wav_in, text, wav_out):
     x = trim(load(wav_in))
     toks = text.split()
@@ -111,14 +122,25 @@ def process(wav_in, text, wav_out):
         j = match.get(i)
         if j is None or j + 1 >= len(rec):
             continue
-        cuts.append((cut_point(x, rec[j][2], rec[j + 1][1]), PAUSES[k], k, t))
+        c = cut_point(x, rec[j][2], rec[j + 1][1])
+        # the voice often leaves its own gap: measure it and top up (or trim) to the target,
+        # never add on top (line 10 of Short #3: 0.32 s natural gap + 0.18 s = 0.5 s comma)
+        lo = int(max(0, rec[j][1]) * SR); hi = int(min(len(x) / SR, rec[j + 1][2]) * SR)
+        a_, b_ = silent_span(x, c, lo, hi)
+        have = (b_ - a_) / SR
+        cuts.append((c, round(PAUSES[k] - have, 3), k, t, round(have, 3), a_, b_))
     out, cur = [], 0
-    for c, sil, _, _ in sorted(cuts):
-        seg = x[cur:c].copy()
+    for c, delta, _, _, have, a_, b_ in sorted(cuts):
+        if delta >= 0:
+            c0, c1 = c, c
+        else:  # too long already: drop the excess silence around the cut
+            ex = int(-delta * SR)
+            c0 = max(a_, c - ex // 2); c1 = min(b_, c0 + ex)
+        seg = x[cur:c0].copy()
         if cur > 0 and len(seg) > fade: seg[:fade] *= np.linspace(0, 1, fade)
         if len(seg) > fade: seg[-fade:] *= np.linspace(1, 0, fade)
-        out += [seg, np.zeros(int(sil * SR), np.float32)]
-        cur = c
+        out += [seg, np.zeros(int(max(0, delta) * SR), np.float32)]
+        cur = c1
     seg = x[cur:].copy()
     if cur > 0 and len(seg) > fade: seg[:fade] *= np.linspace(0, 1, fade)
     out.append(seg)
@@ -127,11 +149,11 @@ def process(wav_in, text, wav_out):
     # word times in the output: shifted by every pause inserted before them
     cs = sorted(cuts)
     def shift(t):
-        return t + sum(sil for c, sil, _, _ in cs if c / SR <= t)
+        return t + sum(d for c, d, *_ in cs if c / SR <= t)
     timed = [(w, round(shift(a), 3), round(shift(b), 3)) for w, a, b in rec]
     missed = [t for i, t in enumerate(toks[:-1]) if kind(t) and match.get(i) is None]
     return {"seconds": round(len(y) / SR, 2), "speech_seconds": round(len(x) / SR, 2),
-            "pauses": [(t, k, s) for _, s, k, t in sorted(cuts)], "unmatched_punct": missed,
+            "pauses": [(t, k, PAUSES[k], {"natural": h, "added": d}) for _, d, k, t, h, _, _ in sorted(cuts)], "unmatched_punct": missed,
             "heard": " ".join(w[0] for w in rec), "words": timed}
 
 
