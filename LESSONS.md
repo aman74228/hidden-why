@@ -5,7 +5,7 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 
 ## 1. Hook (0–3 s)
 - Frame 1 is already the story: a character *doing* the hook action (Vik tapping the
-  coin on the pillar in the rain, Chotu looking up). No establishing shot, no logo, no fade-in.
+  coin on the pillar in the rain, Milo looking up). No establishing shot, no logo, no fade-in.
 - The action must read as motion: a visible wind-up and strike (two taps), a tiny spark
   and a matching SFX on each hit, and a slow push-in. Every character fully in frame.
 - No frozen poses anywhere: every character breathes, blinks (1.5–4 s gaps, 4 frames)
@@ -26,7 +26,7 @@ with CLAUDE.md before starting any Short; check each section before showing stil
   Never a blob on a stick (lollipop / ice-cream cone).
 - Characters are billboards drawn on top: they cannot stand *behind* a prop. For a
   demo, put the props in the foreground, fully visible, and the characters beside them
-  pointing (Dada left, Chotu right), never in front of them.
+  pointing (Gus left, Milo right), never in front of them.
 
 ## 3. Object inserts
 - 3+ per Short; at most ~1.5 s each; each one must be identifiable in a single frame.

@@ -1,6 +1,6 @@
 ---
 name: cartoon-3d-short
-description: Look-and-pipeline playbook for Hidden Why Shorts — flat 2D cast (Chotu, Vik, Dada) inside lit, textured 3D toon sets, gliding cameras, bloom, light beams, particles and grain, rendered with three.js inside Remotion. Use when building or rebuilding any Hidden Why Short's visuals, or when asked to "use the cartoon short skill". Adapted from mromidev/claude-animated-shorts (MIT); CLAUDE.md rules always win.
+description: Look-and-pipeline playbook for Hidden Why Shorts — flat 2D cast (Milo, Vik, Gus) inside lit, textured 3D toon sets, gliding cameras, bloom, light beams, particles and grain, rendered with three.js inside Remotion. Use when building or rebuilding any Hidden Why Short's visuals, or when asked to "use the cartoon short skill". Adapted from mromidev/claude-animated-shorts (MIT); CLAUDE.md rules always win.
 ---
 
 # Cartoon 3D Short — Hidden Why edition

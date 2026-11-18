@@ -9,8 +9,8 @@ import {V2} from './shapes';
 
 const D = Math.PI / 180;
 const OUTLINE_PX = 4;
-// Inner rim-glow strength per character (× 40% max opacity; Dada strongest)
-const RIM: Record<CastName, number> = {chotu: 0.65, vik: 0.65, dada: 1};
+// Inner rim-glow strength per character (× 40% max opacity; Gus strongest)
+const RIM: Record<CastName, number> = {milo: 0.65, vik: 0.65, gus: 1};
 
 export type CharacterProps = {
   who: CastName;
@@ -67,7 +67,7 @@ export const Character: React.FC<CharacterProps> = ({
   const spec = CAST[who];
   const fit: Outfit = {...spec.outfit, ...outfit};
   const t = Math.max(0, scene.t - delay);
-  const seed = who === 'chotu' ? 0 : who === 'vik' ? 1 : 2;
+  const seed = who === 'milo' ? 0 : who === 'vik' ? 1 : 2;
   // pose timeline
   let curPose = pose;
   let poseT = t;
@@ -82,7 +82,7 @@ export const Character: React.FC<CharacterProps> = ({
   if (props.includes('umbrella') || props.includes('leaf')) p.armB = [22, -202];
   if (props.includes('stick')) p.armB = [14, -10];
   // visible breathing: chest swells, shoulders rise a touch
-  const breath = Math.sin((t + seed * 0.9) * (who === 'dada' ? 1.6 : 2.1)) * 0.5 + 0.5;
+  const breath = Math.sin((t + seed * 0.9) * (who === 'gus' ? 1.6 : 2.1)) * 0.5 + 0.5;
   // entrance walk
   let walk = 0;
   if (enter) {
@@ -186,7 +186,7 @@ const Body: React.FC<{spec: CastSpec; fit: Outfit; props: CharProp[]}> = ({spec,
       {/* neck */}
       <Part s={{kind: 'rrect', w: spec.headR * 0.45, h: 0.16, r: 0.04}} color={spec.skin} z={0.08} pos={[0, spec.neckY]} sil />
       <Part s={{kind: 'bean', w: b.w, h: b.h, flare: b.flare}} color={fit.body} z={0.1} pos={[0, b.y]} sil />
-      {spec.name === 'chotu' && (
+      {spec.name === 'milo' && (
         <>
           {/* kurta placket + buttons + hem trim */}
           <Part s={{kind: 'rrect', w: 0.06, h: 0.22, r: 0.02}} color={fit.trim} z={0.15} pos={[0, top - 0.13]} />
@@ -207,7 +207,7 @@ const Body: React.FC<{spec: CastSpec; fit: Outfit; props: CharProp[]}> = ({spec,
           ))}
         </>
       )}
-      {spec.name === 'dada' && (
+      {spec.name === 'gus' && (
         <>
           {/* cream shawl draped over shoulders, saffron border */}
           <Part
@@ -502,7 +502,7 @@ const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number}> = ({spec, 
         </>
       );
     }
-    if (spec.name === 'dada') {
+    if (spec.name === 'gus') {
       return [-1, 1].map((s) => (
         <Part key={s} s={{kind: 'ellipse', rx: R * 0.17, ry: R * 0.07}} color={spec.hair} z={0.09} pos={[s * spec.eyeDX, spec.eyeY + R * 0.3 + brow * 0.02]} rot={s * 0.15} />
       ));
@@ -517,7 +517,7 @@ const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number}> = ({spec, 
       {one(-1)}
       {one(1)}
       {brows}
-      {spec.name === 'chotu' &&
+      {spec.name === 'milo' &&
         [-1, 1].map((s) => (
           <Part key={s} s={{kind: 'ellipse', rx: R * 0.13, ry: R * 0.08}} color="#E9806A" z={0.03} pos={[s * R * 0.55, -R * 0.2]} outline={false} opacity={0.7} />
         ))}
@@ -560,7 +560,7 @@ const Mouth: React.FC<{spec: CastSpec; style: MouthStyle; open: number}> = ({spe
 /* ---- character-specific head decor ---- */
 const HeadDecor: React.FC<{spec: CastSpec; p: PoseState; fy: number}> = ({spec, fy}) => {
   const R = spec.headR;
-  if (spec.name === 'chotu') {
+  if (spec.name === 'milo') {
     return (
       <>
         {/* hair cap */}
@@ -607,7 +607,7 @@ const HeadDecor: React.FC<{spec: CastSpec; p: PoseState; fy: number}> = ({spec, 
       </>
     );
   }
-  // dada: bald crown, white side tufts, beard, moustache, round spectacles
+  // gus: bald crown, white side tufts, beard, moustache, round spectacles
   return (
     <>
       {[-1, 1].map((s) => (

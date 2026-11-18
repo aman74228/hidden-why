@@ -1,6 +1,6 @@
 # Brief #3 — Why Plane Windows Can't Be Square
 Slug: `03-plane-windows` · Strand: Everyday object design · Target ≤ 60 s · 166 spoken words (Chatterbox reads ~200+ wpm; measured estimate ~58 s incl. pauses)
-Read CLAUDE.md + LESSONS.md first. Cast names are now **Milo** (curious kid, was Chotu), **Gus** (old craftsman, was Dada), **Vik** (unchanged).
+Read CLAUDE.md + LESSONS.md first. Cast names are now **Milo** (curious kid, was Milo), **Gus** (old craftsman, was Gus), **Vik** (unchanged).
 
 ## Tone note
 Two real airliners broke up in 1954 and people died. Treat that beat with respect: no people shown in danger, no falling bodies or wreckage gore. Show it as a distant silver plane silhouette coming apart in clouds, music dips, one quiet beat. Vik's bet is about desserts, never about the crash.

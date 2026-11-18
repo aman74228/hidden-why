@@ -3,7 +3,7 @@
 One reusable Remotion + React Three Fiber studio (1080×1920, 30 fps). Rules: see `CLAUDE.md`.
 
 ```
-src/characters/   Chotu, Vik, Dada rigs (flat 2D parts in 3D, 4px outlines) + poses
+src/characters/   Milo, Vik, Gus rigs (flat 2D parts in 3D, 4px outlines) + poses
 src/sets/         toon sets (courtyard, desert, workshop, plain) + sky/ground/light presets
 src/camera/       dolly / orbit / pushIn / static-drift helpers
 src/overlays/     Captions (1–2 words @ 60%), TitleCard (label + big word)

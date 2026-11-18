@@ -1,7 +1,7 @@
 // Cast specs. Faces/colours are fixed; outfits can be reskinned per story via
 // the `outfit` prop on <Character/> (body, sleeve, legs, trim).
 
-export type CastName = 'chotu' | 'vik' | 'dada';
+export type CastName = 'milo' | 'vik' | 'gus';
 
 export type Outfit = {body: string; sleeve: string; legs: string; trim: string; shoes: string};
 
@@ -36,8 +36,8 @@ export type CastSpec = {
 };
 
 export const CAST: Record<CastName, CastSpec> = {
-  chotu: {
-    name: 'chotu',
+  milo: {
+    name: 'milo',
     height: 1.42,
     skin: '#C98A5B',
     hair: '#3B2320',
@@ -94,8 +94,8 @@ export const CAST: Record<CastName, CastSpec> = {
     mouth: 'smirk',
     outfit: {body: '#1F9E95', sleeve: '#1F9E95', legs: '#2E3A64', trim: '#0F6B66', shoes: '#3A2A3A'},
   },
-  dada: {
-    name: 'dada',
+  gus: {
+    name: 'gus',
     height: 1.62,
     skin: '#B07650',
     hair: '#F3EBDD', // beard, brows, tufts — off-white

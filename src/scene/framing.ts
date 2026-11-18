@@ -54,7 +54,7 @@ export const castBoxes = (pose: CamPose, fov: number, cast: CharacterProps[]): C
     const hr = s.headR * 1.25;
     return {
       who: c.who,
-      face: boxOf(rect(hy - hr, hy + hr + (s.name === 'chotu' ? 0.12 : 0.05), hr * 2)),
+      face: boxOf(rect(hy - hr, hy + hr + (s.name === 'milo' ? 0.12 : 0.05), hr * 2)),
       body: boxOf(rect(s.hipY, s.neckY, s.body.w)),
       legs: boxOf(rect(0, s.hipY, s.body.w)),
     };

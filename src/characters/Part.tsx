@@ -6,7 +6,7 @@ import {ShapeSpec, V2, growPoints, shapePoints, toGeometry} from './shapes';
 // Per-character drawing context:
 //  ow       outline width in world units (≈4px on screen)
 //  tint     light tint from the set's lighting preset
-//  rim      rim-light strength (0..1, strongest on Dada)
+//  rim      rim-light strength (0..1, strongest on Gus)
 //  rimDir   2D direction towards the key light, in the character's (mirrored) space
 //  rimColor warm rim colour from the lighting preset
 export type CharDraw = {ow: number; tint: string; rim: number; rimDir: V2; rimColor: string};

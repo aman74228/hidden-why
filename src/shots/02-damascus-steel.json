@@ -172,7 +172,7 @@
      ]
     },
     {
-     "who": "chotu",
+     "who": "milo",
      "pose": "idle",
      "pos": [
       1.75,
@@ -440,7 +440,7 @@
    },
    "cast": [
     {
-     "who": "chotu",
+     "who": "milo",
      "pose": "present",
      "pos": [
       0.15,
@@ -481,7 +481,7 @@
    "duration": 4.2
   },
   {
-   "id": "dada-dirt",
+   "id": "gus-dirt",
    "beat": 4,
    "stillAt": 2.78,
    "set": "lab",
@@ -541,7 +541,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "outfit": {
       "body": "#5A3E30",
       "trim": "#B88A5A",
@@ -561,7 +561,7 @@
      "appearAt": 0.45
     },
     {
-     "who": "chotu",
+     "who": "milo",
      "pose": "look-up",
      "pos": [
       -4.6,
@@ -651,7 +651,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "outfit": {
       "body": "#5A3E30",
       "trim": "#B88A5A",
@@ -726,7 +726,7 @@
    },
    "cast": [
     {
-     "who": "chotu",
+     "who": "milo",
      "pose": "look-up",
      "pos": [
       -1.1,
@@ -809,7 +809,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "outfit": {
       "body": "#5A3E30",
       "trim": "#B88A5A",
@@ -1008,7 +1008,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "outfit": {
       "body": "#5A3E30",
       "trim": "#B88A5A",
@@ -1078,7 +1078,7 @@
      "facing": -1
     },
     {
-     "who": "chotu",
+     "who": "milo",
      "pose": "gasp",
      "pos": [
       -0.4,
