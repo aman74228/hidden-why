@@ -1,0 +1,87 @@
+{
+ "voice": {
+  "lufs": -14.0,
+  "true_peak_dbtp": -1.4
+ },
+ "music_dips": [
+  {
+   "from_s": 20.3,
+   "to_s": 23.99,
+   "asked_db": 3.0,
+   "applied_db": 0.8,
+   "lufs_before": -24.9
+  }
+ ],
+ "music": {
+  "file": "public/sfx/music.mp3",
+  "lufs": -25.2,
+  "under_speech_lufs": -25.6,
+  "between_lines_lufs": -23.1,
+  "true_peak_dbtp": -13.9
+ },
+ "sfx": {
+  "stem_lufs": -25.3,
+  "stem_max_momentary_lufs": -20.7,
+  "true_peak_dbtp": -7.7,
+  "per_cue_max_momentary_lufs": {
+   "cabin-hum": -21.1,
+   "jet-rumble": -21.0,
+   "airport-chime": -26.1,
+   "plate-clink": -21.6,
+   "cabin-creak": -24.7,
+   "thunder-soft": -21.2,
+   "water-splash": -21.2,
+   "press-thump": -23.2,
+   "counter-tick": -26.7,
+   "bubbles": -22.2,
+   "metal-crack": -26.0,
+   "paper-rustle": -25.4,
+   "paper-rip": -22.2,
+   "paper-stretch": -22.3,
+   "shimmer": -23.1,
+   "brownie-crack": -32.3,
+   "ding": -21.0
+  },
+  "files": {
+   "cabin-hum": "cabin-hum.mp3",
+   "jet-rumble": "jet-rumble.mp3",
+   "airport-chime": "airport-chime.mp3",
+   "plate-clink": "plate-clink.mp3",
+   "cabin-creak": "cabin-creak.mp3",
+   "thunder-soft": "thunder-soft.mp3",
+   "water-splash": "water-splash.mp3",
+   "press-thump": "press-thump.mp3",
+   "counter-tick": "counter-tick.mp3",
+   "bubbles": "bubbles.mp3",
+   "metal-crack": "metal-crack.mp3",
+   "paper-rustle": "paper-rustle.mp3",
+   "paper-rip": "paper-rip.mp3",
+   "paper-stretch": "paper-stretch.mp3",
+   "shimmer": "shimmer.mp3",
+   "brownie-crack": "brownie-crack.mp3",
+   "ding": "ding.mp3"
+  },
+  "missing_skipped": []
+ },
+ "rain": {
+  "lufs_while_playing": -70.0,
+  "fades_at": null
+ },
+ "checks_offending_seconds": [],
+ "checks": {
+  "sfx_windows_within_6dB_of_voice": 0,
+  "music_min_short_term_lufs": -26.1,
+  "music_floor_ok": false
+ },
+ "mix": {
+  "lufs": -14.0,
+  "true_peak_dbtp": -0.9,
+  "seconds": 56.5
+ },
+ "peak_check": {
+  "voice_peak_dbfs": -1.5,
+  "music_peak_dbfs": -15.0,
+  "sfx_peak_dbfs": -8.7,
+  "rain_peak_dbfs": -180.0
+ }
+}
