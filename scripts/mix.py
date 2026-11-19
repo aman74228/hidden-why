@@ -148,7 +148,10 @@ def main():
         for d0, d1, ddb in L.get("musicDip", []):
             a0, a1 = int(d0 * SR), min(N, int(d1 * SR))
             Ld = meter(music[a0:a1])[0]
-            allowed = round(min(ddb, max(0.0, Ld - (MUSIC_FLOOR + 0.3))), 1)
+            # the floor is checked on 3 s windows: use the quietest window touching the dip
+            w3 = [meter(music[k:k + 3 * SR])[0] for k in range(max(0, a0 - 3 * SR), min(N - 3 * SR, a1), SR // 2)]
+            Lmin = min(w3) if w3 else Ld
+            allowed = round(min(ddb, max(0.0, Lmin - (MUSIC_FLOOR + 0.3))), 1)
             ramp = int(0.25 * SR)
             gd = np.ones(N, np.float32)
             gd[a0:a1] = 10 ** (-allowed / 20)
