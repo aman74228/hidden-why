@@ -8,7 +8,7 @@
    "from_s": 20.3,
    "to_s": 23.99,
    "asked_db": 3.0,
-   "applied_db": 0.8,
+   "applied_db": 0.3,
    "lufs_before": -24.9
   }
  ],
@@ -16,7 +16,7 @@
   "file": "public/sfx/music.mp3",
   "lufs": -25.2,
   "under_speech_lufs": -25.6,
-  "between_lines_lufs": -23.1,
+  "between_lines_lufs": -23.0,
   "true_peak_dbtp": -13.9
  },
  "sfx": {
@@ -70,8 +70,8 @@
  "checks_offending_seconds": [],
  "checks": {
   "sfx_windows_within_6dB_of_voice": 0,
-  "music_min_short_term_lufs": -26.1,
-  "music_floor_ok": false
+  "music_min_short_term_lufs": -25.7,
+  "music_floor_ok": true
  },
  "mix": {
   "lufs": -14.0,
