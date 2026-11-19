@@ -6,6 +6,7 @@ import {CAST, CastName, CastSpec, Outfit} from './cast';
 import {CharCtx, G, Ink, Part, arcPts} from './Part';
 import {EyeStyle, MouthStyle, PoseName, PoseState, poseAt} from './poses';
 import {V2} from './shapes';
+import {breath} from '../sets/breath';
 
 const D = Math.PI / 180;
 const OUTLINE_PX = 4;
@@ -29,7 +30,7 @@ export type CharacterProps = {
 
 // umbrella/leaf/stick go in the off hand; satchel/apron/headwrap are worn
 export type CharProp = 'umbrella' | 'leaf' | 'stick' | 'satchel' | 'apron' | 'headwrap' | 'goggles';
-export type Holdable = 'hammer' | 'coin' | 'sabre' | 'trophy' | 'parchment';
+export type Holdable = 'hammer' | 'coin' | 'sabre' | 'trophy' | 'parchment' | 'balloon' | 'brownie';
 
 // Natural blinks: random 1.5–4 s gaps, each 4 frames, deterministic per character.
 const blinkTimes = (seed: number) => {
@@ -246,6 +247,20 @@ const seg = (a: P2, b: P2) => {
   return {len: Math.hypot(v[0], v[1]), rot: Math.atan2(v[0], -v[1])};
 };
 
+// Milo's balloon (Short #3): string out of the fist, balloon swells with the cabin (breath())
+const Balloon: React.FC<{at: number}> = ({at}) => {
+  const {t} = useScene();
+  const k = breath(t);
+  const r = 0.12 * (0.8 + 0.45 * k);
+  return (
+    <>
+      <Part s={{kind: 'rrect', w: 0.008, h: 0.32, r: 0.004}} color="#F6F0E0" z={0.001} pos={[0, at - 0.16]} outline={false} />
+      <Part s={{kind: 'circle', r}} color="#E5533D" z={0.004} pos={[0, at - 0.32 - r]} />
+      <Part s={{kind: 'circle', r: r * 0.28}} color="#FF9A8A" z={0.005} pos={[-r * 0.35, at - 0.32 - r * 1.35]} outline={false} />
+    </>
+  );
+};
+
 const Tool: React.FC<{kind: Holdable; spec: CastSpec; at: number}> = ({kind, spec, at}) => {
   const r = spec.armR;
   if (kind === 'sabre') {
@@ -298,6 +313,14 @@ const Tool: React.FC<{kind: Holdable; spec: CastSpec; at: number}> = ({kind, spe
           <Ink key={i} pts={[[-0.05, 0], [0.11 - (i % 2) * 0.04, 0], [0.11 - (i % 2) * 0.04, 0.01], [-0.05, 0.01]]} z={0.003} pos={[0.02, at - 0.05 - i * 0.045]} color="#7A5A3A" />
         ))}
         <Part s={{kind: 'circle', r: 0.025}} color="#C0583A" z={0.003} pos={[0.1, at - 0.23]} outline={false} />
+      </>
+    );
+  if (kind === 'balloon') return <Balloon at={at} />;
+  if (kind === 'brownie')
+    return (
+      <>
+        <Part s={{kind: 'rrect', w: 0.13, h: 0.11, r: 0.012}} color="#5A3424" z={0.003} pos={[0.02, at - 0.05]} />
+        <Part s={{kind: 'rrect', w: 0.12, h: 0.025, r: 0.008}} color="#7A4A32" z={0.004} pos={[0.02, at - 0.005]} outline={false} />
       </>
     );
   if (kind === 'coin')

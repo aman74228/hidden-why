@@ -4,7 +4,7 @@
 // character faces (the pointing arm).
 
 // Core poses (CLAUDE.md) + story extras.
-export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown'] as const;
+export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad'] as const;
 export type PoseName = (typeof POSES)[number];
 
 export type EyeStyle = 'dot' | 'wide' | 'smug' | 'calm' | 'happy' | 'closed';
@@ -238,6 +238,9 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
       return {...base, armA: [30, -70], armB: [24, -60], bodyRot: -9 + s(ph * 1.2) * 1.5, headRot: -10 + s(ph * 1.4) * 2, eyes: 'smug', mouth: 'smirk', brow: 0.6};
     case 'deadpan':
       return {...base, bodyRot: s(ph * 0.9) * 0.6, headRot: s(ph * 0.7) * 0.8, eyes: 'dot', mouth: 'flat', brow: -0.2};
+    case 'sad':
+      // face falls: head drops, eyes down, small open mouth, arms hang
+      return {...base, armA: [6, -4], armB: [6, -4], bodyDY: -0.01, headRot: -3, headDY: -0.03, faceDY: -0.05, eyes: 'calm', mouth: 'flat', mouthOpen: 0, brow: 0.6};
     case 'frown':
       return {...base, armA: [12, -88], armB: [18, -100], armsCrossed: true, headRot: -4 + s(ph * 1.3) * 1.5, eyes: 'smug', mouth: 'flat', brow: -0.5};
     case 'lift':

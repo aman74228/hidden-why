@@ -27,6 +27,10 @@ export const SKIES: Record<string, SkyPreset> = {
   storm: {top: '#2C3266', horizon: '#7E86A8', bottom: '#4A4E70'},
   forge: {top: '#241C30', horizon: '#3E2A2E', bottom: '#241C30'},
   macro: {top: '#1E2048', horizon: '#3A3466', bottom: '#1E2048'},
+  highsky: {top: '#2E5FB8', horizon: '#CFE6F5', bottom: '#F4EEE0', sun: '#FFF6D8', sunDir: [0.5, 0.32, -1]},
+  cabin: {top: '#6A5A7A', horizon: '#FFE2B0', bottom: '#6A5A7A'},
+  hangar: {top: '#3A4466', horizon: '#5A6688', bottom: '#3A4466'},
+  underwater: {top: '#2A8AAA', horizon: '#1E6A8A', bottom: '#123A5A'},
 };
 
 export const GROUNDS: Record<string, GroundPreset> = {
@@ -40,6 +44,43 @@ export const GROUNDS: Record<string, GroundPreset> = {
 };
 
 export const LIGHTS: Record<string, LightPreset> = {
+  // ---- 03-plane-windows ----
+  lounge: {
+    key: '#FFC27A', keyIntensity: 2.6, keyDir: [-4, 6, 5],
+    sky: '#FFE0B8', shade: '#22306A', hemi: 0.85,
+    ambient: '#3A3C8A', ambientIntensity: 0.7,
+    fog: '#E8B88E', fogNear: 14, fogFar: 90, charTint: '#FFF0DC', rim: '#FFC877',
+  },
+  cabin: {
+    key: '#FFE0B0', keyIntensity: 2.2, keyDir: [3, 6, 6],
+    sky: '#FFF0D8', shade: '#2A3470', hemi: 0.95,
+    ambient: '#3A3C8A', ambientIntensity: 0.6,
+    fog: '#E8D0B0', fogNear: 9, fogFar: 30, charTint: '#FFF6E8', rim: '#FFD58A',
+  },
+  highsky: {
+    key: '#FFF2D6', keyIntensity: 2.8, keyDir: [5, 7, 3],
+    sky: '#DDF0FF', shade: '#3A4E8A', hemi: 1.1,
+    ambient: '#4A5CA0', ambientIntensity: 0.5,
+    fog: '#CFE6F5', fogNear: 40, fogFar: 170, charTint: '#FFFFFF', rim: '#FFEFC2',
+  },
+  hangar: {
+    key: '#C8D8F0', keyIntensity: 1.7, keyDir: [-3, 9, 4],
+    sky: '#B8C8E8', shade: '#1E2A5A', hemi: 0.9,
+    ambient: '#344486', ambientIntensity: 0.8,
+    fog: '#4A5878', fogNear: 9, fogFar: 40, charTint: '#E8EEFF', rim: '#FFC877',
+  },
+  underwater: {
+    key: '#BFF0FF', keyIntensity: 1.8, keyDir: [1, 8, 3],
+    sky: '#8FE0F0', shade: '#123A6A', hemi: 1.0,
+    ambient: '#1E5080', ambientIntensity: 0.9,
+    fog: '#1E5A7A', fogNear: 2.5, fogFar: 11, charTint: '#DFF6FF', rim: '#BFF0FF',
+  },
+  runway: {
+    key: '#FFC86E', keyIntensity: 2.6, keyDir: [6, 5, 5],
+    sky: '#FFE4BC', shade: '#1E3A6E', hemi: 0.9,
+    ambient: '#3346A0', ambientIntensity: 0.6,
+    fog: '#F4C79C', fogNear: 20, fogFar: 110, charTint: '#FFF3DE', rim: '#FFD58A',
+  },
   storm: {
     key: '#B9C4E8', keyIntensity: 1.1, keyDir: [-3, 9, 3],
     sky: '#8E98C4', shade: '#1E2A5A', hemi: 1.0,

@@ -143,6 +143,20 @@ def main():
             music = music * np.interp(np.arange(N), pos, g)[:, None].astype(np.float32)
             music = np.clip(ff(music, f"alimiter=limit={mlim:.4f}:level=false:attack=1:release=80")[:N], -mlim, mlim)
             music = fit(music)
+        # brief-requested dips (shot list "musicDip": [[start_s, end_s, dB], ...]), never below the floor
+        dips = []
+        for d0, d1, ddb in L.get("musicDip", []):
+            a0, a1 = int(d0 * SR), min(N, int(d1 * SR))
+            Ld = meter(music[a0:a1])[0]
+            allowed = round(min(ddb, max(0.0, Ld - (MUSIC_FLOOR + 0.3))), 1)
+            ramp = int(0.25 * SR)
+            gd = np.ones(N, np.float32)
+            gd[a0:a1] = 10 ** (-allowed / 20)
+            gd = np.convolve(gd, np.ones(ramp) / ramp, mode="same").astype(np.float32)
+            music = music * gd[:, None]
+            dips.append({"from_s": d0, "to_s": d1, "asked_db": ddb, "applied_db": allowed, "lufs_before": round(Ld, 1)})
+        if dips:
+            report["music_dips"] = dips
         fade = int(0.3 * SR)
         music[-fade:] *= np.linspace(1, 0, fade)[:, None]
         mI, mP, _ = meter(music)
