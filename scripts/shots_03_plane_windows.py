@@ -127,7 +127,7 @@ HOOK = frame([[0.35, WIN_Y + 0.32, WALL_Z], [0.35, WIN_Y - 0.32, WALL_Z]] + body
 # lounge cast
 BET_VIK = c(VIK, pose="slam", pos=[1.65, 0.45], facing=-1, poses=[{"at": 0.9, "pose": "proud"}])
 BET_MILO = c(MILO, pose="idle", pos=[0.1, 0.95], facing=1, poses=[{"at": 0.45, "pose": "gasp"}])
-GLASS_MILO = c(MILO, pos=[-3.3, -3.3], facing=1, pose="look-up")
+GLASS_MILO = c(MILO, pos=[-2.9, -3.75], facing=1, pose="look-up")
 GLASS_VIK = c(VIK, pos=[-0.35, -3.4], facing=-1, pose="cross-arms")
 # 50s cabin cast
 C50_MILO = c(MILO, pos=[-0.15, 0.1], facing=-1, pose="look-up")
