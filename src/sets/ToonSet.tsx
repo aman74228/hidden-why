@@ -9,7 +9,7 @@ import {BARS_POS, CourtyardHD, ForgeHD, StreetHD} from './world';
 import {ANVIL} from './world';
 import {BandedCake, BladeLook, Grit, Hand, HammerHead, HillFx, HillsideHD, LabFx, LabHD, MuseumHD, OrePot, Sabre, WaterDrop} from './damascus';
 import {Ball, Box, Cone, Cyl, TileFloor, Toon, mulberry} from './toon';
-import {CabinFx, CabinHD, HangarFx, HangarHD, HeroBrownie, LoungeFx, LoungeHD, Paper, PaperFx, RunwayFx, RunwayHD, SkyFx, SkyHD, TankMacroFx, TankMacroHD} from './planes';
+import {CabinFx, CabinHD, HangarFx, HangarHD, HeroBrownie, LoungeFx, LoungeHD, Paper, PaperFx, PhotoFx, PhotoSheet, RunwayFx, RunwayHD, SkyFx, SkyHD, TankMacroFx, TankMacroHD} from './planes';
 
 export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain' | 'forge' | 'street' | 'void' | 'lab' | 'museum' | 'hillside' | 'lounge' | 'cabin' | 'sky' | 'hangar' | 'tankmacro' | 'runway';
 
@@ -71,6 +71,7 @@ export type FxSpec = {
   tankMacro?: TankMacroFx;
   runway?: RunwayFx;
   paper?: PaperFx;
+  photo?: PhotoFx;
   brownie?: {pos: [number, number, number]; rot?: [number, number, number]; s?: number; crackAt?: number; snapAt?: number};
 };
 
@@ -84,7 +85,7 @@ export const SET_DEFAULTS: Record<SetName, {sky: string; ground: string; light: 
   lab: {sky: 'interior', ground: 'stone', light: 'lab'},
   museum: {sky: 'interior', ground: 'wood', light: 'museum'},
   hillside: {sky: 'golden', ground: 'sand', light: 'golden'},
-  lounge: {sky: 'golden', ground: 'stone', light: 'lounge'},
+  lounge: {sky: 'lounge', ground: 'stone', light: 'lounge'},
   cabin: {sky: 'cabin', ground: 'wood', light: 'cabin'},
   sky: {sky: 'highsky', ground: 'stone', light: 'highsky'},
   hangar: {sky: 'hangar', ground: 'stone', light: 'hangar'},
@@ -169,6 +170,7 @@ export const ToonSet: React.FC<
       {spec.set === 'tankmacro' && <TankMacroHD fx={fx.tankMacro ?? {}} />}
       {spec.set === 'runway' && <RunwayHD fx={fx.runway ?? {}} p={p} />}
       {fx.paper && <Paper fx={fx.paper} />}
+      {fx.photo && <PhotoSheet fx={fx.photo} />}
       {fx.brownie && <HeroBrownie pos={fx.brownie.pos} rot={fx.brownie.rot} s={fx.brownie.s} crackAt={fx.brownie.crackAt} snapAt={fx.brownie.snapAt} />}
       {fx.cake && <BandedCake pos={[ANVIL[0], 0.56, ANVIL[2]]} strikes={fx.cake.strikes} glow={fx.cake.glow ? fx.cake.glow[0] + (fx.cake.glow[1] - fx.cake.glow[0]) * p : 1} s={fx.cake.s} />}
       {fx.hammerHead && <HammerHead pos={[ANVIL[0], 0.6, ANVIL[2]]} strikes={fx.hammerHead.strikes} />}

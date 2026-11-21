@@ -99,3 +99,17 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 - Scripts flow with 'but/so' links, never fragment lists. Shots cut on whole sentences. Emotion comes from per-line exaggeration (Chatterbox reads no tags).
 - Chatterbox ignores punctuation; always run vo_pauses.py (comma 0.18 s, colon/dash 0.30, inner full stop 0.35, question 0.40, ellipsis 0.55; values in voice.json).
 - Say numbers the way they should be heard ("seventeen fifty" in the spoken line; captions keep "1750").
+
+## 9. Short #3 review (03-plane-windows)
+- The key visual of a Short gets the frame: the 1950s jet big, little glare, its windows countable.
+- Under water: no glowing metal. Matte fuselage, darker water, light from the work lamps only.
+- Macros need real surface detail: riveted aluminium skin, panel seams, a doubler and structure behind
+  a cut-out. Start a crack where it really starts (a rivet hole by the corner). No flat backgrounds.
+- No diagram overlays: show the physics in-world (photoelastic fringes between polarising films).
+- Characters are drawn on top: in demo shots check that no character's screen box crosses the prop
+  (`sheet_clear` in scripts/shots_03_plane_windows.py).
+- Food close-ups: glossy crackled top, crumbly edges, a piece breaking off; the payoff ding lands on the
+  loser's face, not on the object.
+- Hook frame: no blown-out ceiling; the hook object (the window) clearly visible beside the face.
+- Serious beats may dip the music to ~18 dB under the voice (`musicDip` with `floorExempt`).
+

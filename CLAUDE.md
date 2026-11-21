@@ -37,6 +37,7 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 ### Mix (strict) — `scripts/mix.py <slug> <out.wav>` builds it and writes a .levels.json LUFS report
 - Voice -14 LUFS.
 - Music the whole time, 8–10 dB under the voice, ducked a further 3 dB under speech, never below voice -12 dB; music peaks <= -15 dBFS, 0.3 s fade-in.
+- Exception: serious beats may dip music below the 12 dB floor (e.g. ~18 dB under the voice for one line), declared in the shot list as `musicDip` with `floorExempt`.
 - Every SFX at least 6 dB under the voice.
 - Rain at -32 LUFS, fading out at the first cut.
 - Nothing peaks above the voice.

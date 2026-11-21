@@ -223,7 +223,8 @@ const wingGeo = (root: number, tipLE: number, tipC: number, span: number, th: nu
   return new THREE.ExtrudeGeometry(s, {depth: th, bevelEnabled: false});
 };
 
-const silver = <meshStandardMaterial color="#D2D7E2" metalness={0.72} roughness={0.26} envMapIntensity={1.15} />;
+const silver = <meshStandardMaterial color="#C9CED8" metalness={0.6} roughness={0.34} envMapIntensity={0.75} />;
+const dullSilver = <meshStandardMaterial color="#8E96A6" metalness={0.35} roughness={0.6} envMapIntensity={0.3} />;
 
 export type JetKind = 'comet' | 'modern';
 export const Jet: React.FC<{
@@ -235,17 +236,19 @@ export const Jet: React.FC<{
   gear?: boolean;
   breakup?: number; // 0..1: the fuselage parts and drifts apart (distant, no people)
   hatch?: boolean; // square escape-hatch outline on the roof (tank fuselage)
+  dull?: boolean; // matte grey (under water: no glowing metal)
   prop?: string;
-}> = ({kind, pos = [0, 0, 0], rot = [0, 0, 0], s = 1, wings = true, gear = false, breakup = 0, hatch = false, prop}) => {
+}> = ({kind, pos = [0, 0, 0], rot = [0, 0, 0], s = 1, wings = true, gear = false, breakup = 0, hatch = false, dull = false, prop}) => {
   const comet = kind === 'comet';
   const R = comet ? 0.42 : 0.5;
   const L = 8;
-  const body = comet ? silver : <Toon color="#F2F4F8" />;
+  const body = comet ? (dull ? dullSilver : silver) : <Toon color="#F2F4F8" />;
   const wg = useMemo(() => wingGeo(comet ? 2.3 : 2.0, comet ? 2.0 : 2.3, comet ? 0.75 : 0.6, comet ? 4.3 : 4.6, comet ? 0.14 : 0.1), [comet]);
   const fin = useMemo(() => wingGeo(1.5, 1.25, 0.55, 1.6, 0.07), []);
   const tail = useMemo(() => wingGeo(0.9, 0.8, 0.35, 1.5, 0.05), []);
-  const nWin = comet ? 13 : 24;
-  const winW = comet ? 0.27 : 0.12, winH = comet ? 0.24 : 0.17, winR = comet ? 0.035 : 0.06;
+  const nWin = comet ? 11 : 24;
+  const winW = comet ? 0.34 : 0.12, winH = comet ? 0.3 : 0.17, winR = comet ? 0.04 : 0.06;
+  const rimGeo = useMemo(() => new THREE.ShapeGeometry(rrectPath(new THREE.Shape(), 0, 0, winW + 0.06, winH + 0.06, winR + 0.03) as THREE.Shape, 12), [winW, winH, winR]);
   const winGeo = useMemo(() => new THREE.ShapeGeometry(rrectPath(new THREE.Shape(), 0, 0, winW, winH, winR) as THREE.Shape, 12), [winW, winH, winR]);
   const b = smooth(breakup);
   const split = 0.7; // x of the break
@@ -253,13 +256,20 @@ export const Jet: React.FC<{
   const front = {p: [b * 0.9, -b * 0.6, b * 0.15] as V3, r: [b * 0.2, 0, -b * 0.55] as V3};
   const rear = {p: [-b * 0.7, -b * 0.9, -b * 0.1] as V3, r: [-b * 0.15, 0, b * 0.35] as V3};
   const winRow = (from: number, to: number) =>
-    Array.from({length: nWin}, (_, i) => -L * 0.3 + (i * L * 0.62) / (nWin - 1)).filter((x) => x >= from && x < to);
+    Array.from({length: nWin}, (_, i) => -L * 0.28 + (i * L * 0.6) / (nWin - 1)).filter((x) => x >= from && x < to);
   const windows = (from: number, to: number) =>
     [1, -1].map((sd) =>
       winRow(from, to).map((x) => (
-        <mesh key={`${sd}${x}`} geometry={winGeo} position={[x, R * 0.18, sd * R * 0.985]} rotation={[0, sd > 0 ? 0 : Math.PI, 0]}>
-          <meshStandardMaterial color="#26305E" metalness={0.3} roughness={0.15} envMapIntensity={1.4} />
-        </mesh>
+        <group key={`${sd}${x}`} position={[x, R * 0.18, sd * (R + 0.006)]} rotation={[0, sd > 0 ? 0 : Math.PI, 0]}>
+          {comet && (
+            <mesh geometry={rimGeo} position={[0, 0, -0.001]}>
+              <meshBasicMaterial color={dull ? '#6A7080' : '#E8ECF2'} />
+            </mesh>
+          )}
+          <mesh geometry={winGeo} position={[0, 0, 0.002]}>
+            <meshStandardMaterial color="#1E2652" metalness={0.2} roughness={0.2} envMapIntensity={dull ? 0.2 : 0.9} />
+          </mesh>
+        </group>
       )),
     );
   const stripe = (from: number, to: number) =>
@@ -453,7 +463,7 @@ const cabinWallGeo = (era: '50s' | 'modern', xs: number[]) => {
   s.lineTo(-7, 2.2);
   s.lineTo(-7, 0);
   for (const x of xs) {
-    if (era === 'modern') s.holes.push(rrectPath(new THREE.Path(), x, WIN_Y, 0.27, 0.38, 0.13) as THREE.Path);
+    if (era === 'modern') s.holes.push(rrectPath(new THREE.Path(), x, WIN_Y, 0.32, 0.44, 0.155) as THREE.Path);
     else s.holes.push(rrectPath(new THREE.Path(), x, WIN_Y, 0.58, 0.5, 0.045) as THREE.Path);
   }
   return new THREE.ExtrudeGeometry(s, {depth: 0.08, bevelEnabled: false, curveSegments: 16});
@@ -482,7 +492,7 @@ export const CabinHD: React.FC<{fx: CabinFx}> = ({fx}) => {
   const era = fx.era;
   const xs = useMemo(() => Array.from({length: era === 'modern' ? 15 : 11}, (_, i) => (i - (era === 'modern' ? 7 : 5)) * (era === 'modern' ? 0.82 : 1.15)), [era]);
   const wall = useMemo(() => cabinWallGeo(era, xs), [era, xs]);
-  const frame = useMemo(() => (era === 'modern' ? frameGeo(0.27, 0.38, 0.13, 0.07, 0.1) : frameGeo(0.58, 0.5, 0.045, 0.04, 0.06)), [era]);
+  const frame = useMemo(() => (era === 'modern' ? frameGeo(0.32, 0.44, 0.155, 0.075, 0.1) : frameGeo(0.58, 0.5, 0.045, 0.04, 0.06)), [era]);
   const tex = outsideTex(fx.outside ?? (era === 'modern' ? 'clouds' : 'fields'));
   const view = useMemo(() => {
     const c = tex.clone();
@@ -492,7 +502,7 @@ export const CabinHD: React.FC<{fx: CabinFx}> = ({fx}) => {
   }, [tex]);
   view.offset.x = (fx.scroll ?? 0.02) * t;
   const k = fx.breathe ? breath(t) : 0;
-  const wallC = era === '50s' ? '#E9D7B4' : '#EEF1F4';
+  const wallC = era === '50s' ? '#E9D7B4' : '#D9DEE6';
   return (
     <group>
       {/* floor + aisle carpet */}
@@ -511,7 +521,7 @@ export const CabinHD: React.FC<{fx: CabinFx}> = ({fx}) => {
         </mesh>
         {/* sloped upper wall (the fuselage curve) + overhead bins */}
         <Box size={[14, 0.9, 0.08]} pos={[0, 2.55, 0.25]} rot={[0.55, 0, 0]} color={wallC} />
-        <Box size={[14, 0.42, 0.55]} pos={[0, 2.2, 0.45]} color={era === '50s' ? '#C9A06A' : '#E2E8EE'} />
+        <Box size={[14, 0.42, 0.55]} pos={[0, 2.2, 0.45]} color={era === '50s' ? '#C9A06A' : '#BCC6D2'} />
         <Box size={[14, 0.03, 0.02]} pos={[0, 2.0, 0.73]} color={era === '50s' ? C.accent : '#9AA8B8'} />
         {/* dado rail / armrest ledge */}
         <Box size={[14, 0.08, 0.14]} pos={[0, 0.72, 0.06]} color={era === '50s' ? '#8A5432' : '#C8D2DC'} />
@@ -523,8 +533,8 @@ export const CabinHD: React.FC<{fx: CabinFx}> = ({fx}) => {
             {era === 'modern' ? (
               <>
                 {/* shade half up + the inner pane's tiny breather hole */}
-                <Box size={[0.26, 0.12, 0.012]} pos={[0, 0.14, 0.035]} color="#F2F2F2" />
-                <Ball r={0.006} pos={[0, -0.12, 0.03]} color="#3A3A50" />
+                <Box size={[0.3, 0.1, 0.012]} pos={[0, 0.17, 0.035]} color="#DADDE4" />
+                <Ball r={0.007} pos={[0, -0.15, 0.03]} color="#3A3A50" />
               </>
             ) : (
               <>
@@ -535,8 +545,8 @@ export const CabinHD: React.FC<{fx: CabinFx}> = ({fx}) => {
             )}
             {/* the pane: bright view outside */}
             <mesh position={[0, 0, -0.06]}>
-              <planeGeometry args={era === 'modern' ? [0.3, 0.42] : [0.62, 0.54]} />
-              <meshBasicMaterial map={view} color={new THREE.Color('#ffffff').multiplyScalar(1.12)} toneMapped={false} />
+              <planeGeometry args={era === 'modern' ? [0.36, 0.48] : [0.62, 0.54]} />
+              <meshBasicMaterial map={view} color={new THREE.Color('#ffffff').multiplyScalar(era === 'modern' ? 0.95 : 1.12)} toneMapped={false} />
             </mesh>
           </group>
         ))}
@@ -554,10 +564,10 @@ export const CabinHD: React.FC<{fx: CabinFx}> = ({fx}) => {
         <meshBasicMaterial color={era === '50s' ? '#FFE2B0' : '#CFE6F5'} toneMapped={false} />
       </mesh>
       {/* ceiling + light strip */}
-      <Box size={[30, 0.1, 4]} pos={[0, 2.85, 0.8]} color={era === '50s' ? '#E2CDA4' : '#F4F6F8'} />
+      <Box size={[30, 0.1, 4]} pos={[0, 2.85, 0.8]} color={era === '50s' ? '#E2CDA4' : '#AEB8C6'} />
       <mesh position={[0, 2.79, 0.7]} rotation={[Math.PI / 2, 0, 0]}>
         <planeGeometry args={[30, 0.12]} />
-        <meshBasicMaterial color={new THREE.Color(era === '50s' ? '#FFD28A' : '#E8F4FF').multiplyScalar(1.4)} toneMapped={false} />
+        <meshBasicMaterial color={new THREE.Color(era === '50s' ? '#FFD28A' : '#C8D8EC').multiplyScalar(era === '50s' ? 1.4 : 0.75)} toneMapped={false} />
       </mesh>
       {/* seats: one row against the window wall, one across the aisle */}
       {xs.map((x, i) => {
@@ -571,7 +581,7 @@ export const CabinHD: React.FC<{fx: CabinFx}> = ({fx}) => {
       {era === '50s' && fx.beams !== false &&
         xs.filter((_, i) => i % 2 === 0).map((x) => <LightBeam key={x} from={[x, WIN_Y, CABIN_WALL_Z]} to={[x + 0.9, 0, 0.9]} r0={0.22} r1={0.5} color="#FFC873" strength={0.22} dust={false} />)}
       <Motes count={50} box={[6, 2, 2]} center={[0, 1.2, 0]} color="#FFE2A8" size={0.025} rise={0.02} seed={77} />
-      <pointLight position={[0, 1.6, 0.4]} color={era === '50s' ? '#FFC873' : '#E8F4FF'} intensity={6} distance={7} decay={2} />
+      <pointLight position={[0, 1.6, 0.4]} color={era === '50s' ? '#FFC873' : '#E8F4FF'} intensity={era === '50s' ? 6 : 2.5} distance={7} decay={2} />
     </group>
   );
 };
@@ -581,8 +591,8 @@ export const CabinHD: React.FC<{fx: CabinFx}> = ({fx}) => {
 /* =================================================================== */
 export const TABLE: V3 = [0.9, 0, 0.7];
 export const TABLE_TOP = 0.72;
-export const LOUNGE_JET: V3 = [1.0, 1.68, -13];
-export type LoungeFx = {plate?: 'stack' | 'slam' | 'none'; slamAt?: number; dim?: number};
+export const LOUNGE_JET: V3 = [1.6, 1.68, -9.5];
+export type LoungeFx = {plate?: 'stack' | 'slam' | 'none'; slamAt?: number; dim?: number; beams?: boolean; plateScale?: number};
 
 const PalmPot: React.FC<{pos: V3; s?: number}> = ({pos, s = 1}) => (
   <group position={pos} scale={s} userData={{prop: 'palm'}}>
@@ -632,7 +642,7 @@ export const LoungeHD: React.FC<{fx: LoungeFx}> = ({fx}) => {
       ))}
       <mesh position={[0, 2.1, -4.02]}>
         <planeGeometry args={[16, 4.2]} />
-        <meshPhysicalMaterial color="#CFE8EE" transparent opacity={0.1} roughness={0.05} metalness={0} clearcoat={1} envMapIntensity={0.6} depthWrite={false} />
+        <meshPhysicalMaterial color="#CFE8EE" transparent opacity={0.05} roughness={0.1} metalness={0} clearcoat={0.2} envMapIntensity={0.2} depthWrite={false} />
       </mesh>
       {/* side walls + ceiling */}
       <TBox size={[0.3, 4.4, 12]} pos={[-8.1, 2.2, 2]} tex="plaster" color="#E9C79A" />
@@ -715,14 +725,13 @@ export const LoungeHD: React.FC<{fx: LoungeFx}> = ({fx}) => {
         <Cyl r={0.48} h={0.05} pos={[0, TABLE_TOP - 0.025, 0]} color="#7A4A30" />
         <Cyl r={0.05} h={TABLE_TOP - 0.05} pos={[0, (TABLE_TOP - 0.05) / 2, 0]} color="#3A2A22" />
         <Cyl r={0.26} h={0.04} pos={[0, 0.02, 0]} color="#3A2A22" />
-        {(fx.plate ?? 'stack') !== 'none' && <BrowniePlate pos={[0, TABLE_TOP, 0]} slam={fx.plate === 'slam' ? smooth((t - (fx.slamAt ?? 0.3) + 0.2) / 0.2) : 1} />}
+        {(fx.plate ?? 'stack') !== 'none' && <BrowniePlate pos={[0, TABLE_TOP, 0]} s={fx.plateScale ?? 1} slam={fx.plate === 'slam' ? smooth((t - (fx.slamAt ?? 0.3) + 0.2) / 0.2) : 1} />}
       </group>
       {/* sun pouring through the glass */}
-      {[-5.6, -0.8, 4.0].map((x) => (
-        <LightBeam key={x} from={[x, 3.8, -4]} to={[x + 1.4, 0, 0.8]} r0={0.5} r1={1.3} color="#FFC873" strength={0.2} />
-      ))}
+      {fx.beams !== false &&
+        [-5.6, -0.8, 4.0].map((x) => <LightBeam key={x} from={[x, 3.8, -4]} to={[x + 1.4, 0, 0.8]} r0={0.5} r1={1.3} color="#FFC873" strength={0.12} />)}
       {/* OUTSIDE: the silver jet, tower, hangar, hills */}
-      <Jet kind="comet" pos={LOUNGE_JET} rot={[0, Math.PI, 0]} s={1.5} gear />
+      <Jet kind="comet" pos={LOUNGE_JET} rot={[0, Math.PI + 0.32, 0]} s={1.5} gear />
       <group position={[-16, 0, -30]}>
         <Box size={[1.6, 6, 1.6]} pos={[0, 3, 0]} color="#E2D6C4" />
         <Box size={[2.6, 1.2, 2.6]} pos={[0, 6.6, 0]} color="#3E5A8A" />
@@ -767,11 +776,11 @@ const tentTex = () =>
     g.fillText("VIK'S WEEK", w / 2, h / 2 + 4);
   });
 
-export const BrowniePlate: React.FC<{pos: V3; slam?: number}> = ({pos, slam = 1}) => {
+export const BrowniePlate: React.FC<{pos: V3; slam?: number; s?: number}> = ({pos, slam = 1, s = 1}) => {
   const {t} = useScene();
   const bounce = slam < 1 ? (1 - slam) * 0.25 : 0;
   return (
-    <group position={[pos[0], pos[1] + bounce, pos[2]]}>
+    <group position={[pos[0], pos[1] + bounce, pos[2]]} scale={s}>
       <Cyl r={0.26} r2={0.3} h={0.025} pos={[0, 0.012, 0]} color="#F6F6F2" />
       <Cyl r={0.2} h={0.026} pos={[0, 0.014, 0]} color="#E8ECF0" />
       {[
@@ -796,79 +805,150 @@ export const BrowniePlate: React.FC<{pos: V3; slam?: number}> = ({pos, slam = 1}
   );
 };
 
-// big hero brownie that cracks from one corner and snaps in two
-const crackPts = (() => {
-  // jagged path from the corner (-0.5, -0.5) across to the far edge, unit square
-  const r = mulberry(23);
-  const pts: [number, number][] = [[-0.5, -0.5]];
-  const n = 9;
+// hero brownie: glossy crackled top, crumbly edges; a crack runs from one corner
+// and a corner piece breaks off (brownie units: a 1 x 1 square, scaled by `s`)
+const jag = (a: [number, number], b: [number, number], n: number, amp: number, seed: number) => {
+  const r = mulberry(seed);
+  const out: [number, number][] = [];
+  const nx = -(b[1] - a[1]), ny = b[0] - a[0];
+  const nl = Math.hypot(nx, ny) || 1;
   for (let i = 1; i < n; i++) {
     const u = i / n;
-    pts.push([-0.5 + u * 0.95 + (r() - 0.5) * 0.06, -0.5 + u * 0.78 + (r() - 0.5) * 0.08]);
+    const d = (r() - 0.5) * 2 * amp;
+    out.push([a[0] + (b[0] - a[0]) * u + (nx / nl) * d, a[1] + (b[1] - a[1]) * u + (ny / nl) * d]);
   }
-  pts.push([0.5, 0.32]);
+  return out;
+};
+const CRACK: [number, number][] = (() => {
+  const r = mulberry(23);
+  const pts: [number, number][] = [[-0.5, -0.5]];
+  const n = 8;
+  for (let i = 1; i < n; i++) {
+    const u = i / n;
+    pts.push([-0.5 + u * 1.0 + (r() - 0.5) * 0.05, -0.5 + u * 0.42 + (r() - 0.5) * 0.07]);
+  }
+  pts.push([0.5, -0.06]);
   return pts;
 })();
-
-const halfGeo = (side: 'a' | 'b', th: number) => {
-  const s = new THREE.Shape();
-  if (side === 'a') {
-    // upper-left half: corner -> along the crack -> right edge -> top-right -> top-left
-    s.moveTo(-0.5, -0.5);
-    crackPts.slice(1).forEach(([x, y]) => s.lineTo(x, y));
-    s.lineTo(0.5, 0.5);
-    s.lineTo(-0.5, 0.5);
-  } else {
-    s.moveTo(-0.5, -0.5);
-    s.lineTo(0.5, -0.5);
-    s.lineTo(0.5, 0.32);
-    [...crackPts].reverse().slice(1).forEach(([x, y]) => s.lineTo(x, y));
-  }
-  return new THREE.ExtrudeGeometry(s, {depth: th, bevelEnabled: true, bevelSize: 0.02, bevelThickness: 0.02, bevelSegments: 2});
+const browniePieces = () => {
+  const BL: [number, number] = [-0.5, -0.5], BR: [number, number] = [0.5, -0.5], TR: [number, number] = [0.5, 0.5], TL: [number, number] = [-0.5, 0.5];
+  const end = CRACK[CRACK.length - 1];
+  // main: corner -> crack -> right edge up -> top -> left edge down
+  const main: [number, number][] = [...CRACK, ...jag(end, TR, 6, 0.018, 3), TR, ...jag(TR, TL, 10, 0.018, 4), TL, ...jag(TL, BL, 10, 0.018, 5)];
+  // piece: corner -> bottom edge -> right edge up to the crack end -> back along the crack
+  const piece: [number, number][] = [BL, ...jag(BL, BR, 10, 0.018, 6), BR, ...jag(BR, end, 4, 0.018, 7), ...[...CRACK].reverse().slice(1, -1)];
+  const shape = (pts: [number, number][]) => {
+    const s = new THREE.Shape();
+    s.moveTo(pts[0][0], pts[0][1]);
+    pts.slice(1).forEach(([x, y]) => s.lineTo(x, y));
+    s.closePath();
+    return new THREE.ExtrudeGeometry(s, {depth: 0.36, bevelEnabled: true, bevelSize: 0.025, bevelThickness: 0.03, bevelSegments: 2});
+  };
+  return {main: shape(main), piece: shape(piece)};
 };
+
+const crackleTex = () =>
+  canvasTex('brownie-top', 512, 512, (g, w, h) => {
+    const r = mulberry(44);
+    g.fillStyle = '#3E2216';
+    g.fillRect(0, 0, w, h);
+    // glossy flaky crust: lighter shiny plates
+    for (let i = 0; i < 70; i++) {
+      const x = r() * w, y = r() * h, rr = 18 + r() * 50;
+      g.fillStyle = `rgba(${128 + r() * 30}, ${82 + r() * 20}, ${44 + r() * 12}, 0.55)`;
+      g.beginPath();
+      for (let k = 0; k < 7; k++) {
+        const a = (k / 7) * Math.PI * 2;
+        const d = rr * (0.6 + r() * 0.5);
+        if (k === 0) g.moveTo(x + Math.cos(a) * d, y + Math.sin(a) * d);
+        else g.lineTo(x + Math.cos(a) * d, y + Math.sin(a) * d);
+      }
+      g.fill();
+    }
+    // fine crackle lines on the crust
+    g.strokeStyle = 'rgba(30,14,10,0.75)';
+    for (let i = 0; i < 46; i++) {
+      let x = r() * w, y = r() * h;
+      g.lineWidth = 1 + r() * 2;
+      g.beginPath();
+      g.moveTo(x, y);
+      for (let k = 0; k < 5; k++) {
+        x += (r() - 0.5) * 60;
+        y += (r() - 0.5) * 60;
+        g.lineTo(x, y);
+      }
+      g.stroke();
+    }
+    // a few glints
+    for (let i = 0; i < 30; i++) {
+      g.fillStyle = 'rgba(255,230,200,0.35)';
+      g.fillRect(r() * w, r() * h, 3 + r() * 6, 1.5);
+    }
+  });
 
 export const HeroBrownie: React.FC<{pos: V3; rot?: V3; s?: number; crackAt?: number; snapAt?: number}> = ({pos, rot = [0, 0, 0], s = 0.12, crackAt = 0.5, snapAt = 1.0}) => {
   const {t} = useScene();
-  const ga = useMemo(() => halfGeo('a', 0.4), []);
-  const gb = useMemo(() => halfGeo('b', 0.4), []);
+  const geo = useMemo(browniePieces, []);
+  const top = useMemo(() => {
+    const c = crackleTex().clone();
+    c.needsUpdate = true;
+    c.offset.set(0.5, 0.5);
+    return c;
+  }, []);
+  const crumbs = useMemo(() => {
+    const r = mulberry(31);
+    return Array.from({length: 40}, () => {
+      const side = Math.floor(r() * 4), u = r() - 0.5;
+      const e = 0.52 + r() * 0.08;
+      const [x, y] = side === 0 ? [u, -e] : side === 1 ? [e, u] : side === 2 ? [u, e] : [-e, u];
+      return {x, y, s: 0.018 + r() * 0.03, rot: [r() * 3, r() * 3, r() * 3] as V3};
+    });
+  }, []);
   const grow = smooth((t - crackAt) / Math.max(0.05, snapAt - crackAt));
-  const snap = smooth((t - snapAt) / 0.35);
-  const segs = crackPts.length - 1;
+  const snap = smooth((t - snapAt) / 0.4);
+  const fall = Math.max(0, t - snapAt);
+  const mats = [
+    <meshStandardMaterial key="top" attach="material-0" map={top} color="#E8D0B8" roughness={0.22} metalness={0.05} envMapIntensity={1.2} />,
+    <meshStandardMaterial key="side" attach="material-1" color="#3E2418" roughness={0.9} metalness={0} />,
+  ];
+  const segs = CRACK.length - 1;
   const shown = grow * segs;
   return (
     <group position={pos} rotation={rot} scale={s}>
-      {/* lying flat: shape in x/z (y = thickness) */}
       <group rotation={[-Math.PI / 2, 0, 0]}>
-        <mesh geometry={ga} position={[-snap * 0.08, snap * 0.06, 0]} rotation={[snap * 0.12, -snap * 0.18, snap * 0.12]} castShadow>
-          <Toon color={BROWN} />
+        <mesh geometry={geo.main} position={[-snap * 0.02, snap * 0.03, 0]} castShadow receiveShadow>
+          {mats}
         </mesh>
-        <mesh geometry={gb} position={[snap * 0.08, -snap * 0.06, 0]} rotation={[-snap * 0.12, snap * 0.18, -snap * 0.1]} castShadow>
-          <Toon color={BROWN} />
-        </mesh>
-        {/* crackly sugar top */}
-        {snap < 0.02 && (
-          <mesh position={[0, 0, 0.425]}>
-            <planeGeometry args={[0.98, 0.98]} />
-            <Toon color={BROWN_TOP} />
+        {/* the corner piece hinges down off the crack and slides away */}
+        <group position={[snap * 0.18, -snap * 0.12 - Math.min(0.2, fall * fall * 0.6), -snap * 0.18]} rotation={[snap * 0.35, -snap * 0.25, -snap * 0.4]}>
+          <mesh geometry={geo.piece} castShadow receiveShadow>
+            {mats}
           </mesh>
-        )}
-        {/* the crack line, growing from the corner */}
+        </group>
+        {/* the crack line growing from the corner across the crust */}
         {snap < 0.02 &&
-          crackPts.slice(0, -1).map(([x0, y0], i) => {
-            const [x1, y1] = crackPts[i + 1];
+          CRACK.slice(0, -1).map(([x0, y0], i) => {
+            const [x1, y1] = CRACK[i + 1];
             const f = clamp01(shown - i);
             if (f <= 0) return null;
             const xe = x0 + (x1 - x0) * f, ye = y0 + (y1 - y0) * f;
             const len = Math.hypot(xe - x0, ye - y0);
             return (
-              <mesh key={i} position={[(x0 + xe) / 2, (y0 + ye) / 2, 0.43]} rotation={[0, 0, Math.atan2(ye - y0, xe - x0)]}>
-                <planeGeometry args={[len + 0.01, 0.035]} />
-                <meshBasicMaterial color="#1E1018" />
+              <mesh key={i} position={[(x0 + xe) / 2, (y0 + ye) / 2, 0.42]} rotation={[0, 0, Math.atan2(ye - y0, xe - x0)]}>
+                <planeGeometry args={[len + 0.01, 0.03 + 0.02 * (1 - i / segs)]} />
+                <meshBasicMaterial color="#160A08" />
               </mesh>
             );
           })}
+        {/* crumbly edges: crumbs along the sides */}
+        {crumbs.map((c, i) => (
+          <mesh key={i} position={[c.x, c.y, 0.02 + (i % 3) * 0.02]} rotation={c.rot}>
+            <dodecahedronGeometry args={[c.s, 0]} />
+            <meshStandardMaterial color={i % 2 ? '#4A2A1C' : '#5E3624'} roughness={0.9} />
+          </mesh>
+        ))}
       </group>
-      {snap > 0 && <Motes count={18} box={[1.2, 0.6, 1.2]} center={[0, 0.2, 0]} color="#6A3A28" size={0.06} rise={-0.6} seed={13} />}
+      {snap > 0 && <Motes count={22} box={[1.0, 0.5, 1.0]} center={[0.2, 0.25, 0.2]} color="#5A3020" size={0.05} rise={-0.8} seed={13} />}
     </group>
   );
 };
@@ -964,12 +1044,10 @@ export const HangarHD: React.FC<{fx: HangarFx; dur: number}> = ({fx, dur}) => {
       {[-8, -3, 2, 7].map((x) => (
         <mesh key={x} position={[x, 7.2, -8.5]}>
           <planeGeometry args={[3.2, 1.2]} />
-          <meshBasicMaterial color={new THREE.Color('#BFD8F0').multiplyScalar(1.3)} toneMapped={false} />
+          <meshBasicMaterial color={new THREE.Color('#5A6A8A')} />
         </mesh>
       ))}
-      {[-8, 2].map((x) => (
-        <LightBeam key={x} from={[x, 7.2, -8.4]} to={[x + 2.5, 0, -1]} r0={0.6} r1={1.6} color="#BFD8F0" strength={0.16} />
-      ))}
+
       {/* THE TANK: concrete walls, steel rim with hazard stripes, water inside */}
       <group position={TANK}>
         <TBox size={[10, TANK_TOP, 0.3]} pos={[0, TANK_TOP / 2, 2.0]} tex="plaster" color="#B4BCC8" />
@@ -980,14 +1058,14 @@ export const HangarHD: React.FC<{fx: HangarFx; dur: number}> = ({fx, dur}) => {
           <Box key={x} size={[0.5, 0.1, 0.32]} pos={[x, TANK_TOP + 0.05, 2.0]} color={i % 2 ? '#2A2838' : '#F2C043'} />
         ))}
         {/* inside: tiled teal so the water reads blue */}
-        <Box size={[9.6, 0.05, 3.6]} pos={[0, 0.05, 0]} color="#2E7A90" />
+        <Box size={[9.6, 0.05, 3.6]} pos={[0, 0.05, 0]} color="#1C3446" />
         <mesh position={[0, WATER_Y, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[9.7, 3.7]} />
-          <meshPhysicalMaterial color="#3F8FB0" transparent opacity={0.42} roughness={0.06} clearcoat={1} envMapIntensity={0.9} depthWrite={false} />
+          <meshPhysicalMaterial color="#173A52" transparent opacity={0.55} roughness={0.12} clearcoat={0.6} envMapIntensity={0.25} depthWrite={false} />
         </mesh>
         <mesh position={[0, WATER_Y + 0.004, 0]} rotation={[-Math.PI / 2, 0, 0]}>
           <planeGeometry args={[9.7, 3.7]} />
-          <meshBasicMaterial map={caus} color="#7FE0F0" transparent opacity={0.3} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
+          <meshBasicMaterial map={caus} color="#FFC46B" transparent opacity={0.06} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
         </mesh>
         {/* ripples where the fuselage breaks the surface */}
         {hitWater > 0 &&
@@ -1001,7 +1079,7 @@ export const HangarHD: React.FC<{fx: HangarFx; dur: number}> = ({fx, dur}) => {
             );
           })}
         {/* the fuselage (wingless), lowered on two cables from the gantry */}
-        <Jet kind="comet" pos={[0, fy, 0]} s={0.95} wings={false} hatch />
+        <Jet kind="comet" pos={[0, fy, 0]} s={0.95} wings={false} hatch dull />
         {fx.cables !== false && (
           <>
             {[-2.2, 2.2].map((x) => {
@@ -1014,8 +1092,7 @@ export const HangarHD: React.FC<{fx: HangarFx; dur: number}> = ({fx, dur}) => {
             ))}
           </>
         )}
-        {submerged && <pointLight position={[0, WATER_Y - 0.4, 1.0]} color="#6FD0E8" intensity={8} distance={6} decay={2} />}
-        <Motes count={40} box={[9, 1.5, 3.5]} center={[0, 1.0, 0]} color="#BFF0FF" size={0.03} rise={0.25} seed={33} />
+        {submerged && <Motes count={30} box={[9, 1.2, 3.5]} center={[0, 1.0, 0]} color="#9AB8C8" size={0.025} rise={0.25} seed={33} />}
         {/* pipes along the rim + valve wheels */}
         <Cyl r={0.09} h={10} pos={[0, TANK_TOP + 0.28, 2.3]} rot={[0, 0, Math.PI / 2]} color="#8A4A3A" />
         <Cyl r={0.07} h={10} pos={[0, TANK_TOP + 0.5, 2.35]} rot={[0, 0, Math.PI / 2]} color="#3E6A8A" />
@@ -1087,8 +1164,8 @@ export const HangarHD: React.FC<{fx: HangarFx; dur: number}> = ({fx, dur}) => {
             <Toon color="#3A4258" />
           </mesh>
           <Ball r={0.12} pos={[0, 3.35, 0]} color="#FFE2A8" emissive="#FFC46B" />
-          <pointLight position={[x > 0 ? -0.6 : 0.6, 3.0, 0.6]} color="#FFC46B" intensity={18} distance={10} decay={2} />
-          <LightBeam from={[0, 3.35, 0]} to={[-x * 0.55, 0, -z * 0.3 + (i === 2 ? -2 : 1)]} r0={0.15} r1={1.2} color="#FFC46B" strength={0.14} dust={false} />
+          <pointLight position={[x > 0 ? -0.6 : 0.6, 3.0, 0.6]} color="#FFC46B" intensity={30} distance={12} decay={2} />
+          <LightBeam from={[0, 3.35, 0]} to={[-x * 0.55, 0, -z * 0.3 + (i === 2 ? -2 : 1)]} r0={0.15} r1={1.2} color="#FFC46B" strength={0.2} dust={false} />
         </group>
       ))}
       <Motes count={110} box={[18, 7, 10]} center={[0, 3.5, -2]} color="#D8E4FF" size={0.035} rise={0.03} seed={57} />
@@ -1097,11 +1174,13 @@ export const HangarHD: React.FC<{fx: HangarFx; dur: number}> = ({fx, dur}) => {
 };
 
 /* =================================================================== */
-/* UNDERWATER macro: skin panel, square cut-out, the crack              */
+/* UNDERWATER macro: riveted aluminium skin, sharp square cut-out, the   */
+/* crack starting at a rivet hole by the corner                         */
 /* =================================================================== */
 export type TankMacroFx = {crackAt?: number; crackDur?: number; burstAt?: number};
+const HOLE_C: [number, number] = [0.4, 0.6]; // the cut-out's top-right corner
+const RIVET_HOLE: [number, number] = [0.47, 0.67]; // corner rivet of the doubler row: the crack starts here
 const crackTree = (() => {
-  // main crack from the cut-out's top-right corner, plus two branches
   const r = mulberry(61);
   const walk = (x: number, y: number, ang: number, n: number, step: number, jit: number) => {
     const pts: [number, number][] = [[x, y]];
@@ -1113,13 +1192,14 @@ const crackTree = (() => {
     }
     return pts;
   };
-  const main = walk(0.4, 0.6, Math.PI / 4, 14, 0.09, 0.7);
+  const main = walk(RIVET_HOLE[0], RIVET_HOLE[1], Math.PI / 4, 14, 0.085, 0.6);
   const b1 = walk(main[5][0], main[5][1], Math.PI / 2 + 0.3, 6, 0.07, 0.8);
   const b2 = walk(main[9][0], main[9][1], -0.2, 5, 0.07, 0.8);
   return [
-    {pts: main, start: 0, w: 0.026},
-    {pts: b1, start: 5 / 14, w: 0.016},
-    {pts: b2, start: 9 / 14, w: 0.014},
+    {pts: [RIVET_HOLE, HOLE_C] as [number, number][], start: 0, w: 0.016}, // rivet hole -> corner
+    {pts: main, start: 0.04, w: 0.024},
+    {pts: b1, start: 5 / 14, w: 0.015},
+    {pts: b2, start: 9 / 14, w: 0.013},
   ];
 })();
 
@@ -1140,53 +1220,135 @@ const panelGeo = () => {
   return new THREE.ExtrudeGeometry(s, {depth: 0.05, bevelEnabled: false});
 };
 
+// brushed aluminium (1 m tile): fine horizontal streaks + mottling + faint stencil marks
+const aluTex = () =>
+  canvasTex('alu-skin', 1024, 1024, (g, w, h) => {
+    const r = mulberry(19);
+    g.fillStyle = '#B8C0CC';
+    g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 900; i++) {
+      const y = r() * h;
+      g.fillStyle = r() < 0.5 ? `rgba(230,236,244,${0.08 + r() * 0.12})` : `rgba(90,100,118,${0.05 + r() * 0.1})`;
+      g.fillRect(r() * w - 200, y, 200 + r() * 700, 1 + r() * 2);
+    }
+    for (let i = 0; i < 40; i++) {
+      g.fillStyle = `rgba(120,132,150,${0.05 + r() * 0.08})`;
+      g.beginPath();
+      g.arc(r() * w, r() * h, 30 + r() * 90, 0, Math.PI * 2);
+      g.fill();
+    }
+  });
+
+const Rivets: React.FC<{pts: [number, number][]; z: number; r?: number}> = ({pts, z, r = 0.016}) => {
+  const geo = useMemo(() => new THREE.SphereGeometry(r, 12, 6, 0, Math.PI * 2, 0, Math.PI / 2), [r]);
+  const mat = useMemo(() => new THREE.MeshStandardMaterial({color: '#8E98AC', metalness: 0.7, roughness: 0.25, envMapIntensity: 1.1}), []);
+  return (
+    <group>
+      {pts.map(([x, y], i) => (
+        <mesh key={i} geometry={geo} material={mat} position={[x, y, z]} rotation={[Math.PI / 2, 0, 0]} scale={[1, 0.6, 1]} />
+      ))}
+    </group>
+  );
+};
+
+const rowPts = (a: [number, number], b: [number, number], step: number, skip?: (p: [number, number]) => boolean) => {
+  const n = Math.max(1, Math.round(Math.hypot(b[0] - a[0], b[1] - a[1]) / step));
+  const out: [number, number][] = [];
+  for (let i = 0; i <= n; i++) {
+    const p: [number, number] = [a[0] + ((b[0] - a[0]) * i) / n, a[1] + ((b[1] - a[1]) * i) / n];
+    if (!skip || !skip(p)) out.push(p);
+  }
+  return out;
+};
+
 export const TankMacroHD: React.FC<{fx: TankMacroFx}> = ({fx}) => {
   const {t} = useScene();
   const geo = useMemo(panelGeo, []);
   const g = smooth((t - (fx.crackAt ?? 0.6)) / (fx.crackDur ?? 1.2));
-  const caus = useMemo(() => {
-    const c = causticTex().clone();
+  const alu = useMemo(() => {
+    const c = aluTex().clone();
     c.needsUpdate = true;
-    c.repeat.set(1.6, 1.6);
+    c.repeat.set(1, 1);
     return c;
   }, []);
-  caus.offset.set(t * 0.06, -t * 0.04);
+  const SEAMS_H = [-1.0, 1.45];
+  const SEAMS_V = [-1.3, 1.35];
+  const nearHole = (p: [number, number]) => p[0] > -0.62 && p[0] < 0.62 && p[1] > -0.42 && p[1] < 0.82;
   const rivets = useMemo(() => {
-    const out: V3[] = [];
-    for (let x = -2.0; x <= 2.01; x += 0.25) for (const y of [-1.4, 1.0, 2.0]) out.push([x, y, 0.06]);
-    for (let y = -1.4; y <= 2.01; y += 0.25) for (const x of [-1.2, 1.4]) out.push([x, y, 0.06]);
+    const out: [number, number][] = [];
+    for (const y of SEAMS_H) for (const dy of [-0.045, 0.045]) out.push(...rowPts([-2.15, y + dy], [2.15, y + dy], 0.065, nearHole));
+    for (const x of SEAMS_V) for (const dx of [-0.045, 0.045]) out.push(...rowPts([x + dx, -1.55], [x + dx, 2.15], 0.065, nearHole));
+    // doubler ring round the cut-out: two rows (inner row offset 0.07, outer 0.13)
+    for (const off of [0.07, 0.13]) {
+      const x0 = -0.4 - off, x1 = 0.4 + off, y0 = -0.2 - off, y1 = 0.6 + off;
+      for (const [a, b] of [
+        [[x0, y0], [x1, y0]],
+        [[x1, y0], [x1, y1]],
+        [[x1, y1], [x0, y1]],
+        [[x0, y1], [x0, y0]],
+      ] as [[number, number], [number, number]][])
+        out.push(...rowPts(a, b, 0.055, (p) => Math.hypot(p[0] - RIVET_HOLE[0], p[1] - RIVET_HOLE[1]) < 0.02));
+    }
     return out;
   }, []);
   const bubbles = useMemo(() => {
     const r = mulberry(17);
-    return Array.from({length: 46}, (_, i) => ({x: (r() - 0.5) * 3.6, z: 0.25 + r() * 1.2, s: 0.015 + r() * 0.04, sp: 0.25 + r() * 0.4, ph: r() * 8, burst: i < 18}));
+    return Array.from({length: 46}, (_, i) => ({x: (r() - 0.5) * 3.6, z: 0.2 + r() * 0.4, s: 0.012 + r() * 0.025, sp: 0.25 + r() * 0.4, ph: r() * 8, burst: i < 18}));
   }, []);
   const burstAt = fx.burstAt ?? (fx.crackAt ?? 0.6) + (fx.crackDur ?? 1.2) * 0.5;
   return (
     <group>
-      {/* the skin panel (riveted aluminium) with a sharp square cut-out */}
-      <mesh geometry={geo} position={[0, 0, 0]} receiveShadow castShadow>
-        <meshStandardMaterial color="#9EA8BA" metalness={0.55} roughness={0.42} envMapIntensity={0.8} />
+      {/* skin panel: brushed aluminium */}
+      <mesh geometry={geo} receiveShadow castShadow>
+        <meshStandardMaterial map={alu} color="#E4E8EE" metalness={0.55} roughness={0.42} envMapIntensity={0.7} />
       </mesh>
-      {/* doubler plate around the cut-out (frame) */}
-      {[
-        [0, 0.65, 0.9, 0.08],
-        [0, -0.25, 0.9, 0.08],
-        [-0.45, 0.2, 0.08, 0.98],
-        [0.45, 0.2, 0.08, 0.98],
-      ].map(([x, y, w, h], i) => (
-        <Box key={i} size={[w, h, 0.03]} pos={[x, y, 0.065]} color="#8A94A8" />
+      {/* lap-joint seams: a dark gap with a lit edge */}
+      {SEAMS_H.map((y) => (
+        <group key={`h${y}`}>
+          <Box size={[4.4, 0.012, 0.02]} pos={[0, y, 0.055]} color="#3A4258" />
+          <Box size={[4.4, 0.008, 0.02]} pos={[0, y + 0.012, 0.056]} color="#E8EEF6" />
+        </group>
       ))}
-      {rivets.map((p, i) => (
-        <mesh key={i} position={p}>
-          <sphereGeometry args={[0.022, 10, 6]} />
-          <meshStandardMaterial color="#C8D0DC" metalness={0.6} roughness={0.3} />
+      {SEAMS_V.map((x) => (
+        <group key={`v${x}`}>
+          <Box size={[0.012, 3.8, 0.02]} pos={[x, 0.3, 0.055]} color="#3A4258" />
+          <Box size={[0.008, 3.8, 0.02]} pos={[x + 0.012, 0.3, 0.056]} color="#E8EEF6" />
+        </group>
+      ))}
+      {/* doubler plate round the cut-out (sharp inner corners) */}
+      {[
+        [0, 0.68, 1.12, 0.16],
+        [0, -0.28, 1.12, 0.16],
+        [-0.48, 0.2, 0.16, 0.8],
+        [0.48, 0.2, 0.16, 0.8],
+      ].map(([x, y, w, h], i) => (
+        <mesh key={i} position={[x, y, 0.062]} receiveShadow castShadow>
+          <boxGeometry args={[w, h, 0.02]} />
+          <meshStandardMaterial map={alu} color="#A8B2C2" metalness={0.55} roughness={0.38} envMapIntensity={0.7} />
         </mesh>
       ))}
-      {/* the dark cabin behind the cut-out (indigo, never black) */}
-      <Box size={[1.2, 1.2, 0.05]} pos={[0, 0.2, -0.6]} color="#1E2860" />
-      <pointLight position={[0, 0.2, -0.3]} color="#3A5AA0" intensity={1.2} distance={1.5} decay={2} />
-      {/* the crack: starts exactly at the top-right corner, branches outward */}
+      <Rivets pts={rivets} z={0.073} />
+      {/* the empty rivet hole by the corner, where the crack starts */}
+      <mesh position={[RIVET_HOLE[0], RIVET_HOLE[1], 0.074]}>
+        <circleGeometry args={[0.014, 16]} />
+        <meshBasicMaterial color="#141230" />
+      </mesh>
+      {/* behind the cut-out: fuselage frames, stringers, insulation (no flat void) */}
+      <group position={[0, 0.2, -0.05]}>
+        <Box size={[1.6, 1.6, 0.04]} pos={[0, 0, -0.55]} color="#4A5A7A" />
+        <Box size={[0.09, 1.6, 0.35]} pos={[0.05, 0, -0.3]} color="#8A94A8" />
+        {[-0.28, 0.0, 0.28].map((y) => (
+          <Box key={y} size={[1.6, 0.05, 0.08]} pos={[0, y, -0.12]} color="#9AA4B8" />
+        ))}
+        {[-0.45, 0.45].map((x) => (
+          <mesh key={x} position={[x, 0, -0.45]} scale={[1, 1.4, 0.5]}>
+            <sphereGeometry args={[0.25, 14, 10]} />
+            <Toon color="#B8A878" />
+          </mesh>
+        ))}
+        <pointLight position={[0.2, 0.3, -0.2]} color="#7AA0D0" intensity={0.7} distance={1.6} decay={2} />
+      </group>
+      {/* the crack: from the rivet hole to the corner, then outward with two branches */}
       {crackTree.map((br, bi) => {
         const n = br.pts.length - 1;
         const local = clamp01((g - br.start) / (1 - br.start)) * n;
@@ -1198,46 +1360,42 @@ export const TankMacroHD: React.FC<{fx: TankMacroFx}> = ({fx}) => {
           const len = Math.hypot(xe - x0, ye - y0);
           const ang = Math.atan2(ye - y0, xe - x0);
           return (
-            <group key={`${bi}-${i}`} position={[(x0 + xe) / 2, (y0 + ye) / 2, 0.085]} rotation={[0, 0, ang]}>
+            <group key={`${bi}-${i}`} position={[(x0 + xe) / 2, (y0 + ye) / 2, 0.076]} rotation={[0, 0, ang]}>
               <mesh>
-                <planeGeometry args={[len + 0.012, br.w * (1 - (i / n) * 0.5)]} />
+                <planeGeometry args={[len + 0.012, br.w * (1 - (i / Math.max(1, n)) * 0.5)]} />
                 <meshBasicMaterial color="#141230" />
               </mesh>
-              {/* a thin bright lip so the fracture reads against the metal */}
               <mesh position={[0, br.w * 0.9, 0.001]}>
-                <planeGeometry args={[len + 0.012, br.w * 0.35]} />
-                <meshBasicMaterial color={new THREE.Color('#E8F4FF').multiplyScalar(1.2)} toneMapped={false} />
+                <planeGeometry args={[len + 0.012, br.w * 0.3]} />
+                <meshBasicMaterial color="#F2F6FF" />
               </mesh>
             </group>
           );
         });
       })}
-      {/* hot spot at the corner while it gives */}
-      <mesh position={[0.4, 0.6, 0.09]}>
-        <circleGeometry args={[0.05 + 0.05 * g, 20]} />
-        <meshBasicMaterial color={new THREE.Color('#FF8A4A').multiplyScalar(1.5 * Math.max(0, 1 - Math.abs(g - 0.3) * 2))} transparent opacity={0.8 * Math.max(0, 1 - Math.abs(g - 0.3) * 2)} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
-      </mesh>
       {/* bubbles: a slow trickle, then a burst out of the crack */}
       {bubbles.map((b, i) => {
         const fromCrack = b.burst;
         const tt = fromCrack ? t - burstAt - i * 0.03 : t + b.ph;
         if (fromCrack && tt < 0) return null;
-        const y = fromCrack ? 0.65 + tt * (0.9 + b.sp) : ((tt * b.sp) % 4) - 1.6;
-        const x = fromCrack ? 0.5 + (b.x * 0.15) + Math.sin(tt * 6 + i) * 0.04 : b.x + Math.sin(tt * 2 + i) * 0.05;
+        const y = fromCrack ? 0.95 + tt * (0.9 + b.sp) : ((tt * b.sp) % 4) - 1.6;
+        const bx = Math.abs(b.x - 0.5) < 0.45 ? b.x + Math.sign(b.x - 0.5 || 1) * 0.6 : b.x;
+        const x = fromCrack ? 0.75 + b.x * 0.12 + Math.sin(tt * 6 + i) * 0.04 : bx + Math.sin(tt * 2 + i) * 0.05;
         return (
-          <mesh key={i} position={[x, y, fromCrack ? 0.12 + b.z * 0.2 : b.z]}>
-            <sphereGeometry args={[b.s * (fromCrack ? 1.2 : 1), 12, 8]} />
+          <mesh key={i} position={[x, y, fromCrack ? 0.14 + b.z * 0.2 : b.z]}>
+            <sphereGeometry args={[b.s * (fromCrack ? 0.6 : 1), 12, 8]} />
             <meshPhysicalMaterial color="#E8FCFF" transparent opacity={0.45} roughness={0.05} clearcoat={1} envMapIntensity={1.4} />
           </mesh>
         );
       })}
       <Motes count={90} box={[5, 4, 3]} center={[0, 0.3, 0.8]} color="#BFF0FF" size={0.02} rise={0.05} seed={71} />
-      {/* blue water all round: back + floor */}
+      {/* blue water all round, a soft moving light from above */}
       <mesh position={[0, 0, -3]}>
         <planeGeometry args={[30, 20]} />
         <meshBasicMaterial color="#1E5A7A" />
       </mesh>
-      <pointLight position={[1.5, 3, 2.5]} color="#BFF0FF" intensity={10 + 3 * Math.sin(t * 3)} distance={8} decay={2} />
+      <pointLight position={[1.5, 3, 2.5]} color="#CFF4FF" intensity={9 + 2.5 * Math.sin(t * 3)} distance={8} decay={2} />
+      <pointLight position={[-1.5, 1.0, 2.0]} color="#FFE2B0" intensity={3} distance={5} decay={2} />
     </group>
   );
 };
@@ -1393,6 +1551,122 @@ export const Paper: React.FC<{fx: PaperFx}> = ({fx}) => {
       )}
       {fx.trace && (
         <Hand pos={[RD.cx + Math.cos(ang) * (RD.r + 0.02), RD.cy + Math.sin(ang) * (RD.r + 0.02) - 0.02, 0.06]} rot={[-0.3, 0, Math.PI]} s={0.55} point skin="#C8875E" sleeve="#F1E7D2" />
+      )}
+    </group>
+  );
+};
+
+/* =================================================================== */
+/* PHOTOELASTIC demo: a clear plastic sheet with a square hole and a     */
+/* round hole, between two crossed polarising films, held up to the      */
+/* forge light. Isochromatic (rainbow) fringes from the stress field:     */
+/* Kirsch solution round each hole + the concentration at the square's    */
+/* sharp corners. Load rises as Gus flexes it -> fringes multiply.        */
+/* =================================================================== */
+const photoMat = () =>
+  new THREE.ShaderMaterial({
+    uniforms: {uLoad: {value: 0.5}, uSq: {value: new THREE.Vector3(SQ.cx, SQ.cy, SQ.s / 2)}, uRd: {value: new THREE.Vector3(RD.cx, RD.cy, RD.r)}},
+    side: THREE.DoubleSide,
+    vertexShader: `varying vec2 vP; void main(){ vP = position.xy; gl_Position = projectionMatrix*modelViewMatrix*vec4(position,1.0);}`,
+    fragmentShader: `
+      uniform float uLoad; uniform vec3 uSq; uniform vec3 uRd; varying vec2 vP;
+      // principal stress difference (per unit far-field tension along x) round a circular hole of radius a (Kirsch)
+      float kirsch(vec2 p, vec2 c, float a){
+        vec2 d = p - c; float r = max(length(d), a); float th = atan(d.y, d.x);
+        float q = a*a/(r*r);
+        float c2 = cos(2.0*th), s2 = sin(2.0*th);
+        float srr = 0.5*(1.0-q) + 0.5*(1.0-4.0*q+3.0*q*q)*c2;
+        float stt = 0.5*(1.0+q) - 0.5*(1.0+3.0*q*q)*c2;
+        float trt = -0.5*(1.0+2.0*q-3.0*q*q)*s2;
+        return sqrt((srr-stt)*(srr-stt) + 4.0*trt*trt);
+      }
+      void main(){
+        vec2 p = vP;
+        float h = uSq.z;
+        // square: Kirsch of the circumscribed circle + sharp singular-ish peaks at the four corners
+        float fs = kirsch(p, uSq.xy, h*1.2);
+        float corner = 0.0;
+        for (int i = 0; i < 4; i++){
+          vec2 cc = uSq.xy + vec2(i==0||i==3 ? -h : h, i<2 ? -h : h);
+          float d = length(p - cc);
+          corner += 0.0008 / (d * d + 0.00004);
+        }
+        float fr = kirsch(p, uRd.xy, uRd.z);
+        float S = 0.35 * (fs - 1.0) + 0.7 * (fr - 1.0);
+        // far field ~0.45 (dark grey first order); round hole peaks ~1.4 (one smooth fringe);
+        // the square's sharp corners pile up many tight fringes
+        float N = max(0.0, uLoad * (0.02 + S + corner)); // fringe order (far field ~0.1 = dark)
+        float sn = sin(3.14159*N);
+        float I = sn * sn;                              // crossed polarisers (dark field)
+        vec3 hue = 0.55 + 0.45*cos(6.28318*(N*0.62 + vec3(0.0, 0.33, 0.67)));
+        // first order (N < 1): black -> grey -> white -> straw yellow; colours only above it
+        vec3 first = mix(vec3(0.035, 0.04, 0.09), vec3(0.92, 0.88, 0.74), I);
+        vec3 col = mix(first, hue * (0.3 + 0.9*I), smoothstep(0.85, 1.25, N));
+        gl_FragColor = vec4(pow(col, vec3(2.2)), 1.0);   // col is a display colour
+        #include <colorspace_fragment>
+      }`,
+  });
+
+export type PhotoFx = {pos: V3; rot?: V3; s?: number; load?: [number, number]; loadAt?: [number, number]; hands?: boolean; trace?: boolean; traceAt?: number};
+
+export const PhotoSheet: React.FC<{fx: PhotoFx}> = ({fx}) => {
+  const {t} = useScene();
+  const geo = useMemo(() => paperGeo(0, 0), []);
+  const mat = useMemo(photoMat, []);
+  const la = fx.loadAt ?? [0, 1];
+  const lk = smooth((t - la[0]) / Math.max(0.05, la[1] - la[0]));
+  mat.uniforms.uLoad.value = fx.load ? fx.load[0] + (fx.load[1] - fx.load[0]) * lk : 1;
+  const ang = (t - (fx.traceAt ?? 0.2)) * 2.4;
+  return (
+    <group position={fx.pos} rotation={fx.rot ?? [0, 0, 0]} scale={fx.s ?? 1}>
+      {/* back polariser film (dark smoky; seen through the holes) */}
+      <mesh position={[0, 0, -0.012]}>
+        <planeGeometry args={[PW + 0.05, PH + 0.05]} />
+        <meshBasicMaterial color="#0E1022" />
+      </mesh>
+      {/* the stressed clear plastic with its fringes */}
+      <mesh geometry={geo} material={mat} />
+      {/* clear acrylic edge */}
+      {[
+        [0, PH / 2, PW, 0.006],
+        [0, -PH / 2, PW, 0.006],
+        [-PW / 2, 0, 0.006, PH],
+        [PW / 2, 0, 0.006, PH],
+      ].map(([x, y, w, h], i) => (
+        <mesh key={i} position={[x, y, 0.003]}>
+          <planeGeometry args={[w, h]} />
+          <meshBasicMaterial color={new THREE.Color('#CFF0FF').multiplyScalar(1.3)} toneMapped={false} />
+        </mesh>
+      ))}
+      {/* front polariser film: a smoky frame border + faint sheen across */}
+      {[
+        [0, PH / 2 + 0.018, PW + 0.07, 0.036],
+        [0, -PH / 2 - 0.018, PW + 0.07, 0.036],
+        [-PW / 2 - 0.018, 0, 0.036, PH],
+        [PW / 2 + 0.018, 0, 0.036, PH],
+      ].map(([x, y, w, h], i) => (
+        <mesh key={`f${i}`} position={[x, y, 0.012]}>
+          <planeGeometry args={[w, h]} />
+          <meshStandardMaterial color="#2A2C3A" metalness={0.2} roughness={0.3} envMapIntensity={0.8} />
+        </mesh>
+      ))}
+      <mesh position={[0, 0, 0.012]} rotation={[0, 0, 0.5]}>
+        <planeGeometry args={[0.03, PH * 1.4]} />
+        <meshBasicMaterial color="#FFFFFF" transparent opacity={0.07} depthWrite={false} />
+      </mesh>
+      {/* the forge light behind it (warm halo) */}
+      <mesh position={[0, 0, -0.05]}>
+        <planeGeometry args={[PW * 1.9, PH * 2.0]} />
+        <meshBasicMaterial color="#FF9A40" transparent opacity={0.22} blending={THREE.AdditiveBlending} depthWrite={false} toneMapped={false} />
+      </mesh>
+      {fx.hands !== false && (
+        <>
+          <Hand pos={[-PW / 2 - 0.01, 0.0, 0.03]} rot={[0, -Math.PI / 2, Math.PI / 2]} s={0.7} open={0.25} skin="#C8875E" sleeve="#F1E7D2" />
+          <Hand pos={[PW / 2 + 0.01, 0.0, 0.03]} rot={[0, Math.PI / 2, -Math.PI / 2]} s={0.7} open={0.25} skin="#C8875E" sleeve="#F1E7D2" />
+        </>
+      )}
+      {fx.trace && (
+        <Hand pos={[RD.cx + Math.cos(ang) * (RD.r + 0.03), RD.cy + Math.sin(ang) * (RD.r + 0.03) - 0.02, 0.06]} rot={[-0.3, 0, Math.PI]} s={0.55} point skin="#C8875E" sleeve="#F1E7D2" />
       )}
     </group>
   );

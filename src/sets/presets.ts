@@ -27,6 +27,7 @@ export const SKIES: Record<string, SkyPreset> = {
   storm: {top: '#2C3266', horizon: '#7E86A8', bottom: '#4A4E70'},
   forge: {top: '#241C30', horizon: '#3E2A2E', bottom: '#241C30'},
   macro: {top: '#1E2048', horizon: '#3A3466', bottom: '#1E2048'},
+  lounge: {top: '#3E4A9A', horizon: '#FFC890', bottom: '#F29D5C', sun: '#FFE3A3', sunDir: [0.9, 0.3, 0.5]},
   highsky: {top: '#2E5FB8', horizon: '#CFE6F5', bottom: '#F4EEE0', sun: '#FFF6D8', sunDir: [0.5, 0.32, -1]},
   cabin: {top: '#6A5A7A', horizon: '#FFE2B0', bottom: '#6A5A7A'},
   hangar: {top: '#3A4466', horizon: '#5A6688', bottom: '#3A4466'},
@@ -64,9 +65,9 @@ export const LIGHTS: Record<string, LightPreset> = {
     fog: '#CFE6F5', fogNear: 40, fogFar: 170, charTint: '#FFFFFF', rim: '#FFEFC2',
   },
   hangar: {
-    key: '#C8D8F0', keyIntensity: 1.7, keyDir: [-3, 9, 4],
-    sky: '#B8C8E8', shade: '#1E2A5A', hemi: 0.9,
-    ambient: '#344486', ambientIntensity: 0.8,
+    key: '#B8C4E0', keyIntensity: 0.55, keyDir: [-3, 9, 4],
+    sky: '#8A98C0', shade: '#1E2A5A', hemi: 0.55,
+    ambient: '#2C3A78', ambientIntensity: 0.65,
     fog: '#4A5878', fogNear: 9, fogFar: 40, charTint: '#E8EEFF', rim: '#FFC877',
   },
   underwater: {
@@ -74,6 +75,12 @@ export const LIGHTS: Record<string, LightPreset> = {
     sky: '#8FE0F0', shade: '#123A6A', hemi: 1.0,
     ambient: '#1E5080', ambientIntensity: 0.9,
     fog: '#1E5A7A', fogNear: 2.5, fogFar: 11, charTint: '#DFF6FF', rim: '#BFF0FF',
+  },
+  cabinModern: {
+    key: '#F2F4FF', keyIntensity: 1.5, keyDir: [3, 6, 6],
+    sky: '#DDE6F4', shade: '#2A3470', hemi: 0.75,
+    ambient: '#3A3C8A', ambientIntensity: 0.55,
+    fog: '#B8C4D8', fogNear: 9, fogFar: 30, charTint: '#FFF6EE', rim: '#FFD58A',
   },
   runway: {
     key: '#FFC86E', keyIntensity: 2.6, keyDir: [6, 5, 5],
