@@ -24,7 +24,7 @@ export type FitMove = {
 
 export type CameraMove =
   | FitMove
-  | {type: 'dolly'; from: V3; to: V3; look?: V3; lookTo?: V3; fov?: number; startAt?: number} // startAt: fraction of the shot held before moving
+  | {type: 'dolly'; from: V3; to: V3; look?: V3; lookTo?: V3; fov?: number; startAt?: number; endAt?: number} // startAt: fraction of the shot held before moving; endAt: fraction by which the move lands (then a slow drift)
   | {type: 'orbit'; center: V3; radius: number; height: number; fromDeg: number; toDeg: number; lookY?: number; fov?: number}
   | {type: 'pushIn'; target: V3; angleDeg?: number; height?: number; fromDist: number; toDist: number; fov?: number}
   | {type: 'static'; pos: V3; look: V3; drift?: number; fov?: number};
@@ -39,10 +39,12 @@ export type CamPose = {pos: THREE.Vector3; look: THREE.Vector3};
 export const glide = (p: number) => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(0, p)));
 const lerp3 = (a: V3, b: V3, t: number) => new THREE.Vector3(a[0] + (b[0] - a[0]) * t, a[1] + (b[1] - a[1]) * t, a[2] + (b[2] - a[2]) * t);
 
-export const dolly = (from: V3, to: V3, look: V3 = [0, 1, 0], lookTo?: V3, startAt = 0) => (p: number): CamPose => {
+export const dolly = (from: V3, to: V3, look: V3 = [0, 1, 0], lookTo?: V3, startAt = 0, endAt = 1) => (p: number): CamPose => {
   // before startAt: a very slow drift (never fully static), then the move
   const q = p < startAt ? 0.03 * (p / Math.max(startAt, 1e-3)) : 0.03 + 0.97 * glide((p - startAt) / Math.max(1 - startAt, 1e-3));
-  const e = startAt > 0 ? q : glide(p);
+  // endAt < 1: the move lands early (e.g. a pull-back that must settle on a full figure), then drifts the last 3%
+  const r = p < endAt ? 0.97 * glide(p / endAt) : 0.97 + 0.03 * ((p - endAt) / Math.max(1 - endAt, 1e-3));
+  const e = startAt > 0 ? q : endAt < 1 ? r : glide(p);
   return {pos: lerp3(from, to, e), look: lerp3(look, lookTo ?? look, e)};
 };
 
@@ -165,7 +167,7 @@ export const resolveMove = (m: CameraMove | undefined, cast: CharacterProps[] = 
     case 'fit':
       return fit(cast, m);
     case 'dolly':
-      return dolly(m.from, m.to, m.look, m.lookTo, m.startAt);
+      return dolly(m.from, m.to, m.look, m.lookTo, m.startAt, m.endAt);
     case 'orbit':
       return orbit(m.center, m.radius, m.height, m.fromDeg, m.toDeg, m.lookY);
     case 'pushIn':

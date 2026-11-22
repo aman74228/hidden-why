@@ -471,21 +471,28 @@ const Head: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState; t: number; seed
           <Part s={{kind: 'ellipse', rx: R * 0.16, ry: R * 0.22}} color="#C8462E" z={0.135} pos={[R * 0.95, R * 0.4]} rot={-0.5} sil />
         </>
       )}
+      {p.sweat && (
+        // nervous sweat drop at the back temple
+        <group position={[-R * spec.headSX * 0.82, R * 0.42, 0.12]}>
+          <Part s={{kind: 'ellipse', rx: R * 0.09, ry: R * 0.14}} color="#9FD8F0" z={0} sil />
+          <Part s={{kind: 'circle', r: R * 0.03}} color="#FFFFFF" z={0.01} pos={[R * 0.02, R * 0.03]} outline={false} />
+        </group>
+      )}
       <group position={[0, fy, 0]}>
-        <Eyes spec={spec} style={eyes} brow={p.brow} />
+        <Eyes spec={spec} style={eyes} brow={p.brow} browIn={p.browIn ?? 0} gaze={p.gaze} />
         <Mouth spec={spec} style={mouth} open={p.mouthOpen} />
       </group>
     </G>
   );
 };
 
-const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number}> = ({spec, style, brow}) => {
+const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number; browIn?: number; gaze?: [number, number]}> = ({spec, style, brow, browIn = 0, gaze}) => {
   const r = spec.eyeR;
   const R = spec.headR;
   const one = (side: number) => {
     const x = side * spec.eyeDX;
     const y = spec.eyeY;
-    const pos: V2 = [x, y];
+    const pos: V2 = gaze ? [x + gaze[0] * r, y + gaze[1] * r] : [x, y];
     switch (style) {
       case 'closed':
         return <Ink pts={rect(r * 2.2, r * 0.45)} z={0.05} pos={pos} />;
@@ -516,6 +523,12 @@ const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number}> = ({spec, 
 
   // Brows
   const brows = (() => {
+    if (browIn > 0) {
+      // worried / defeated: both brows tilt, inner ends up (sad-angle), same for every rig
+      return [-1, 1].map((s) => (
+        <Ink key={s} pts={rect(R * 0.3, R * 0.065)} z={0.08} pos={[s * spec.eyeDX, spec.eyeY + R * 0.24 + brow * 0.03 + browIn * R * 0.03]} rot={-s * 0.38 * browIn} />
+      ));
+    }
     if (spec.name === 'vik') {
       // one brow cocked high, the other flat — the smug raise
       return (
@@ -559,6 +572,20 @@ const Mouth: React.FC<{spec: CastSpec; style: MouthStyle; open: number}> = ({spe
       return <Ink pts={arcPts(w, w * 0.3, Math.PI * 1.2, Math.PI * 1.8)} z={z} pos={[0, y + w * 0.8]} />;
     case 'flat':
       return <Ink pts={rect(w * 1.3, w * 0.3)} z={z} pos={[0, y]} />;
+    case 'frown':
+      // corners turned down
+      return <Ink pts={arcPts(w * 0.8, w * 0.3, 0.5, Math.PI - 0.5)} z={z} pos={[0, y - w * 0.75]} />;
+    case 'wobble': {
+      // tight nervous smile: a thin zig-zag line, corners up a touch
+      const pts: [number, number][] = [];
+      const n = 9;
+      for (let i = 0; i <= n; i++) {
+        const u = i / n - 0.5;
+        pts.push([u * w * 2.1, (i % 2 ? -1 : 1) * w * 0.1 + u * u * w * 0.9]);
+      }
+      const top = pts.map(([a, b]) => [a, b + w * 0.13] as [number, number]);
+      return <Ink pts={[...pts, ...top.reverse()]} z={z} pos={[0, y]} />;
+    }
     case 'open':
       if (open < 0.12) return <Ink pts={arcPts(w, w * 0.3, Math.PI * 1.2, Math.PI * 1.8)} z={z} pos={[0, y + w * 0.8]} />;
       return (

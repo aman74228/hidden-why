@@ -113,3 +113,17 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 - Hook frame: no blown-out ceiling; the hook object (the window) clearly visible beside the face.
 - Serious beats may dip the music to ~18 dB under the voice (`musicDip` with `floorExempt`).
 
+
+## 10. Short #3 fix round 2
+- Vik's poses must match the story beat. He is losing from the answer onwards; never celebrate.
+  Losing reaction = `nervous` (head sunk into the shoulders, wobbly smile, worried brows, sweat drop,
+  eyes sliding to the bet's prize); payoff face = `defeated` (brows up and in, mouth down, slump).
+  Never `deadpan` or a neutral face on the payoff.
+- A crack on food or props: it starts at a sharp corner that points at the lens, crosses the top in
+  6–8 frames as a dark fissure with a lit lip, the piece shifts a few mm, and it holds until the cut.
+  Its SFX lands on the word ("cracks"), not on the payoff.
+- Whole figures only: never a half-face or half-body on the frame edge. Cut the character, or frame
+  them whole; a pull-back must land on the whole figure early (`endAt` ~0.4).
+- Demo two-shots: a portrait frame is width-limited (visible height ≈ 1.8 × group width). To make a
+  demo read on a phone, stage the holder right behind the prop and the second character close
+  beside it, so the group is ~1.5 m wide.

@@ -4,11 +4,11 @@
 // character faces (the pointing arm).
 
 // Core poses (CLAUDE.md) + story extras.
-export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad'] as const;
+export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad', 'nervous', 'defeated'] as const;
 export type PoseName = (typeof POSES)[number];
 
 export type EyeStyle = 'dot' | 'wide' | 'smug' | 'calm' | 'happy' | 'closed';
-export type MouthStyle = 'smile' | 'smirk' | 'open' | 'O' | 'laugh' | 'flat' | 'grin';
+export type MouthStyle = 'smile' | 'smirk' | 'open' | 'O' | 'laugh' | 'flat' | 'grin' | 'frown' | 'wobble';
 
 export type PoseState = {
   armA: [number, number];
@@ -24,6 +24,9 @@ export type PoseState = {
   mouth?: MouthStyle;
   mouthOpen: number; // 0..1
   brow: number; // extra brow lift 0..1
+  browIn?: number; // worried brows: inner ends raised 0..1
+  gaze?: [number, number]; // pupil shift in eye radii (+x = the facing side)
+  sweat?: boolean; // nervous sweat drop at the temple
 };
 
 const s = Math.sin;
@@ -241,6 +244,17 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
     case 'sad':
       // face falls: head drops, eyes down, small open mouth, arms hang
       return {...base, armA: [6, -4], armB: [6, -4], bodyDY: -0.01, headRot: -3, headDY: -0.03, faceDY: -0.05, eyes: 'calm', mouth: 'flat', mouthOpen: 0, brow: 0.6};
+    case 'nervous': {
+      // losing and knows it: shoulders hunched up (head sinks), hands fidget at the chest,
+      // tight wobbly smile, worried brows, eyes sliding back towards the desserts
+      const fid = s(ph * 11);
+      const look = Math.min(1, Math.max(0, (t - 0.15) / 0.2));
+      return {...base, armA: [26 + fid * 4, -96], armB: [24 - fid * 4, -100], bodyDY: 0.006, bodyRot: 2 + s(ph * 7) * 0.8, headRot: -3 + s(ph * 9) * 1.2, headDY: -0.1, faceDY: -0.01,
+        eyes: 'dot', gaze: [-0.6 * look, -0.25 * look], mouth: 'wobble', mouthOpen: 0, brow: 0.3, browIn: 0.9, sweat: true};
+    }
+    case 'defeated':
+      // brows up and in, mouth turned down, slumped: head and shoulders drop, arms hang
+      return {...base, armA: [4, -2], armB: [4, -2], bodyDY: -0.018, bodyRot: -3, headRot: -6, headDY: -0.045, faceDY: -0.03, eyes: 'dot', gaze: [0, -0.35], mouth: 'frown', mouthOpen: 0, brow: 0.2, browIn: 1};
     case 'frown':
       return {...base, armA: [12, -88], armB: [18, -100], armsCrossed: true, headRot: -4 + s(ph * 1.3) * 1.5, eyes: 'smug', mouth: 'flat', brow: -0.5};
     case 'lift':

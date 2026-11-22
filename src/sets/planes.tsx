@@ -886,7 +886,10 @@ const crackleTex = () =>
     }
   });
 
-export const HeroBrownie: React.FC<{pos: V3; rot?: V3; s?: number; crackAt?: number; snapAt?: number}> = ({pos, rot = [0, 0, 0], s = 0.12, crackAt = 0.5, snapAt = 1.0}) => {
+// crackAt: the crack starts at the sharp corner and races across the glossy top in
+// crackDur s (6-8 frames); then the corner piece shifts a few mm (a small split) and
+// everything holds. breakAt (optional): the piece hinges off and falls instead.
+export const HeroBrownie: React.FC<{pos: V3; rot?: V3; s?: number; crackAt?: number; crackDur?: number; split?: number; breakAt?: number}> = ({pos, rot = [0, 0, 0], s = 0.12, crackAt = 0.5, crackDur = 0.23, split = 1, breakAt}) => {
   const {t} = useScene();
   const geo = useMemo(browniePieces, []);
   const top = useMemo(() => {
@@ -904,42 +907,52 @@ export const HeroBrownie: React.FC<{pos: V3; rot?: V3; s?: number; crackAt?: num
       return {x, y, s: 0.018 + r() * 0.03, rot: [r() * 3, r() * 3, r() * 3] as V3};
     });
   }, []);
-  const grow = smooth((t - crackAt) / Math.max(0.05, snapAt - crackAt));
-  const snap = smooth((t - snapAt) / 0.4);
-  const fall = Math.max(0, t - snapAt);
+  const grow = clamp01((t - crackAt) / Math.max(0.05, crackDur));
+  // small split: the piece (below the crack) moves out along the crack's normal and dips
+  const sp = smooth((t - crackAt - crackDur * 0.7) / 0.18) * split;
+  const snap = breakAt !== undefined ? smooth((t - breakAt) / 0.4) : 0;
+  const fall = breakAt !== undefined ? Math.max(0, t - breakAt) : 0;
   const mats = [
     <meshStandardMaterial key="top" attach="material-0" map={top} color="#E8D0B8" roughness={0.22} metalness={0.05} envMapIntensity={1.2} />,
     <meshStandardMaterial key="side" attach="material-1" color="#3E2418" roughness={0.9} metalness={0} />,
   ];
   const segs = CRACK.length - 1;
   const shown = grow * segs;
+  const line = (dx: number, dy: number, w0: number, w1: number, color: string, z: number, key: string, op = 1) =>
+    CRACK.slice(0, -1).map(([x0, y0], i) => {
+      const [x1, y1] = CRACK[i + 1];
+      const f = clamp01(shown - i);
+      if (f <= 0) return null;
+      const xe = x0 + (x1 - x0) * f, ye = y0 + (y1 - y0) * f;
+      const len = Math.hypot(xe - x0, ye - y0);
+      return (
+        <mesh key={key + i} position={[(x0 + xe) / 2 + dx, (y0 + ye) / 2 + dy, z]} rotation={[0, 0, Math.atan2(ye - y0, xe - x0)]}>
+          <planeGeometry args={[len + 0.012, w0 + (w1 - w0) * (i / segs)]} />
+          <meshBasicMaterial color={color} transparent={op < 1} opacity={op} depthWrite={op >= 1} />
+        </mesh>
+      );
+    });
   return (
     <group position={pos} rotation={rot} scale={s}>
       <group rotation={[-Math.PI / 2, 0, 0]}>
-        <mesh geometry={geo.main} position={[-snap * 0.02, snap * 0.03, 0]} castShadow receiveShadow>
-          {mats}
-        </mesh>
-        {/* the corner piece hinges down off the crack and slides away */}
-        <group position={[snap * 0.18, -snap * 0.12 - Math.min(0.2, fall * fall * 0.6), -snap * 0.18]} rotation={[snap * 0.35, -snap * 0.25, -snap * 0.4]}>
+        <group position={[-sp * 0.006, sp * 0.01, 0]}>
+          <mesh geometry={geo.main} castShadow receiveShadow>
+            {mats}
+          </mesh>
+          {/* the crack: a dark fissure from the corner across the crust, with a lit lip on one side */}
+          {line(0, 0, 0.055, 0.026, '#0B0503', 0.425, 'k')}
+          {line(-0.012, 0.03, 0.012, 0.006, '#F4DCC0', 0.427, 'h', 0.55)}
+        </group>
+        {/* the corner piece: splits off a few mm (or hinges off and falls with breakAt) */}
+        <group
+          position={[sp * 0.008 + snap * 0.18, -sp * 0.018 - snap * 0.12 - Math.min(0.2, fall * fall * 0.6), -sp * 0.012 - snap * 0.18]}
+          rotation={[sp * 0.025 + snap * 0.35, -snap * 0.25, -sp * 0.02 - snap * 0.4]}
+        >
           <mesh geometry={geo.piece} castShadow receiveShadow>
             {mats}
           </mesh>
+          {line(0, 0, 0.04, 0.02, '#0B0503', 0.425, 'p')}
         </group>
-        {/* the crack line growing from the corner across the crust */}
-        {snap < 0.02 &&
-          CRACK.slice(0, -1).map(([x0, y0], i) => {
-            const [x1, y1] = CRACK[i + 1];
-            const f = clamp01(shown - i);
-            if (f <= 0) return null;
-            const xe = x0 + (x1 - x0) * f, ye = y0 + (y1 - y0) * f;
-            const len = Math.hypot(xe - x0, ye - y0);
-            return (
-              <mesh key={i} position={[(x0 + xe) / 2, (y0 + ye) / 2, 0.42]} rotation={[0, 0, Math.atan2(ye - y0, xe - x0)]}>
-                <planeGeometry args={[len + 0.01, 0.03 + 0.02 * (1 - i / segs)]} />
-                <meshBasicMaterial color="#160A08" />
-              </mesh>
-            );
-          })}
         {/* crumbly edges: crumbs along the sides */}
         {crumbs.map((c, i) => (
           <mesh key={i} position={[c.x, c.y, 0.02 + (i % 3) * 0.02]} rotation={c.rot}>
@@ -948,7 +961,7 @@ export const HeroBrownie: React.FC<{pos: V3; rot?: V3; s?: number; crackAt?: num
           </mesh>
         ))}
       </group>
-      {snap > 0 && <Motes count={22} box={[1.0, 0.5, 1.0]} center={[0.2, 0.25, 0.2]} color="#5A3020" size={0.05} rise={-0.8} seed={13} />}
+      {(sp > 0 || snap > 0) && <Motes count={snap > 0 ? 22 : 10} box={[0.8, 0.4, 0.8]} center={[0.0, 0.3, 0.1]} color="#5A3020" size={0.04} rise={-0.8} seed={13} />}
     </group>
   );
 };
@@ -1487,7 +1500,7 @@ const stressLines = (mode: 'corner' | 'curve') => {
   return lines;
 };
 
-export type PaperFx = {pos: V3; rot?: V3; s?: number; pull?: [number, number]; pullAt?: [number, number]; tear?: [number, number]; tearAt?: [number, number]; hands?: boolean; stress?: 'corner' | 'curve'; stressAt?: number; trace?: boolean};
+export type PaperFx = {dim?: number; pos: V3; rot?: V3; s?: number; pull?: [number, number]; pullAt?: [number, number]; tear?: [number, number]; tearAt?: [number, number]; hands?: boolean; stress?: 'corner' | 'curve'; stressAt?: number; trace?: boolean};
 
 export const Paper: React.FC<{fx: PaperFx}> = ({fx}) => {
   const {t} = useScene();
@@ -1509,7 +1522,7 @@ export const Paper: React.FC<{fx: PaperFx}> = ({fx}) => {
   return (
     <group position={fx.pos} rotation={fx.rot ?? [0, 0, 0]} scale={fx.s ?? 1} >
       <mesh geometry={geo} castShadow receiveShadow>
-        <meshToonMaterial color="#FFFFFF" emissive="#EFE6D6" emissiveIntensity={0.45} side={THREE.DoubleSide} />
+        <meshToonMaterial color={fx.dim ? "#EDE5D6" : "#FFFFFF"} emissive="#EFE6D6" emissiveIntensity={0.45 * (1 - (fx.dim ?? 0))} side={THREE.DoubleSide} />
       </mesh>
       {/* faint ruled lines so it reads as paper */}
       {[-0.12, -0.08, -0.04, 0.04, 0.08, 0.12].map((y) => (

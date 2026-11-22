@@ -97,8 +97,8 @@ seg = [
   ("crack-macro", T(7) - PRE, T(8) - PRE),
   ("gus-paper", T(8) - PRE, T(9) - PRE),
   ("paper-pull", T(9) - PRE, E(9) + 0.04),
-  ("pause-reaction", E(9) + 0.04, T(10) - PRE),
-  ("stress-corner", T(10) - PRE, word_t("but", T(10)) - PRE),
+  ("pause-reaction", E(9) + 0.04, word_t("a", T(10)) - PRE),  # runs over "You see," to its comma pause
+  ("stress-corner", word_t("a", T(10)) - PRE, word_t("but", T(10)) - PRE),
   ("stress-curve", word_t("but", T(10)) - PRE, T(11) - PRE),
   ("modern-takeoff", T(11) - PRE, T(12) - PRE),
   ("brownie-pick", T(12) - PRE, word_t("it", T(12)) - PRE),
@@ -142,6 +142,13 @@ SHOP_VIK = c(VIK, pos=[1.55, 0.2], facing=-1, pose="cross-arms")
 
 paper_pts = [[PAPER[0] - 0.42, PAPER[1] - 0.25, PAPER[2]], [PAPER[0] + 0.42, PAPER[1] + 0.25, PAPER[2]]]
 shop_w = frame(paper_pts + body(SHOP_GUS, crop=0.5) + body(SHOP_MILO, crop=0.5), az=0, el=4, fov=44, push=0.12, swing=3, box=(0.04, 0.96, 0.08, 0.92))
+# gus-paper, tight (fills ~60% of the frame height): Gus stands right behind the paper and
+# holds it out at his belly (his face above it), Milo close at his side; the paper reads on a phone
+SHOP_PAPER = [0.0, 0.86, 1.0]
+SHOP_GUS_T = c(GUS, pos=[0.0, 0.5], facing=1, pose="present")
+SHOP_MILO_T = c(MILO, pos=[0.86, 0.85], facing=-1, pose="look-up")
+_sp = [[SHOP_PAPER[0] - 0.44, SHOP_PAPER[1] - 0.27, SHOP_PAPER[2]], [SHOP_PAPER[0] + 0.44, SHOP_PAPER[1] + 0.27, SHOP_PAPER[2]]]
+shop_t = frame(_sp + body(SHOP_GUS_T) + body(SHOP_MILO_T) + [[SHOP_PAPER[0] - 0.66, SHOP_PAPER[1], SHOP_PAPER[2]], [-0.6, 1.5, 0.5]], az=0, el=5, fov=40, push=0.08, swing=2, box=(0.04, 0.96, 0.18, 0.82))
 pull_a = rel("paper-pull", word_t("tears", T(9)))
 holds_t = rel("paper-pull", word_t("round", word_t("tears", T(9))))
 crack_t = rel("crack-macro", word_t("crack", T(7)))
@@ -154,12 +161,16 @@ def takeoff(k):
     return [-9 + k * 14, 1.2 + lift * lift * 3.2, -4]
 JET0, JET1 = takeoff(0.3), takeoff(0.95)
 BROWNIE = [TABLE[0] - 0.02, TABLE_TOP + 0.08, TABLE[2] + 0.16]
+CRACKS_T = rel("brownie-crack", word_t("cracks", T(12)))
 _vd = frame(body(c(VIK, pos=[1.7, 0.45]), crop=0.62), az=-8, el=0, fov=44, push=0.0)
 VIKDROP = {"type": "dolly", "from": [round(_vd["to"][0] - 0.25, 3), _vd["to"][1] - 0.05, round(_vd["to"][2] + 1.1, 3)], "to": _vd["to"], "look": _vd["look"], "fov": 44}
 PAPER_FX = {"pos": PAPER, "s": PAPER_S}
 PHOTO = [0.15, 1.25, 1.0]
 PHOTO_FX = {"pos": PHOTO, "s": PAPER_S}
 PHOTO_GUS = c(GUS, pos=[-1.25, 0.35], facing=1, pose="smile-nod")
+REACT_PLATE = [1.35, 0.62, 0.75]  # the bet's brownies on a crate, behind Vik's shoulder (his glance)
+# stress-curve lands on the sheet + Gus's whole figure (never a half-body crop)
+CURVE_END = frame([[PHOTO[0] - 0.45, PHOTO[1] - 0.3, PHOTO[2]], [PHOTO[0] + 0.45, PHOTO[1] + 0.3, PHOTO[2]]] + body(PHOTO_GUS), az=4, el=4, fov=42, push=0.0, swing=0, box=(0.06, 0.94, 0.08, 0.9))
 
 shots = [
   # 1 HOOK: Milo's face at a modern oval window, turns to camera on "plane?"
@@ -169,7 +180,7 @@ shots = [
   # 2a the 1950s lounge, the silver jet outside, glide past it
   {"id": "lounge-jet", "set": "lounge", "fx": {"lounge": {"plate": "stack", "beams": False}},
    "camera": {"type": "dolly", "from": [-3.4, 1.35, -0.6], "to": [-1.6, 1.5, -1.4], "look": [-2.2, 2.0, -9.0], "lookTo": [-0.4, 2.0, -9.4], "fov": 56},
-   "cast": [GLASS_MILO, GLASS_VIK], "layout": "manual",
+   "cast": [GLASS_VIK], "layout": "manual",  # Milo out: no half-face on the frame edge; the jet has the frame
    "titleCard": {"label": "The first", "word": "Jet airliner", "at": 0.1, "duration": round(dur("lounge-jet") - 0.25, 2)},
    "sfx": [{"name": "airport-chime", "at": 0.1}, {"name": "jet-rumble", "at": 0, "dur": round(dur("lounge-jet"), 2)}]},
   # 2b inside: big near-square windows, sun pouring in, the world going by
@@ -217,18 +228,18 @@ shots = [
    "sfx": [{"name": "bubbles", "at": rel("crack-macro", word_t("burst", T(7)))}, {"name": "metal-crack", "at": crack_t - 0.05}]},
   # 8 Gus's workshop: the paper with a square hole and a round hole
   {"id": "gus-paper", "set": "forge", "fx": {"forgeLumps": False, "noSparks": True,
-     "paper": dict(PAPER_FX, pull=[0, 0.25], pullAt=[rel("gus-paper", word_t("pulls", T(8))) - 0.1, rel("gus-paper", word_t("pulls", T(8))) + 0.5])},
-   "camera": shop_w, "cast": [SHOP_GUS, SHOP_MILO], "layout": "manual",
+     "paper": dict(PAPER_FX, pos=SHOP_PAPER, dim=0.6, pull=[0, 0.25], pullAt=[rel("gus-paper", word_t("pulls", T(8))) - 0.1, rel("gus-paper", word_t("pulls", T(8))) + 0.5])},
+   "camera": shop_t, "cast": [SHOP_GUS_T, SHOP_MILO_T], "layout": "manual",
    "sfx": [{"name": "paper-rustle", "at": rel("gus-paper", word_t("pulls", T(8))) - 0.1}]},
   # 9 he pulls: the square tears at its corner, the round one holds
   {"id": "paper-pull", "beat": 5, "stillAt": pull_a + 0.7, "set": "forge", "fx": {"forgeLumps": False, "noSparks": True,
      "paper": dict(PAPER_FX, pull=[0.25, 1], pullAt=[0, 1.4], tear=[0, 1], tearAt=[pull_a - 0.15, pull_a + 0.55])},
    "camera": {"type": "dolly", "from": [-0.05, 1.12, 2.75], "to": [0.0, 1.07, 2.35], "look": [SQ_X, 1.05, 1.0], "lookTo": [RD_X - 0.05, 1.05, 1.0], "fov": 40}, "dof": 1.0, "focusDist": 0.8,
    "sfx": [{"name": "paper-rip", "at": pull_a - 0.1}, {"name": "paper-stretch", "at": holds_t}]},
-  # (pause) reaction: Vik's eyes go wide, Milo grins
-  {"id": "pause-reaction", "set": "forge", "fx": {"forgeLumps": False, "noSparks": True},
-   "camera": frame(body(c(MILO, pos=[-0.5, 0.6])) + body(c(VIK, pos=[0.55, 0.4]), crop=0.4), az=0, el=3, fov=44, push=0.05, swing=1),
-   "cast": [c(MILO, pose="laugh", pos=[-0.5, 0.6], facing=1), c(VIK, pose="shock", pos=[0.55, 0.4], facing=-1)], "layout": "manual"},
+  # (pause) reaction: Milo grins; Vik is losing: shoulders up, nervous smile, eyes sliding to the brownies
+  {"id": "pause-reaction", "set": "forge", "fx": {"forgeLumps": False, "noSparks": True, "plate": {"pos": REACT_PLATE, "s": 1.25}},
+   "camera": frame(body(c(MILO, pos=[-0.5, 0.6]), crop=0.3) + body(c(VIK, pos=[0.45, 0.4]), crop=0.55) + [[REACT_PLATE[0] + 0.34, REACT_PLATE[1] + 0.1, REACT_PLATE[2]], [REACT_PLATE[0] - 0.3, REACT_PLATE[1] - 0.1, REACT_PLATE[2]]], az=0, el=3, fov=44, push=0.05, swing=1, box=(0.04, 0.96, 0.1, 0.92)),
+   "cast": [c(MILO, pose="laugh", pos=[-0.5, 0.6], facing=1), c(VIK, pose="nervous", pos=[0.45, 0.4], facing=-1)], "layout": "manual"},
   # 10a photoelastic demo: Gus holds a clear sheet up to the forge light between two polarising films;
   #     as he flexes it the rainbow fringes crowd into the square's sharp corners
   {"id": "stress-corner", "set": "forge", "fx": {"forgeLumps": False, "noSparks": True,
@@ -238,7 +249,7 @@ shots = [
   # 10b a curve spreads it all the way round: Gus's finger traces the circle; pull back to Gus
   {"id": "stress-curve", "set": "forge", "fx": {"forgeLumps": False, "noSparks": True,
      "photo": dict(PHOTO_FX, load=[1.0, 1.0], trace=True, traceAt=0.05)},
-   "camera": {"type": "dolly", "from": [RD_X + 0.02, PHOTO[1] + 0.03, 2.05], "to": [-0.55, PHOTO[1] + 0.15, 4.1], "look": [RD_X, PHOTO[1], PHOTO[2]], "lookTo": [-0.55, 1.15, 0.55], "fov": 42},
+   "camera": {"type": "dolly", "from": [RD_X + 0.02, PHOTO[1] + 0.03, 2.05], "to": CURVE_END["to"], "look": [RD_X, PHOTO[1], PHOTO[2]], "lookTo": CURVE_END["look"], "fov": 42, "endAt": 0.4},
    "cast": [PHOTO_GUS], "layout": "manual"},
   # 11 every airliner since: a modern jet takes off; push in on its rounded windows
   {"id": "modern-takeoff", "set": "runway", "fx": {"runway": {"takeoff": [0.3, 0.95]}},
@@ -250,13 +261,13 @@ shots = [
    "cast": [c(VIK, pos=[1.7, 0.45], facing=-1, pose="present", holding="brownie"), c(MILO, pos=[-0.2, 0.9], facing=1, pose="idle")], "layout": "manual"},
   # 12b it cracks right at the corner (payoff: ding on "corner")
   {"id": "brownie-crack", "beat": 6, "stillAt": rel("brownie-crack", word_t("corner", T(12))) - 0.1, "set": "lounge",
-   "fx": {"lounge": {"plate": "stack"}, "brownie": {"pos": BROWNIE, "s": 0.22, "crackAt": 0.1, "snapAt": rel("brownie-crack", word_t("corner", T(12)))}},
+   "fx": {"lounge": {"plate": "stack"}, "brownie": {"pos": BROWNIE, "rot": [0, round(PI / 4, 4), 0], "s": 0.22, "crackAt": CRACKS_T, "crackDur": 0.23, "split": 1}},
    "camera": {"type": "dolly", "from": [BROWNIE[0] + 0.15, BROWNIE[1] + 0.45, BROWNIE[2] + 0.75], "to": [BROWNIE[0] + 0.06, BROWNIE[1] + 0.33, BROWNIE[2] + 0.55], "look": BROWNIE, "fov": 40}, "dof": 1.3, "focusDist": 0.4,
-   "sfx": [{"name": "brownie-crack", "at": rel("brownie-crack", word_t("corner", T(12))) - 0.05}]},
+   "sfx": [{"name": "brownie-crack", "at": round(CRACKS_T - 0.02, 2)}]},
   # (pause) Vik's face drops, Milo laughs
   {"id": "pause-vik-drop", "set": "lounge", "fx": {"lounge": {"plate": "stack"}},
    "camera": VIKDROP, "payoff": True, "payoffAt": 0.0,
-   "cast": [c(VIK, pos=[1.7, 0.45], facing=-1, pose="deadpan")], "layout": "manual"},
+   "cast": [c(VIK, pos=[1.7, 0.45], facing=-1, pose="defeated")], "layout": "manual"},
   # 13 back at the modern oval window; lands exactly on frame 1 (loop)
   {"id": "loop-window", "set": "cabin", "light": "cabinModern", "fx": {"cabin": {"era": "modern", "outside": "clouds", "scroll": 0.03}},
    "camera": {"type": "dolly", "from": [round(HOOK["from"][0] - 0.5, 3), HOOK["from"][1] + 0.05, round(HOOK["from"][2] + 0.6, 3)], "to": HOOK["from"], "look": HOOK["look"], "fov": HOOK["fov"]}, "dof": 1.2,

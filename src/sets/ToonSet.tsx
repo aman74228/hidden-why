@@ -9,7 +9,7 @@ import {BARS_POS, CourtyardHD, ForgeHD, StreetHD} from './world';
 import {ANVIL} from './world';
 import {BandedCake, BladeLook, Grit, Hand, HammerHead, HillFx, HillsideHD, LabFx, LabHD, MuseumHD, OrePot, Sabre, WaterDrop} from './damascus';
 import {Ball, Box, Cone, Cyl, TileFloor, Toon, mulberry} from './toon';
-import {CabinFx, CabinHD, HangarFx, HangarHD, HeroBrownie, LoungeFx, LoungeHD, Paper, PaperFx, PhotoFx, PhotoSheet, RunwayFx, RunwayHD, SkyFx, SkyHD, TankMacroFx, TankMacroHD} from './planes';
+import {BrowniePlate, CabinFx, CabinHD, HangarFx, HangarHD, HeroBrownie, LoungeFx, LoungeHD, Paper, PaperFx, PhotoFx, PhotoSheet, RunwayFx, RunwayHD, SkyFx, SkyHD, TankMacroFx, TankMacroHD} from './planes';
 
 export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain' | 'forge' | 'street' | 'void' | 'lab' | 'museum' | 'hillside' | 'lounge' | 'cabin' | 'sky' | 'hangar' | 'tankmacro' | 'runway';
 
@@ -72,7 +72,8 @@ export type FxSpec = {
   runway?: RunwayFx;
   paper?: PaperFx;
   photo?: PhotoFx;
-  brownie?: {pos: [number, number, number]; rot?: [number, number, number]; s?: number; crackAt?: number; snapAt?: number};
+  brownie?: {pos: [number, number, number]; rot?: [number, number, number]; s?: number; crackAt?: number; crackDur?: number; split?: number; breakAt?: number};
+  plate?: {pos: [number, number, number]; s?: number}; // a plate of the bet's brownies, anywhere (e.g. on a workshop bench)
 };
 
 export const SET_DEFAULTS: Record<SetName, {sky: string; ground: string; light: string}> = {
@@ -171,7 +172,17 @@ export const ToonSet: React.FC<
       {spec.set === 'runway' && <RunwayHD fx={fx.runway ?? {}} p={p} />}
       {fx.paper && <Paper fx={fx.paper} />}
       {fx.photo && <PhotoSheet fx={fx.photo} />}
-      {fx.brownie && <HeroBrownie pos={fx.brownie.pos} rot={fx.brownie.rot} s={fx.brownie.s} crackAt={fx.brownie.crackAt} snapAt={fx.brownie.snapAt} />}
+      {fx.brownie && <HeroBrownie {...fx.brownie} />}
+      {fx.plate && (
+        <>
+          {/* a wooden crate to stand the plate on */}
+          <mesh position={[fx.plate.pos[0], fx.plate.pos[1] / 2, fx.plate.pos[2]]} castShadow receiveShadow>
+            <boxGeometry args={[0.62, fx.plate.pos[1], 0.5]} />
+            <meshStandardMaterial color="#6B4426" roughness={0.85} />
+          </mesh>
+          <BrowniePlate pos={fx.plate.pos} s={fx.plate.s} />
+        </>
+      )}
       {fx.cake && <BandedCake pos={[ANVIL[0], 0.56, ANVIL[2]]} strikes={fx.cake.strikes} glow={fx.cake.glow ? fx.cake.glow[0] + (fx.cake.glow[1] - fx.cake.glow[0]) * p : 1} s={fx.cake.s} />}
       {fx.hammerHead && <HammerHead pos={[ANVIL[0], 0.6, ANVIL[2]]} strikes={fx.hammerHead.strikes} />}
       {fx.anvilBlades && (
