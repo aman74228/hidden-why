@@ -127,3 +127,8 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 - Demo two-shots: a portrait frame is width-limited (visible height ≈ 1.8 × group width). To make a
   demo read on a phone, stage the holder right behind the prop and the second character close
   beside it, so the group is ~1.5 m wide.
+- QA now flags half faces/bodies on the left, right or top frame edge (`scripts/qa/crops.ts`). A
+  deliberate tight reaction crop is declared on the shot: `"allowCrop": "<reason>"` (e.g. Milo's sad
+  close-up after "broke apart in the sky"). If a character, framed whole, would block the shot's
+  subject (the windows), take them out instead. Start a move wide on a whole figure and push in; never
+  reveal a character through the frame edge.

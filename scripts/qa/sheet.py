@@ -1,7 +1,8 @@
 #!/usr/bin/env python3
 """Whole-video QA: render the Short at 2 fps (half scale, one bundle), then
 flag (1) mostly dark/empty frames, (2) any stretch over 3 s without visible
-movement, (3) captions over faces (scripts/qa/faces.ts). Writes a labelled
+movement, (3) captions over faces (scripts/qa/faces.ts), (4) half faces/bodies
+on the frame edge (scripts/qa/crops.ts; a shot may opt out with "allowCrop"). Writes a labelled
 contact sheet (flagged frames outlined) and a JSON report.
 
 usage: python3 scripts/qa/sheet.py <slug> [--skip-render]
@@ -69,6 +70,10 @@ faces = json.loads(subprocess.run(["npx", "-y", "tsx", "scripts/qa/faces.ts", sl
 for c in faces:
     f = min(picks, key=lambda p: abs(p - c["t"] * FPS))
     flags.setdefault(f, []).append(f"caption over {c['who']}'s face ('{c['caption']}')")
+crops = json.loads(subprocess.run(["npx", "-y", "tsx", "scripts/qa/crops.ts", slug], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip().splitlines()[-1])
+for c in crops:  # half a face/body on the left, right or top edge (shots with "allowCrop" are skipped)
+    f = min(picks, key=lambda p: abs(p - c["t"] * FPS))
+    flags.setdefault(f, []).append(f"{c['who']}'s {c['part']} cut by the frame edge ({c['visible']:.0%} visible)")
 
 # contact sheet: 10 columns, timestamp + shot id, red outline on flagged frames
 W, H, C = 216, 384, 10

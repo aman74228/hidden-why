@@ -111,17 +111,7 @@
     ],
     "fov": 56
    },
-   "cast": [
-    {
-     "who": "vik",
-     "pos": [
-      -0.35,
-      -3.4
-     ],
-     "facing": -1,
-     "pose": "cross-arms"
-    }
-   ],
+   "cast": [],
    "layout": "manual",
    "titleCard": {
     "label": "The first",
@@ -176,17 +166,7 @@
     ],
     "fov": 46
    },
-   "cast": [
-    {
-     "who": "milo",
-     "pos": [
-      -0.15,
-      0.1
-     ],
-     "facing": -1,
-     "pose": "look-up"
-    }
-   ],
+   "cast": [],
    "layout": "manual",
    "sfx": [
     {
@@ -356,8 +336,8 @@
     {
      "who": "milo",
      "pos": [
-      0.45,
-      0.0
+      0.1,
+      -0.1
      ],
      "facing": -1,
      "pose": "lift",
@@ -461,6 +441,7 @@
      "pose": "sad"
     }
    ],
+   "allowCrop": "deliberate tight reaction close-up after 'broke apart in the sky'",
    "duration": 0.6
   },
   {
@@ -969,33 +950,32 @@
    "camera": {
     "type": "dolly",
     "from": [
-     0.228,
-     1.28,
-     2.05
-    ],
-    "to": [
-     -0.096,
-     1.29,
-     7.101
+     -0.766,
+     1.277,
+     6.913
     ],
     "look": [
-     0.20800000000000002,
-     1.25,
-     1.0
-    ],
-    "lookTo": [
-     -0.545,
+     -0.33,
      0.84,
      0.675
     ],
     "fov": 42,
-    "endAt": 0.4
+    "to": [
+     0.123,
+     1.229,
+     6.218
+    ],
+    "lookTo": [
+     -0.265,
+     0.84,
+     0.675
+    ]
    },
    "cast": [
     {
      "who": "gus",
      "pos": [
-      -1.25,
+      -0.82,
       0.35
      ],
      "facing": 1,

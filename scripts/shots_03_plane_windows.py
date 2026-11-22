@@ -130,8 +130,8 @@ BET_MILO = c(MILO, pose="idle", pos=[0.1, 0.95], facing=1, poses=[{"at": 0.45, "
 GLASS_MILO = c(MILO, pos=[-2.9, -3.75], facing=1, pose="look-up")
 GLASS_VIK = c(VIK, pos=[-0.35, -3.4], facing=-1, pose="cross-arms")
 # 50s cabin cast
-C50_MILO = c(MILO, pos=[-0.15, 0.1], facing=-1, pose="look-up")
-BREATH_MILO = c(MILO, pos=[0.45, 0.0], facing=-1, pose="lift", holding="balloon")
+C50_MILO = c(MILO, pos=[0.1, -0.4], facing=-1, pose="look-up")
+BREATH_MILO = c(MILO, pos=[0.1, -0.1], facing=-1, pose="lift", holding="balloon")
 # hangar
 TANK_VIK = c(VIK, pos=[-6.4, 0.6], facing=1, pose="cross-arms", poses=[{"at": 1.6, "pose": "shock"}])
 TANK_MILO = c(MILO, pos=[-6.0, 1.5], facing=1, pose="look-up")
@@ -167,10 +167,12 @@ VIKDROP = {"type": "dolly", "from": [round(_vd["to"][0] - 0.25, 3), _vd["to"][1]
 PAPER_FX = {"pos": PAPER, "s": PAPER_S}
 PHOTO = [0.15, 1.25, 1.0]
 PHOTO_FX = {"pos": PHOTO, "s": PAPER_S}
-PHOTO_GUS = c(GUS, pos=[-1.25, 0.35], facing=1, pose="smile-nod")
+PHOTO_GUS = c(GUS, pos=[-0.82, 0.35], facing=1, pose="smile-nod")
 REACT_PLATE = [1.35, 0.62, 0.75]  # the bet's brownies on a crate, behind Vik's shoulder (his glance)
 # stress-curve lands on the sheet + Gus's whole figure (never a half-body crop)
-CURVE_END = frame([[PHOTO[0] - 0.45, PHOTO[1] - 0.3, PHOTO[2]], [PHOTO[0] + 0.45, PHOTO[1] + 0.3, PHOTO[2]]] + body(PHOTO_GUS), az=4, el=4, fov=42, push=0.0, swing=0, box=(0.06, 0.94, 0.08, 0.9))
+CURVE_START = frame([[PHOTO[0] - 0.45, PHOTO[1] - 0.3, PHOTO[2]], [PHOTO[0] + 0.45, PHOTO[1] + 0.3, PHOTO[2]]] + body(PHOTO_GUS), az=-4, el=4, fov=42, push=0.0, swing=0, box=(0.12, 0.88, 0.12, 0.86))
+CURVE_START = {"type": "dolly", "from": CURVE_START["to"], "look": CURVE_START["look"], "fov": 42}
+CURVE_END = frame([[PHOTO[0] - 0.45, PHOTO[1] - 0.3, PHOTO[2]], [PHOTO[0] + 0.58, PHOTO[1] + 0.3, PHOTO[2]]] + body(PHOTO_GUS), az=4, el=4, fov=42, push=0.0, swing=0, box=(0.06, 0.94, 0.08, 0.9))
 
 shots = [
   # 1 HOOK: Milo's face at a modern oval window, turns to camera on "plane?"
@@ -180,13 +182,13 @@ shots = [
   # 2a the 1950s lounge, the silver jet outside, glide past it
   {"id": "lounge-jet", "set": "lounge", "fx": {"lounge": {"plate": "stack", "beams": False}},
    "camera": {"type": "dolly", "from": [-3.4, 1.35, -0.6], "to": [-1.6, 1.5, -1.4], "look": [-2.2, 2.0, -9.0], "lookTo": [-0.4, 2.0, -9.4], "fov": 56},
-   "cast": [GLASS_VIK], "layout": "manual",  # Milo out: no half-face on the frame edge; the jet has the frame
+   "cast": [], "layout": "manual",  # no cast: no half-faces on the frame edge; the jet has the frame
    "titleCard": {"label": "The first", "word": "Jet airliner", "at": 0.1, "duration": round(dur("lounge-jet") - 0.25, 2)},
    "sfx": [{"name": "airport-chime", "at": 0.1}, {"name": "jet-rumble", "at": 0, "dur": round(dur("lounge-jet"), 2)}]},
   # 2b inside: big near-square windows, sun pouring in, the world going by
   {"id": "cabin50-windows", "set": "cabin", "fx": {"cabin": {"era": "50s", "outside": "fields", "scroll": 0.04}},
    "camera": {"type": "dolly", "from": [-2.6, 1.45, 3.2], "to": [-0.9, 1.4, 2.7], "look": [-1.0, 1.05, -1.0], "lookTo": [0.3, 1.05, -1.0], "fov": 46},
-   "cast": [C50_MILO], "layout": "manual",
+   "cast": [], "layout": "manual",  # Milo out: whole, he blocked the windows; at the edge he read as a mistake
    "sfx": [{"name": "cabin-hum", "at": 0, "dur": round(dur("cabin50-windows"), 2)}]},
   # 3 THE BET: Vik slams the plate of square brownies down
   {"id": "the-bet", "beat": 2, "stillAt": 1.5, "set": "lounge", "fx": {"lounge": {"plate": "slam", "slamAt": 0.35, "plateScale": 1.6}},
@@ -210,7 +212,8 @@ shots = [
   # (pause) Milo's face falls
   {"id": "pause-milo-sad", "set": "lounge", "light": "dusk", "fx": {"lounge": {"plate": "none", "dim": 1}},
    "camera": frame(body(c(MILO, pos=[-2.4, -2.6]), crop=0.4), az=14, el=3, fov=44, push=0.06, swing=2),
-   "cast": [c(MILO, pos=[-2.4, -2.6], facing=1, pose="sad")]},
+   "cast": [c(MILO, pos=[-2.4, -2.6], facing=1, pose="sad")],
+   "allowCrop": "deliberate tight reaction close-up after 'broke apart in the sky'"},
   # 6a the water tank: the whole fuselage lowered in; pumps start on "pumped"
   {"id": "tank-lower", "beat": 3, "stillAt": 2.6, "set": "hangar",
    "fx": {"hangar": {"lower": [3.9, 0.95], "lowerAt": [0.1, 3.3], "counter": [0, 180], "pumps": pumps}},
@@ -249,7 +252,7 @@ shots = [
   # 10b a curve spreads it all the way round: Gus's finger traces the circle; pull back to Gus
   {"id": "stress-curve", "set": "forge", "fx": {"forgeLumps": False, "noSparks": True,
      "photo": dict(PHOTO_FX, load=[1.0, 1.0], trace=True, traceAt=0.05)},
-   "camera": {"type": "dolly", "from": [RD_X + 0.02, PHOTO[1] + 0.03, 2.05], "to": CURVE_END["to"], "look": [RD_X, PHOTO[1], PHOTO[2]], "lookTo": CURVE_END["look"], "fov": 42, "endAt": 0.4},
+   "camera": dict(CURVE_START, to=CURVE_END["to"], lookTo=CURVE_END["look"]),  # starts wide (Gus whole) and pushes in: no edge entry
    "cast": [PHOTO_GUS], "layout": "manual"},
   # 11 every airliner since: a modern jet takes off; push in on its rounded windows
   {"id": "modern-takeoff", "set": "runway", "fx": {"runway": {"takeoff": [0.3, 0.95]}},
