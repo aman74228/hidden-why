@@ -1,0 +1,339 @@
+{
+ "slug": "04-emu-war",
+ "engine": "chatterbox/original",
+ "seed": 1750,
+ "cfg_weight": 0.3,
+ "total_s": 56.19,
+ "words": 197,
+ "wpm_overall": 210.4,
+ "wpm_speech_only": 239.3,
+ "render": [],
+ "lines": [
+  {
+   "n": 1,
+   "start_s": 0.0,
+   "seconds": 3.37,
+   "pause_after": 0.4,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "How did an army with machine guns lose a war? To birds.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "war…",
+     "ellipsis",
+     0.55,
+     {
+      "natural": 0.12,
+      "added": 0.43
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 2,
+   "start_s": 3.77,
+   "seconds": 2.85,
+   "pause_after": 0.35,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Vic bets his favorite hat. The birds never stood a chance.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 3,
+   "start_s": 6.97,
+   "seconds": 5.0,
+   "pause_after": 0.35,
+   "exaggeration": 0.5,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "But 20 ,000 emus were eating farms bare, so the army sent three soldiers and two machine guns.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "bare,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.09,
+      "added": 0.09
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 4,
+   "start_s": 12.32,
+   "seconds": 5.32,
+   "pause_after": 0.4,
+   "exaggeration": 0.55,
+   "try": 3,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "On day one, farmers herded the birds toward the guns, but the emus split into little groups and ran out of range.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "one,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.02,
+      "added": 0.16
+     }
+    ],
+    [
+     "guns,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.1,
+      "added": 0.08
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 5,
+   "start_s": 18.04,
+   "seconds": 4.51,
+   "pause_after": 0.3,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So the soldiers set a trap at a waterhole, and over a thousand emus walked straight toward it.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": [
+    "hole,"
+   ]
+  },
+  {
+   "n": 6,
+   "start_s": 22.85,
+   "seconds": 3.97,
+   "pause_after": 0.5,
+   "exaggeration": 0.65,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "The gunners waited until the birds were close, and the gun jammed after just 12.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "close…",
+     "ellipsis",
+     0.55,
+     {
+      "natural": 0.1,
+      "added": 0.45
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 7,
+   "start_s": 27.32,
+   "seconds": 7.12,
+   "pause_after": 0.4,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So, they bolted a machine gun onto a truck, but the Emus outran it at nearly 50 kilometers an hour, and the ground was so bumpy nobody could aim.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "truck,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.15,
+      "added": 0.03
+     }
+    ],
+    [
+     "hour,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.3,
+      "added": -0.12
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 8,
+   "start_s": 34.84,
+   "seconds": 1.99,
+   "pause_after": 0.5,
+   "exaggeration": 0.45,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "After a week, the soldiers pulled out.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "week,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.09,
+      "added": 0.09
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 9,
+   "start_s": 37.33,
+   "seconds": 3.85,
+   "pause_after": 0.4,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "That's when Gus rolls a bowling ball at a tight pack of marbles. Strike!",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "marbles.",
+     "stop",
+     0.35,
+     {
+      "natural": 0.22,
+      "added": 0.13
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 10,
+   "start_s": 41.58,
+   "seconds": 3.07,
+   "pause_after": 0.5,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Then he scatters them across the floor and the ball hits just one.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "floor,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.0,
+      "added": 0.18
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 11,
+   "start_s": 45.15,
+   "seconds": 4.62,
+   "pause_after": 0.35,
+   "exaggeration": 0.55,
+   "try": 3,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "You see, a machine gun only wins against a crowd, and the Emus refused to be a crowd.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "see,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.04,
+      "added": 0.14
+     }
+    ],
+    [
+     "crowd,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.25,
+      "added": -0.07
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 12,
+   "start_s": 50.125,
+   "seconds": 2.19,
+   "pause_after": 0.4,
+   "exaggeration": 0.75,
+   "try": 3,
+   "wer": 0.143,
+   "diff": [
+    [
+     "an",
+     "and"
+    ]
+   ],
+   "heard": "and Vic's hat, and Emu's wearing it.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "hat?",
+     "question",
+     0.4,
+     {
+      "natural": 0.17,
+      "added": 0.23
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 13,
+   "start_s": 52.715,
+   "seconds": 3.47,
+   "pause_after": 0.0,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So, next time someone says birds can't win a war, ask them.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "war,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.07,
+      "added": 0.11
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  }
+ ]
+}
