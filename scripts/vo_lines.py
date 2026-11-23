@@ -26,8 +26,8 @@ V = json.loads((ROOT / "voice.json").read_text())["engines"]["chatterbox"]
 spec = json.loads((ROOT / "audio" / f"{a.slug}.lines.json").read_text())
 lines = spec["lines"]
 work = ROOT / "audio" / "takes" / f"{a.slug}-lines"; work.mkdir(parents=True, exist_ok=True)
-SAME = {"vic": "vik", "vick": "vik", "vics": "viks", "vicks": "viks", "dadda": "dada", "data": "dada", "darda": "dada", "guss": "gus", "gust": "gus", "gas": "gus", "goose": "gus"}
-NUM = {"1750": ["seventeen", "fifty"], "50s": ["fifties"]}
+SAME = {"vic": "vik", "vick": "vik", "vics": "viks", "vicks": "viks", "dadda": "dada", "data": "dada", "darda": "dada", "guss": "gus", "gust": "gus", "gas": "gus", "goose": "gus", "favorite": "favourite", "kilometers": "kilometres"}
+NUM = {"1750": ["seventeen", "fifty"], "50s": ["fifties"], "20000": ["twenty", "thousand"], "1000": ["a", "thousand"], "12": ["twelve"], "50": ["fifty"], "3": ["three"], "2": ["two"], "1": ["one"]}
 
 def words(s):
     out = []
