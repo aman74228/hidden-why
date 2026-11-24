@@ -188,14 +188,14 @@ def main():
     cues = []
     for i, sh in enumerate(L["shots"]):
         for e in sh.get("sfx", []):
-            cues.append((e["name"], starts[i] + jsround(e.get("at", 0) * FPS) / FPS, e.get("dur"), e.get("fadeAt")))
+            cues.append((e["name"], starts[i] + jsround(e.get("at", 0) * FPS) / FPS, e.get("dur"), e.get("fadeAt"), e.get("gain", 0.0)))
         if sh.get("payoff"):
-            cues.append(("ding", starts[i] + jsround(sh.get("payoffAt", 0) * FPS) / FPS, None, None))
+            cues.append(("ding", starts[i] + jsround(sh.get("payoffAt", 0) * FPS) / FPS, None, None, 0.0))
     sfx = np.zeros((N, 2), np.float32)
     rain = np.zeros((N, 2), np.float32)
     used, missing, cue_lufs = {}, set(), {}
     cues.sort(key=lambda c: c[1])
-    for ci, (name, at, dur, fade_at) in enumerate(cues):
+    for ci, (name, at, dur, fade_at, gain_db) in enumerate(cues):
         f = ROOT / "public/sfx" / f"{name}.mp3"
         if not f.exists() and name in PLACEHOLDER:
             f = ROOT / "public/sfx" / PLACEHOLDER[name]
@@ -210,7 +210,7 @@ def main():
         nxt = next((c[1] for c in cues[ci + 1:] if c[0] == name), None)
         if nxt is not None and not dur:  # a repeat cuts the previous one (no stacking)
             x = x[: max(int(0.06 * SR), int((nxt - at) * SR))]
-        x = level(x, RAIN_LUFS, False) if is_rain else level(x, SFX_MOM, True)
+        x = level(x, RAIN_LUFS, False) if is_rain else level(x, SFX_MOM, True) * 10 ** (gain_db / 20)  # per-cue "gain" (dB, <= 0): e.g. distant gunfire 12+ dB under the voice
         # never peak above the voice: soft-limit each cue's transients
         lim = 10 ** ((RAIN_PEAK if is_rain else SFX_PEAK) / 20)
         if np.abs(x).max() > lim:

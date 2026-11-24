@@ -330,5 +330,75 @@
   "url": "https://opengameart.org/content/clock-tick-0",
   "license": "CC0",
   "note": "single tick repeated every 85 ms (racing counter)"
+ },
+ {
+  "name": "farm-wind",
+  "source": "OpenGameArt",
+  "file": "wind background noise 2.wav",
+  "author": "bashar3a",
+  "url": "https://opengameart.org/content/mild-wind-background-noise",
+  "license": "CC0",
+  "note": "first 40 s, 1 s fade in, 1.5 s fade out"
+ },
+ {
+  "name": "footsteps-dirt",
+  "source": "OpenGameArt",
+  "file": "gravel.ogg (Different Steps pack)",
+  "author": "tinyworlds",
+  "url": "https://opengameart.org/content/different-steps-on-wood-stone-leaves-gravel-and-mud",
+  "license": "CC0"
+ },
+ {
+  "name": "truck-engine",
+  "source": "OpenGameArt",
+  "file": "engine_sound.mp3",
+  "author": "pauliuw",
+  "url": "https://opengameart.org/content/engine-sounds2",
+  "license": "CC0",
+  "note": "first 20 s, low-passed at 3.5 kHz"
+ },
+ {
+  "name": "gun-jam",
+  "source": "OpenGameArt",
+  "file": "sfx100v2_lock_open_01.ogg (100 CC0 SFX #2)",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/100-cc0-sfx-2",
+  "license": "CC0",
+  "note": "the dry 'chk' of the jammed Lewis gun"
+ },
+ {
+  "name": "gunfire-distant",
+  "source": "OpenGameArt",
+  "file": "shot_01.ogg (100 CC0 SFX)",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/100-cc0-sfx",
+  "license": "CC0",
+  "note": "low-passed at 900 Hz + short echo: muffled distant pop"
+ },
+ {
+  "name": "bowling-roll",
+  "source": "OpenGameArt",
+  "file": "qbr-prev.wav_.mp3",
+  "author": "qubodup",
+  "url": "https://opengameart.org/content/bowling-ball-rolling",
+  "license": "CC0"
+ },
+ {
+  "name": "marbles-scatter",
+  "source": "OpenGameArt",
+  "file": "dice-throw-3.ogg (Casino Audio)",
+  "author": "Kenney",
+  "url": "https://opengameart.org/content/54-casino-sound-effects-cards-dice-chips",
+  "license": "CC0",
+  "note": "hard little objects clattering = marbles bursting apart"
+ },
+ {
+  "name": "marble-click",
+  "source": "OpenGameArt",
+  "file": "chips-collide-1.ogg (Casino Audio)",
+  "author": "Kenney",
+  "url": "https://opengameart.org/content/54-casino-sound-effects-cards-dice-chips",
+  "license": "CC0",
+  "note": "single click"
  }
 ]

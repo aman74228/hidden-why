@@ -47,7 +47,7 @@ export const castBoxes = (pose: CamPose, fov: number, cast: CharacterProps[]): C
     const rect = (y0: number, y1: number, w: number) => {
       const out: THREE.Vector3[] = [];
       for (const y of [y0, y1])
-        for (const sx of [-1, 1]) out.push(new THREE.Vector3(x, y * k, z).addScaledVector(right, (sx * w * k) / 2));
+        for (const sx of [-1, 1]) out.push(new THREE.Vector3(x, y * k + (c.elev ?? 0), z).addScaledVector(right, (sx * w * k) / 2));
       return out;
     };
     const hy = s.neckY + s.headDY;

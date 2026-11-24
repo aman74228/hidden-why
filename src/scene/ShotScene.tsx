@@ -30,7 +30,11 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
   const cast = shot.cast ?? [];
   const camMove = useMemo(() => effectiveCamera(shot), [shot]);
   const move = useMemo(() => resolveMove(camMove, cast), [camMove, cast]);
-  const {pos, look} = move(p);
+  const {pos: pos0, look: look0} = move(p);
+  // hand-held / bumpy-ride shake (deterministic): `shake` = amplitude in metres
+  const sh = shot.shake ?? 0;
+  const pos = sh ? pos0.clone().add(new THREE.Vector3(Math.sin(t * 17.3) * 0.6 + Math.sin(t * 7.1) * 0.4, Math.abs(Math.sin(t * 7.3)) * 1.2 + Math.sin(t * 23.0) * 0.3, Math.sin(t * 11.9) * 0.4).multiplyScalar(sh)) : pos0;
+  const look = sh ? look0.clone().add(new THREE.Vector3(Math.sin(t * 9.7) * 0.8, Math.sin(t * 13.3) * 0.8 + Math.abs(Math.sin(t * 7.3)), 0).multiplyScalar(sh)) : look0;
   const fov = camMove.fov ?? DEFAULT_FOV;
   // lighting / sky, optionally blending to another preset (e.g. sun breaks through)
   const base = resolveSet(shot);
@@ -106,7 +110,7 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
           ))}
           <FrameCheck samples={samples} fov={fov} shotId={shot.id} />
           <EffectComposer multisampling={2}>
-            <DepthOfField worldFocusDistance={shot.focusDist ?? focus.dist} worldFocusRange={shot.focusDist ? 1.2 : focus.range} bokehScale={shot.dof ?? 2.2} />
+            <DepthOfField worldFocusDistance={Array.isArray(shot.focusDist) ? shot.focusDist[0] + (shot.focusDist[1] - shot.focusDist[0]) * (p * p * (3 - 2 * p)) : shot.focusDist ?? focus.dist} worldFocusRange={shot.focusDist ? 1.2 : focus.range} bokehScale={shot.dof ?? 2.2} />
             <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.2} intensity={0.85} mipmapBlur radius={0.7} />
             <Vignette offset={0.32} darkness={0.5} />
           </EffectComposer>

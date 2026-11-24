@@ -28,7 +28,8 @@ export type Shot = SetSpec & {
   grade?: 'flashback';
   roll?: [number, number]; // camera dutch roll in degrees over the shot
   dof?: number; // bokeh scale (0 = off)
-  focusDist?: number; // metres, overrides the cast-based focus
+  shake?: number; // camera shake amplitude (m): bumpy truck POV
+  focusDist?: number | [number, number]; // metres, overrides the cast-based focus; [from, to] = rack focus over the shot
   sfx?: {name: string; at: number; volume?: number; dur?: number}[]; // public/sfx/<name>.mp3, `at` seconds into the shot
 };
 

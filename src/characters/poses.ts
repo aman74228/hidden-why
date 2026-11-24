@@ -4,7 +4,7 @@
 // character faces (the pointing arm).
 
 // Core poses (CLAUDE.md) + story extras.
-export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad', 'nervous', 'defeated'] as const;
+export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad', 'nervous', 'defeated', 'binoculars', 'hat-tap', 'wave', 'aim', 'jaw-drop', 'bowl', 'aim-sweat', 'nervous-up'] as const;
 export type PoseName = (typeof POSES)[number];
 
 export type EyeStyle = 'dot' | 'wide' | 'smug' | 'calm' | 'happy' | 'closed';
@@ -255,6 +255,43 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
     case 'defeated':
       // brows up and in, mouth turned down, slumped: head and shoulders drop, arms hang
       return {...base, armA: [4, -2], armB: [4, -2], bodyDY: -0.018, bodyRot: -3, headRot: -6, headDY: -0.045, faceDY: -0.03, eyes: 'dot', gaze: [0, -0.35], mouth: 'frown', mouthOpen: 0, brow: 0.2, browIn: 1};
+    case 'binoculars': {
+      // both hands up at the eyes holding binoculars (drawn with the 'binoculars' prop)
+      const sw = s(ph * 1.3) * 1.5;
+      return {...base, armA: [62 + sw, -150], armB: [62 - sw, -150], headRot: 3 + sw * 0.5, mouth: 'O', mouthOpen: 0.35, brow: 0.7};
+    }
+    case 'hat-tap': {
+      // hand up to the hat brim, two smug taps (~0.3 s and ~0.7 s)
+      const tap = Math.exp(-Math.pow((t - 0.3) / 0.06, 2)) + Math.exp(-Math.pow((t - 0.7) / 0.06, 2));
+      return {...base, armA: [138 - tap * 6, -118 + tap * 6], headRot: 6 - tap * 2, eyes: 'smug', mouth: 'smirk', brow: 0.8};
+    }
+    case 'wave': {
+      // waving a hat overhead to herd the birds
+      const w = s(ph * 9);
+      return {...base, armA: [150 + w * 16, 15 + w * 10], armB: [40 + w * 6, -30], bodyRot: w * 2, headRot: -4, mouth: 'open', mouthOpen: 0.5 + w * 0.2, brow: 0.6};
+    }
+    case 'aim':
+      // both arms forward at chest height on a gun, squinting
+      return {...base, armA: [78, -14], armB: [64, -42], bodyRot: -4, headRot: -3, eyes: 'smug', mouth: 'flat', brow: -0.3};
+    case 'aim-sweat': {
+      // waiting for the birds to come close: aiming, sweating, tiny tremble
+      const tr = s(ph * 31) * 1.2;
+      return {...base, armA: [78 + tr, -14], armB: [64, -42], bodyRot: -4, headRot: -3 + tr * 0.3, eyes: 'wide', mouth: 'flat', brow: 0.5, browIn: 0.7, sweat: true};
+    }
+    case 'nervous-up': {
+      // losing and knows it: glancing up at his own hat
+      const fid = s(ph * 11);
+      return {...base, armA: [26 + fid * 4, -96], armB: [24 - fid * 4, -100], bodyDY: 0.006, headRot: 4 + s(ph * 9) * 1.2, headDY: -0.08, eyes: 'dot', gaze: [-0.1, 0.75], mouth: 'wobble', mouthOpen: 0, brow: 0.5, browIn: 0.9, sweat: true};
+    }
+    case 'jaw-drop':
+      // the payoff face: jaw dropped, brows up and in, slumped
+      return {...base, armA: [8, -2], armB: [8, -2], bodyDY: -0.015, bodyRot: -2, headRot: -4, headDY: -0.03, eyes: 'wide', mouth: 'O', mouthOpen: 1, brow: 0.4, browIn: 1};
+    case 'bowl': {
+      // underarm bowling swing: back (t<0.35), forward release at ~0.5 s, follow-through
+      const u = Math.min(1, t / 0.6);
+      const a = u < 0.55 ? -40 - 30 * (u / 0.55) : -70 + 190 * ((u - 0.55) / 0.45);
+      return {...base, armA: [a, -10], bodyRot: -6 + u * 10, headRot: -6, eyes: 'calm', mouth: 'smile', brow: 0.3};
+    }
     case 'frown':
       return {...base, armA: [12, -88], armB: [18, -100], armsCrossed: true, headRot: -4 + s(ph * 1.3) * 1.5, eyes: 'smug', mouth: 'flat', brow: -0.5};
     case 'lift':
