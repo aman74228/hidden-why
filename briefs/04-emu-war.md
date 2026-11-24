@@ -1,5 +1,5 @@
 # Brief #4: The War Australia Lost to Birds
-Slug: `04-emu-war` · Strand: Strange war tactics (cartoony, no gore) · Target 54–58 s · 196 spoken words (Chatterbox reads about 237 wpm of speech, so this lands at about 50 s of speech plus pauses)
+Slug: `04-emu-war` · Strand: Strange war tactics (cartoony, no gore) · Target 54–58 s · 198 spoken words (VO v1: 56.2 s) (Chatterbox reads about 237 wpm of speech, so this lands at about 50 s of speech plus pauses)
 Read CLAUDE.md and LESSONS.md first. Cast: **Milo** (curious kid), **Vik** (bets and loses), **Gus** (shows the answer).
 
 ## Tone note
@@ -25,7 +25,7 @@ This is a comedy of failure, not a shooting video. Never show an emu being hit, 
 | 9 | That's when Gus rolls a bowling ball at a tight pack of marbles. Strike. | 0.6 | 0.4 s |
 | 10 | Then he scatters them across the floor, and the ball hits just one. | 0.55 | 0.5 s (reaction shot) |
 | 11 | You see, a machine gun only wins against a crowd, and the emus refused to be a crowd. | 0.55 | 0.35 s |
-| 12 | And Vik's hat? An emu's wearing it. | 0.75 | 0.4 s |
+| 12 | And Vik's hat? Now an emu's wearing it. | 0.75 | 0.4 s |
 | 13 | So next time someone says birds can't win a war, ask them… | 0.6 | none (loop cut to line 1) |
 Target 54–58 s. If over 60 s, shorten pauses first (minimum 0.25 s). If still over, cut "On day one," from line 4.
 

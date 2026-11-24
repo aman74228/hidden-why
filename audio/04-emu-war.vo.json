@@ -3,11 +3,30 @@
  "engine": "chatterbox/original",
  "seed": 1750,
  "cfg_weight": 0.3,
- "total_s": 56.19,
- "words": 197,
- "wpm_overall": 210.4,
- "wpm_speech_only": 239.3,
- "render": [],
+ "total_s": 56.38,
+ "words": 198,
+ "wpm_overall": 210.7,
+ "wpm_speech_only": 238.7,
+ "render": [
+  {
+   "load_s": 11.4,
+   "render_s": 11.0,
+   "parts": 1,
+   "sr": 24000
+  },
+  {
+   "load_s": 10.6,
+   "render_s": 12.2,
+   "parts": 1,
+   "sr": 24000
+  },
+  {
+   "load_s": 11.1,
+   "render_s": 10.6,
+   "parts": 1,
+   "sr": 24000
+  }
+ ],
  "lines": [
   {
    "n": 1,
@@ -285,18 +304,18 @@
   {
    "n": 12,
    "start_s": 50.125,
-   "seconds": 2.19,
+   "seconds": 2.39,
    "pause_after": 0.4,
    "exaggeration": 0.75,
-   "try": 3,
-   "wer": 0.143,
+   "try": 2,
+   "wer": 0.125,
    "diff": [
     [
-     "an",
-     "and"
+     "viks",
+     "vikes"
     ]
    ],
-   "heard": "and Vic's hat, and Emu's wearing it.",
+   "heard": "And Vike's hat? Now an emu's wearing it.",
    "median_pitch_hz": null,
    "punct_pauses": [
     [
@@ -304,8 +323,8 @@
      "question",
      0.4,
      {
-      "natural": 0.17,
-      "added": 0.23
+      "natural": 0.34,
+      "added": 0.06
      }
     ]
    ],
@@ -313,7 +332,7 @@
   },
   {
    "n": 13,
-   "start_s": 52.715,
+   "start_s": 52.915,
    "seconds": 3.47,
    "pause_after": 0.0,
    "exaggeration": 0.6,

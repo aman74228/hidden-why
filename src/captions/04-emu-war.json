@@ -892,96 +892,101 @@
  {
   "word": "And",
   "start": 50.125,
-  "end": 50.325
+  "end": 50.305
  },
  {
   "word": "Vik's",
-  "start": 50.325,
-  "end": 50.705
+  "start": 50.305,
+  "end": 50.625
  },
  {
   "word": "hat?",
-  "start": 50.705,
-  "end": 50.865
+  "start": 50.625,
+  "end": 50.765
  },
  {
-  "word": "An",
-  "start": 50.865,
-  "end": 51.435
+  "word": "Now",
+  "start": 51.405,
+  "end": 51.445
+ },
+ {
+  "word": "an",
+  "start": 51.445,
+  "end": 51.605
  },
  {
   "word": "emu's",
-  "start": 51.435,
-  "end": 51.815
+  "start": 51.605,
+  "end": 52.005
  },
  {
   "word": "wearing",
-  "start": 51.815,
-  "end": 52.035
+  "start": 52.005,
+  "end": 52.205
  },
  {
   "word": "it.",
-  "start": 52.035,
-  "end": 52.235
+  "start": 52.205,
+  "end": 52.445
  },
  {
   "word": "So",
-  "start": 52.715,
-  "end": 52.955
+  "start": 52.915,
+  "end": 53.155
  },
  {
   "word": "next",
-  "start": 53.195,
-  "end": 53.335
+  "start": 53.395,
+  "end": 53.535
  },
  {
   "word": "time",
-  "start": 53.335,
-  "end": 53.615
+  "start": 53.535,
+  "end": 53.815
  },
  {
   "word": "someone",
-  "start": 53.615,
-  "end": 53.935
+  "start": 53.815,
+  "end": 54.135
  },
  {
   "word": "says",
-  "start": 53.935,
-  "end": 54.195
+  "start": 54.135,
+  "end": 54.395
  },
  {
   "word": "birds",
-  "start": 54.195,
-  "end": 54.535
+  "start": 54.395,
+  "end": 54.735
  },
  {
   "word": "can't",
-  "start": 54.535,
-  "end": 54.875
- },
- {
-  "word": "win",
-  "start": 54.875,
-  "end": 54.975
- },
- {
-  "word": "a",
-  "start": 54.975,
+  "start": 54.735,
   "end": 55.075
  },
  {
-  "word": "war,",
+  "word": "win",
   "start": 55.075,
-  "end": 55.295
+  "end": 55.175
+ },
+ {
+  "word": "a",
+  "start": 55.175,
+  "end": 55.275
+ },
+ {
+  "word": "war,",
+  "start": 55.275,
+  "end": 55.495
  },
  {
   "word": "ask",
-  "start": 55.665,
-  "end": 55.785
+  "start": 55.865,
+  "end": 55.985
  },
  {
   "word": "them…",
-  "start": 55.785,
-  "end": 56.045
+  "start": 55.985,
+  "end": 56.245
  }
 ]
