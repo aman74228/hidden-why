@@ -4,7 +4,7 @@
 // character faces (the pointing arm).
 
 // Core poses (CLAUDE.md) + story extras.
-export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad', 'nervous', 'defeated', 'binoculars', 'hat-tap', 'wave', 'aim', 'jaw-drop', 'bowl', 'aim-sweat', 'nervous-up'] as const;
+export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad', 'nervous', 'defeated', 'binoculars', 'hat-tap', 'wave', 'aim', 'jaw-drop', 'bowl', 'aim-sweat', 'nervous-up', 'yank'] as const;
 export type PoseName = (typeof POSES)[number];
 
 export type EyeStyle = 'dot' | 'wide' | 'smug' | 'calm' | 'happy' | 'closed';
@@ -277,6 +277,11 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
       // waiting for the birds to come close: aiming, sweating, tiny tremble
       const tr = s(ph * 31) * 1.2;
       return {...base, armA: [78 + tr, -14], armB: [64, -42], bodyRot: -4, headRot: -3 + tr * 0.3, eyes: 'wide', mouth: 'flat', brow: 0.5, browIn: 0.7, sweat: true};
+    }
+    case 'yank': {
+      // yanking the jammed gun's cocking handle back, again and again, sweating
+      const y = Math.max(0, s(t * 9));
+      return {...base, armA: [70 - y * 22, -30 - y * 30], armB: [58, -50], bodyRot: -6 + y * 5, headRot: -4 + y * 3, eyes: 'wide', mouth: 'open', mouthOpen: 0.35 + y * 0.3, brow: 0.6, browIn: 0.8, sweat: true};
     }
     case 'nervous-up': {
       // losing and knows it: glancing up at his own hat

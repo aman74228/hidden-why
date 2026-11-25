@@ -22,7 +22,7 @@ export type CharacterProps = {
   outfit?: Partial<Outfit>;
   delay?: number; // seconds offset for animation phase
   poses?: {at: number; pose: PoseName; holding?: Holdable | null; props?: CharProp[]}[]; // pose timeline (seconds into the shot); overrides `pose` (and optionally what is held/worn) from `at`
-  enter?: {from: [number, number]; at?: number; dur?: number; pow?: number; ride?: boolean}; // walk in from `from` to `pos` (pow: ease-out power; ride: no walking bob)
+  enter?: {from: [number, number]; at?: number; dur?: number; pow?: number; ride?: boolean; easeIn?: boolean; glide?: boolean}; // walk in from `from` to `pos` (pow: ease-out power; ride: no walking bob)
   hideAt?: number; // hidden from this time on
   shake?: number; // bounce like the truck bed (same motion as Truck's bumpy ride)
   appearAt?: number; // hidden before this time (seconds into the shot)
@@ -100,7 +100,7 @@ export const Character: React.FC<CharacterProps> = ({
     const a0 = enter.at ?? 0;
     const d = enter.dur ?? 1.2;
     const u = Math.min(1, Math.max(0, (t - a0) / d));
-    const e = 1 - Math.pow(1 - u, enter.pow ?? 2);
+    const e = enter.glide ? 0.5 - 0.5 * Math.cos(Math.PI * u) : enter.easeIn ? Math.pow(u, enter.pow ?? 2) : 1 - Math.pow(1 - u, enter.pow ?? 2);
     pos = [enter.from[0] + (pos[0] - enter.from[0]) * e, enter.from[1] + (pos[1] - enter.from[1]) * e];
     if (u > 0 && u < 1 && !enter.ride) walk = Math.abs(Math.sin(t * 11)) * 0.025;
   }
@@ -535,6 +535,11 @@ const Head: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState; t: number; seed
               <Part s={{kind: 'circle', r: R * 0.27}} color="#2A2C38" z={0.21} pos={[sd * spec.eyeDX * 1.25, 0]} sil />
               <Part s={{kind: 'circle', r: R * 0.17}} color="#3E6A86" z={0.22} pos={[sd * spec.eyeDX * 1.25, 0]} outline={false} />
               <Part s={{kind: 'circle', r: R * 0.06}} color="#CFEFFF" z={0.23} pos={[sd * spec.eyeDX * 1.25 + R * 0.06, R * 0.07]} outline={false} />
+              {/* the hand gripping this barrel: palm under it, fingers wrapped over the outside */}
+              <Part s={{kind: 'ellipse', rx: R * 0.17, ry: R * 0.14}} color={spec.skin} z={0.235} pos={[sd * (spec.eyeDX * 1.25 + R * 0.22), -R * 0.16]} />
+              {[0, 1, 2].map((k) => (
+                <Part key={k} s={{kind: 'capsule', len: R * 0.12, r: R * 0.045}} color={spec.skin} z={0.24} pos={[sd * (spec.eyeDX * 1.25 + R * 0.25), R * (0.12 - k * 0.09)]} rot={sd * -1.35} />
+              ))}
             </group>
           ))}
         </group>

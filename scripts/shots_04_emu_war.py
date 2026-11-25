@@ -123,8 +123,9 @@ DROP_CAM = None                    # marble play area on the floorboards (ball r
 # the hook: Milo climbing the gate (road side), binoculars on the field; camera in the field
 HOOK_MILO = c(MILO, pos=[0.35, 1.45], elev=0.46, facing=1, pose="binoculars", props=["binoculars"])
 HOOK = frame(body(HOOK_MILO, crop=0.42) + [[0.35, 0.9, 1.2]], az=188, el=2, fov=40, push=0.22, swing=-5, box=(0.12, 0.88, 0.1, 0.86))
-HOOK_EMU = {"pos": [0.72, 0.5], "facing": 1, "gait": "stand", "seed": 2, "s": 0.95, "rise": {"at": 0.08, "dur": 0.26, "from": 1.4}}  # head lands at x ~0.37, in front of the lenses
-HOOK_B = frame([[0.35, 1.95, 1.45], [0.6, 1.25, 1.45], [0.05, 1.25, 1.45], [0.75, 1.2, 0.5]], az=192, el=1, fov=40, push=0.12, swing=-3, box=(0.1, 0.9, 0.12, 0.8))
+BIRDS_T = rel("hook-emu", word_t("birds", T(1)))
+HOOK_EMU = {"pos": [0.3, 0.5], "facing": 1, "gait": "stand", "seed": 2, "s": 0.96, "view": "front", "rise": {"at": round(BIRDS_T - 0.24, 2), "dur": 0.24, "from": 1.5}}  # face-on, head right in front of the lenses on "birds"
+HOOK_B = dolly([0.4, 1.64, -1.1], [0.34, 1.62, -0.88], [0.33, 1.66, 1.45], fov=40)  # emu head (z 0.5) sits in front of the binoculars' plane (~z 0.85)
 
 # Vik at the gate (road side), Milo still on the gate
 BET_VIK = c(VIK, pos=[-0.62, 1.75], facing=1, pose="hat-tap", props=["fedora"],
@@ -133,16 +134,20 @@ BET_MILO = c(MILO, pos=[0.18, 1.45], elev=0.46, facing=1, pose="look-up")
 HAT_AT = 1.95
 
 # truck: three soldiers ride the bed in
-DRIVE = {"from": [-9.5, 0, ROAD_Z], "at": 0.0, "dur": 1.9}
-RIDERS = [(-2.95, ROAD_Z + 0.5, "cross-arms", 11, -1), (-2.15, ROAD_Z + 0.35, "frown", 12, 1), (-1.4, ROAD_Z + 0.55, "idle", 13, -1)]
-TRUCK_START = frame(sum([body({"who": "soldier", "pos": [x + dx, z], "elev": BED_Y}, crop=0.0) for x, z, *_ in RIDERS for dx in (-8.5, 0)], []) + [[-12.5, 0.2, ROAD_Z], [1.8, 0.2, ROAD_Z]], az=6, el=10, fov=42, push=0.0, swing=0)
-TRUCK_END = frame(sum([body({"who": "soldier", "pos": [x, z], "elev": BED_Y}, crop=0.3) for x, z, *_ in RIDERS], []) + [[-1.0, 1.4, 4.5], [-3.0, 0.9, 3.8], [-3.35, 0.8, 5.1]], az=8, el=10, fov=42, push=0.0, swing=0)
+DRIVE = {"from": [-7.5, 0, ROAD_Z], "at": 0.0, "dur": round(dur("truck-arrives"), 3), "glide": True}
+DX = DRIVE["from"][0] - TRUCK_STOP[0]
+RIDERS = [(-2.95, ROAD_Z + 0.45, "aim", 11, -1), (-2.15, ROAD_Z + 0.2, "point", 12, 1), (-1.35, ROAD_Z + 0.5, "aim", 13, 1)]
+HELD = [{"pos": [round(x + f * 0.5 - TRUCK_STOP[0], 3), 2.02, round(z + 0.14 - ROAD_Z, 3)], "rotY": 0 if f > 0 else round(PI, 4)} for x, z, p, sd, f in RIDERS if p == "aim"]
+TRUCK_END = frame(sum([body({"who": "soldier", "pos": [x, z], "elev": BED_Y}, crop=0.38) for x, z, *_ in RIDERS], []) + [[-3.95, 2.0, ROAD_Z + 0.6], [-0.35, 2.0, ROAD_Z + 0.6]], az=6, el=6, fov=42, push=0.0, swing=0, box=(0.08, 0.92, 0.12, 0.88))
+TRUCK_START = {"to": [TRUCK_END["to"][0] + DX, TRUCK_END["to"][1], TRUCK_END["to"][2]], "look": [TRUCK_END["look"][0] + DX, TRUCK_END["look"][1], TRUCK_END["look"][2]]}
 def rider(x, z, pose, seed, facing=1):
     return c(SOLDIER, pos=[x, z], elev=BED_Y, facing=facing, pose=pose, seed=seed,
-             enter={"from": [x - 8.5, z], "at": 0.0, "dur": 1.9, "pow": 3, "ride": True})
+             enter={"from": [x + DX, z], "at": 0.0, "dur": DRIVE["dur"], "glide": True, "ride": True})
 
-SOLDIERS_FENCE = [c(SOLDIER, pos=[-5.6, 2.7], facing=-1, pose="aim", seed=3), c(SOLDIER, pos=[-3.9, 2.8], facing=1, pose="aim", seed=4, props=["moustache"])]
-GUNS_FENCE = [{"pos": [-5.0, 0.25, 2.0], "rot": [0, round(PI / 2 + 0.15, 3), 0]}, {"pos": [-3.3, 0.25, 2.05], "rot": [0, round(PI / 2 - 0.1, 3), 0]}]
+SOLDIERS_FENCE = [c(SOLDIER, pos=[-1.55, 2.75], facing=-1, pose="aim", seed=3), c(SOLDIER, pos=[1.35, 2.8], facing=1, pose="aim", seed=4, props=["moustache"])]
+GUNS_FENCE = [{"pos": [-1.0, 0.25, 2.05], "rot": [0, round(PI / 2 + 0.85, 3), 0]}, {"pos": [0.8, 0.25, 2.1], "rot": [0, round(PI / 2 - 0.85, 3), 0]}]  # angled across the field, never down the lens
+FARMERS = [c(FARMER, pos=[1.05, -7.4], facing=1, pose="wave", holding="strawhat", props=["nohat"], seed=21), c(FARMER, pos=[-1.15, -7.9], facing=-1, pose="wave", holding="strawhat", props=["nohat"], seed=22)]
+HERD_CAM = frame(body(FARMERS[0], crop=0.32) + body(FARMERS[1], crop=0.32) + [[-1.55, 2.0, 2.75], [1.35, 2.0, 2.8], [-3, 0.6, -4.5], [3, 0.6, -4.5]], az=182, el=9, fov=46, push=0.08, swing=-3, box=(0.06, 0.94, 0.1, 0.92))
 
 # water hole: soldiers in the trench behind the bank (camera side)
 WH_SOLDIER = c(SOLDIER, pos=[0.95, 2.1], elev=-0.55, facing=-1, pose="aim", seed=5)
@@ -179,26 +184,27 @@ WIND = lambda sid, gain=-9: {"name": "farm-wind", "at": 0, "dur": round(dur(sid)
 split_at = rel("split-drone", word_t("split", T(4))) - 0.1
 puffs = [round(split_at + 0.55 + k * 0.32, 2) for k in range(6) if split_at + 0.55 + k * 0.32 < dur("split-drone") - 0.2]
 jam_at = rel("gun-jam", word_t("jammed", T(6))) - 0.06
+JAM_SOLDIER = c(SOLDIER, pos=[0.42, 1.95], elev=-0.55, facing=1, pose="aim-sweat", seed=5, poses=[{"at": round(jam_at + 0.05, 2), "pose": "yank"}])
+JAM_CAM = frame(body(JAM_SOLDIER, crop=0.45) + [[0.3, 1.05, 0.95], [0.3, 0.85, 1.7]], az=96, el=4, fov=44, push=0.05, swing=0, box=(0.16, 0.84, 0.16, 0.84))
 
 DROP_CAM = frame(body(DROP_CAST[0], crop=0.45) + body(DROP_CAST[1], crop=0.4), az=182, el=2, fov=44, push=0.06, swing=-1)
 
-_pull = body(c(SOLDIER, pos=[-1.35, ROAD_Z + 0.4], elev=BED_Y)) + body(c(SOLDIER, pos=[0.4, ROAD_Z + 1.15])) + [[2.5, 1.75, 0.55], [2.9, 0.0, 0.55], [2.1, 0.0, 0.55]]
-PULL_START = frame(_pull, az=200, el=4, fov=44, push=0.0, swing=0, box=(0.1, 0.9, 0.1, 0.88))
-PULL_END = frame(_pull, az=204, el=8, fov=44, push=0.0, swing=0, box=(0.2, 0.8, 0.16, 0.84))
+_pull = body(c(SOLDIER, pos=[-1.35, ROAD_Z + 0.4], elev=BED_Y), crop=0.4) + body(c(SOLDIER, pos=[0.25, ROAD_Z + 0.4], elev=BED_Y), crop=0.4) + [[0.55, 1.75, 0.6], [0.95, 0.9, 0.6], [0.15, 0.9, 0.6]]
+PULL_CAM = frame(_pull, az=200, el=3, fov=44, push=0.1, swing=-3, box=(0.08, 0.92, 0.12, 0.92))
 
 shots = [
   # 1 HOOK: Milo on the gate, binoculars up; an emu head pops up right in front of the lenses on "birds?"
-  {"id": "hook-binoculars", "set": "farm",
+  {"id": "hook-binoculars", "set": "farm", "nounsOk": {"soldiers": "the hook's question (army) is answered later", "guns": "the hook's question"},
    "camera": HOOK, "cast": [HOOK_MILO], "layout": "manual", "dof": 1.0, "focusDist": 2.0,
    "sfx": [WIND("hook-binoculars")]},
   # 1b ...to birds? an emu head pops up right in front of the lenses (tighter, quick push)
-  {"id": "hook-emu", "beat": 1, "stillAt": 0.6, "set": "farm",
+  {"id": "hook-emu", "beat": 1, "stillAt": 0.55, "set": "farm",
    "fx": {"farm": {"emus": [HOOK_EMU]}},
-   "camera": HOOK_B, "cast": [c(HOOK_MILO, poses=[{"at": 0.3, "pose": "shock", "props": ["binoculars"]}])], "layout": "manual", "dof": 1.0, "focusDist": 1.6,
-   "sfx": [WIND("hook-emu"), {"name": "footsteps-dirt", "at": 0.08, "gain": -4}, {"name": "pop-soft", "at": 0.3, "gain": -6}]},
+   "camera": HOOK_B, "cast": [c(HOOK_MILO, poses=[{"at": round(BIRDS_T + 0.15, 2), "pose": "shock", "props": ["binoculars"]}])], "layout": "manual", "dof": 1.0, "focusDist": 1.4,
+   "sfx": [WIND("hook-emu"), {"name": "footsteps-dirt", "at": round(BIRDS_T - 0.24, 2), "gain": -4}, {"name": "pop-soft", "at": round(BIRDS_T, 2), "gain": -6}]},
   # 2 the bet: Vik taps his saffron-band fedora, then sets it on the gate post like a trophy
   {"id": "bet-hat", "beat": 2, "stillAt": 0.75, "set": "farm",
-   "fx": {"farm": {"hatPost": GATE_POST, "hatPostAt": HAT_AT}},
+   "fx": {"farm": {"hatPost": GATE_POST, "hatPostAt": HAT_AT, "flocks": [{"n": 3, "center": [-1.4, ROAD_Z + 0.8], "spread": [2.2, 0.8], "seed": 59, "gait": "walk", "vel": [0.5, 0], "minDist": 0.8}]}},
    "camera": frame(body(BET_VIK, crop=0.25) + body(BET_MILO, crop=0.35) + [[GATE_POST[0] - 0.25, GATE_POST[1] + 0.2, GATE_POST[2]]], az=186, el=3, fov=44, push=0.18, swing=-4),
    "cast": [BET_VIK, BET_MILO], "layout": "manual", "dof": 1.0, "focusDist": 2.3,
    "titleCard": {"label": "The bet", "word": "Vik's hat", "at": 0.15, "duration": round(dur("bet-hat") - 0.35, 2)},
@@ -211,23 +217,23 @@ shots = [
    "sfx": [WIND("flock-wheat", -8)] + sfx_steps(0.2, dur("flock-wheat"), 0.45, -10)},
   # 3b ...so the army sent three soldiers and two machine guns: the truck pulls up; push in on the guns
   {"id": "truck-arrives", "set": "farm",
-   "fx": {"farm": {"truck": dict(pos=TRUCK_STOP, drive=DRIVE, guns=2, dust=True)}},
+   "fx": {"farm": {"truck": dict(pos=TRUCK_STOP, drive=DRIVE, heldGuns=HELD, dust=True)}},
    "camera": dict(TRUCK_END, **{"from": TRUCK_START["to"], "look": TRUCK_START["look"], "lookTo": TRUCK_END["look"]}),
    "cast": [rider(x, z, p, sd, f) for x, z, p, sd, f in RIDERS], "layout": "manual",
    "titleCard": {"label": "Ammo", "word": "10,000 bullets", "at": 0.9, "duration": round(dur("truck-arrives") - 1.05, 2)},
    "sfx": [{"name": "truck-engine", "at": 0, "dur": round(dur("truck-arrives"), 2), "gain": -4}]},
   # 4a day one: farmers wave their hats and herd the flock toward the guns at the fence
   {"id": "herd", "set": "farm",
-   "fx": {"farm": {"flocks": [{"n": 24, "center": [1.5, -5.0], "spread": [9, 4], "seed": 7, "gait": "walk", "vel": [-0.8, 0.55], "minDist": 0.8}], "guns": GUNS_FENCE}},
-   "camera": dolly([8.5, 6.2, 10], [6.5, 4.9, 8.2], [-0.5, 0.5, -3.5], look_to=[-1.5, 0.5, -2.5], fov=44),
-   "cast": [c(FARMER, pos=[5.2, -8.4], facing=-1, pose="wave", holding="strawhat", props=["nohat"], seed=21), c(FARMER, pos=[2.0, -9.2], facing=-1, pose="wave", holding="strawhat", props=["nohat"], seed=22)] + SOLDIERS_FENCE,
+   "fx": {"farm": {"flocks": [{"n": 22, "center": [0, -4.4], "spread": [6.5, 2.6], "seed": 7, "gait": "walk", "vel": [0.0, 0.75], "minDist": 0.8}], "guns": GUNS_FENCE}},
+   "camera": HERD_CAM,
+   "cast": FARMERS + SOLDIERS_FENCE,
    "layout": "manual",
    "sfx": [WIND("herd", -10)] + sfx_steps(0.1, dur("herd"), 0.3, -8)},
   # 4b ...but the emus split into little groups and ran out of range (drone view; dust puffs in empty ground)
-  {"id": "split-drone", "beat": 3, "stillAt": round(split_at + 0.9, 2), "set": "farm",
-   "fx": {"farm": {"flocks": [{"n": 34, "center": [-0.5, -3.2], "spread": [7, 3.6], "seed": 9, "gait": "walk", "minDist": 0.75, "split": {"at": split_at, "speed": 3.4, "groups": 6}}],
+  {"id": "split-drone", "beat": 3, "stillAt": round(split_at + 0.6, 2), "set": "farm",
+   "fx": {"farm": {"flocks": [{"n": 30, "center": [-0.5, -3.2], "spread": [5, 2.6], "seed": 9, "gait": "walk", "minDist": 0.75, "split": {"at": split_at, "speed": 3.6, "groups": 6}}],
                    "guns": GUNS_FENCE, "puffs": {"center": [-0.5, -3.2], "r": 1.4, "times": puffs}}},
-   "camera": dolly([0.5, 11.5, 8.5], [1.5, 10.2, 7.2], [-0.5, 0, -3.2], look_to=[-0.5, 0, -2.6], fov=46),
+   "camera": dolly([1.0, 7.2, 10.4], [0.5, 6.6, 9.6], [-0.3, 0.6, -3.2], look_to=[-0.3, 0.6, -2.8], fov=52),
    "cast": SOLDIERS_FENCE, "layout": "manual",
    "sfx": [WIND("split-drone", -10)] + [{"name": "gunfire-distant", "at": p, "gain": -9} for p in puffs] + sfx_steps(split_at, dur("split-drone"), 0.18, -8)},
   # 5a the ambush at the water hole: low over the gun on the dirt bank, rack focus to the emus
@@ -246,15 +252,15 @@ shots = [
   # 6a sweat on a soldier's face: waiting until the birds are close...
   {"id": "soldier-sweat", "set": "waterhole",
    "fx": {"waterhole": {"gun": {"pos": WH_GUN, "rot": [0, round(PI / 2, 3), 0]},
-                        "flocks": [{"n": 12, "center": [0, 0], "spread": [1, 1], "seed": 17, "line": {"from": [9, -19], "to": [1.5, -7.5], "speed": 1.4}}]}},
+                        "flocks": [{"n": 12, "center": [0, 0], "spread": [1, 1], "seed": 17, "line": {"from": [5, -20], "to": [-1.0, -7.0], "speed": 1.4}}]}},
    "camera": frame(body(WH_SOLDIER, crop=0.6), az=14, el=1, fov=40, push=0.12, swing=3, box=(0.12, 0.88, 0.1, 0.92)),
    "cast": [c(WH_SOLDIER, pose="aim-sweat")], "layout": "manual", "dof": 1.6, "focusDist": 1.3},
   # 6b ...and the gun jammed after just twelve: insert, "chk", the pan magazine stuck; emus scatter unharmed
   {"id": "gun-jam", "beat": 4, "stillAt": round(jam_at + 0.3, 2), "set": "waterhole",
    "fx": {"waterhole": {"gun": {"pos": WH_GUN, "rot": [0, round(PI / 2, 3), 0], "jamAt": jam_at},
-                        "flocks": [{"n": 16, "center": [1.0, -7.2], "spread": [7, 2.6], "seed": 19, "gait": "walk", "split": {"at": round(jam_at + 0.25, 2), "speed": 4.2, "groups": 5, "dirDeg": [195, 225, 265, 305, 340]}}]}},
-   "camera": dolly([1.25, 1.2, 1.95], [1.0, 1.12, 1.75], [0.3, 0.95, 1.2], look_to=[0.25, 0.9, 0.9], fov=40),
-   "dof": 1.6, "focusDist": 0.85,
+                        "flocks": [{"n": 14, "center": [-4.6, 0.6], "spread": [3.2, 3.0], "seed": 19, "gait": "walk", "minDist": 0.8, "split": {"at": round(jam_at + 0.25, 2), "speed": 4.2, "groups": 5, "dirDeg": [120, 150, 180, 210, 240]}}]}},
+   "camera": JAM_CAM, "dof": 1.2, "focusDist": 2.0,
+   "cast": [JAM_SOLDIER], "layout": "manual",
    "sfx": [{"name": "gun-jam", "at": round(jam_at, 2), "gain": -2}, {"name": "gun-jam", "at": round(jam_at + 0.3, 2), "gain": -6}] + sfx_steps(jam_at + 0.3, dur("gun-jam"), 0.16, -9)},
   # 7a so they bolted a machine gun onto a truck: tracking side shot, bouncing, gunner hanging on
   {"id": "truck-track", "set": "farm",
@@ -274,18 +280,18 @@ shots = [
    "sfx": [{"name": "truck-engine", "at": 0, "dur": round(dur("emus-overtake"), 2), "gain": -4}] + sfx_steps(0.0, dur("emus-overtake"), 0.15, -8)},
   # 7c ...and the ground was so bumpy nobody could aim: shaky POV down the gun, emus weaving away
   {"id": "gun-pov", "set": "farm",
-   "fx": {"farm": {"truck": CHASE_TRUCK, "scroll": SPEED, "wheatRect": [-30, 70, -9, -1.0],
+   "fx": {"farm": {"truck": dict(CHASE_TRUCK, bedOnly=True, gunPost=[-0.9, 0, 0.0]), "scroll": SPEED, "wheatRect": [-30, 70, -9, -1.0],
                    "flocks": [{"n": 7, "center": [9, ROAD_Z - 0.4], "spread": [6, 3.2], "seed": 37, "vel": [REL * 0.5, 0], "gait": "run", "minDist": 1.4, "zigzag": 0.9}]}},
-   "camera": dolly([-1.55, 1.98, ROAD_Z + 1.12], [-1.45, 1.95, ROAD_Z + 1.08], [10, 1.35, ROAD_Z + 0.3], look_to=[10, 1.3, ROAD_Z + 0.0], fov=50),
+   "camera": dolly([-1.85, 1.98, ROAD_Z + 0.2], [-1.75, 1.95, ROAD_Z + 0.18], [10, 1.3, ROAD_Z + 0.1], look_to=[10, 1.25, ROAD_Z - 0.3], fov=50),
    "shake": 0.05,
    "sfx": [{"name": "truck-engine", "at": 0, "dur": round(dur("gun-pov"), 2), "gain": -2}]},
   # 8 after a week, the soldiers pulled out: loading the truck; one emu watches from the fence and blinks
   {"id": "pull-out", "set": "farm",
-   "fx": {"farm": {"truck": dict(pos=TRUCK_STOP, guns=1, crates=True),
-                   "emus": [{"pos": [2.5, 0.55], "facing": -1, "gait": "stand", "seed": 41, "lookCam": False, "blinkAt": [0.9, 1.8]}]}},
-   "camera": dict(PULL_END, **{"from": PULL_START["to"], "look": PULL_START["look"], "lookTo": PULL_END["look"]}),
-   "cast": [c(SOLDIER, pos=[-1.35, ROAD_Z + 0.4], elev=BED_Y, facing=-1, pose="frown", seed=11), c(SOLDIER, pos=[0.4, ROAD_Z + 1.15], facing=1, pose="stomp", seed=12, props=["moustache"])],
-   "layout": "manual", "dof": 1.2, "focusDist": [1.5, 3.0],
+   "fx": {"farm": {"truck": dict(pos=[TRUCK_STOP[0] + 1.6, 0, ROAD_Z], drive={"from": TRUCK_STOP, "at": 0.2, "dur": round(dur("pull-out") - 0.2, 2), "easeIn": True}, guns=1, crates=True, dust=True),
+                   "emus": [{"pos": [1.55, 0.5], "facing": 1, "gait": "stand", "seed": 41, "view": "threeq", "blinkAt": [0.9, 1.8]}]}},
+   "camera": dolly([2.0, 1.62, -1.0], [2.25, 1.68, -1.35], [0.45, 1.4, 3.0], look_to=[0.35, 1.4, 3.2], fov=44),
+   "cast": [c(SOLDIER, pos=[-1.35 + 1.6, ROAD_Z + 0.4], elev=BED_Y, facing=-1, pose="frown", seed=11, enter={"from": [-1.35, ROAD_Z + 0.4], "at": 0.2, "dur": round(dur("pull-out") - 0.2, 2), "pow": 3, "ride": True, "easeIn": True})],
+   "layout": "manual", "dof": 1.2, "focusDist": [1.6, 2.2],
    "sfx": [WIND("pull-out", -10), {"name": "truck-engine", "at": 0.3, "dur": round(dur("pull-out") - 0.3, 2), "gain": -10}]},
   # 9a Gus rolls a bowling ball at a tight pack of marbles (Milo and Vik watch)
   {"id": "gus-bowls", "set": "forge",
@@ -320,7 +326,7 @@ shots = [
    "camera": dolly([-1.2, 1.55, 3.4], [-0.8, 1.35, 3.0], [0.7, 0.05, 1.55], look_to=[1.0, 0.05, 1.55], fov=44), "dof": 1.0, "focusDist": 2.0,
    "sfx": [{"name": "bowling-roll", "at": 0, "gain": -6}, {"name": "marble-click", "at": round(hits_t, 2), "gain": -2}]},
   # 11a a machine gun only wins against a crowd: Gus holds the ball, nods at the scattered marbles
-  {"id": "gus-rule", "set": "forge",
+  {"id": "gus-rule", "set": "forge", "nounsOk": {"guns": "the bowling ball stands in for the machine gun (the demo's metaphor)"},
    "fx": {"forgeLumps": False, "noSparks": True, "floorboards": FLOOR,
           "marbles": {"mode": "scatter", "origin": SHOP, "rotY": round(PI / 2, 4), "rollAt": -20, "rollFrom": [0, -2], "speed": CLIP_SPEED, "struck": True, "noBall": True}},
    "camera": frame(body(c(GUS, pos=[-1.0, 1.25])) + [[0.9, 0.05, 1.9], [0.2, 0.05, 2.4]], az=10, el=8, fov=44, push=0.12, swing=3),
@@ -331,7 +337,7 @@ shots = [
    "camera": dolly([-3.5, 3.6, 9.5], [2.5, 3.2, 9.0], [-0.5, 0.7, -4], look_to=[0.5, 0.7, -4], fov=46),
    "sfx": [WIND("emus-spread", -8)]},
   # 12a "And Vik's hat?" the post is empty
-  {"id": "empty-post", "set": "farm",
+  {"id": "empty-post", "set": "farm", "nounsOk": {"hat": "the empty post is the point: the hat is gone"},
    "camera": frame(body(c(VIK, pos=[-0.62, 1.75]), crop=0.3) + [[GATE_POST[0] - 0.2, GATE_POST[1] + 0.15, GATE_POST[2]]], az=184, el=2, fov=44, push=0.12, swing=-3), "dof": 1.0, "focusDist": 2.4,
    "cast": [c(VIK, pos=[-0.62, 1.75], facing=1, pose="gasp")], "layout": "manual",
    "sfx": [WIND("empty-post", -11)]},
@@ -349,6 +355,7 @@ shots = [
   {"id": "loop-binoculars", "set": "farm",
    "camera": dolly([HOOK["from"][0] + 0.45, HOOK["from"][1] + 0.08, HOOK["from"][2] - 0.6], HOOK["from"], HOOK["look"], fov=HOOK["fov"]), "dof": 1.0, "focusDist": 2.0,
    "cast": [c(HOOK_MILO, poses=[{"at": 0, "pose": "laugh", "props": []}, {"at": 1.2, "pose": "binoculars", "props": ["binoculars"]}])], "layout": "manual",
+   "fx": {"farm": {"flocks": [{"n": 2, "center": [-0.9, ROAD_Z + 0.6], "spread": [1.2, 0.3], "seed": 53, "gait": "walk", "vel": [1.9, 0], "minDist": 0.9}]}},
    "sfx": [WIND("loop-binoculars")]},
 ]
 

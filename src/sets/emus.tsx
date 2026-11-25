@@ -433,6 +433,18 @@ export const Emu: React.FC<EmuProps> = ({pos, vel, facing: facingIn, gait = 'sta
         <circleGeometry args={[0.42, 24]} />
         <meshBasicMaterial color={C.indigoDeep} transparent opacity={0.32} toneMapped={false} depthWrite={false} />
       </mesh>
+      {/* dust trail kicked up behind a running bird */}
+      {run && sp > 1.5 &&
+        [0.45, 0.9, 1.4, 1.95].map((d, k) => {
+          const ux = (vel?.[0] ?? 0) / sp, uz = (vel?.[1] ?? 0) / sp;
+          const pulse = 0.85 + 0.15 * Math.sin(t * 9 + k * 1.7);
+          return (
+            <mesh key={`d${k}`} position={[-ux * d * s, (0.12 + k * 0.06) * s, -uz * d * s]} scale={(0.14 + k * 0.09) * s * pulse}>
+              <sphereGeometry args={[1, 10, 8]} />
+              <meshStandardMaterial color="#C9946A" transparent opacity={0.42 - k * 0.09} depthWrite={false} roughness={1} />
+            </mesh>
+          );
+        })}
       <group rotation={[0, yaw, 0]}>
         <group scale={[facing * s, s, s]} position={[0, dy * s, 0]}>
           <CharCtx.Provider value={ctx}>
@@ -998,7 +1010,10 @@ export const DustPuffs: React.FC<{center: [number, number]; r: number; times: nu
 export type TruckSpec = {
   pos: V3; // where it ends up (or stays)
   rotY?: number;
-  drive?: {from: V3; at?: number; dur: number}; // pulls up: decelerates into `pos`
+  drive?: {from: V3; at?: number; dur: number; easeIn?: boolean; glide?: boolean}; // glide: same ease as the camera dollies, so a tracking camera keeps it framed // pulls up: decelerates into `pos` (easeIn: pulls away from `from`)
+  heldGuns?: {pos: V3; rotY?: number}[]; // Lewis guns held by the soldiers on the bed (truck-relative)
+  bedOnly?: boolean; // POV from the bed: no cab / bonnet (the camera rides on the truck)
+  gunPost?: V3; // truck-relative spot of the post-mounted gun
   bumpy?: number; // 0..1 rough ground: bounce + roll
   wheelSpin?: number; // m/s of ground speed (treadmill shots)
   guns?: number; // Lewis guns on the bed (0..2)
@@ -1028,11 +1043,11 @@ export const Truck: React.FC<{spec: TruckSpec}> = ({spec}) => {
   let speed = spec.wheelSpin ?? 0;
   if (spec.drive) {
     const k = clamp01((t - (spec.drive.at ?? 0)) / spec.drive.dur);
-    const e = 1 - Math.pow(1 - k, 3);
+    const e = spec.drive.glide ? 0.5 - 0.5 * Math.cos(Math.PI * k) : spec.drive.easeIn ? k * k * k : 1 - Math.pow(1 - k, 3);
     x = spec.drive.from[0] + (spec.pos[0] - spec.drive.from[0]) * e;
     z = spec.drive.from[2] + (spec.pos[2] - spec.drive.from[2]) * e;
     const L = Math.hypot(spec.pos[0] - spec.drive.from[0], spec.pos[2] - spec.drive.from[2]);
-    speed = k < 1 ? (3 * Math.pow(1 - k, 2) * L) / spec.drive.dur : 0;
+    speed = k < 1 ? ((spec.drive.glide ? 0.5 * Math.PI * Math.sin(Math.PI * k) : 3 * (spec.drive.easeIn ? k * k : Math.pow(1 - k, 2))) * L) / spec.drive.dur : 0;
   }
   const dist = spec.drive ? x : t * speed;
   const spin = -dist / 0.46;
@@ -1060,6 +1075,8 @@ export const Truck: React.FC<{spec: TruckSpec}> = ({spec}) => {
             <Toon color="#1E2A28" />
           </mesh>
         ))}
+        {!spec.bedOnly && (
+        <>
         {/* round-nosed bonnet + radiator shell + grille */}
         <mesh position={[1.62, 1.0, 0]} rotation={[0, 0, Math.PI / 2]} castShadow>
           <cylinderGeometry args={[0.42, 0.42, 1.2, 20, 1, false, 0, Math.PI]} />
@@ -1096,6 +1113,8 @@ export const Truck: React.FC<{spec: TruckSpec}> = ({spec}) => {
         ))}
         <Box size={[0.04, 0.6, 1.3]} pos={[1.1, 1.85, 0]} color="#9FC0CC" />
         <Cyl r={0.18} h={0.05} pos={[0.95, 1.55, 0.35]} rot={[0, 0, 1.2]} color="#1E1E24" />
+        </>
+        )}
         {/* flatbed: boards + rails */}
         <Box size={[2.6, 0.1, 1.9]} pos={[-1.05, 0.78, 0]} color="#8E6A48" />
         {Array.from({length: 6}, (_, i) => (
@@ -1114,11 +1133,12 @@ export const Truck: React.FC<{spec: TruckSpec}> = ({spec}) => {
         {/* the Lewis guns on posts, pointing out to the side (never at the lens) */}
         {(spec.guns ?? 0) > 0 && (
           <>
-            <Cyl r={0.04} h={0.6} pos={[-0.9, 1.15, 0.3]} color="#2A2C30" />
-            <LewisGun pos={[-0.9, 1.5, 0.3]} rot={[0, 0.0, 0.05]} s={1.1} bipod={false} wobble={spec.bumpy ?? 0} />
+            <Cyl r={0.04} h={0.6} pos={[(spec.gunPost ?? [-0.9, 0, 0.3])[0], 1.15, (spec.gunPost ?? [-0.9, 0, 0.3])[2]]} color="#2A2C30" />
+            <LewisGun pos={[(spec.gunPost ?? [-0.9, 0, 0.3])[0], 1.5, (spec.gunPost ?? [-0.9, 0, 0.3])[2]]} rot={[0, 0.0, 0.05]} s={1.1} bipod={false} wobble={spec.bumpy ?? 0} />
           </>
         )}
         {(spec.guns ?? 0) > 1 && <LewisGun pos={[-1.8, 0.92, -0.4]} rot={[0, 0.35, 0]} s={1.0} />}
+        {spec.heldGuns?.map((g, i) => <LewisGun key={`h${i}`} pos={g.pos} rot={[0, g.rotY ?? 0, 0.08]} s={1.05} bipod={false} />)}
         {spec.crates && (
           <>
             <Box size={[0.6, 0.45, 0.5]} pos={[-1.7, 1.05, 0.4]} color="#9A7A50" />
@@ -1192,10 +1212,10 @@ export const FarmHD: React.FC<{fx: FarmFx}> = ({fx}) => {
         <GumTree pos={[-26, 0, -9]} s={1.2} seed={5} />
         {!fx.scroll && <Shed pos={[-14, 0, 6]} rotY={0.4} />}
         {!fx.scroll && <Farmhouse pos={[17, 0, 9]} rotY={-0.5} />}
-        {!fx.scroll && <GumTree pos={[3.4, 0, 8.6]} s={0.9} seed={17} />}
+        {!fx.scroll && <GumTree pos={[4.5, 0, 11.5]} s={0.9} seed={17} />}
         <Windmill pos={[-6, 0, -20]} />
         <WaterTank pos={[-4, 0, -18]} />
-        {(fx.scroll ? [[-20, -3], [28, -2.5], [-32, -4.5], [9, -3]] : [[-5, 4], [6, 3.4], [9, 5.5], [-20, 3], [28, 2.5], [-32, 4.5], [-2.2, 7.6]]).map(([x, z], i) => (
+        {(fx.scroll ? [[-20, -3], [28, -2.5], [-32, -4.5], [9, -3]] : [[6, 3.4], [9, 5.5], [-20, 3], [28, 2.5], [-32, 4.5]]).map(([x, z], i) => (
           <Scrub key={i} pos={[x, 0, z]} s={1 + (i % 3) * 0.3} seed={i + 2} />
         ))}
         {[[-11, -3], [-8.5, -4], [13, -2.5]].map(([x, z], i) => (

@@ -2,7 +2,10 @@
 """Whole-video QA: render the Short at 2 fps (half scale, one bundle), then
 flag (1) mostly dark/empty frames, (2) any stretch over 3 s without visible
 movement, (3) captions over faces (scripts/qa/faces.ts), (4) half faces/bodies
-on the frame edge (scripts/qa/crops.ts; a shot may opt out with "allowCrop"). Writes a labelled
+on the frame edge (scripts/qa/crops.ts; a shot may opt out with "allowCrop"), (5) frames where
+more than 40% of the picture is low-detail (haze, empty sky, bare ground: no edge within ~30 px),
+(6) things named in the captions that are not on screen while spoken (scripts/qa/nouns.ts; a shot
+may declare deliberate absences with "nounsOk"). Writes a labelled
 contact sheet (flagged frames outlined) and a JSON report.
 
 usage: python3 scripts/qa/sheet.py <slug> [--skip-render]
@@ -41,6 +44,22 @@ def shot_of(f):
             return i
     return len(lens) - 1
 
+def low_detail(path, e_thr=0.04, rad=2, B=15):
+    """share of 15 px blocks (at 270x480) with no edge anywhere within `rad` blocks:
+    flat character fills sit next to their outlines and count as detail; haze, empty sky
+    and bare ground do not"""
+    from PIL import ImageFilter
+    a = np.asarray(Image.open(path).convert("L").resize((270, 480)).filter(ImageFilter.GaussianBlur(1.2)), np.float32) / 255
+    g = np.zeros_like(a)
+    g[:-1, :-1] = np.abs(np.diff(a, axis=1))[:-1, :] + np.abs(np.diff(a, axis=0))[:, :-1]
+    h, w = a.shape[0] // B, a.shape[1] // B
+    edge = g[:h * B, :w * B].reshape(h, B, w, B).max(axis=(1, 3)) > e_thr
+    near = edge.copy()
+    for dy in range(-rad, rad + 1):
+        for dx in range(-rad, rad + 1):
+            near |= np.roll(np.roll(edge, dy, 0), dx, 1)
+    return float((~near).mean())
+
 imgs, flags = {}, {}
 for f in picks:
     im = np.asarray(Image.open(frames_dir / f"f{f:04d}.png").convert("RGB").resize((270, 480)), np.float32) / 255
@@ -51,6 +70,9 @@ for f in picks:
         flags.setdefault(f, []).append(f"dark (mean {luma.mean():.2f}, {dark:.0%} near-black)")
     if luma.std() < 0.045:
         flags.setdefault(f, []).append(f"empty/flat (std {luma.std():.3f})")
+    ld = low_detail(frames_dir / f"f{f:04d}.png")
+    if ld > 0.40:
+        flags.setdefault(f, []).append(f"low-detail {ld:.0%} (haze/sky/flat ground)")
 
 # no movement: consecutive 0.5 s samples nearly identical for > 3 s (payoff hold excluded)
 still_run = []
@@ -71,6 +93,10 @@ for c in faces:
     f = min(picks, key=lambda p: abs(p - c["t"] * FPS))
     flags.setdefault(f, []).append(f"caption over {c['who']}'s face ('{c['caption']}')")
 crops = json.loads(subprocess.run(["npx", "-y", "tsx", "scripts/qa/crops.ts", slug], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip().splitlines()[-1])
+nouns = json.loads(subprocess.run(["npx", "-y", "tsx", "scripts/qa/nouns.ts", slug], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip().splitlines()[-1])
+for c in nouns:  # a thing named in the caption is not on screen while spoken
+    f = min(picks, key=lambda p: abs(p - c["t"] * FPS))
+    flags.setdefault(f, []).append(f"'{c['word']}' spoken but {c['thing']} {c['reason']}")
 for c in crops:  # half a face/body on the left, right or top edge (shots with "allowCrop" are skipped)
     f = min(picks, key=lambda p: abs(p - c["t"] * FPS))
     flags.setdefault(f, []).append(f"{c['who']}'s {c['part']} cut by the frame edge ({c['visible']:.0%} visible)")
