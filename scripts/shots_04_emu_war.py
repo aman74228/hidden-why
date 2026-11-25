@@ -283,7 +283,7 @@ shots = [
   {"id": "gun-pov", "set": "farm",
    "fx": {"farm": {"truck": dict(CHASE_TRUCK, bedOnly=True, gunPost=[-0.9, 1.88, 0.0]), "scroll": SPEED, "wheatRect": [-30, 70, -9, -1.0],
                    "flocks": [{"n": 7, "center": [9, ROAD_Z - 0.4], "spread": [6, 3.2], "seed": 37, "vel": [REL * 0.5, 0], "gait": "run", "minDist": 1.4, "zigzag": 0.9}]}},
-   "camera": dolly([-2.75, 2.45, ROAD_Z + 0.12], [-2.65, 2.42, ROAD_Z + 0.1], [10, 1.95, ROAD_Z + 0.05], look_to=[10, 1.9, ROAD_Z - 0.3], fov=50),
+   "camera": dolly([-2.75, 2.45, ROAD_Z + 0.12], [-2.65, 2.42, ROAD_Z + 0.1], [10, 1.62, ROAD_Z + 0.05], look_to=[10, 1.58, ROAD_Z - 0.3], fov=50),
    "shake": 0.05,
    "sfx": [{"name": "truck-engine", "at": 0, "dur": round(dur("gun-pov"), 2), "gain": -2}]},
   # 8 after a week, the soldiers pulled out: loading the truck; one emu watches from the fence and blinks
