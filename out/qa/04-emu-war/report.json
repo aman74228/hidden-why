@@ -1,4 +1,11 @@
 {
  "frames": 114,
- "flagged": {}
+ "flagged": {
+  "9.5s (truck-arrives)": [
+   "low-detail 62% (haze/sky/flat ground)"
+  ],
+  "10.0s (truck-arrives)": [
+   "low-detail 59% (haze/sky/flat ground)"
+  ]
+ }
 }
