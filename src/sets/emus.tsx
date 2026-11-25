@@ -139,7 +139,7 @@ const plankTex = () =>
     const r = mulberry(31);
     const pw = 64;
     for (let x = 0; x < w; x += pw) {
-      const base = [150 + r() * 30, 96 + r() * 20, 58 + r() * 14];
+      const base = [146 + r() * 22, 122 + r() * 16, 96 + r() * 12];
       g.fillStyle = `rgb(${base[0]},${base[1]},${base[2]})`;
       g.fillRect(x, 0, pw, h);
       for (let i = 0; i < 40; i++) {
@@ -218,6 +218,7 @@ export type EmuProps = {
   blinkAt?: number[]; // extra deliberate blinks (seconds)
   lookCam?: boolean; // turned towards the lens (3/4 view)
   view?: EmuView; // force a view (else from the velocity vs the camera)
+  moveAt?: number; // stands still until this time, then moves with `vel` (and its gait)
 };
 
 // palette from the reference photos: brown-grey mop, near-black head, blue-grey bare neck skin,
@@ -277,13 +278,21 @@ const curvePt = (b: V2, c: V2, h: V2, u: number): V2 => [
 ];
 
 // smooth oval body outline (no spikes); the rump sits lower than the chest
-const bodyOval = (rx: number, ry: number, droop: number): V2[] => {
+const bodyOval = (rx: number, ry: number, droop: number, seed = 1): V2[] => {
+  // the top edge is slightly ragged: soft rounded tufts of feather, never spikes
+  const r = mulberry(seed * 19 + 7);
   const pts: V2[] = [];
-  for (let i = 0; i < 40; i++) {
-    const a = (i / 40) * Math.PI * 2;
+  const n = 64;
+  for (let i = 0; i < n; i++) {
+    const a = (i / n) * Math.PI * 2;
     const x = Math.cos(a) * rx;
     let y = Math.sin(a) * ry;
     if (x < 0) y -= droop * (-x / rx) * (Math.sin(a) < 0 ? 1.2 : 0.6);
+    if (Math.sin(a) > 0.15) {
+      const k = Math.sin(a);
+      const tuft = (0.5 + 0.5 * Math.cos(i * 1.9)) * (0.012 + r() * 0.01);
+      y += tuft * k;
+    }
     pts.push([x, y]);
   }
   return pts;
@@ -335,8 +344,12 @@ const mopLocks = (seed: number, rx: number, ry: number, droop: number, front: bo
   return {edge, strands};
 };
 
-export const Emu: React.FC<EmuProps> = ({pos, vel, facing: facingIn, gait = 'stand', seed = 1, s = 1, hat, rise, blinkAt, lookCam, view: viewIn}) => {
+export const Emu: React.FC<EmuProps> = ({pos: pos0, vel, facing: facingIn, gait: gait0 = 'stand', seed = 1, s = 1, hat, rise, blinkAt, lookCam, view: viewIn, moveAt}) => {
   const scene = useScene();
+  const moving = moveAt === undefined || scene.t >= moveAt;
+  const mt = moveAt === undefined ? 0 : Math.max(0, scene.t - moveAt);
+  const pos: [number, number] = moveAt === undefined ? pos0 : [pos0[0] + (vel?.[0] ?? 0) * mt, pos0[1] + (vel?.[1] ?? 0) * mt];
+  const gait: EmuGait = moving ? gait0 : 'stand';
   const t = scene.t + seed * 0.37;
   const r = useMemo(() => mulberry(seed * 7 + 1), [seed]);
   const ph0 = useMemo(() => r() * 6.28, [r]);
@@ -481,7 +494,7 @@ export const Emu: React.FC<EmuProps> = ({pos, vel, facing: facingIn, gait = 'sta
               {locks.edge.map((lk, i) => (
                 <Part key={`l${i}`} s={{kind: 'capsule', len: lk.len, r: lk.r}} color={lk.c} z={0.015} pos={[lk.x, lk.y]} rot={lk.rot + (run ? Math.sin(ph * 2 + i) * 0.12 : 0)} sil />
               ))}
-              <Part s={{kind: 'poly', pts: bodyOval(rx, ry, droop)}} color={BODY} z={0.02} sil />
+              <Part s={{kind: 'poly', pts: bodyOval(rx, ry, droop, seed)}} color={BODY} z={0.02} sil />
               {locks.strands.map((lk, i) => (
                 <Part key={`s${i}`} s={{kind: 'capsule', len: lk.len, r: lk.r}} color={lk.c} z={0.025} pos={[lk.x, lk.y]} rot={lk.rot} outline={false} />
               ))}
@@ -923,10 +936,10 @@ export const Farmhouse: React.FC<{pos: V3; rotY?: number}> = ({pos, rotY = 0}) =
 /* Lewis gun (WWI-era light machine gun) — period prop, never aimed at the lens */
 /* =================================================================== */
 const DARK = '#4C4F58';
-export const LewisGun: React.FC<{pos: V3; rot?: V3; s?: number; jamAt?: number; bipod?: boolean; recoilAt?: number[]; wobble?: number}> = ({pos, rot = [0, 0, 0], s = 1, jamAt, bipod = true, recoilAt = [], wobble = 0}) => {
+export const LewisGun: React.FC<{pos: V3; rot?: V3; s?: number; jamAt?: number; bipod?: boolean; recoilAt?: number[]; wobble?: number; sweep?: number}> = ({pos, rot = [0, 0, 0], s = 1, jamAt, bipod = true, recoilAt = [], wobble = 0, sweep = 0}) => {
   const {t} = useScene();
   const wz = wobble * (Math.sin(t * 9.1) * 0.09 + Math.sin(t * 15.7) * 0.04);
-  const wy = wobble * Math.sin(t * 6.7) * 0.1;
+  const wy = wobble * Math.sin(t * 6.7) * 0.1 + sweep * Math.sin(t * 1.6 + pos[0]);  // sweep: the barrel tracks the running birds
   // the jam: the cocking handle is yanked back twice, the pan wobbles but stays stuck
   const j = jamAt !== undefined ? t - jamAt : -1;
   const yank = j > 0 ? Math.max(0, Math.sin(Math.min(j, 1.2) * Math.PI * 4)) * (j < 1.2 ? 1 : 0) : 0;
@@ -1059,7 +1072,7 @@ export const Truck: React.FC<{spec: TruckSpec}> = ({spec}) => {
   const cream = '#E8DCC0';
   return (
     <group position={[x, 0, z]} rotation={[0, spec.rotY ?? 0, 0]}>
-      {[[1.45, 0.82], [1.45, -0.82], [-1.25, 0.82], [-1.25, -0.82]].map(([wx, wz], i) => (
+      {!spec.bedOnly && [[1.45, 0.82], [1.45, -0.82], [-1.25, 0.82], [-1.25, -0.82]].map(([wx, wz], i) => (
         <Wheel key={i} pos={[wx, 0.46, wz]} spin={spin} />
       ))}
       <group position={[0, bounce, 0]} rotation={[roll, 0, pitch]}>
@@ -1069,7 +1082,7 @@ export const Truck: React.FC<{spec: TruckSpec}> = ({spec}) => {
           <Box key={sd} size={[1.3, 0.05, 0.32]} pos={[0.55, 0.52, sd * 0.86]} color="#1E1E24" />
         ))}
         {/* mudguards */}
-        {[[1.45, 1], [1.45, -1], [-1.25, 1], [-1.25, -1]].map(([wx, sd], i) => (
+        {!spec.bedOnly && [[1.45, 1], [1.45, -1], [-1.25, 1], [-1.25, -1]].map(([wx, sd], i) => (
           <mesh key={i} position={[wx, 0.5, sd * 0.84]} rotation={[0, 0, 0]} castShadow>
             <torusGeometry args={[0.5, 0.13, 6, 16, Math.PI]} />
             <Toon color="#1E2A28" />
@@ -1133,8 +1146,8 @@ export const Truck: React.FC<{spec: TruckSpec}> = ({spec}) => {
         {/* the Lewis guns on posts, pointing out to the side (never at the lens) */}
         {(spec.guns ?? 0) > 0 && (
           <>
-            <Cyl r={0.04} h={0.6} pos={[(spec.gunPost ?? [-0.9, 0, 0.3])[0], 1.15, (spec.gunPost ?? [-0.9, 0, 0.3])[2]]} color="#2A2C30" />
-            <LewisGun pos={[(spec.gunPost ?? [-0.9, 0, 0.3])[0], 1.5, (spec.gunPost ?? [-0.9, 0, 0.3])[2]]} rot={[0, 0.0, 0.05]} s={1.1} bipod={false} wobble={spec.bumpy ?? 0} />
+            <Cyl r={0.04} h={(spec.gunPost?.[1] || 1.5) - 0.85} pos={[(spec.gunPost ?? [-0.9, 0, 0.3])[0], 0.85 + ((spec.gunPost?.[1] || 1.5) - 0.85) / 2, (spec.gunPost ?? [-0.9, 0, 0.3])[2]]} color="#2A2C30" />
+            <LewisGun pos={[(spec.gunPost ?? [-0.9, 0, 0.3])[0], spec.gunPost?.[1] || 1.5, (spec.gunPost ?? [-0.9, 0, 0.3])[2]]} rot={[0, 0.0, 0.05]} s={1.1} bipod={false} wobble={spec.bumpy ?? 0} />
           </>
         )}
         {(spec.guns ?? 0) > 1 && <LewisGun pos={[-1.8, 0.92, -0.4]} rot={[0, 0.35, 0]} s={1.0} />}
@@ -1161,10 +1174,11 @@ export type FarmFx = {
   truck?: TruckSpec;
   hatPost?: V3 | null; // Vik's fedora sitting on top of a fence post
   hatPostAt?: number; // ...from this time on
-  guns?: {pos: V3; rot?: V3; jamAt?: number}[];
+  guns?: {pos: V3; rot?: V3; jamAt?: number; sweep?: number; bipod?: boolean}[];
   puffs?: {center: [number, number]; r: number; times: number[]};
   scroll?: number; // treadmill: the world slides past at this speed (m/s along -x)
   wheatRect?: [number, number, number, number];
+  backdrop?: {kind: 'farmhouse' | 'shed' | 'tree'; pos: V3; rotY?: number; s?: number}[]; // extra set dressing for one shot
   haze?: number;
 };
 
@@ -1227,10 +1241,13 @@ export const FarmHD: React.FC<{fx: FarmFx}> = ({fx}) => {
           </group>
         )}
       </group>
+      {fx.backdrop?.map((b, i) =>
+        b.kind === 'farmhouse' ? <Farmhouse key={`b${i}`} pos={b.pos} rotY={b.rotY} /> : b.kind === 'shed' ? <Shed key={`b${i}`} pos={b.pos} rotY={b.rotY} /> : <GumTree key={`b${i}`} pos={b.pos} s={b.s} seed={i + 61} />,
+      )}
       {fx.flocks?.map((f, i) => <Flock key={i} f={f} />)}
       {fx.emus?.map((e, i) => <Emu key={`e${i}`} {...e} />)}
       {fx.truck && <Truck spec={fx.truck} />}
-      {fx.guns?.map((g, i) => <LewisGun key={i} pos={g.pos} rot={g.rot} jamAt={g.jamAt} />)}
+      {fx.guns?.map((g, i) => <LewisGun key={i} pos={g.pos} rot={g.rot} jamAt={g.jamAt} sweep={g.sweep} bipod={g.bipod ?? true} />)}
       {fx.puffs && <DustPuffs {...fx.puffs} />}
       <Motes count={160} box={[24, 5, 16]} center={[0, 2.2, -4]} color="#FFDDA0" size={0.05} rise={0.03} seed={21} opacity={0.55 * (fx.haze ?? 1)} />
     </group>
@@ -1376,10 +1393,29 @@ const scatterPts = (): [number, number][] => {
   return out;
 };
 
+const swirlTex = (c: string) =>
+  canvasTex(`swirl-${c}`, 128, 64, (g, w, h) => {
+    g.fillStyle = '#E6EEF0';
+    g.fillRect(0, 0, w, h);
+    const band = (col: string, off: number, wd: number) => {
+      g.strokeStyle = col;
+      g.lineWidth = wd;
+      g.beginPath();
+      for (let x = 0; x <= w; x += 2) {
+        const y = h / 2 + Math.sin((x / w) * Math.PI * 4 + off) * h * 0.32;
+        if (x === 0) g.moveTo(x, y);
+        else g.lineTo(x, y);
+      }
+      g.stroke();
+    };
+    band(c, 0, 11);
+    band(SWIRL[(SWIRL.indexOf(c) + 2) % SWIRL.length], Math.PI, 7);
+    band('#FFFFFF', Math.PI / 2, 4);
+  });
 const glassMat = new Map<string, THREE.MeshStandardMaterial>();
 const glass = () => {
   const k = 'glass';
-  if (!glassMat.has(k)) glassMat.set(k, new THREE.MeshStandardMaterial({color: '#BFE4EE', roughness: 0.04, metalness: 0.15, transparent: true, opacity: 0.38, envMapIntensity: 2.0}));
+  if (!glassMat.has(k)) glassMat.set(k, new THREE.MeshStandardMaterial({color: '#EAF4F6', roughness: 0.1, metalness: 0.05, transparent: true, opacity: 0.1, envMapIntensity: 0.7, depthWrite: false}));
   return glassMat.get(k)!;
 };
 
@@ -1452,13 +1488,10 @@ export const Marbles: React.FC<{fx: MarbleFx}> = ({fx}) => {
           <mesh castShadow material={glass()}>
             <sphereGeometry args={[MR, 18, 14]} />
           </mesh>
-          <mesh scale={[0.82, 0.34, 0.86]} rotation={[0.4, m.a, 0.7]}>
-            <sphereGeometry args={[MR, 10, 8]} />
-            <meshStandardMaterial color={m.c} roughness={0.3} emissive={m.c} emissiveIntensity={0.3} />
-          </mesh>
-          <mesh position={[MR * 0.35, MR * 0.45, MR * 0.45]}>
-            <sphereGeometry args={[MR * 0.16, 8, 6]} />
-            <meshBasicMaterial color="#FFFFFF" toneMapped={false} />
+          {/* opaque core with painted swirls (no see-through bubble) */}
+          <mesh scale={0.93}>
+            <sphereGeometry args={[MR, 18, 14]} />
+            <meshStandardMaterial map={swirlTex(m.c)} roughness={0.18} metalness={0.05} envMapIntensity={0.9} />
           </mesh>
         </group>
       ))}
@@ -1466,14 +1499,18 @@ export const Marbles: React.FC<{fx: MarbleFx}> = ({fx}) => {
         <group position={[bx, BR, ballZ]} rotation={[(ballZ - from[1]) / BR, 0, 0]}>
           <mesh castShadow receiveShadow>
             <sphereGeometry args={[BR, 32, 24]} />
-            <meshStandardMaterial color="#14151C" roughness={0.12} metalness={0.3} envMapIntensity={1.6} />
+            <meshStandardMaterial color="#1A1C26" roughness={0.3} metalness={0.15} envMapIntensity={0.8} />
           </mesh>
-          {[[0.25, 0.9], [-0.25, 0.9], [0, 0.55]].map(([a, b], i) => (
-            <mesh key={i} position={[Math.sin(a) * Math.sin(b) * BR * 0.99, Math.cos(b) * BR * 0.99, Math.cos(a) * Math.sin(b) * BR * 0.99]}>
-              <sphereGeometry args={[BR * 0.11, 10, 8]} />
-              <meshBasicMaterial color="#020204" />
-            </mesh>
-          ))}
+          {[[0.32, 0.75], [-0.32, 0.75], [0, 0.32]].map(([a, b], i) => {
+            const n = new THREE.Vector3(Math.sin(a) * Math.sin(b), Math.cos(b), Math.cos(a) * Math.sin(b));
+            const q = new THREE.Quaternion().setFromUnitVectors(new THREE.Vector3(0, 0, 1), n);
+            return (
+              <mesh key={i} position={n.clone().multiplyScalar(BR * 1.002).toArray() as V3} quaternion={q}>
+                <circleGeometry args={[BR * 0.13, 20]} />
+                <meshBasicMaterial color="#000000" toneMapped={false} polygonOffset polygonOffsetFactor={-2} />
+              </mesh>
+            );
+          })}
         </group>
       )}
     </group>
@@ -1491,7 +1528,7 @@ export const Floorboards: React.FC<{pos: V3; size: [number, number]}> = ({pos, s
   return (
     <mesh rotation={[-Math.PI / 2, 0, 0]} position={[pos[0], pos[1] + 0.02, pos[2]]} receiveShadow>
       <planeGeometry args={size} />
-      <meshStandardMaterial map={tex} roughness={0.8} color="#FFFFFF" />
+      <meshStandardMaterial map={tex} roughness={0.85} color="#958A7C" emissive="#FFF4E6" emissiveMap={tex} emissiveIntensity={0.5} />
     </mesh>
   );
 };

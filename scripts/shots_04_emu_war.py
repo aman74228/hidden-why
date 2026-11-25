@@ -146,8 +146,9 @@ def rider(x, z, pose, seed, facing=1):
 
 SOLDIERS_FENCE = [c(SOLDIER, pos=[-1.55, 2.75], facing=-1, pose="aim", seed=3), c(SOLDIER, pos=[1.35, 2.8], facing=1, pose="aim", seed=4, props=["moustache"])]
 GUNS_FENCE = [{"pos": [-1.0, 0.25, 2.05], "rot": [0, round(PI / 2 + 0.85, 3), 0]}, {"pos": [0.8, 0.25, 2.1], "rot": [0, round(PI / 2 - 0.85, 3), 0]}]  # angled across the field, never down the lens
-FARMERS = [c(FARMER, pos=[1.05, -7.4], facing=1, pose="wave", holding="strawhat", props=["nohat"], seed=21), c(FARMER, pos=[-1.15, -7.9], facing=-1, pose="wave", holding="strawhat", props=["nohat"], seed=22)]
-HERD_CAM = frame(body(FARMERS[0], crop=0.32) + body(FARMERS[1], crop=0.32) + [[-1.55, 2.0, 2.75], [1.35, 2.0, 2.8], [-3, 0.6, -4.5], [3, 0.6, -4.5]], az=182, el=9, fov=46, push=0.08, swing=-3, box=(0.06, 0.94, 0.1, 0.92))
+SHOULDERED = [{"pos": [m["pos"][0] + (0.28 if m["facing"] > 0 else -0.28), 1.52, m["pos"][1] + 0.12], "rot": [0, round(PI / 2 + (-0.95 if m["facing"] > 0 else 0.95), 3), 0], "sweep": 0.3, "bipod": False} for m in SOLDIERS_FENCE]  # shouldered, pointing out over the field (away from the lens)
+FARMERS = [c(FARMER, pos=[0.62, -7.4], facing=1, pose="wave", holding="strawhat", props=["nohat"], seed=21), c(FARMER, pos=[-0.62, -7.7], facing=-1, pose="wave", holding="strawhat", props=["nohat"], seed=22)]
+HERD_CAM = frame(body(FARMERS[0], crop=0.25) + body(FARMERS[1], crop=0.25), az=184, el=8, fov=46, push=0.08, swing=-3, box=(0.08, 0.92, 0.32, 0.95))
 
 # water hole: soldiers in the trench behind the bank (camera side)
 WH_SOLDIER = c(SOLDIER, pos=[0.95, 2.1], elev=-0.55, facing=-1, pose="aim", seed=5)
@@ -223,18 +224,18 @@ shots = [
    "titleCard": {"label": "Ammo", "word": "10,000 bullets", "at": 0.9, "duration": round(dur("truck-arrives") - 1.05, 2)},
    "sfx": [{"name": "truck-engine", "at": 0, "dur": round(dur("truck-arrives"), 2), "gain": -4}]},
   # 4a day one: farmers wave their hats and herd the flock toward the guns at the fence
-  {"id": "herd", "set": "farm",
-   "fx": {"farm": {"flocks": [{"n": 22, "center": [0, -4.4], "spread": [6.5, 2.6], "seed": 7, "gait": "walk", "vel": [0.0, 0.75], "minDist": 0.8}], "guns": GUNS_FENCE}},
+  {"id": "herd", "set": "farm", "nounsOk": {"guns": "soldiers and guns kept out of this frame on request (farmers + flock only); the guns are in the next shot"},
+   "fx": {"farm": {"flocks": [{"n": 20, "center": [0.4, -4.6], "spread": [6, 2.2], "seed": 7, "gait": "run", "vel": [0.9, 1.4], "minDist": 0.85}]}},
    "camera": HERD_CAM,
-   "cast": FARMERS + SOLDIERS_FENCE,
+   "cast": FARMERS,
    "layout": "manual",
    "sfx": [WIND("herd", -10)] + sfx_steps(0.1, dur("herd"), 0.3, -8)},
   # 4b ...but the emus split into little groups and ran out of range (drone view; dust puffs in empty ground)
   {"id": "split-drone", "beat": 3, "stillAt": round(split_at + 0.6, 2), "set": "farm",
-   "fx": {"farm": {"flocks": [{"n": 30, "center": [-0.5, -3.2], "spread": [5, 2.6], "seed": 9, "gait": "walk", "minDist": 0.75, "split": {"at": split_at, "speed": 3.6, "groups": 6}}],
-                   "guns": GUNS_FENCE, "puffs": {"center": [-0.5, -3.2], "r": 1.4, "times": puffs}}},
-   "camera": dolly([1.0, 7.2, 10.4], [0.5, 6.6, 9.6], [-0.3, 0.6, -3.2], look_to=[-0.3, 0.6, -2.8], fov=52),
-   "cast": SOLDIERS_FENCE, "layout": "manual",
+   "fx": {"farm": {"flocks": [{"n": 32, "center": [-0.5, -3.2], "spread": [5, 2.6], "seed": 9, "gait": "walk", "minDist": 0.7, "split": {"at": split_at, "speed": 3.3, "groups": 7, "dirDeg": [0, 32, 148, 180, 212, 328, 245]}}],
+                   "guns": SHOULDERED, "puffs": {"center": [-0.5, -3.2], "r": 1.4, "times": puffs}}},
+   "camera": dolly([1.0, 9.6, 12.6], [0.5, 8.8, 11.6], [-0.3, 0.4, -3.0], look_to=[-0.3, 0.4, -2.6], fov=54),
+   "cast": [c(m, pose="shoulder-gun") for m in SOLDIERS_FENCE], "layout": "manual",
    "sfx": [WIND("split-drone", -10)] + [{"name": "gunfire-distant", "at": p, "gain": -9} for p in puffs] + sfx_steps(split_at, dur("split-drone"), 0.18, -8)},
   # 5a the ambush at the water hole: low over the gun on the dirt bank, rack focus to the emus
   {"id": "ambush-hide", "set": "waterhole",
@@ -280,9 +281,9 @@ shots = [
    "sfx": [{"name": "truck-engine", "at": 0, "dur": round(dur("emus-overtake"), 2), "gain": -4}] + sfx_steps(0.0, dur("emus-overtake"), 0.15, -8)},
   # 7c ...and the ground was so bumpy nobody could aim: shaky POV down the gun, emus weaving away
   {"id": "gun-pov", "set": "farm",
-   "fx": {"farm": {"truck": dict(CHASE_TRUCK, bedOnly=True, gunPost=[-0.9, 0, 0.0]), "scroll": SPEED, "wheatRect": [-30, 70, -9, -1.0],
+   "fx": {"farm": {"truck": dict(CHASE_TRUCK, bedOnly=True, gunPost=[-0.9, 1.88, 0.0]), "scroll": SPEED, "wheatRect": [-30, 70, -9, -1.0],
                    "flocks": [{"n": 7, "center": [9, ROAD_Z - 0.4], "spread": [6, 3.2], "seed": 37, "vel": [REL * 0.5, 0], "gait": "run", "minDist": 1.4, "zigzag": 0.9}]}},
-   "camera": dolly([-1.85, 1.98, ROAD_Z + 0.2], [-1.75, 1.95, ROAD_Z + 0.18], [10, 1.3, ROAD_Z + 0.1], look_to=[10, 1.25, ROAD_Z - 0.3], fov=50),
+   "camera": dolly([-2.75, 2.45, ROAD_Z + 0.12], [-2.65, 2.42, ROAD_Z + 0.1], [10, 1.95, ROAD_Z + 0.05], look_to=[10, 1.9, ROAD_Z - 0.3], fov=50),
    "shake": 0.05,
    "sfx": [{"name": "truck-engine", "at": 0, "dur": round(dur("gun-pov"), 2), "gain": -2}]},
   # 8 after a week, the soldiers pulled out: loading the truck; one emu watches from the fence and blinks
@@ -343,8 +344,10 @@ shots = [
    "sfx": [WIND("empty-post", -11)]},
   # 12b "Now an emu's wearing it." (thumbnail frame)
   {"id": "emu-hat", "beat": 6, "stillAt": 0.6, "set": "farm",
-   "fx": {"farm": {"emus": [{"pos": [-0.75, 0.25], "vel": [0.32, 0], "gait": "strut", "seed": 47, "hat": True}]}},
-   "camera": dolly([-0.25, 1.72, -1.05], [-0.12, 1.7, -0.85], [-0.32, 1.58, 0.25], look_to=[-0.12, 1.58, 0.25], fov=40), "dof": 1.2, "focusDist": 1.15,
+   "fx": {"farm": {"emus": [{"pos": [0.2, 0.6], "vel": [-0.6, 0], "gait": "strut", "seed": 47, "hat": True, "view": "threeq", "facing": 1, "moveAt": 0.7}],  # holds centred 0.7 s, then struts off
+                   "backdrop": [{"kind": "farmhouse", "pos": [1.2, 0, 11.5], "rotY": round(PI, 4)}, {"kind": "tree", "pos": [-3.2, 0, 9.0], "s": 1.0}]}},
+   "camera": dolly([0.0, 1.8, -0.95], [-0.04, 1.76, -0.82], [-0.06, 1.5, 0.6], fov=40), "dof": 8.0, "focusDist": 1.3,
+   "cast": [c(VIK, pos=[0.55, 5.2], facing=1, pose="jaw-drop")], "layout": "manual",
    "sfx": [{"name": "footsteps-dirt", "at": 0.1, "gain": -8}, {"name": "footsteps-dirt", "at": 0.5, "gain": -8}, {"name": "footsteps-dirt", "at": 0.9, "gain": -8}]},
   # (pause) payoff: Vik's jaw drops, Milo laughs; ding on Vik's face
   {"id": "pause-vik-drop", "set": "farm",

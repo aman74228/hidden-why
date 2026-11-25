@@ -5,10 +5,13 @@ movement, (3) captions over faces (scripts/qa/faces.ts), (4) half faces/bodies
 on the frame edge (scripts/qa/crops.ts; a shot may opt out with "allowCrop"), (5) frames where
 more than 40% of the picture is low-detail (haze, empty sky, bare ground: no edge within ~30 px),
 (6) things named in the captions that are not on screen while spoken (scripts/qa/nouns.ts; a shot
-may declare deliberate absences with "nounsOk"). Writes a labelled
+may declare deliberate absences with "nounsOk"), (7) with --fixed id1,id2,...: frames of shots
+listed in a fix round that came out (near-)identical to the last delivered QA frames, i.e. the fix
+was never re-rendered (mean abs diff < 0.004 and SSIM > 0.995 vs out/qa/<slug>/prev_frames).
+Writes a labelled
 contact sheet (flagged frames outlined) and a JSON report.
 
-usage: python3 scripts/qa/sheet.py <slug> [--skip-render]
+usage: python3 scripts/qa/sheet.py <slug> [--skip-render] [--fixed shot-id,shot-id,...]
 out:   out/qa/<slug>/frames/*.png, out/qa/<slug>/contact-sheet.jpg, out/qa/<slug>/report.json
 """
 import json, subprocess, sys, tempfile
@@ -19,6 +22,8 @@ from PIL import Image, ImageDraw, ImageFont
 ROOT = Path(__file__).resolve().parents[2]
 slug = sys.argv[1]
 skip = "--skip-render" in sys.argv
+fixed = next((a.split("=", 1)[1] if "=" in a else sys.argv[sys.argv.index(a) + 1] for a in sys.argv if a.startswith("--fixed")), "")
+fixed = [x for x in fixed.split(",") if x]
 FPS, STEP = 30, 15
 out = ROOT / "out/qa" / slug
 frames_dir = out / "frames"
@@ -29,7 +34,13 @@ starts = [sum(lens[:i]) for i in range(len(lens))]
 total = sum(lens) + int(L.get("payoffHold", 0.5) * FPS + 0.5)
 picks = list(range(0, total, STEP))
 
+prev_dir = out / "prev_frames"
 if not skip:
+    # keep the last delivered frames to compare the fix round against
+    import shutil
+    if any(frames_dir.glob("f*.png")):
+        shutil.rmtree(prev_dir, ignore_errors=True)
+        shutil.copytree(frames_dir, prev_dir)
     subprocess.run(["node", "scripts/prep.mjs", slug], cwd=ROOT, check=True, capture_output=True)
     with tempfile.TemporaryDirectory() as td:
         b = Path(td) / "bundle"
@@ -93,6 +104,32 @@ for c in faces:
     f = min(picks, key=lambda p: abs(p - c["t"] * FPS))
     flags.setdefault(f, []).append(f"caption over {c['who']}'s face ('{c['caption']}')")
 crops = json.loads(subprocess.run(["npx", "-y", "tsx", "scripts/qa/crops.ts", slug], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip().splitlines()[-1])
+def ssim(a, b):
+    """global SSIM of two grey images (0..1 floats)"""
+    c1, c2 = 0.01 ** 2, 0.03 ** 2
+    ma, mb = a.mean(), b.mean()
+    va, vb = a.var(), b.var()
+    cov = ((a - ma) * (b - mb)).mean()
+    return float(((2 * ma * mb + c1) * (2 * cov + c2)) / ((ma * ma + mb * mb + c1) * (va + vb + c2)))
+
+fix_report = {}
+for sid in fixed:
+    i = next((k for k, s0 in enumerate(L["shots"]) if s0["id"] == sid), None)
+    if i is None:
+        flags.setdefault(0, []).append(f"--fixed: no shot '{sid}'")
+        continue
+    same = []
+    for f in [p for p in picks if starts[i] <= p < starts[i] + lens[i]]:
+        pf = prev_dir / f"f{f:04d}.png"
+        if not pf.exists():
+            continue
+        a = np.asarray(Image.open(frames_dir / f"f{f:04d}.png").convert("L").resize((270, 480)), np.float32) / 255
+        b = np.asarray(Image.open(pf).convert("L").resize((270, 480)), np.float32) / 255
+        mad, ss = float(np.abs(a - b).mean()), ssim(a, b)
+        fix_report.setdefault(sid, []).append({"frame": f, "mad": round(mad, 4), "ssim": round(ss, 4)})
+        if mad < 0.004 and ss > 0.995:
+            flags.setdefault(f, []).append(f"fix round: '{sid}' unchanged vs last delivery (SSIM {ss:.3f})")
+
 nouns = json.loads(subprocess.run(["npx", "-y", "tsx", "scripts/qa/nouns.ts", slug], cwd=ROOT, check=True, capture_output=True, text=True).stdout.strip().splitlines()[-1])
 for c in nouns:  # a thing named in the caption is not on screen while spoken
     f = min(picks, key=lambda p: abs(p - c["t"] * FPS))
@@ -117,6 +154,6 @@ for k, f in enumerate(picks):
     if f in flags:
         d.rectangle([x + 2, y + 30, x + W - 3, y + H + 25], outline=(255, 60, 60), width=5)
 sheet.save(out / "contact-sheet.jpg", quality=85)
-report = {"frames": len(picks), "flagged": {f"{f / FPS:.1f}s ({L['shots'][shot_of(f)]['id']})": v for f, v in sorted(flags.items())}}
+report = {"frames": len(picks), "fixed_shots": fix_report, "flagged": {f"{f / FPS:.1f}s ({L['shots'][shot_of(f)]['id']})": v for f, v in sorted(flags.items())}}
 (out / "report.json").write_text(json.dumps(report, indent=1))
 print(json.dumps(report, indent=1))
