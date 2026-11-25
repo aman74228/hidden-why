@@ -205,9 +205,10 @@ const hoofMudTex = () =>
 /* EMU: flat 2D rig (same Part/Ink drawing as the cast)                  */
 /* =================================================================== */
 export type EmuGait = 'stand' | 'walk' | 'run' | 'peck' | 'strut';
+export type EmuView = 'side' | 'front' | 'threeq';
 export type EmuProps = {
   pos: [number, number];
-  vel?: [number, number]; // world velocity (m/s): picks the facing side and the stride rate
+  vel?: [number, number]; // world velocity (m/s): picks the facing side, the view and the stride rate
   facing?: 1 | -1;
   gait?: EmuGait;
   seed?: number;
@@ -215,17 +216,24 @@ export type EmuProps = {
   hat?: boolean;
   rise?: {at: number; dur?: number; from?: number}; // pops up from below (the hook)
   blinkAt?: number[]; // extra deliberate blinks (seconds)
-  lookCam?: boolean; // head turned to the lens: both eyes
+  lookCam?: boolean; // turned towards the lens (3/4 view)
+  view?: EmuView; // force a view (else from the velocity vs the camera)
 };
 
-const BODY = '#86705A';
-const BODY_DK = '#5A4838';
-const BODY_LT = '#A88E70';
-const SKIN = '#8EA2B6';
-const LEG = '#6F6C6A';
-const BEAK = '#3C3A3C';
+// palette from the reference photos: brown-grey mop, near-black head, blue-grey bare neck skin,
+// orange/red-brown eye, dark grey flat bill, thick scaly grey legs
+const BODY = '#8C7C6A';
+const BODY_DK = '#6E604F';
+const BODY_LT = '#A49482';
+const HEAD = '#3A322D';
+const SKIN = '#9DB0C4';
+const SKIN_LT = '#C9D6E2';
+const LEG = '#7E7B77';
+const LEG_DK = '#5E5B58';
+const BILL = '#4C4846';
+const IRIS = '#C2602A';
 
-// smooth neck: quadratic curve base -> head, thickness tapering
+// smooth tube along a quadratic curve base -> head, thickness tapering
 const neckPoly = (b: V2, c: V2, h: V2, w0: number, w1: number): V2[] => {
   const n = 12;
   const L: V2[] = [];
@@ -243,28 +251,48 @@ const neckPoly = (b: V2, c: V2, h: V2, w0: number, w1: number): V2[] => {
   }
   return [...L, ...Rr.reverse()];
 };
+// shaggy feathered neck: tapered tube along the curve, edges softly scalloped (rounded waves, no spikes)
+const shaggyNeck = (b: V2, c: V2, h: V2, w0: number, w1: number, seed: number): V2[] => {
+  const n = 24;
+  const r = mulberry(seed * 3 + 11);
+  const L: V2[] = [];
+  const Rr: V2[] = [];
+  for (let i = 0; i <= n; i++) {
+    const u = i / n;
+    const x = (1 - u) * (1 - u) * b[0] + 2 * (1 - u) * u * c[0] + u * u * h[0];
+    const y = (1 - u) * (1 - u) * b[1] + 2 * (1 - u) * u * c[1] + u * u * h[1];
+    const dx = 2 * (1 - u) * (c[0] - b[0]) + 2 * u * (h[0] - c[0]);
+    const dy = 2 * (1 - u) * (c[1] - b[1]) + 2 * u * (h[1] - c[1]);
+    const l = Math.hypot(dx, dy) || 1;
+    const wave = 0.012 * (0.5 + 0.5 * Math.cos(u * Math.PI * 9)) + r() * 0.004;
+    const w = (w0 + (w1 - w0) * Math.sqrt(u)) / 2 + wave;
+    L.push([x - (dy / l) * w, y + (dx / l) * w]);
+    Rr.push([x + (dy / l) * w, y - (dx / l) * w]);
+  }
+  return [...L, ...Rr.reverse()];
+};
+const curvePt = (b: V2, c: V2, h: V2, u: number): V2 => [
+  (1 - u) * (1 - u) * b[0] + 2 * (1 - u) * u * c[0] + u * u * h[0],
+  (1 - u) * (1 - u) * b[1] + 2 * (1 - u) * u * c[1] + u * u * h[1],
+];
 
-const shaggyBody = (seed: number): V2[] => {
-  const r = mulberry(seed);
+// smooth oval body outline (no spikes); the rump sits lower than the chest
+const bodyOval = (rx: number, ry: number, droop: number): V2[] => {
   const pts: V2[] = [];
-  const n = 44;
-  for (let i = 0; i < n; i++) {
-    const a = (i / n) * Math.PI * 2;
-    const lower = Math.sin(a) < -0.1;
-    const rear = Math.cos(a) < -0.3;
-    const k = lower || rear ? (i % 2 ? 1.0 : 1.13 + r() * 0.06) : 1 + (r() - 0.5) * 0.04;
-    // rump droops behind, chest rounder in front
-    const rx = 0.44 * (Math.cos(a) < 0 ? 1.06 : 0.95);
-    const ry = 0.3 * (Math.cos(a) < 0 && Math.sin(a) < 0 ? 1.12 : 1);
-    pts.push([Math.cos(a) * rx * k, Math.sin(a) * ry * k]);
+  for (let i = 0; i < 40; i++) {
+    const a = (i / 40) * Math.PI * 2;
+    const x = Math.cos(a) * rx;
+    let y = Math.sin(a) * ry;
+    if (x < 0) y -= droop * (-x / rx) * (Math.sin(a) < 0 ? 1.2 : 0.6);
+    pts.push([x, y]);
   }
   return pts;
 };
 
-const limb = (a: V2, b: V2, r: number, color: string, z: number, key: string) => {
+const limb = (a: V2, b: V2, r: number, color: string, z: number, key: string, outline = true) => {
   const len = Math.hypot(b[0] - a[0], b[1] - a[1]);
   const rot = Math.atan2(b[0] - a[0], -(b[1] - a[1]));
-  return <Part key={key} s={{kind: 'capsule', len, r}} color={color} z={z} pos={a} rot={rot} />;
+  return <Part key={key} s={{kind: 'capsule', len, r}} color={color} z={z} pos={a} rot={rot} outline={outline} />;
 };
 
 const emuBlinks = (seed: number) => {
@@ -278,76 +306,126 @@ const emuBlinks = (seed: number) => {
   return out;
 };
 
-export const Emu: React.FC<EmuProps> = ({pos, vel, facing: facingIn, gait = 'stand', seed = 1, s = 1, hat, rise, blinkAt, lookCam}) => {
+// the hair-like plumage: soft drooping locks (capsules with round tips) + strand strokes
+type Lock = {x: number; y: number; len: number; r: number; rot: number; c: string};
+const mopLocks = (seed: number, rx: number, ry: number, droop: number, front: boolean): {edge: Lock[]; strands: Lock[]} => {
+  const r = mulberry(seed * 17 + 9);
+  const edge: Lock[] = [];
+  const n = front ? 15 : 19;
+  for (let i = 0; i < n; i++) {
+    const u = i / (n - 1);
+    const x = -rx * 0.98 + u * rx * (front ? 1.96 : 1.82);
+    const k = x / rx;
+    let y = -Math.sqrt(Math.max(0, 1 - k * k)) * ry * 0.9;
+    if (x < 0 && !front) y -= droop * (-k) * 1.2;
+    const len = (front ? 0.13 : 0.12) + r() * 0.1 + (!front && x < 0 ? 0.06 * -k : 0);
+    edge.push({x, y: y + 0.04, len, r: 0.026 + r() * 0.012, rot: front ? (r() - 0.5) * 0.2 : 0.18 + (r() - 0.5) * 0.25, c: r() < 0.4 ? BODY_DK : r() < 0.6 ? BODY_LT : BODY});
+  }
+  // rump curtain (side view): longer locks hanging off the back
+  if (!front)
+    for (let i = 0; i < 5; i++) edge.push({x: -rx * (0.98 - i * 0.05), y: -ry * 0.1 - droop * 0.6 + i * 0.04, len: 0.16 + r() * 0.08, r: 0.028, rot: 0.45 + i * 0.08, c: i % 2 ? BODY_DK : BODY});
+  const strands: Lock[] = [];
+  for (let i = 0; i < 18; i++) {
+    const x = (r() - 0.5) * rx * 1.7;
+    const k = x / rx;
+    const top = Math.sqrt(Math.max(0, 1 - k * k)) * ry * 0.75;
+    const y = top - r() * ry * 1.3;
+    strands.push({x, y, len: 0.06 + r() * 0.08, r: 0.007 + r() * 0.004, rot: front ? (r() - 0.5) * 0.3 : 0.25 + (r() - 0.5) * 0.3, c: r() < 0.55 ? BODY_DK : BODY_LT});
+  }
+  return {edge, strands};
+};
+
+export const Emu: React.FC<EmuProps> = ({pos, vel, facing: facingIn, gait = 'stand', seed = 1, s = 1, hat, rise, blinkAt, lookCam, view: viewIn}) => {
   const scene = useScene();
   const t = scene.t + seed * 0.37;
   const r = useMemo(() => mulberry(seed * 7 + 1), [seed]);
   const ph0 = useMemo(() => r() * 6.28, [r]);
-  const body = useMemo(() => shaggyBody(seed * 3 + 2), [seed]);
-  const strokes = useMemo(() => {
-    const rr = mulberry(seed * 5 + 3);
-    return Array.from({length: 9}, (_, i) => ({x: -0.32 + rr() * 0.6, y: -0.18 + rr() * 0.3, len: 0.1 + rr() * 0.12, a: -0.5 - rr() * 0.6, lt: i % 3 === 0}));
-  }, [seed]);
   const blinks = useMemo(() => emuBlinks(seed), [seed]);
 
-  // billboard yaw + facing from the velocity's screen direction
+  // billboard yaw; facing side + view from the velocity's direction relative to the lens
   const yaw = Math.atan2(scene.camPos.x - pos[0], scene.camPos.z - pos[1]);
   const right: V2 = [Math.cos(yaw), -Math.sin(yaw)];
   const sp = vel ? Math.hypot(vel[0], vel[1]) : 0;
   const scr = vel ? vel[0] * right[0] + vel[1] * right[1] : 0;
   const facing: 1 | -1 = facingIn ?? (Math.abs(scr) > 0.05 ? (scr > 0 ? 1 : -1) : seed % 2 ? 1 : -1);
+  const across = sp > 0.05 ? Math.abs(scr) / sp : 1;
+  const view: EmuView = viewIn ?? (lookCam ? 'threeq' : across > 0.75 ? 'side' : across > 0.35 ? 'threeq' : 'front');
+  const front = view === 'front';
+  const tq = view === 'threeq';
   const g: EmuGait = gait;
 
-  // outline width ~4px
   const centre = new THREE.Vector3(pos[0], 0.9 * s, pos[1]);
   const dist = scene.camPos.distanceTo(centre);
   const worldPerPx = (2 * dist * Math.tan((scene.fov * D) / 2)) / scene.heightPx;
   const ow = (4 * worldPerPx) / s;
   const ctx = useMemo(() => ({ow, tint: scene.charTint, rim: 0.5, rimDir: [scene.rimDir[0] * facing, scene.rimDir[1]] as V2, rimColor: scene.rimColor}), [ow, scene.charTint, facing, scene.rimDir[0], scene.rimDir[1], scene.rimColor]);
 
-  // gait cycle
-  const freq = g === 'run' ? Math.max(2.2, 1.1 + sp * 0.12) : g === 'walk' || g === 'strut' ? 1.3 : 0;
+  // body proportions per view
+  const rx = front ? 0.33 : tq ? 0.4 : 0.47;
+  const ry = front ? 0.29 : 0.26;
+  const droop = front ? 0 : tq ? 0.06 : 0.1;
+  const locks = useMemo(() => mopLocks(seed, rx, ry, droop, front), [seed, rx, ry, droop, front]);
+
+  // gait: upright, bouncy run; strides scaled to the view (front view = legs lift in place)
+  const run = g === 'run';
+  const walky = g === 'walk' || g === 'strut';
+  const freq = run ? Math.max(2.3, 1.2 + sp * 0.12) : walky ? 1.3 : 0;
   const ph = t * freq * Math.PI * 2 + ph0;
-  const stride = g === 'run' ? 0.36 : g === 'walk' ? 0.2 : g === 'strut' ? 0.17 : 0;
-  const lift = g === 'run' ? 0.2 : g === 'walk' || g === 'strut' ? 0.09 : 0;
-  const bob = g === 'run' ? Math.abs(Math.sin(ph)) * 0.05 : g === 'walk' || g === 'strut' ? Math.abs(Math.sin(ph)) * 0.025 : Math.sin(t * 2) * 0.006;
-  const lean = g === 'run' ? -10 : g === 'peck' ? -6 : g === 'strut' ? 4 : 0;
-  const hipY = 0.86 + bob;
-  const legs = [0, Math.PI].map((o) => {
-    const a = ph + o;
-    const fx = stride ? Math.cos(a) * stride : (o ? -0.07 : 0.06);
-    const fy = stride ? Math.max(0, Math.sin(a)) * lift : 0;
-    const hip: V2 = [0.04, hipY - 0.04];
-    const foot: V2 = [fx, fy + 0.02];
-    // ankle bends backwards (emu "knee")
-    const ankle: V2 = [(hip[0] + foot[0]) / 2 - 0.1 - (stride ? Math.max(0, Math.sin(a)) * 0.06 : 0), (hip[1] + foot[1]) / 2 + 0.02];
-    return {hip, ankle, foot, back: o > 0};
+  const strideK = front ? 0.15 : tq ? 0.65 : 1;
+  const stride = (run ? 0.34 : g === 'walk' ? 0.19 : g === 'strut' ? 0.16 : 0) * strideK;
+  const lift = run ? 0.22 : walky ? 0.09 : 0;
+  const bob = run ? Math.abs(Math.sin(ph)) * 0.08 : walky ? Math.abs(Math.sin(ph)) * 0.03 : Math.sin(t * 2) * 0.006;
+  const bodyY = 1.12 + bob;
+  const tilt = (run ? 4 : g === 'peck' ? -8 : g === 'strut' ? 5 : 0) * (front ? 0 : 1);
+
+  // legs: hip under the body, backward-bending ankle, thick scaly tarsus, 3 forward toes
+  const legX = front ? [-0.1, 0.1] : tq ? [0.04, -0.08] : [0.02, 0.0];
+  const legs = [0, 1].map((k) => {
+    const a = ph + k * Math.PI;
+    const sw = stride ? Math.cos(a) : 0;
+    const up = stride || (front && (run || walky)) ? Math.max(0, Math.sin(a)) * lift : 0;
+    const hip: V2 = [legX[k], bodyY - 0.2];
+    const foot: V2 = [legX[k] + sw * stride + (front ? legX[k] * 0.25 : 0.04), 0.03 + up];
+    const ankle: V2 = front ? [(hip[0] + foot[0]) / 2 + legX[k] * 0.1, (hip[1] + foot[1]) / 2 + 0.06] : [(hip[0] + foot[0]) / 2 - 0.09 - up * 0.3, (hip[1] + foot[1]) / 2 + 0.04 + up * 0.25];
+    return {hip, ankle, foot, near: front ? true : k === 0};
   });
 
   // neck + head
-  let head: V2 = [0.36, 1.62];
-  if (g === 'run') head = [0.52, 1.42 + Math.sin(ph * 2) * 0.02];
-  if (g === 'walk') head = [0.38 + Math.sin(ph) * 0.04, 1.6];
-  if (g === 'strut') head = [0.4 + Math.sin(ph) * 0.05, 1.68 + Math.abs(Math.sin(ph)) * 0.03];
-  if (g === 'stand') head = [0.36 + Math.sin(t * 0.9) * 0.025, 1.62 + Math.sin(t * 1.3) * 0.015];
+  let head: V2 = front ? [0, 1.7] : tq ? [0.26, 1.69] : [0.42, 1.69];
+  if (run && !front) head = [head[0] + 0.1, 1.62 + Math.sin(ph * 2) * 0.02];
+  if (walky) head = [head[0] + Math.sin(ph) * 0.03 * strideK, head[1] + (g === 'strut' ? 0.04 + Math.abs(Math.sin(ph)) * 0.03 : 0)];
+  if (g === 'stand') head = [head[0] + Math.sin(t * 0.9) * 0.02, head[1] + Math.sin(t * 1.3) * 0.012];
   if (g === 'peck') {
     const cyc = (t * 0.7 + ph0) % 1;
     const k = cyc < 0.25 ? smooth(cyc / 0.25) : cyc < 0.45 ? 1 : 1 - smooth((cyc - 0.45) / 0.25);
-    head = [0.36 + k * 0.32, 1.62 - k * 1.35];
+    head = [head[0] + k * (front ? 0 : 0.3), head[1] - k * 1.4];
   }
-  const base: V2 = [0.3, 1.16 + bob];
-  const ctrl: V2 = [base[0] + 0.12, (base[1] + head[1]) / 2 + 0.05];
-  const neck = neckPoly(base, ctrl, head, 0.13, 0.055);
-  const collar = neckPoly(base, ctrl, [base[0] + (head[0] - base[0]) * 0.42, base[1] + (head[1] - base[1]) * 0.42], 0.2, 0.12);
+  const base: V2 = front ? [0, bodyY + 0.12] : tq ? [0.2, bodyY + 0.1] : [rx * 0.72, bodyY + 0.08];
+  const ctrl: V2 = front ? [0, (base[1] + head[1]) / 2] : [base[0] + 0.06, (base[1] + head[1]) / 2 + 0.02];
+  const neck = neckPoly(base, ctrl, head, 0.17, 0.085);
+  // shaggy feathered lower neck + dark hindneck locks; bare blue-grey throat at the top front
+  const neckLocks = useMemo(() => {
+    const rr = mulberry(seed * 5 + 3);
+    return Array.from({length: 9}, (_, i) => ({u: 0.08 + i * 0.075, len: 0.06 + rr() * 0.05, side: front ? (i % 2 ? 1 : -1) : -1, c: rr() < 0.5 ? BODY_DK : BODY}));
+  }, [seed, front]);
 
-  // blink
   const blink = blinks.some((b) => t - seed * 0.37 >= b && t - seed * 0.37 < b + 0.12) || (blinkAt ?? []).some((b) => scene.t >= b && scene.t < b + 0.16);
-  // pop-up
   let dy = 0;
   if (rise) {
     const k = smooth((scene.t - rise.at) / (rise.dur ?? 0.3));
     dy = -(rise.from ?? 1.2) * (1 - k) + Math.sin(k * Math.PI) * 0.05;
   }
+
+  const eye = (ex: number, ey: number, k = 1, key = 'e') =>
+    blink ? (
+      <Ink key={key} pts={[[-0.02 * k, -0.003], [0.02 * k, -0.003], [0.02 * k, 0.004], [-0.02 * k, 0.004]]} z={0.06} pos={[ex, ey]} color="#1A1410" />
+    ) : (
+      <group key={key}>
+        <Part s={{kind: 'circle', r: 0.021 * k}} color={IRIS} z={0.056} pos={[ex, ey]} />
+        <Part s={{kind: 'circle', r: 0.01 * k}} color="#140C08" z={0.058} pos={[ex + 0.002, ey]} outline={false} />
+        <Part s={{kind: 'circle', r: 0.0055 * k}} color="#FFFFFF" z={0.06} pos={[ex + 0.007 * k, ey + 0.007 * k]} outline={false} />
+      </group>
+    );
 
   return (
     <group position={[pos[0], 0, pos[1]]}>
@@ -358,48 +436,89 @@ export const Emu: React.FC<EmuProps> = ({pos, vel, facing: facingIn, gait = 'sta
       <group rotation={[0, yaw, 0]}>
         <group scale={[facing * s, s, s]} position={[0, dy * s, 0]}>
           <CharCtx.Provider value={ctx}>
-            {/* legs: far leg behind the body, near leg in front */}
-            {legs.map((l, i) => (
-              <group key={i}>
-                {limb(l.hip, l.ankle, 0.032, LEG, l.back ? -0.03 : 0.06, `t${i}`)}
-                {limb(l.ankle, l.foot, 0.026, LEG, l.back ? -0.03 : 0.06, `s${i}`)}
-                {[-0.45, 0.05, 0.5].map((a, k) => limb(l.foot, [l.foot[0] + Math.cos(a * 0.6) * 0.085, l.foot[1] + Math.sin(a * 0.6) * 0.02 - 0.012], 0.012, LEG, l.back ? -0.031 : 0.061, `f${i}${k}`))}
-              </group>
-            ))}
-            <group position={[0, hipY + 0.2, 0]} rotation={[0, 0, lean * D]}>
-              <Part s={{kind: 'poly', pts: body}} color={BODY} z={0.02} sil />
-              {strokes.map((st, i) => (
-                <Ink key={i} pts={[[0, 0], [st.len, 0], [st.len, 0.018], [0, 0.018]]} z={0.025} pos={[st.x, st.y]} rot={st.a} color={st.lt ? BODY_LT : BODY_DK} />
+            {/* legs */}
+            {legs.map((l, i) => {
+              const z = l.near ? 0.005 : -0.03; // legs tuck under the plumage
+              const n = 4;
+              return (
+                <group key={i}>
+                  {limb(l.hip, l.ankle, 0.038, LEG, z, `t${i}`)}
+                  {limb(l.ankle, l.foot, 0.026, LEG, z, `s${i}`)}
+                  {/* scale bands across the tarsus */}
+                  {Array.from({length: n}, (_, k) => {
+                    const u = (k + 1) / (n + 1);
+                    const p: V2 = [l.ankle[0] + (l.foot[0] - l.ankle[0]) * u, l.ankle[1] + (l.foot[1] - l.ankle[1]) * u];
+                    const a = Math.atan2(l.foot[1] - l.ankle[1], l.foot[0] - l.ankle[0]);
+                    return <Ink key={k} pts={[[-0.022, -0.003], [0.022, -0.003], [0.022, 0.003], [-0.022, 0.003]]} z={z + 0.002} pos={p} rot={a + Math.PI / 2} color={LEG_DK} />;
+                  })}
+                  {/* three thick forward toes with dark claws */}
+                  {(front ? [-0.5, 0, 0.5] : [-0.35, 0.0, 0.3]).map((a, k) => {
+                    const tip: V2 = front ? [l.foot[0] + Math.sin(a) * 0.05, l.foot[1] - 0.025] : [l.foot[0] + Math.cos(a * 0.5) * 0.1, l.foot[1] + Math.sin(a * 0.5) * 0.025 - 0.015];
+                    return (
+                      <group key={k}>
+                        {limb(l.foot, tip, 0.013, LEG, z + 0.001, `f${i}${k}`)}
+                        <Part s={{kind: 'circle', r: 0.009}} color="#2A2826" z={z + 0.002} pos={tip} outline={false} />
+                      </group>
+                    );
+                  })}
+                </group>
+              );
+            })}
+            {/* body: smooth oval mop + hanging hair-like locks + strand strokes */}
+            <group position={[tq ? -0.04 : front ? 0 : -0.06, bodyY, 0]} rotation={[0, 0, tilt * D]}>
+              {locks.edge.map((lk, i) => (
+                <Part key={`l${i}`} s={{kind: 'capsule', len: lk.len, r: lk.r}} color={lk.c} z={0.015} pos={[lk.x, lk.y]} rot={lk.rot + (run ? Math.sin(ph * 2 + i) * 0.12 : 0)} sil />
+              ))}
+              <Part s={{kind: 'poly', pts: bodyOval(rx, ry, droop)}} color={BODY} z={0.02} sil />
+              {locks.strands.map((lk, i) => (
+                <Part key={`s${i}`} s={{kind: 'capsule', len: lk.len, r: lk.r}} color={lk.c} z={0.025} pos={[lk.x, lk.y]} rot={lk.rot} outline={false} />
               ))}
             </group>
-            <group position={[0, 0, 0]}>
-              <Part s={{kind: 'poly', pts: neck}} color={SKIN} z={0.03} sil />
-              <Part s={{kind: 'poly', pts: collar}} color={BODY} z={0.035} sil />
-              <Ink pts={neckPoly([base[0] + 0.03, base[1] + 0.18], [ctrl[0] + 0.03, ctrl[1]], [head[0] + 0.0, head[1] - 0.06], 0.04, 0.02)} z={0.032} color="#6A86A6" />
-              <group position={[head[0], head[1], 0]}>
-                <Part s={{kind: 'ellipse', rx: 0.078, ry: 0.064}} color={SKIN} z={0.04} sil />
-                {/* shaggy dark crown */}
-                <Part s={{kind: 'poly', pts: [[-0.08, 0.0], [-0.07, 0.05], [-0.04, 0.075], [-0.02, 0.062], [0.0, 0.08], [0.03, 0.06], [0.06, 0.05], [0.05, 0.02], [0.0, 0.03], [-0.05, 0.015]]}} color={BODY_DK} z={0.042} />
-                {/* beak */}
-                <Part s={{kind: 'poly', pts: [[0.05, 0.012], [0.135, -0.012], [0.13, -0.026], [0.05, -0.03]]}} color={BEAK} z={0.044} />
-                {/* big round eye(s) */}
-                {(lookCam ? [-0.032, 0.032] : [0.02]).map((ex, i) =>
-                  blink ? (
-                    <Ink key={i} pts={[[-0.028, -0.004], [0.028, -0.004], [0.028, 0.004], [-0.028, 0.004]]} z={0.05} pos={[ex, 0.008]} />
-                  ) : (
-                    <group key={i}>
-                      <Part s={{kind: 'circle', r: 0.03}} color="#FFFDF4" z={0.046} pos={[ex, 0.008]} />
-                      <Part s={{kind: 'circle', r: 0.019}} color="#2A1A12" z={0.048} pos={[ex + 0.006, 0.006]} outline={false} />
-                      <Part s={{kind: 'circle', r: 0.0065}} color="#FFFFFF" z={0.05} pos={[ex + 0.011, 0.013]} outline={false} />
-                    </group>
-                  ),
-                )}
-                {hat && (
-                  <group rotation={[0, 0, 0.12]}>
-                    <Fedora R={0.1} y={0.045} z={0.06} />
-                  </group>
-                )}
-              </group>
+            {/* neck: blue-grey skin, shaggy feathered lower half, bare pale throat near the head */}
+            <Part s={{kind: 'poly', pts: neck}} color={SKIN} z={0.016} sil />
+            {/* feathered lower neck: one shaggy tapered column with soft wavy edges, growing out from behind the body */}
+            <Part s={{kind: 'poly', pts: shaggyNeck([base[0] - (front ? 0 : 0.03), base[1] - 0.12], ctrl, curvePt(base, ctrl, head, 0.64), front ? 0.3 : 0.27, 0.1, seed)}} color={BODY} z={0.018} sil />
+            {[0.18, 0.3, 0.42, 0.52].map((u, k) => {
+              const p = curvePt(base, ctrl, head, u);
+              return <Part key={`ns${k}`} s={{kind: 'capsule', len: 0.07, r: 0.006}} color={k % 2 ? BODY_DK : BODY_LT} z={0.019} pos={[p[0] + (k % 2 ? -0.025 : 0.02), p[1] + 0.03]} rot={0.15} outline={false} />;
+            })}
+            {neckLocks.map((nl, i) => {
+              const p = curvePt(base, ctrl, head, nl.u);
+              return <Part key={i} s={{kind: 'capsule', len: nl.len, r: 0.016}} color={nl.c} z={0.0185} pos={[p[0] + nl.side * (front ? 0.06 : 0.065) * (1 - nl.u), p[1]]} rot={nl.side * -0.35} />;
+            })}
+            <Ink pts={neckPoly(curvePt(base, ctrl, head, 0.6), ctrl, [head[0] + (front ? 0 : 0.02), head[1] - 0.05], 0.06, 0.05)} z={0.0195} color={SKIN_LT} />
+            {/* head: small, dark-feathered; short broad flat bill; red-brown eye */}
+            <group position={[head[0], head[1], 0]}>
+              <Part s={{kind: 'ellipse', rx: front ? 0.07 : 0.078, ry: 0.06}} color={HEAD} z={0.05} sil />
+              {[-0.05, -0.03].map((x, k) => (
+                <Part key={k} s={{kind: 'capsule', len: 0.03, r: 0.009}} color={HEAD} z={0.049} pos={[front ? x + 0.04 : x, 0.045]} rot={Math.PI - 0.9 + k * 0.3} />
+              ))}
+              {front ? (
+                <>
+                  {/* bill seen head-on: short and broad */}
+                  <Part s={{kind: 'rrect', w: 0.065, h: 0.04, r: 0.016}} color={BILL} z={0.06} pos={[0, -0.025]} />
+                  <Ink pts={[[-0.028, -0.001], [0.028, -0.001], [0.028, 0.003], [-0.028, 0.003]]} z={0.062} pos={[0, -0.028]} color="#2A2624" />
+                  {eye(-0.042, 0.012, 0.9, 'a')}
+                  {eye(0.042, 0.012, 0.9, 'b')}
+                </>
+              ) : (
+                <>
+                  {/* side / 3/4 bill: flat, broad, slightly hooked tip; nostril groove */}
+                  <Part
+                    s={{kind: 'poly', pts: tq ? [[0.04, 0.008], [0.105, -0.004], [0.112, -0.016], [0.1, -0.024], [0.04, -0.03]] : [[0.045, 0.01], [0.13, -0.004], [0.138, -0.018], [0.124, -0.026], [0.045, -0.032]]}}
+                    color={BILL}
+                    z={0.06}
+                  />
+                  <Ink pts={[[0.06, -0.006], [0.1, -0.012], [0.1, -0.009], [0.06, -0.003]]} z={0.062} color="#2A2624" />
+                  {eye(0.012, 0.012, 1, 'a')}
+                  {tq && eye(-0.04, 0.012, 0.7, 'b')}
+                </>
+              )}
+              {hat && (
+                <group rotation={[0, 0, front ? 0 : 0.1]}>
+                  <Fedora R={0.1} y={0.04} z={0.07} />
+                </group>
+              )}
             </group>
           </CharCtx.Provider>
         </group>

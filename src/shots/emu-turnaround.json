@@ -1,0 +1,178 @@
+{
+ "slug": "emu-turnaround",
+ "title": "Emu turnaround",
+ "audio": "vo/04-emu-war.mp3",
+ "music": false,
+ "sfx": false,
+ "payoffHold": 0,
+ "shots": [
+  {
+   "id": "emu-front-stand",
+   "set": "farm",
+   "duration": 1.0,
+   "fx": {
+    "farm": {
+     "emus": [
+      {
+       "pos": [
+        0,
+        3.0
+       ],
+       "facing": 1,
+       "gait": "stand",
+       "seed": 5,
+       "view": "front"
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.0,
+     1.0,
+     6.6
+    ],
+    "to": [
+     0.0,
+     1.0,
+     6.6
+    ],
+    "look": [
+     0.0,
+     0.92,
+     3.0
+    ],
+    "fov": 30
+   },
+   "cast": [],
+   "layout": "manual"
+  },
+  {
+   "id": "emu-side-stand",
+   "set": "farm",
+   "duration": 1.0,
+   "fx": {
+    "farm": {
+     "emus": [
+      {
+       "pos": [
+        0,
+        3.0
+       ],
+       "facing": 1,
+       "gait": "stand",
+       "seed": 5,
+       "view": "side"
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.0,
+     1.0,
+     6.6
+    ],
+    "to": [
+     0.0,
+     1.0,
+     6.6
+    ],
+    "look": [
+     0.0,
+     0.92,
+     3.0
+    ],
+    "fov": 30
+   },
+   "cast": [],
+   "layout": "manual"
+  },
+  {
+   "id": "emu-threeq-stand",
+   "set": "farm",
+   "duration": 1.0,
+   "fx": {
+    "farm": {
+     "emus": [
+      {
+       "pos": [
+        0,
+        3.0
+       ],
+       "facing": 1,
+       "gait": "stand",
+       "seed": 5,
+       "view": "threeq"
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.0,
+     1.0,
+     6.6
+    ],
+    "to": [
+     0.0,
+     1.0,
+     6.6
+    ],
+    "look": [
+     0.0,
+     0.92,
+     3.0
+    ],
+    "fov": 30
+   },
+   "cast": [],
+   "layout": "manual"
+  },
+  {
+   "id": "emu-side-run",
+   "set": "farm",
+   "duration": 1.0,
+   "fx": {
+    "farm": {
+     "emus": [
+      {
+       "pos": [
+        0,
+        3.0
+       ],
+       "facing": 1,
+       "gait": "run",
+       "seed": 5,
+       "view": "side"
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.0,
+     1.0,
+     6.6
+    ],
+    "to": [
+     0.0,
+     1.0,
+     6.6
+    ],
+    "look": [
+     0.0,
+     0.92,
+     3.0
+    ],
+    "fov": 30
+   },
+   "cast": [],
+   "layout": "manual"
+  }
+ ]
+}
