@@ -211,5 +211,194 @@
   "author": "Hidden Why studio",
   "license": "CC0",
   "note": "fallback: Freesound (403 from this machine) and no CC0 grit/sand-pour found in the Kenney packs"
+ },
+ {
+  "name": "airport-chime",
+  "source": "OpenGameArt",
+  "file": "bell_ding1.wav",
+  "author": "pwl",
+  "url": "https://opengameart.org/content/bell-dingschimes",
+  "license": "CC0"
+ },
+ {
+  "name": "jet-rumble",
+  "source": "OpenGameArt",
+  "file": "rumble.wav",
+  "author": "cinameng",
+  "url": "https://opengameart.org/content/rumble-fx",
+  "license": "CC0",
+  "note": "low-passed 900 Hz, soft fade-in"
+ },
+ {
+  "name": "cabin-hum",
+  "source": "OpenGameArt",
+  "file": "sfx100v2_loop_machine_02.ogg",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/100-cc0-sfx-2",
+  "license": "CC0",
+  "note": "low-passed 600 Hz (cabin drone)"
+ },
+ {
+  "name": "cabin-creak",
+  "source": "OpenGameArt",
+  "file": "tree_creak_0.ogg",
+  "author": "antumdeluge",
+  "url": "https://opengameart.org/content/tree-creaking",
+  "license": "CC0",
+  "note": "1.4 s excerpt from 1.14 s"
+ },
+ {
+  "name": "thunder-soft",
+  "source": "OpenGameArt",
+  "file": "sfx100v2_thunder_01.ogg",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/100-cc0-sfx-2",
+  "license": "CC0",
+  "note": "low-passed 700 Hz, long fade (distant)"
+ },
+ {
+  "name": "water-splash",
+  "source": "OpenGameArt",
+  "file": "splash_01.ogg",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/100-cc0-sfx",
+  "license": "CC0"
+ },
+ {
+  "name": "bubbles",
+  "source": "OpenGameArt",
+  "file": "bubbles-loop1-amp.wav",
+  "author": "bmaczero",
+  "url": "https://opengameart.org/content/bubble-sound-effects",
+  "license": "CC0"
+ },
+ {
+  "name": "metal-crack",
+  "source": "OpenGameArt",
+  "file": "bfh1_breaking_02.ogg",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
+  "license": "CC0",
+  "note": "low-passed 1.8 kHz (underwater)"
+ },
+ {
+  "name": "paper-rustle",
+  "source": "OpenGameArt",
+  "file": "Paper/pageturn2.wav",
+  "author": "owlishmedia",
+  "url": "https://opengameart.org/content/sound-effects-pack",
+  "license": "CC0"
+ },
+ {
+  "name": "paper-rip",
+  "source": "OpenGameArt",
+  "file": "Paper/tissue-pull.wav",
+  "author": "owlishmedia",
+  "url": "https://opengameart.org/content/sound-effects-pack",
+  "license": "CC0",
+  "note": "0.9 s excerpt from 0.6 s"
+ },
+ {
+  "name": "paper-stretch",
+  "source": "OpenGameArt",
+  "file": "Paper/pageturn1.wav",
+  "author": "owlishmedia",
+  "url": "https://opengameart.org/content/sound-effects-pack",
+  "license": "CC0"
+ },
+ {
+  "name": "plate-clink",
+  "source": "OpenGameArt",
+  "file": "dishes_02.ogg",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/100-cc0-sfx",
+  "license": "CC0"
+ },
+ {
+  "name": "brownie-crack",
+  "source": "OpenGameArt",
+  "file": "bfh1_wood_breaking_01.ogg",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/75-cc0-breaking-falling-hit-sfx",
+  "license": "CC0"
+ },
+ {
+  "name": "counter-tick",
+  "source": "OpenGameArt",
+  "file": "Timetick.ogg",
+  "author": "ignasd",
+  "url": "https://opengameart.org/content/clock-tick-0",
+  "license": "CC0",
+  "note": "single tick repeated every 85 ms (racing counter)"
+ },
+ {
+  "name": "farm-wind",
+  "source": "OpenGameArt",
+  "file": "wind background noise 2.wav",
+  "author": "bashar3a",
+  "url": "https://opengameart.org/content/mild-wind-background-noise",
+  "license": "CC0",
+  "note": "first 40 s, 1 s fade in, 1.5 s fade out"
+ },
+ {
+  "name": "footsteps-dirt",
+  "source": "OpenGameArt",
+  "file": "gravel.ogg (Different Steps pack)",
+  "author": "tinyworlds",
+  "url": "https://opengameart.org/content/different-steps-on-wood-stone-leaves-gravel-and-mud",
+  "license": "CC0"
+ },
+ {
+  "name": "truck-engine",
+  "source": "OpenGameArt",
+  "file": "engine_sound.mp3",
+  "author": "pauliuw",
+  "url": "https://opengameart.org/content/engine-sounds2",
+  "license": "CC0",
+  "note": "first 20 s, low-passed at 3.5 kHz"
+ },
+ {
+  "name": "gun-jam",
+  "source": "OpenGameArt",
+  "file": "sfx100v2_lock_open_01.ogg (100 CC0 SFX #2)",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/100-cc0-sfx-2",
+  "license": "CC0",
+  "note": "the dry 'chk' of the jammed Lewis gun"
+ },
+ {
+  "name": "gunfire-distant",
+  "source": "OpenGameArt",
+  "file": "shot_01.ogg (100 CC0 SFX)",
+  "author": "rubberduck",
+  "url": "https://opengameart.org/content/100-cc0-sfx",
+  "license": "CC0",
+  "note": "low-passed at 900 Hz + short echo: muffled distant pop"
+ },
+ {
+  "name": "bowling-roll",
+  "source": "OpenGameArt",
+  "file": "qbr-prev.wav_.mp3",
+  "author": "qubodup",
+  "url": "https://opengameart.org/content/bowling-ball-rolling",
+  "license": "CC0"
+ },
+ {
+  "name": "marbles-scatter",
+  "source": "OpenGameArt",
+  "file": "dice-throw-3.ogg (Casino Audio)",
+  "author": "Kenney",
+  "url": "https://opengameart.org/content/54-casino-sound-effects-cards-dice-chips",
+  "license": "CC0",
+  "note": "hard little objects clattering = marbles bursting apart"
+ },
+ {
+  "name": "marble-click",
+  "source": "OpenGameArt",
+  "file": "chips-collide-1.ogg (Casino Audio)",
+  "author": "Kenney",
+  "url": "https://opengameart.org/content/54-casino-sound-effects-cards-dice-chips",
+  "license": "CC0",
+  "note": "single click"
  }
 ]

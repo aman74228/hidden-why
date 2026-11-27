@@ -10,18 +10,18 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PI = math.pi
 SMITH = {"body": "#5A3E30", "trim": "#B88A5A", "legs": "#C9B48E", "shoes": "#3A2A22"}
-DADA_SMITH = {"who": "dada", "outfit": SMITH, "props": ["apron", "headwrap"]}
+GUS_SMITH = {"who": "gus", "outfit": SMITH, "props": ["apron", "headwrap"]}
 VIK = {"who": "vik", "props": ["goggles"]}
 VIK_APRON = {"who": "vik", "props": ["apron", "goggles"]}
-CHOTU = {"who": "chotu"}
+NIK = {"who": "nik"}
 ANVIL = [0.72, 0, 0.12]
 
 
 # ---- auto-framing: choose the camera distance so every listed point fits the
 # portrait frame (x 7-93%, y 6-90%) at the END of the move; the move starts
 # `push` further out and `swing` degrees around (always gliding).
-H_ = {"chotu": 1.42, "vik": 2.2, "dada": 1.62}
-W_ = {"chotu": 0.62, "vik": 0.6, "dada": 0.88}
+H_ = {"nik": 1.42, "vik": 2.2, "gus": 1.62}
+W_ = {"nik": 0.62, "vik": 0.6, "gus": 0.88}
 
 def body(m, crop=0.0):
     """points of a cast member: head top, sides at chest, feet (or crop height)"""
@@ -98,7 +98,7 @@ seg = [
   ("try1-folding", T(4) - PRE, T(5) - PRE),
   ("try2-pure-iron", T(5) - PRE, T(6) - PRE),
   ("try3-recipe", T(6) - PRE, T(7) - PRE),
-  ("dada-dirt", T(7) - PRE, T(8) - PRE),
+  ("gus-dirt", T(7) - PRE, T(8) - PRE),
   ("india-vanadium", T(8) - PRE, E(8) + 0.04),
   ("pause-reaction", E(8) + 0.04, T(9) - PRE),
   ("smith-bands", T(9) - PRE, no_on - PRE),
@@ -118,18 +118,18 @@ def path(a, b, look_a=None, look_b=None, fov=42):
 
 # cast placements (kept clear of every camera path; see path_ok)
 BET_VIK = c(VIK, pose="slam", pos=[3.3, 0.45], facing=-1, poses=[{"at": 0.9, "pose": "proud"}])
-BET_CHOTU = c(CHOTU, pose="idle", pos=[1.75, 0.8], facing=1, poses=[{"at": 0.4, "pose": "gasp"}])
+BET_CHOTU = c(NIK, pose="idle", pos=[1.75, 0.8], facing=1, poses=[{"at": 0.4, "pose": "gasp"}])
 PRESS_VIK = c(VIK_APRON, pose="hammer", pos=[-1.95, 1.2], facing=-1, holding="hammer", delay=-0.3)
 PURE_VIK = c(VIK, pose="present", pos=[3.3, 0.45], facing=-1, poses=[{"at": 0, "pose": "present"}])
-REC_CHOTU = c(CHOTU, pose="present", pos=[0.15, 0.55], facing=-1, holding="parchment")
+REC_CHOTU = c(NIK, pose="present", pos=[0.15, 0.55], facing=-1, holding="parchment")
 REC_VIK = c(VIK_APRON, pose="point", pos=[-2.5, 0.3], facing=1)
-DOOR_DADA = c(DADA_SMITH, pose="idle", pos=[-3.6, -3.35], facing=1, appearAt=0.45)
-DOOR_CHOTU = c(CHOTU, pose="look-up", pos=[-4.6, -1.2], facing=1)
+DOOR_DADA = c(GUS_SMITH, pose="idle", pos=[-3.6, -3.35], facing=1, appearAt=0.45)
+DOOR_CHOTU = c(NIK, pose="look-up", pos=[-4.6, -1.2], facing=1)
 DOOR_VIK = c(VIK, pose="shock", pos=[-2.2, -0.6], facing=-1)
-HILL_DADA = c(DADA_SMITH, pose="point", pos=[-1.7, -1.55], facing=1)
-FORGE_DADA = c(DADA_SMITH, pose="hammer", pos=[0, 0], facing=1, holding="hammer", delay=-0.25)
+HILL_DADA = c(GUS_SMITH, pose="point", pos=[-1.7, -1.55], facing=1)
+FORGE_DADA = c(GUS_SMITH, pose="hammer", pos=[0, 0], facing=1, holding="hammer", delay=-0.25)
 MELT_VIK = c(VIK, pose="peek", pos=[1.35, 0.85], facing=-1)
-MELT_CHOTU = c(CHOTU, pose="gasp", pos=[-0.4, 1.15], facing=1)
+MELT_CHOTU = c(NIK, pose="gasp", pos=[-0.4, 1.15], facing=1)
 
 press_w = frame([[-2.7, 0.75, 0.9], [-2.7, 2.35, 0.9], [-3.2, 1.2, 0.9]] + body(PRESS_VIK, crop=0.3), az=10, el=0, fov=44, push=0)
 pure_w = frame([[2.15, 1.0, 0.0], [2.45, 1.3, 0.0]] + body(PURE_VIK, crop=0.4), az=-8, el=2, fov=44, push=0)
@@ -178,14 +178,14 @@ shots = [
    "cast": [REC_CHOTU, REC_VIK], "layout": "manual",
    "titleCard": {"label": "Try 3", "word": "The recipe", "at": 0.1, "duration": round(R["try3-recipe"][1] - R["try3-recipe"][0] - 0.15, 2), "crossed": True, "crossAt": rel("try3-recipe", word_t("blank", T(6)))},
    "sfx": [{"name": "crucible-crack", "at": rel("try3-recipe", word_t("blank", T(6)))}]},
-  # line 7: the forge door opens, Dada; push in to his open palm full of dark dirt
-  {"id": "dada-dirt", "beat": 4, "stillAt": rel("dada-dirt", word_t("dirt")), "set": "lab",
+  # line 7: the forge door opens, Gus; push in to his open palm full of dark dirt
+  {"id": "gus-dirt", "beat": 4, "stillAt": rel("gus-dirt", word_t("dirt")), "set": "lab",
    "fx": {"lab": {"door": [0, 1], "doorAt": 0.1, "sabre": "scanner"},
-          "hand": {"pos": HAND, "rot": [0.35, -PI / 2, 0], "s": 1.6, "open": [0, 1], "openAt": rel("dada-dirt", word_t("hand")), "grit": True, "sleeve": "#D29A72"}},
+          "hand": {"pos": HAND, "rot": [0.35, -PI / 2, 0], "s": 1.6, "open": [0, 1], "openAt": rel("gus-dirt", word_t("hand")), "grit": True, "sleeve": "#D29A72"}},
    "camera": path(door_w, {"to": [HAND[0] + 0.1, HAND[1] + 0.48, HAND[2] + 0.4], "look": [HAND[0], HAND[1] + 0.03, HAND[2]]}, fov=44),
    "cast": [DOOR_DADA, DOOR_CHOTU, DOOR_VIK], "layout": "manual",
-   "sfx": [{"name": "gate-creak", "at": 0.1}, {"name": "grit-trickle", "at": rel("dada-dirt", word_t("pinch"))}]},
-  # line 8: India's ore hills, Dada at the ore seams, then down into the ore: violet specks of vanadium
+   "sfx": [{"name": "gate-creak", "at": 0.1}, {"name": "grit-trickle", "at": rel("gus-dirt", word_t("pinch"))}]},
+  # line 8: India's ore hills, Gus at the ore seams, then down into the ore: violet specks of vanadium
   {"id": "india-vanadium", "set": "hillside", "fx": {"hill": {"furnace": True}, "orePot": {"pos": [-0.4, 0.32, 1.0], "s": 1.4, "specks": 9, "glintAt": rel("india-vanadium", word_t("traces", T(8)))}},
    "props": [{"type": "block", "pos": [-0.4, 0, 1.0], "scale": 0.4, "color": "#C98F68"}],
    "camera": {"type": "dolly", "from": [-2.4, 1.6, 6.6], "to": [-0.4, 0.74, 1.36], "look": [-0.6, 1.3, -2.2], "lookTo": [-0.4, 0.48, 1.0], "fov": 44},
@@ -195,15 +195,15 @@ shots = [
    "sfx": [{"name": "shimmer", "at": rel("india-vanadium", word_t("traces", T(8)))}]},
   # (pause) silent reaction
   {"id": "pause-reaction", "set": "lab", "fx": {"lab": {"door": [1, 1], "sabre": "scanner"}},
-   "camera": frame(body(c(CHOTU, pos=[-1.1, 1.3])) + body(c(VIK, pos=[0.35, 1.25]), crop=0.4), az=0, el=3, fov=44, push=0.05, swing=1),
-   "cast": [c(CHOTU, pose="look-up", pos=[-1.1, 1.3], facing=1), c(VIK, pose="shock", pos=[0.35, 1.25], facing=-1)], "layout": "manual"},
+   "camera": frame(body(c(NIK, pos=[-1.1, 1.3])) + body(c(VIK, pos=[0.35, 1.25]), crop=0.4), az=0, el=3, fov=44, push=0.05, swing=1),
+   "cast": [c(NIK, pose="look-up", pos=[-1.1, 1.3], facing=1), c(VIK, pose="shock", pos=[0.35, 1.25], facing=-1)], "layout": "manual"},
   # line 9a: the smith hammers; push into the cake as bands appear with each strike
   {"id": "smith-bands", "beat": 5, "stillAt": rel("smith-bands", word_t("bands")) + 0.3, "set": "forge", "grade": "flashback",
    "fx": {"forgeLumps": False, "cake": {"strikes": strikes}, "sparks": {"pos": [0.72, 0.6, 0.12], "times": strikes, "color": "#FFD76A"}},
    "camera": {"type": "dolly", "from": [1.9, 1.35, 3.4], "to": [0.98, 0.86, 0.64], "look": [0.35, 0.9, 0.1], "lookTo": [0.72, 0.57, 0.12], "fov": 42},
    "cast": [FORGE_DADA],
    "sfx": [{"name": "anvil", "at": t} for t in strikes if t < R["smith-bands"][1] - R["smith-bands"][0]] + [{"name": "sizzle", "at": strikes[0] + 0.05}]},
-  # line 9b: no traces, no swirls (overhead, Dada's finger)
+  # line 9b: no traces, no swirls (overhead, Gus's finger)
   {"id": "no-traces", "set": "forge", "grade": "flashback",
    "fx": {"forgeLumps": False, "noSparks": True, "anvilBlades": True,
           "hand": {"pos": [0.98, 0.66, 0.52], "rot": [0, 0.2, PI], "s": 1.3, "point": True, "sleeve": "#D29A72"}},
@@ -216,8 +216,8 @@ shots = [
   # (pause) the secret went with them: the forge's last ember fades
   {"id": "pause-forge-dark", "set": "forge", "light": "forge", "lightTo": "forge-dark", "mixAt": [0.0, 0.5], "grade": "flashback",
    "fx": {"forgeLumps": False, "noSparks": True, "forgeGlow": [0.6, 0.15], "cake": {"strikes": [], "glow": [0.5, 0.08]}},
-   "camera": frame(body(c(DADA_SMITH, pos=[-0.05, 0.1])) + [[0.72, 0.6, 0.12], [1.0, 0.56, 0.12]], az=28, el=4, fov=44, push=0.06),
-   "cast": [c(DADA_SMITH, pose="idle", pos=[-0.05, 0.1], facing=1)], "layout": "manual"},
+   "camera": frame(body(c(GUS_SMITH, pos=[-0.05, 0.1])) + [[0.72, 0.6, 0.12], [1.0, 0.56, 0.12]], az=28, el=4, fov=44, push=0.06),
+   "cast": [c(GUS_SMITH, pose="idle", pos=[-0.05, 0.1], facing=1)], "layout": "manual"},
   # line 11: the trophy melts down; ding on "swirl"
   {"id": "trophy-melts", "beat": 6, "stillAt": rel("trophy-melts", word_t("swirl", T(11))), "set": "lab", "fx": {"lab": {"trophy": "melt", "melt": [0.05, 0.95], "sabre": "scanner"}},
    "camera": melt_w | {"from": [round(melt_w["to"][0] - 0.3, 3), melt_w["to"][1] - 0.15, round(melt_w["to"][2] - 0.9, 3)]},

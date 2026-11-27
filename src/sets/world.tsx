@@ -344,7 +344,7 @@ export const CourtyardHD: React.FC<{lampGlow?: number; beams?: boolean; beamColo
           <Pigeon pos={[-1.2, 5.6, -7.6]} rotY={0.2} ph={2.1} />
         </>
       )}
-      {/* the bar stand for Dada's demonstration (two bars added by the story layer) */}
+      {/* the bar stand for Gus's demonstration (two bars added by the story layer) */}
       <TBox size={[1.3, 0.55, 0.55]} pos={[BARS_POS[0], 0.275, BARS_POS[2]]} tex="sandstone-blocks" color="#E4B488" />
       {beams && (
         <>

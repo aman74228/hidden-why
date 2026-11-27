@@ -1,0 +1,85 @@
+{
+ "slug": "04-emu-war",
+ "cfg_weight": 0.3,
+ "note": "brief table: per-line exaggeration and pause after; line 10's pause is the reaction shot; line 13 loops into line 1 (no pause)",
+ "lines": [
+  {
+   "n": 1,
+   "text": "How did an army with machine guns lose a war… to birds?",
+   "exaggeration": 0.6,
+   "pause_after": 0.4
+  },
+  {
+   "n": 2,
+   "text": "Vik bets his favourite hat the birds never stood a chance.",
+   "exaggeration": 0.7,
+   "pause_after": 0.35
+  },
+  {
+   "n": 3,
+   "text": "But twenty thousand emus were eating farms bare, so the army sent three soldiers and two machine guns.",
+   "exaggeration": 0.5,
+   "pause_after": 0.35
+  },
+  {
+   "n": 4,
+   "text": "On day one, farmers herded the birds toward the guns, but the emus split into little groups and ran out of range.",
+   "exaggeration": 0.55,
+   "pause_after": 0.4
+  },
+  {
+   "n": 5,
+   "text": "So the soldiers set a trap at a water hole, and over a thousand emus walked straight toward it.",
+   "exaggeration": 0.55,
+   "pause_after": 0.3
+  },
+  {
+   "n": 6,
+   "text": "The gunners waited until the birds were close… and the gun jammed after just twelve.",
+   "exaggeration": 0.65,
+   "pause_after": 0.5
+  },
+  {
+   "n": 7,
+   "text": "So they bolted a machine gun onto a truck, but the emus outran it at nearly fifty kilometres an hour, and the ground was so bumpy nobody could aim.",
+   "exaggeration": 0.6,
+   "pause_after": 0.4
+  },
+  {
+   "n": 8,
+   "text": "After a week, the soldiers pulled out.",
+   "exaggeration": 0.45,
+   "pause_after": 0.5
+  },
+  {
+   "n": 9,
+   "text": "That's when Gus rolls a bowling ball at a tight pack of marbles. Strike.",
+   "exaggeration": 0.6,
+   "pause_after": 0.4
+  },
+  {
+   "n": 10,
+   "text": "Then he scatters them across the floor, and the ball hits just one.",
+   "exaggeration": 0.55,
+   "pause_after": 0.5
+  },
+  {
+   "n": 11,
+   "text": "You see, a machine gun only wins against a crowd, and the emus refused to be a crowd.",
+   "exaggeration": 0.55,
+   "pause_after": 0.35
+  },
+  {
+   "n": 12,
+   "text": "And Vik's hat? Now an emu's wearing it.",
+   "exaggeration": 0.75,
+   "pause_after": 0.4
+  },
+  {
+   "n": 13,
+   "text": "So next time someone says birds can't win a war, ask them…",
+   "exaggeration": 0.6,
+   "pause_after": 0.0
+  }
+ ]
+}

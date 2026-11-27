@@ -1,0 +1,1879 @@
+{
+ "slug": "character-sheet",
+ "title": "Character sheet",
+ "audio": "vo/04-emu-war.mp3",
+ "music": false,
+ "sfx": false,
+ "payoffHold": 0,
+ "shots": [
+  {
+   "id": "nik-view-front",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.71,
+     3.4446828953860735
+    ],
+    "to": [
+     0,
+     0.71,
+     3.4446828953860735
+    ],
+    "look": [
+     0,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "front"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-view-threeq",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.71,
+     3.4446828953860735
+    ],
+    "to": [
+     0,
+     0.71,
+     3.4446828953860735
+    ],
+    "look": [
+     0,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "threeq"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-view-side",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.71,
+     3.4446828953860735
+    ],
+    "to": [
+     0,
+     0.71,
+     3.4446828953860735
+    ],
+    "look": [
+     0,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "side"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-exp-idle",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "to": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "look": [
+     0,
+     1.08,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-exp-curious",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "to": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "look": [
+     0,
+     1.08,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "curious"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-exp-lean",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "to": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "look": [
+     0,
+     1.08,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "lean"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-exp-shock",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "to": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "look": [
+     0,
+     1.08,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "shock"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-exp-nervous",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "to": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "look": [
+     0,
+     1.08,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "nervous"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-exp-laugh",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "to": [
+     0,
+     1.08,
+     2.8214304105220713
+    ],
+    "look": [
+     0,
+     1.08,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "laugh"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-hand-open",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "to": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "look": [
+     0.22,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "present"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-hand-point",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "to": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "look": [
+     0.22,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "point"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-hand-grip",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "to": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "look": [
+     0.22,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "tin-hand"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-prop-box",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "to": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "look": [
+     0.22,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "box"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-prop-binoculars",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "to": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "look": [
+     0.22,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "binoculars"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "nik-prop-handover",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "to": [
+     0.22,
+     0.71,
+     3.842146306392159
+    ],
+    "look": [
+     0.22,
+     0.71,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "hold-out",
+     "holding": "box-hand"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-view-front",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.1,
+     5.336832654823495
+    ],
+    "to": [
+     0,
+     1.1,
+     5.336832654823495
+    ],
+    "look": [
+     0,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "front"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-view-threeq",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.1,
+     5.336832654823495
+    ],
+    "to": [
+     0,
+     1.1,
+     5.336832654823495
+    ],
+    "look": [
+     0,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "threeq"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-view-side",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.1,
+     5.336832654823495
+    ],
+    "to": [
+     0,
+     1.1,
+     5.336832654823495
+    ],
+    "look": [
+     0,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "side"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-exp-idle",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "to": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "look": [
+     0,
+     1.93,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-exp-curious",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "to": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "look": [
+     0,
+     1.93,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "curious"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-exp-lean",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "to": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "look": [
+     0,
+     1.93,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "lean"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-exp-shock",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "to": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "look": [
+     0,
+     1.93,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "shock"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-exp-nervous",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "to": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "look": [
+     0,
+     1.93,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "nervous"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-exp-laugh",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "to": [
+     0,
+     1.93,
+     2.1160728078915536
+    ],
+    "look": [
+     0,
+     1.93,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "laugh"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-hand-open",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "to": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "look": [
+     0.22,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "present"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-hand-point",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "to": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "look": [
+     0.22,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "point"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-hand-grip",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "to": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "look": [
+     0.22,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "tin-hand"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-prop-box",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "to": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "look": [
+     0.22,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "box"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-prop-binoculars",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "to": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "look": [
+     0.22,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "binoculars"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "vik-prop-handover",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "to": [
+     0.22,
+     1.1,
+     5.952621038072359
+    ],
+    "look": [
+     0.22,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "hold-out",
+     "holding": "box-hand"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-view-front",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.81,
+     3.9298495003700284
+    ],
+    "to": [
+     0,
+     0.81,
+     3.9298495003700284
+    ],
+    "look": [
+     0,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "front"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-view-threeq",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.81,
+     3.9298495003700284
+    ],
+    "to": [
+     0,
+     0.81,
+     3.9298495003700284
+    ],
+    "look": [
+     0,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "threeq"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-view-side",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.81,
+     3.9298495003700284
+    ],
+    "to": [
+     0,
+     0.81,
+     3.9298495003700284
+    ],
+    "look": [
+     0,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "view": "side"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-exp-idle",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "to": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "look": [
+     0,
+     1.29,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-exp-curious",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "to": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "look": [
+     0,
+     1.29,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "curious"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-exp-lean",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "to": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "look": [
+     0,
+     1.29,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "lean"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-exp-shock",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "to": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "look": [
+     0,
+     1.29,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "shock"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-exp-nervous",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "to": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "look": [
+     0,
+     1.29,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "nervous"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-exp-laugh",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "to": [
+     0,
+     1.29,
+     2.351192008768393
+    ],
+    "look": [
+     0,
+     1.29,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "laugh"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-hand-open",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "to": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "look": [
+     0.22,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "present"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-hand-point",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "to": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "look": [
+     0.22,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "point"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-hand-grip",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "to": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "look": [
+     0.22,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "tin-hand"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-prop-box",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "to": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "look": [
+     0.22,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "box"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-prop-binoculars",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "to": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "look": [
+     0.22,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle",
+     "holding": "binoculars"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "gus-prop-handover",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "to": [
+     0.22,
+     0.81,
+     4.383293673489647
+    ],
+    "look": [
+     0.22,
+     0.81,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      0,
+      0
+     ],
+     "facing": 1,
+     "pose": "hold-out",
+     "holding": "box-hand"
+    }
+   ],
+   "layout": "manual"
+  },
+  {
+   "id": "height-chart",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.15,
+     1.1,
+     16.5868924780839
+    ],
+    "to": [
+     0.15,
+     1.1,
+     16.5868924780839
+    ],
+    "look": [
+     0.15,
+     1.1,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      -1.6,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle"
+    },
+    {
+     "who": "nik",
+     "pos": [
+      -0.45,
+      0
+     ],
+     "facing": 1,
+     "pose": "idle"
+    },
+    {
+     "who": "vik",
+     "pos": [
+      0.6,
+      0
+     ],
+     "facing": -1,
+     "pose": "idle"
+    }
+   ],
+   "layout": "manual",
+   "fx": {
+    "emus": [
+     {
+      "pos": [
+       1.85,
+       0
+      ],
+      "facing": -1,
+      "gait": "stand",
+      "seed": 5,
+      "view": "side"
+     }
+    ]
+   }
+  },
+  {
+   "id": "emu-front",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.875,
+     4.245207793609598
+    ],
+    "to": [
+     0,
+     0.875,
+     4.245207793609598
+    ],
+    "look": [
+     0,
+     0.875,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [],
+   "layout": "manual",
+   "fx": {
+    "emus": [
+     {
+      "pos": [
+       0,
+       0
+      ],
+      "facing": 1,
+      "gait": "stand",
+      "seed": 5,
+      "view": "front"
+     }
+    ]
+   }
+  },
+  {
+   "id": "emu-34",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.875,
+     4.245207793609598
+    ],
+    "to": [
+     0,
+     0.875,
+     4.245207793609598
+    ],
+    "look": [
+     0,
+     0.875,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [],
+   "layout": "manual",
+   "fx": {
+    "emus": [
+     {
+      "pos": [
+       0,
+       0
+      ],
+      "facing": 1,
+      "gait": "stand",
+      "seed": 5,
+      "view": "threeq"
+     }
+    ]
+   }
+  },
+  {
+   "id": "emu-side",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.875,
+     4.245207793609598
+    ],
+    "to": [
+     0,
+     0.875,
+     4.245207793609598
+    ],
+    "look": [
+     0,
+     0.875,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [],
+   "layout": "manual",
+   "fx": {
+    "emus": [
+     {
+      "pos": [
+       0,
+       0
+      ],
+      "facing": 1,
+      "gait": "stand",
+      "seed": 5,
+      "view": "side"
+     }
+    ]
+   }
+  },
+  {
+   "id": "emu-running",
+   "set": "studio",
+   "duration": 1.0,
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0,
+     0.875,
+     4.245207793609598
+    ],
+    "to": [
+     0,
+     0.875,
+     4.245207793609598
+    ],
+    "look": [
+     0,
+     0.875,
+     0
+    ],
+    "fov": 30
+   },
+   "cast": [],
+   "layout": "manual",
+   "fx": {
+    "emus": [
+     {
+      "pos": [
+       0,
+       0
+      ],
+      "facing": 1,
+      "gait": "run",
+      "seed": 5,
+      "view": "side"
+     }
+    ]
+   }
+  }
+ ]
+}

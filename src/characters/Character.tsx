@@ -2,15 +2,17 @@ import React, {useMemo} from 'react';
 import * as THREE from 'three';
 import {useScene} from '../scene/ctx';
 import {C} from '../theme';
-import {CAST, CastName, CastSpec, Outfit} from './cast';
+import {CAST, CastName, CastSpec, CharView, Outfit, viewSpec} from './cast';
+import {getInputProps} from 'remotion';
 import {CharCtx, G, Ink, Part, arcPts} from './Part';
 import {EyeStyle, MouthStyle, PoseName, PoseState, poseAt} from './poses';
 import {V2} from './shapes';
+import {breath} from '../sets/breath';
 
 const D = Math.PI / 180;
 const OUTLINE_PX = 4;
-// Inner rim-glow strength per character (× 40% max opacity; Dada strongest)
-const RIM: Record<CastName, number> = {chotu: 0.65, vik: 0.65, dada: 1};
+// Inner rim-glow strength per character (× 40% max opacity; Gus strongest)
+const RIM: Record<CastName, number> = {nik: 0.65, vik: 0.65, gus: 1, soldier: 0.55, farmer: 0.55};
 
 export type CharacterProps = {
   who: CastName;
@@ -20,16 +22,26 @@ export type CharacterProps = {
   scale?: number;
   outfit?: Partial<Outfit>;
   delay?: number; // seconds offset for animation phase
-  poses?: {at: number; pose: PoseName}[]; // pose timeline (seconds into the shot); overrides `pose` from `at`
-  enter?: {from: [number, number]; at?: number; dur?: number}; // walk in from `from` to `pos`
+  poses?: {at: number; pose: PoseName; holding?: Holdable | null; props?: CharProp[]}[]; // pose timeline (seconds into the shot); overrides `pose` (and optionally what is held/worn) from `at`
+  enter?: {from: [number, number]; at?: number; dur?: number; pow?: number; ride?: boolean; easeIn?: boolean; glide?: boolean}; // walk in from `from` to `pos` (pow: ease-out power; ride: no walking bob)
+  hideAt?: number; // hidden from this time on
+  shake?: number; // bounce like the truck bed (same motion as Truck's bumpy ride)
   appearAt?: number; // hidden before this time (seconds into the shot)
   holding?: Holdable; // tool in the leading hand
   props?: CharProp[]; // costume pieces / carried props for this story
+  seed?: number; // animation/blink phase (extras: give each one its own)
+  view?: CharView; // front (default), threeq or side — same rig, re-spaced
+  qaId?: number; // index in the shot's cast (QA hand-count pass colours)
+  elev?: number; // feet raised this far (standing on a fence rail, a truck bed)
 };
 
 // umbrella/leaf/stick go in the off hand; satchel/apron/headwrap are worn
-export type CharProp = 'umbrella' | 'leaf' | 'stick' | 'satchel' | 'apron' | 'headwrap' | 'goggles';
-export type Holdable = 'hammer' | 'coin' | 'sabre' | 'trophy' | 'parchment';
+export type CharProp = 'umbrella' | 'leaf' | 'stick' | 'satchel' | 'apron' | 'headwrap' | 'goggles' | 'fedora' | 'binoculars' | 'moustache' | 'nohat';
+export type Holdable = 'hammer' | 'coin' | 'sabre' | 'trophy' | 'parchment' | 'balloon' | 'brownie' | 'bowling' | 'strawhat' | 'fedora' | 'binoculars' | 'box' | 'tin' | 'box-hand' | 'tin-hand';
+// held in BOTH hands: the arms are solved (2-bone IK) so the rig's own hands grip the prop
+export const TWO_HANDED: Holdable[] = ['binoculars', 'box', 'tin'];
+// QA hand-count pass colours (hand, arm) per cast index
+export const QA_COLOURS: [string, string][] = [['#FF0000', '#7F0000'], ['#00FF00', '#007F00'], ['#0000FF', '#00007F'], ['#FFFF00', '#7F7F00'], ['#FF00FF', '#7F007F'], ['#00FFFF', '#007F7F']];
 
 // Natural blinks: random 1.5–4 s gaps, each 4 frames, deterministic per character.
 const blinkTimes = (seed: number) => {
@@ -46,8 +58,8 @@ const blinkTimes = (seed: number) => {
   }
   return out;
 };
-const BLINKS = [blinkTimes(1), blinkTimes(2), blinkTimes(3)];
-const isBlink = (t: number, seed: number) => BLINKS[seed].some((b) => t >= b && t < b + 4 / 30);
+const BLINKS = [1, 2, 3, 4, 5, 6, 7, 8].map(blinkTimes);
+const isBlink = (t: number, seed: number) => BLINKS[seed % BLINKS.length].some((b) => t >= b && t < b + 4 / 30);
 
 export const Character: React.FC<CharacterProps> = ({
   who,
@@ -62,12 +74,19 @@ export const Character: React.FC<CharacterProps> = ({
   appearAt,
   holding,
   props = [],
+  seed: seedIn,
+  elev = 0,
+  hideAt,
+  shake = 0,
+  view = 'front',
+  qaId = 0,
 }) => {
   const scene = useScene();
-  const spec = CAST[who];
+  const spec = viewSpec(CAST[who], view);
+  const qaHands = Boolean((getInputProps() as {qaHands?: boolean}).qaHands);
   const fit: Outfit = {...spec.outfit, ...outfit};
   const t = Math.max(0, scene.t - delay);
-  const seed = who === 'chotu' ? 0 : who === 'vik' ? 1 : 2;
+  const seed = seedIn ?? (who === 'nik' ? 0 : who === 'vik' ? 1 : who === 'gus' ? 2 : who === 'soldier' ? 3 : 4);
   // pose timeline
   let curPose = pose;
   let poseT = t;
@@ -75,6 +94,8 @@ export const Character: React.FC<CharacterProps> = ({
     if (t >= k.at) {
       curPose = k.pose;
       poseT = t - k.at;
+      if (k.holding !== undefined) holding = k.holding ?? undefined;
+      if (k.props) props = k.props;
     }
   }
   const p = poseAt(curPose, poseT, seed);
@@ -82,16 +103,16 @@ export const Character: React.FC<CharacterProps> = ({
   if (props.includes('umbrella') || props.includes('leaf')) p.armB = [22, -202];
   if (props.includes('stick')) p.armB = [14, -10];
   // visible breathing: chest swells, shoulders rise a touch
-  const breath = Math.sin((t + seed * 0.9) * (who === 'dada' ? 1.6 : 2.1)) * 0.5 + 0.5;
+  const breath = Math.sin((t + seed * 0.9) * (who === 'gus' ? 1.6 : 2.1)) * 0.5 + 0.5;
   // entrance walk
   let walk = 0;
   if (enter) {
     const a0 = enter.at ?? 0;
     const d = enter.dur ?? 1.2;
     const u = Math.min(1, Math.max(0, (t - a0) / d));
-    const e = 1 - Math.pow(1 - u, 2);
+    const e = enter.glide ? 0.5 - 0.5 * Math.cos(Math.PI * u) : enter.easeIn ? Math.pow(u, enter.pow ?? 2) : 1 - Math.pow(1 - u, enter.pow ?? 2);
     pos = [enter.from[0] + (pos[0] - enter.from[0]) * e, enter.from[1] + (pos[1] - enter.from[1]) * e];
-    if (u > 0 && u < 1) walk = Math.abs(Math.sin(t * 11)) * 0.025;
+    if (u > 0 && u < 1 && !enter.ride) walk = Math.abs(Math.sin(t * 11)) * 0.025;
   }
   p.bodyDY += walk;
 
@@ -102,18 +123,21 @@ export const Character: React.FC<CharacterProps> = ({
   const ow = (OUTLINE_PX * worldPerPx) / scale;
   const yaw = Math.atan2(scene.camPos.x - pos[0], scene.camPos.z - pos[1]);
   const rimDir: V2 = [scene.rimDir[0] * facing, scene.rimDir[1]];
+  const qaCol = QA_COLOURS[qaId % QA_COLOURS.length];
   const ctx = useMemo(
-    () => ({ow, tint: scene.charTint, rim: RIM[who], rimDir, rimColor: scene.rimColor}),
-    [ow, scene.charTint, who, rimDir[0], rimDir[1], scene.rimColor],
+    () => ({ow, tint: scene.charTint, rim: RIM[who], rimDir, rimColor: scene.rimColor, qa: qaHands ? {hand: qaCol[0], arm: qaCol[1]} : null}),
+    [ow, scene.charTint, who, rimDir[0], rimDir[1], scene.rimColor, qaHands, qaCol[0]],
   );
 
   if (appearAt !== undefined && t < appearAt) return null;
+  if (hideAt !== undefined && t >= hideAt) return null;
+  const bump = shake ? shake * (Math.abs(Math.sin(scene.t * 7.3)) * 0.07 + Math.sin(scene.t * 13.1) * 0.025) : 0;
   const bodyLift = p.bodyDY * spec.height;
 
   return (
-    <group position={[pos[0], 0, pos[1]]}>
+    <group position={[pos[0], elev + bump, pos[1]]}>
       {/* contact shadow */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, 0]} scale={[scale, scale * 0.45, 1]}>
+      <mesh visible={!qaHands} rotation={[-Math.PI / 2, 0, 0]} position={[0, 0.005, 0]} scale={[scale, scale * 0.45, 1]}>
         <circleGeometry args={[spec.body.w * 0.75 + 0.1, 32]} />
         <meshBasicMaterial color={C.indigoDeep} transparent opacity={0.38} toneMapped={false} depthWrite={false} />
       </mesh>
@@ -147,14 +171,14 @@ const Legs: React.FC<{spec: CastSpec; fit: Outfit}> = ({spec, fit}) => (
         <Part
           s={{kind: 'capsule', len: spec.legLen - spec.legR, r: spec.legR}}
           color={fit.legs}
-          z={0.0}
+          z={side < 0 && spec.view ? -0.02 : 0.0}
           sil
           pos={[side * spec.legGap, spec.hipY]}
         />
         <Part
           s={{kind: 'ellipse', rx: spec.legR * 1.9, ry: spec.legR * 1.05}}
           color={fit.shoes}
-          z={0.01}
+          z={side < 0 && spec.view ? -0.01 : 0.01}
           sil
           pos={[side * spec.legGap + spec.legR * 0.7, spec.legR * 0.9]}
         />
@@ -186,7 +210,8 @@ const Body: React.FC<{spec: CastSpec; fit: Outfit; props: CharProp[]}> = ({spec,
       {/* neck */}
       <Part s={{kind: 'rrect', w: spec.headR * 0.45, h: 0.16, r: 0.04}} color={spec.skin} z={0.08} pos={[0, spec.neckY]} sil />
       <Part s={{kind: 'bean', w: b.w, h: b.h, flare: b.flare}} color={fit.body} z={0.1} pos={[0, b.y]} sil />
-      {spec.name === 'chotu' && (
+      <group position={[spec.decorDX ?? 0, 0, 0]}>
+      {spec.name === 'nik' && (
         <>
           {/* kurta placket + buttons + hem trim */}
           <Part s={{kind: 'rrect', w: 0.06, h: 0.22, r: 0.02}} color={fit.trim} z={0.15} pos={[0, top - 0.13]} />
@@ -207,7 +232,30 @@ const Body: React.FC<{spec: CastSpec; fit: Outfit; props: CharProp[]}> = ({spec,
           ))}
         </>
       )}
-      {spec.name === 'dada' && (
+      {spec.name === 'soldier' && (
+        <>
+          {/* 1930s khaki tunic: belt, two breast pockets, buttons */}
+          <Part s={{kind: 'rrect', w: b.w * 0.98, h: 0.07, r: 0.02}} color={fit.trim} z={0.15} pos={[0, b.y - b.h * 0.18]} />
+          <Part s={{kind: 'rrect', w: 0.07, h: 0.06, r: 0.01}} color="#C8A860" z={0.16} pos={[0, b.y - b.h * 0.18]} />
+          {[-1, 1].map((sd) => (
+            <Part key={sd} s={{kind: 'rrect', w: 0.13, h: 0.12, r: 0.015}} color="#8A7B50" z={0.15} pos={[sd * b.w * 0.24, top - 0.2]} />
+          ))}
+          {[0, 1, 2].map((i) => (
+            <Part key={i} s={{kind: 'circle', r: 0.014}} color="#C8A860" z={0.16} pos={[0, top - 0.1 - i * 0.14]} outline={false} />
+          ))}
+        </>
+      )}
+      {spec.name === 'farmer' && (
+        <>
+          {/* work shirt under denim overalls: bib + straps */}
+          <Part s={{kind: 'rrect', w: b.w * 0.62, h: b.h * 0.5, r: 0.03}} color={fit.legs} z={0.15} pos={[0, b.y - b.h * 0.05]} />
+          {[-1, 1].map((sd) => (
+            <Part key={sd} s={{kind: 'rrect', w: 0.05, h: b.h * 0.42, r: 0.015}} color={fit.legs} z={0.155} pos={[sd * b.w * 0.24, top - b.h * 0.2]} rot={sd * 0.12} />
+          ))}
+          <Part s={{kind: 'rrect', w: 0.1, h: 0.07, r: 0.01}} color={fit.trim} z={0.16} pos={[0, b.y + b.h * 0.05]} />
+        </>
+      )}
+      {spec.name === 'gus' && (
         <>
           {/* cream shawl draped over shoulders, saffron border */}
           <Part
@@ -234,6 +282,7 @@ const Body: React.FC<{spec: CastSpec; fit: Outfit; props: CharProp[]}> = ({spec,
           <Ink pts={[[-0.18, -0.4], [-0.16, -0.37], [-0.3, -0.21], [-0.32, -0.24]]} z={0.16} pos={[0, top - 0.06]} color={C.accent} />
         </>
       )}
+      </group>
     </group>
   );
 };
@@ -244,6 +293,20 @@ type P2 = [number, number];
 const seg = (a: P2, b: P2) => {
   const v: P2 = [b[0] - a[0], b[1] - a[1]];
   return {len: Math.hypot(v[0], v[1]), rot: Math.atan2(v[0], -v[1])};
+};
+
+// Nik's balloon (Short #3): string out of the fist, balloon swells with the cabin (breath())
+const Balloon: React.FC<{at: number}> = ({at}) => {
+  const {t} = useScene();
+  const k = breath(t);
+  const r = 0.12 * (0.8 + 0.45 * k);
+  return (
+    <>
+      <Part s={{kind: 'rrect', w: 0.008, h: 0.32, r: 0.004}} color="#F6F0E0" z={0.001} pos={[0, at - 0.16]} outline={false} />
+      <Part s={{kind: 'circle', r}} color="#E5533D" z={0.004} pos={[0, at - 0.32 - r]} />
+      <Part s={{kind: 'circle', r: r * 0.28}} color="#FF9A8A" z={0.005} pos={[-r * 0.35, at - 0.32 - r * 1.35]} outline={false} />
+    </>
+  );
 };
 
 const Tool: React.FC<{kind: Holdable; spec: CastSpec; at: number}> = ({kind, spec, at}) => {
@@ -300,6 +363,47 @@ const Tool: React.FC<{kind: Holdable; spec: CastSpec; at: number}> = ({kind, spe
         <Part s={{kind: 'circle', r: 0.025}} color="#C0583A" z={0.003} pos={[0.1, at - 0.23]} outline={false} />
       </>
     );
+  if (kind === 'balloon') return <Balloon at={at} />;
+  if (kind === 'box-hand' || kind === 'tin-hand') {
+    // held out in one hand (handing it over): the box sits in the fist
+    const tin = kind === 'tin-hand';
+    return (
+      <group position={[0, at - 0.07, 0.006]}>
+        <Part s={{kind: 'rrect', w: tin ? 0.24 : 0.18, h: tin ? 0.15 : 0.12, r: 0.014}} color={tin ? '#7A3B2A' : '#F4F1EA'} z={0} />
+        <Part s={{kind: 'rrect', w: tin ? 0.24 : 0.18, h: 0.03, r: 0.008}} color={tin ? '#E8B84A' : '#2E86C8'} z={0.002} pos={[0, tin ? 0.03 : 0.02]} outline={false} />
+      </group>
+    );
+  }
+  if (kind === 'bowling')
+    return (
+      <>
+        <Part s={{kind: 'circle', r: 0.11}} color="#15161E" z={0.006} pos={[0.02, at - 0.06]} />
+        {[[-0.03, 0.03], [0.02, 0.045], [0.0, -0.01]].map(([x, y], i) => (
+          <Part key={i} s={{kind: 'circle', r: 0.016}} color="#05060A" z={0.007} pos={[0.02 + x, at - 0.06 + y]} outline={false} />
+        ))}
+        <Part s={{kind: 'circle', r: 0.03}} color="#6A6E86" z={0.007} pos={[-0.03, at - 0.02]} outline={false} opacity={0.6} />
+      </>
+    );
+  if (kind === 'strawhat')
+    return (
+      <group position={[0, at - 0.05, 0]} rotation={[0, 0, 0.4]}>
+        <Part s={{kind: 'rrect', w: 0.26, h: 0.11, r: 0.04}} color="#D9B867" z={0.006} pos={[0, 0.05]} />
+        <Part s={{kind: 'ellipse', rx: 0.36, ry: 0.04}} color="#E3C57A" z={0.007} />
+      </group>
+    );
+  if (kind === 'fedora')
+    return (
+      <group position={[0, at - 0.06, 0]} rotation={[0, 0, Math.PI]}>
+        <Fedora R={0.22} y={0} z={0.006} />
+      </group>
+    );
+  if (kind === 'brownie')
+    return (
+      <>
+        <Part s={{kind: 'rrect', w: 0.13, h: 0.11, r: 0.012}} color="#5A3424" z={0.003} pos={[0.02, at - 0.05]} />
+        <Part s={{kind: 'rrect', w: 0.12, h: 0.025, r: 0.008}} color="#7A4A32" z={0.004} pos={[0.02, at - 0.005]} outline={false} />
+      </>
+    );
   if (kind === 'coin')
     return <Part s={{kind: 'circle', r: r * 1.2}} color="#D9D2C0" z={0.006} pos={[r * 0.9, at - r * 0.6]} />;
   // hammer: handle continues the forearm, head across it
@@ -348,19 +452,96 @@ const Canopy: React.FC<{kind: 'umbrella' | 'leaf'; spec: CastSpec}> = ({kind, sp
   );
 };
 
-const Arms: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState; holding?: Holdable; props: CharProp[]}> = ({spec, fit, p, holding, props}) => {
+// 2-bone IK in the rig's own convention: returns [shoulder, elbow] angles (deg) so the hand
+// centre of the arm on `side` lands on `T`, elbow bent outward
+const solveArm = (spec: CastSpec, side: 1 | -1, T: P2): [number, number] => {
+  const S: P2 = [side * spec.shoulderX, spec.shoulderY];
+  const L1 = spec.upper, L2 = spec.lower;
+  let dx = T[0] - S[0], dy = T[1] - S[1];
+  let d = Math.hypot(dx, dy);
+  const dmax = (L1 + L2) * 0.995, dmin = Math.abs(L1 - L2) + 1e-3;
+  if (d > dmax) { dx *= dmax / d; dy *= dmax / d; d = dmax; }
+  if (d < dmin) { dx *= dmin / Math.max(d, 1e-4); dy *= dmin / Math.max(d, 1e-4); d = dmin; }
+  const base = Math.atan2(dy, dx);
+  const A = Math.acos(Math.min(1, Math.max(-1, (L1 * L1 + d * d - L2 * L2) / (2 * L1 * d))));
+  const e1: P2 = [S[0] + L1 * Math.cos(base + A), S[1] + L1 * Math.sin(base + A)];
+  const e2: P2 = [S[0] + L1 * Math.cos(base - A), S[1] + L1 * Math.sin(base - A)];
+  // elbow out to the side (arms never cross the chest), unless that would lift it above the hand
+  const out = side * e1[0] > side * e2[0] ? e1 : e2;
+  const inn = out === e1 ? e2 : e1;
+  const E = out[1] <= S[1] + dy + 0.02 ? out : inn;
+  const H: P2 = [S[0] + dx, S[1] + dy];
+  const th1 = Math.atan2(E[0] - S[0], -(E[1] - S[1]));
+  let th2 = Math.atan2(H[0] - E[0], -(H[1] - E[1])) - th1;
+  while (th2 > Math.PI) th2 -= 2 * Math.PI;
+  while (th2 < -Math.PI) th2 += 2 * Math.PI;
+  return [(side * th1) / D, (side * th2) / D];
+};
+
+// where a two-handed prop sits (character space) and where each hand grips it
+const twoHandGrip = (spec: CastSpec, p: PoseState, kind: Holdable) => {
+  const R = spec.headR;
+  const f = spec.faceDX ?? 0;
+  if (kind === 'binoculars') {
+    // in front of the face: lenses over the eyes, hands on the outside of the barrels
+    const c: P2 = [f, spec.neckY + spec.headDY + p.headDY + spec.eyeY + p.faceDY];
+    const bx = spec.eyeDX * 1.25;
+    return {c, hands: [[c[0] + bx + R * 0.2, c[1] - R * 0.1], [c[0] - bx - R * 0.2, c[1] - R * 0.1]] as [P2, P2]};
+  }
+  // small box / tin held out at the chest
+  const w = kind === 'tin' ? 0.26 : 0.2;
+  const c: P2 = [(spec.decorDX ?? 0) * 0.5, spec.body.y + spec.body.h * 0.12];
+  return {c, hands: [[c[0] + w / 2 + spec.armR * 0.6, c[1] - 0.01], [c[0] - w / 2 - spec.armR * 0.6, c[1] - 0.01]] as [P2, P2]};
+};
+
+const TwoHandProp: React.FC<{kind: Holdable; spec: CastSpec; c: P2; z: number}> = ({kind, spec, c, z}) => {
+  const R = spec.headR;
+  if (kind === 'binoculars') {
+    const bx = spec.eyeDX * 1.25;
+    return (
+      <group position={[c[0], c[1], z]}>
+        <Part s={{kind: 'rrect', w: bx * 1.2, h: R * 0.1, r: R * 0.03}} color="#20222C" z={0} />
+        {[-1, 1].map((sd) => (
+          <group key={sd}>
+            {/* barrel seen end-on (pointing at the lens), objective lens + glint */}
+            <Part s={{kind: 'circle', r: R * 0.27}} color="#2A2C38" z={0.002} pos={[sd * bx, 0]} sil />
+            <Part s={{kind: 'circle', r: R * 0.17}} color="#3E6A86" z={0.004} pos={[sd * bx, 0]} outline={false} />
+            <Part s={{kind: 'circle', r: R * 0.06}} color="#CFEFFF" z={0.006} pos={[sd * bx + R * 0.06, R * 0.07]} outline={false} />
+          </group>
+        ))}
+      </group>
+    );
+  }
+  const tin = kind === 'tin';
+  return (
+    <group position={[c[0], c[1], z]}>
+      <Part s={{kind: 'rrect', w: tin ? 0.26 : 0.2, h: tin ? 0.16 : 0.13, r: 0.015}} color={tin ? '#7A3B2A' : '#F4F1EA'} z={0} sil />
+      <Part s={{kind: 'rrect', w: tin ? 0.26 : 0.2, h: tin ? 0.035 : 0.03, r: 0.008}} color={tin ? '#E8B84A' : '#2E86C8'} z={0.002} pos={[0, tin ? 0.035 : 0.02]} outline={false} />
+    </group>
+  );
+};
+
+const Arms: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState; holding?: Holdable; props: CharProp[]}> = ({spec, fit, p, holding: holding0, props}) => {
   const umbrella = props.includes('umbrella') ? 'umbrella' : props.includes('leaf') ? 'leaf' : null;
-  if (p.armsCrossed && !umbrella) return <CrossedArms spec={spec} fit={fit} />;
+  // legacy: the 'binoculars' costume prop now means binoculars held in both hands
+  const holding: Holdable | undefined = props.includes('binoculars') && !holding0 ? 'binoculars' : holding0;
+  const two = holding && TWO_HANDED.includes(holding) ? twoHandGrip(spec, p, holding) : null;
+  if (p.armsCrossed && !umbrella && !two) return <CrossedArms spec={spec} fit={fit} />;
+  const angA: [number, number] = two ? solveArm(spec, 1, two.hands[0]) : p.armA;
+  const angB: [number, number] = two ? solveArm(spec, -1, two.hands[1]) : p.armB;
+  // binoculars sit in front of the face (head group is at z 0.4), so those arms come forward too
+  const zArm = two && holding === 'binoculars' ? 0.62 : 0.31;
+  const farBehind = !two && spec.view !== undefined; // 3/4 / side: the far arm hangs behind the body
   const arm = (side: 1 | -1, [a1, a2]: [number, number], z: number, finger: boolean) => (
     <G pos={[side * spec.shoulderX, spec.shoulderY, 0]} rot={side * a1 * D}>
-      <Part s={{kind: 'capsule', len: spec.upper, r: spec.armR * 1.15}} color={fit.sleeve} z={z} sil />
+      <Part s={{kind: 'capsule', len: spec.upper, r: spec.armR * 1.15}} color={fit.sleeve} z={z} sil role="arm" />
       <G pos={[0, -spec.upper, 0]} rot={side * a2 * D}>
-        <Part s={{kind: 'capsule', len: spec.lower, r: spec.armR}} color={fit.sleeve} z={z + 0.002} sil />
-        <Part s={{kind: 'circle', r: spec.armR * 1.7}} color={spec.skin} z={z + 0.004} pos={[0, -spec.lower]} sil />
+        <Part s={{kind: 'capsule', len: spec.lower, r: spec.armR}} color={fit.sleeve} z={z + 0.002} sil role="arm" />
+        <Part s={{kind: 'circle', r: spec.armR * 1.7}} color={spec.skin} z={z + 0.004} pos={[0, -spec.lower]} sil role="hand" />
         {finger && (
-          <Part s={{kind: 'capsule', len: spec.armR * 1.8, r: spec.armR * 0.55}} color={spec.skin} z={z + 0.003} pos={[0, -spec.lower - spec.armR * 0.8]} sil />
+          <Part s={{kind: 'capsule', len: spec.armR * 1.8, r: spec.armR * 0.55}} color={spec.skin} z={z + 0.003} pos={[0, -spec.lower - spec.armR * 0.8]} sil role="hand" />
         )}
-        {side === 1 && holding ? (
+        {side === 1 && holding && !two ? (
           <group position={[0, 0, z + 0.004]}>
             <Tool kind={holding} spec={spec} at={-spec.lower} />
           </group>
@@ -374,8 +555,9 @@ const Arms: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState; holding?: Holda
   );
   return (
     <>
-      {arm(-1, p.armB, 0.3, false)}
-      {arm(1, p.armA, 0.31, p.finger)}
+      {two && holding && <TwoHandProp kind={holding} spec={spec} c={two.c} z={zArm - 0.012} />}
+      {arm(-1, angB, farBehind ? -0.03 : zArm - 0.01, false)}
+      {arm(1, angA, zArm, two ? false : p.finger)}
     </>
   );
 };
@@ -393,11 +575,11 @@ const CrossedArms: React.FC<{spec: CastSpec; fit: Outfit}> = ({spec, fit}) => {
   const handB: P2 = [ex * 0.86, elB[1] + r * 0.4];
   const upper = (from: P2, to: P2, z: number) => {
     const g = seg(from, to);
-    return <Part s={{kind: 'capsule', len: g.len, r: r * 1.3}} color={fit.sleeve} z={z} pos={from} rot={g.rot} sil />;
+    return <Part s={{kind: 'capsule', len: g.len, r: r * 1.3}} color={fit.sleeve} z={z} pos={from} rot={g.rot} sil role="arm" />;
   };
   const fore = (from: P2, to: P2, z: number) => {
     const g = seg(from, to);
-    return <Part s={{kind: 'capsule', len: g.len, r: r * 1.15}} color={fit.sleeve} z={z} pos={from} rot={g.rot} sil />;
+    return <Part s={{kind: 'capsule', len: g.len, r: r * 1.15}} color={fit.sleeve} z={z} pos={from} rot={g.rot} sil role="arm" />;
   };
   return (
     <>
@@ -405,9 +587,9 @@ const CrossedArms: React.FC<{spec: CastSpec; fit: Outfit}> = ({spec, fit}) => {
       {upper(sh(1), elA, 0.3)}
       {fore(elB, handB, 0.32)}
       {/* hand B tucks under A's bicep */}
-      <Part s={{kind: 'circle', r: r * 1.6}} color={spec.skin} z={0.295} pos={handB} />
+      <Part s={{kind: 'circle', r: r * 1.6}} color={spec.skin} z={0.295} pos={handB} role="hand" />
       {fore(elA, handA, 0.34)}
-      <Part s={{kind: 'circle', r: r * 1.6}} color={spec.skin} z={0.345} pos={handA} />
+      <Part s={{kind: 'circle', r: r * 1.6}} color={spec.skin} z={0.345} pos={handA} role="hand" />
     </>
   );
 };
@@ -425,11 +607,15 @@ const Head: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState; t: number; seed
   return (
     <G pos={[0, hy, 0.4]} rot={p.headRot * D}>
       {/* ears */}
-      {[-1, 1].map((s) => (
-        <Part key={s} s={{kind: 'ellipse', rx: R * 0.16, ry: R * 0.22}} color={spec.skin} z={-0.02} pos={[s * R * spec.headSX * 0.98, -R * 0.05 + fy * 0.4]} sil />
-      ))}
+      {[-1, 1].map((s) =>
+        spec.view && s > 0 ? null : (
+          <Part key={s} s={{kind: 'ellipse', rx: R * 0.16, ry: R * 0.22}} color={spec.skin} z={spec.view === 'side' ? 0.01 : -0.02} pos={[spec.view === 'side' ? -R * 0.12 : s * R * spec.headSX * 0.98, -R * 0.05 + fy * 0.4]} sil />
+        ),
+      )}
       <Part s={{kind: 'ellipse', rx: R * spec.headSX, ry: R * spec.headSY}} color={spec.skin} z={0} sil />
-      <HeadDecor spec={spec} p={p} fy={fy} />
+      <group position={[-(spec.faceDX ?? 0) * 0.25, 0, 0]}>
+        <HeadDecor spec={spec} p={p} fy={fy} props={props} />
+      </group>
       {props.includes('goggles') && (
         <>
           <Part s={{kind: 'rrect', w: R * 2.05, h: R * 0.14, r: R * 0.06}} color="#1F3A4A" z={0.12} pos={[0, R * 0.58]} sil />
@@ -442,27 +628,41 @@ const Head: React.FC<{spec: CastSpec; fit: Outfit; p: PoseState; t: number; seed
           ))}
         </>
       )}
+      {props.includes('moustache') && (
+        <Part s={{kind: 'ellipse', rx: R * 0.32, ry: R * 0.08}} color={spec.hair} z={0.12} pos={[spec.faceDX ?? 0, spec.mouthY + R * 0.18 + fy]} />
+      )}
+      {props.includes('fedora') && <Fedora R={R} y={R * 0.72} />}
       {props.includes('headwrap') && (
         <>
           <Part s={{kind: 'rrect', w: R * 2.05, h: R * 0.32, r: R * 0.12}} color="#C8462E" z={0.13} pos={[0, R * 0.55]} sil />
           <Part s={{kind: 'ellipse', rx: R * 0.16, ry: R * 0.22}} color="#C8462E" z={0.135} pos={[R * 0.95, R * 0.4]} rot={-0.5} sil />
         </>
       )}
-      <group position={[0, fy, 0]}>
-        <Eyes spec={spec} style={eyes} brow={p.brow} />
+      {p.sweat && (
+        // nervous sweat drop at the back temple
+        <group position={[-R * spec.headSX * 0.82, R * 0.42, 0.12]}>
+          <Part s={{kind: 'ellipse', rx: R * 0.09, ry: R * 0.14}} color="#9FD8F0" z={0} sil />
+          <Part s={{kind: 'circle', r: R * 0.03}} color="#FFFFFF" z={0.01} pos={[R * 0.02, R * 0.03]} outline={false} />
+        </group>
+      )}
+      <group position={[spec.faceDX ?? 0, fy, 0]}>
+        <Eyes spec={spec} style={eyes} brow={p.brow} browIn={p.browIn ?? 0} gaze={p.gaze} />
         <Mouth spec={spec} style={mouth} open={p.mouthOpen} />
       </group>
     </G>
   );
 };
 
-const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number}> = ({spec, style, brow}) => {
+const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number; browIn?: number; gaze?: [number, number]}> = ({spec, style, brow, browIn = 0, gaze}) => {
   const r = spec.eyeR;
+  const ex = (side: number) => side * spec.eyeDX * (side > 0 ? spec.eyeNear ?? 1 : spec.eyeFar ?? 1);
+  const shown = (side: number) => side > 0 || spec.farEye !== false;
   const R = spec.headR;
   const one = (side: number) => {
-    const x = side * spec.eyeDX;
+    if (side < 0 && spec.farEye === false) return null;
+    const x = ex(side);
     const y = spec.eyeY;
-    const pos: V2 = [x, y];
+    const pos: V2 = gaze ? [x + gaze[0] * r, y + gaze[1] * r] : [x, y];
     switch (style) {
       case 'closed':
         return <Ink pts={rect(r * 2.2, r * 0.45)} z={0.05} pos={pos} />;
@@ -493,22 +693,28 @@ const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number}> = ({spec, 
 
   // Brows
   const brows = (() => {
+    if (browIn > 0) {
+      // worried / defeated: both brows tilt, inner ends up (sad-angle), same for every rig
+      return [-1, 1].filter(shown).map((s) => (
+        <Ink key={s} pts={rect(R * 0.3, R * 0.065)} z={0.08} pos={[ex(s), spec.eyeY + R * 0.24 + brow * 0.03 + browIn * R * 0.03]} rot={-s * 0.38 * browIn} />
+      ));
+    }
     if (spec.name === 'vik') {
       // one brow cocked high, the other flat — the smug raise
       return (
         <>
-          <Ink pts={rect(R * 0.32, R * 0.06)} z={0.08} pos={[spec.eyeDX, spec.eyeY + R * 0.22 + brow * 0.02]} rot={-0.08} />
-          <Ink pts={arcPts(R * 0.2, R * 0.065, 0.5, Math.PI - 0.6)} z={0.08} pos={[-spec.eyeDX, spec.eyeY + R * 0.18 + brow * 0.03]} />
+          <Ink pts={rect(R * 0.32, R * 0.06)} z={0.08} pos={[ex(1), spec.eyeY + R * 0.22 + brow * 0.02]} rot={-0.08} />
+          {shown(-1) && <Ink pts={arcPts(R * 0.2, R * 0.065, 0.5, Math.PI - 0.6)} z={0.08} pos={[ex(-1), spec.eyeY + R * 0.18 + brow * 0.03]} />}
         </>
       );
     }
-    if (spec.name === 'dada') {
-      return [-1, 1].map((s) => (
-        <Part key={s} s={{kind: 'ellipse', rx: R * 0.17, ry: R * 0.07}} color={spec.hair} z={0.09} pos={[s * spec.eyeDX, spec.eyeY + R * 0.3 + brow * 0.02]} rot={s * 0.15} />
+    if (spec.name === 'gus') {
+      return [-1, 1].filter(shown).map((s) => (
+        <Part key={s} s={{kind: 'ellipse', rx: R * 0.17, ry: R * 0.07}} color={spec.hair} z={0.09} pos={[ex(s), spec.eyeY + R * 0.3 + brow * 0.02]} rot={s * 0.15} />
       ));
     }
-    return [-1, 1].map((s) => (
-      <Ink key={s} pts={arcPts(R * 0.14, R * 0.05, 0.4, Math.PI - 0.4)} z={0.08} pos={[s * spec.eyeDX, spec.eyeY + R * 0.22 + brow * 0.04]} />
+    return [-1, 1].filter(shown).map((s) => (
+      <Ink key={s} pts={arcPts(R * 0.14, R * 0.05, 0.4, Math.PI - 0.4)} z={0.08} pos={[ex(s), spec.eyeY + R * 0.22 + brow * 0.04]} />
     ));
   })();
 
@@ -517,9 +723,9 @@ const Eyes: React.FC<{spec: CastSpec; style: EyeStyle; brow: number}> = ({spec, 
       {one(-1)}
       {one(1)}
       {brows}
-      {spec.name === 'chotu' &&
-        [-1, 1].map((s) => (
-          <Part key={s} s={{kind: 'ellipse', rx: R * 0.13, ry: R * 0.08}} color="#E9806A" z={0.03} pos={[s * R * 0.55, -R * 0.2]} outline={false} opacity={0.7} />
+      {spec.name === 'nik' &&
+        [-1, 1].filter(shown).map((s) => (
+          <Part key={s} s={{kind: 'ellipse', rx: R * 0.13, ry: R * 0.08}} color="#E9806A" z={0.03} pos={[s * R * 0.55 * (s > 0 ? spec.eyeNear ?? 1 : spec.eyeFar ?? 1), -R * 0.2]} outline={false} opacity={0.7} />
         ))}
     </>
   );
@@ -536,6 +742,20 @@ const Mouth: React.FC<{spec: CastSpec; style: MouthStyle; open: number}> = ({spe
       return <Ink pts={arcPts(w, w * 0.3, Math.PI * 1.2, Math.PI * 1.8)} z={z} pos={[0, y + w * 0.8]} />;
     case 'flat':
       return <Ink pts={rect(w * 1.3, w * 0.3)} z={z} pos={[0, y]} />;
+    case 'frown':
+      // corners turned down
+      return <Ink pts={arcPts(w * 0.8, w * 0.3, 0.5, Math.PI - 0.5)} z={z} pos={[0, y - w * 0.75]} />;
+    case 'wobble': {
+      // tight nervous smile: a thin zig-zag line, corners up a touch
+      const pts: [number, number][] = [];
+      const n = 9;
+      for (let i = 0; i <= n; i++) {
+        const u = i / n - 0.5;
+        pts.push([u * w * 2.1, (i % 2 ? -1 : 1) * w * 0.1 + u * u * w * 0.9]);
+      }
+      const top = pts.map(([a, b]) => [a, b + w * 0.13] as [number, number]);
+      return <Ink pts={[...pts, ...top.reverse()]} z={z} pos={[0, y]} />;
+    }
     case 'open':
       if (open < 0.12) return <Ink pts={arcPts(w, w * 0.3, Math.PI * 1.2, Math.PI * 1.8)} z={z} pos={[0, y + w * 0.8]} />;
       return (
@@ -558,9 +778,9 @@ const Mouth: React.FC<{spec: CastSpec; style: MouthStyle; open: number}> = ({spe
 };
 
 /* ---- character-specific head decor ---- */
-const HeadDecor: React.FC<{spec: CastSpec; p: PoseState; fy: number}> = ({spec, fy}) => {
+const HeadDecor: React.FC<{spec: CastSpec; p: PoseState; fy: number; props: CharProp[]}> = ({spec, fy, props}) => {
   const R = spec.headR;
-  if (spec.name === 'chotu') {
+  if (spec.name === 'nik') {
     return (
       <>
         {/* hair cap */}
@@ -580,6 +800,10 @@ const HeadDecor: React.FC<{spec: CastSpec; p: PoseState; fy: number}> = ({spec, 
         />
       </>
     );
+  }
+  if (spec.name === 'vik' && props.includes('fedora')) {
+    // under the fedora: just a short hair cap (the quiff would poke out round the crown)
+    return <Part s={{kind: 'poly', pts: hairCap(R, 0.35, 0.7)}} color={spec.hair} z={0.02} sil />;
   }
   if (spec.name === 'vik') {
     return (
@@ -607,13 +831,23 @@ const HeadDecor: React.FC<{spec: CastSpec; p: PoseState; fy: number}> = ({spec, 
       </>
     );
   }
-  // dada: bald crown, white side tufts, beard, moustache, round spectacles
+  if (spec.name === 'soldier' || spec.name === 'farmer') {
+    // short hair, then a hat: slouch hat (khaki felt, puggaree band, left brim pinned up) or straw hat
+    const sol = spec.name === 'soldier';
+    return (
+      <>
+        <Part s={{kind: 'poly', pts: hairCap(R, 0.3, 0.6)}} color={spec.hair} z={0.02} sil />
+        {!props.includes('nohat') && (sol ? <SlouchHat R={R} /> : <StrawHat R={R} />)}
+      </>
+    );
+  }
+  // gus: bald crown, white side tufts, beard, moustache, round spectacles
   return (
     <>
       {[-1, 1].map((s) => (
         <Part key={s} s={{kind: 'ellipse', rx: R * 0.22, ry: R * 0.3}} color={spec.hair} z={0.02} pos={[s * R * 0.88, R * 0.1]} sil />
       ))}
-      <group position={[0, fy * 0.6, 0]}>
+      <group position={[(spec.faceDX ?? 0) * 1.25, fy * 0.6, 0]} scale={[spec.view === 'side' ? 0.62 : spec.view === 'threeq' ? 0.84 : 1, 1, 1]}>
         <Part
           s={{
             kind: 'poly',
@@ -638,8 +872,8 @@ const HeadDecor: React.FC<{spec: CastSpec; p: PoseState; fy: number}> = ({spec, 
           <Part key={s} s={{kind: 'ellipse', rx: R * 0.24, ry: R * 0.09}} color={spec.hair} z={0.12} pos={[s * R * 0.18, -R * 0.2]} rot={s * -0.25} />
         ))}
         {/* spectacles */}
-        {[-1, 1].map((s) => (
-          <Ink key={s} pts={arcPts(R * 0.215, R * 0.08, 0, Math.PI * 2, 28)} z={0.11} pos={[s * spec.eyeDX, spec.eyeY]} color={SPECS} />
+        {[-1, 1].filter((s) => s > 0 || spec.farEye !== false).map((s) => (
+          <Ink key={s} pts={arcPts(R * 0.215, R * 0.08, 0, Math.PI * 2, 28)} z={0.11} pos={[s * spec.eyeDX * (s > 0 ? spec.eyeNear ?? 1 : spec.eyeFar ?? 1), spec.eyeY]} color={SPECS} />
         ))}
         <Ink pts={rect(R * 0.14, R * 0.065)} z={0.11} pos={[0, spec.eyeY + R * 0.02]} color={SPECS} />
       </group>
@@ -648,6 +882,32 @@ const HeadDecor: React.FC<{spec: CastSpec; p: PoseState; fy: number}> = ({spec, 
 };
 
 const SPECS = '#E2B66E'; // light gold frames
+
+// Vik's bet: dark brown felt fedora with a saffron band (also worn by the emu at the payoff)
+export const Fedora: React.FC<{R: number; y: number; z?: number}> = ({R, y, z = 0.14}) => (
+  <group position={[0, y, 0]}>
+    <Part s={{kind: 'poly', pts: [[-R * 0.66, 0], [R * 0.66, 0], [R * 0.6, R * 0.5], [R * 0.25, R * 0.62], [0, R * 0.54], [-R * 0.25, R * 0.62], [-R * 0.6, R * 0.5]]}} color="#4A3022" z={z} sil />
+    <Part s={{kind: 'rrect', w: R * 1.34, h: R * 0.16, r: R * 0.03}} color="#F2A33A" z={z + 0.005} pos={[0, R * 0.1]} />
+    <Part s={{kind: 'ellipse', rx: R * 1.22, ry: R * 0.13}} color="#3E271C" z={z + 0.01} pos={[0, -R * 0.02]} sil />
+  </group>
+);
+const SlouchHat: React.FC<{R: number}> = ({R}) => (
+  <group position={[0, R * 0.7, 0]}>
+    <Part s={{kind: 'rrect', w: R * 1.3, h: R * 0.56, r: R * 0.22}} color="#8A7A52" z={0.14} pos={[0, R * 0.26]} sil />
+    <Part s={{kind: 'rrect', w: R * 1.32, h: R * 0.14, r: R * 0.03}} color="#5E5236" z={0.145} pos={[0, R * 0.06]} />
+    <Part s={{kind: 'ellipse', rx: R * 1.32, ry: R * 0.14}} color="#7C6C46" z={0.15} pos={[R * 0.18, -R * 0.04]} sil />
+    {/* the pinned-up side of the brim */}
+    <Part s={{kind: 'poly', pts: [[-R * 1.05, -R * 0.02], [-R * 0.62, -R * 0.02], [-R * 0.66, R * 0.52], [-R * 0.96, R * 0.42]]}} color="#7C6C46" z={0.155} sil />
+    <Part s={{kind: 'circle', r: R * 0.07}} color="#C8A860" z={0.16} pos={[-R * 0.74, R * 0.12]} outline={false} />
+  </group>
+);
+const StrawHat: React.FC<{R: number}> = ({R}) => (
+  <group position={[0, R * 0.72, 0]}>
+    <Part s={{kind: 'rrect', w: R * 1.15, h: R * 0.46, r: R * 0.18}} color="#D9B867" z={0.14} pos={[0, R * 0.22]} sil />
+    <Part s={{kind: 'rrect', w: R * 1.17, h: R * 0.12, r: R * 0.03}} color="#8A4A2A" z={0.145} pos={[0, R * 0.06]} />
+    <Part s={{kind: 'ellipse', rx: R * 1.55, ry: R * 0.15}} color="#E3C57A" z={0.15} pos={[0, -R * 0.03]} sil />
+  </group>
+);
 
 const rect = (w: number, h: number): V2[] => [
   [-w / 2, -h / 2],

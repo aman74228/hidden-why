@@ -1,7 +1,7 @@
 // Cast specs. Faces/colours are fixed; outfits can be reskinned per story via
 // the `outfit` prop on <Character/> (body, sleeve, legs, trim).
 
-export type CastName = 'chotu' | 'vik' | 'dada';
+export type CastName = 'nik' | 'vik' | 'gus' | 'soldier' | 'farmer';
 
 export type Outfit = {body: string; sleeve: string; legs: string; trim: string; shoes: string};
 
@@ -31,13 +31,42 @@ export type CastSpec = {
   mouthY: number;
   mouthW: number;
   eyes: 'wide' | 'smug' | 'calm';
-  mouth: 'smile' | 'smirk';
+  mouth: 'smile' | 'smirk' | 'flat';
   outfit: Outfit;
+  // set by viewSpec() for the 3/4 and side views (front: all undefined)
+  view?: CharView;
+  faceDX?: number; // face features slide toward the facing side
+  eyeNear?: number; // eye spread multipliers (near / far eye)
+  eyeFar?: number;
+  farEye?: boolean; // false: the far eye is hidden (side view)
+  decorDX?: number; // shirt/kurta details slide toward the facing side
+};
+
+export type CharView = 'front' | 'threeq' | 'side';
+
+// 3/4 and side views of the same rig: nothing is redrawn, the flat parts are re-spaced
+// (narrower torso, shoulders and stance; face features shifted to the facing side; far eye
+// smaller or hidden). Proportions, outline weight and palette stay exactly on-model.
+export const viewSpec = (s: CastSpec, view: CharView = 'front'): CastSpec => {
+  if (view === 'front') return s;
+  const q = view === 'side' ? 1 : 0.55;
+  return {
+    ...s,
+    view,
+    body: {...s.body, w: s.body.w * (1 - 0.36 * q)},
+    shoulderX: s.shoulderX * (1 - 0.88 * q),
+    legGap: s.legGap * (1 - 0.85 * q),
+    faceDX: s.headR * (view === 'side' ? 0.42 : 0.3),
+    eyeNear: view === 'side' ? 0.62 : 0.86,
+    eyeFar: 1 - 0.6 * q,
+    farEye: view !== 'side',
+    decorDX: s.body.w * 0.2 * q,
+  };
 };
 
 export const CAST: Record<CastName, CastSpec> = {
-  chotu: {
-    name: 'chotu',
+  nik: {
+    name: 'nik',
     height: 1.42,
     skin: '#C98A5B',
     hair: '#3B2320',
@@ -94,8 +123,8 @@ export const CAST: Record<CastName, CastSpec> = {
     mouth: 'smirk',
     outfit: {body: '#1F9E95', sleeve: '#1F9E95', legs: '#2E3A64', trim: '#0F6B66', shoes: '#3A2A3A'},
   },
-  dada: {
-    name: 'dada',
+  gus: {
+    name: 'gus',
     height: 1.62,
     skin: '#B07650',
     hair: '#F3EBDD', // beard, brows, tufts — off-white
@@ -122,5 +151,64 @@ export const CAST: Record<CastName, CastSpec> = {
     eyes: 'calm',
     mouth: 'smile',
     outfit: {body: '#8E5537', sleeve: '#D29A72', /* bare arms: lighter than the robe */ legs: '#F1E7D2', trim: '#F6E9CC', shoes: '#5A3624'},
+  },
+  // Short #4 extras (1930s Western Australia): soldiers in khaki + slouch hats, farmers in straw hats
+  soldier: {
+    name: 'soldier',
+    height: 1.9,
+    skin: '#C98E66',
+    hair: '#4A3426',
+    headR: 0.25,
+    headSX: 0.95,
+    headSY: 1.04,
+    neckY: 1.42,
+    headDY: 0.24,
+    hipY: 0.8,
+    legLen: 0.72,
+    legR: 0.06,
+    legGap: 0.11,
+    body: {w: 0.52, h: 0.72, y: 1.1, flare: 0.06},
+    shoulderX: 0.22,
+    shoulderY: 1.38,
+    upper: 0.31,
+    lower: 0.29,
+    armR: 0.05,
+    eyeDX: 0.095,
+    eyeY: 0.03,
+    eyeR: 0.035,
+    mouthY: -0.12,
+    mouthW: 0.07,
+    eyes: 'calm',
+    mouth: 'flat',
+    outfit: {body: '#9A8A5C', sleeve: '#9A8A5C', legs: '#8A7B50', trim: '#5E5236', shoes: '#3E2E22'},
+  },
+  farmer: {
+    name: 'farmer',
+    height: 1.8,
+    skin: '#D49A6E',
+    hair: '#6A4A30',
+    headR: 0.26,
+    headSX: 1,
+    headSY: 1,
+    neckY: 1.32,
+    headDY: 0.24,
+    hipY: 0.72,
+    legLen: 0.64,
+    legR: 0.06,
+    legGap: 0.11,
+    body: {w: 0.58, h: 0.7, y: 1.02, flare: 0.1},
+    shoulderX: 0.24,
+    shoulderY: 1.28,
+    upper: 0.29,
+    lower: 0.27,
+    armR: 0.05,
+    eyeDX: 0.1,
+    eyeY: 0.03,
+    eyeR: 0.035,
+    mouthY: -0.12,
+    mouthW: 0.07,
+    eyes: 'calm',
+    mouth: 'smile',
+    outfit: {body: '#5F7FA8', sleeve: '#D8CDB4', legs: '#4E6A90', trim: '#3E5578', shoes: '#4A3424'},
   },
 };

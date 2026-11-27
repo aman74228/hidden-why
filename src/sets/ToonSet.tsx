@@ -9,8 +9,10 @@ import {BARS_POS, CourtyardHD, ForgeHD, StreetHD} from './world';
 import {ANVIL} from './world';
 import {BandedCake, BladeLook, Grit, Hand, HammerHead, HillFx, HillsideHD, LabFx, LabHD, MuseumHD, OrePot, Sabre, WaterDrop} from './damascus';
 import {Ball, Box, Cone, Cyl, TileFloor, Toon, mulberry} from './toon';
+import {Emu, EmuProps, FarmFx, FarmHD, Floorboards, MarbleFx, Marbles, WaterHoleFx, WaterHoleHD} from './emus';
+import {BrowniePlate, CabinFx, CabinHD, HangarFx, HangarHD, HeroBrownie, LoungeFx, LoungeHD, Paper, PaperFx, PhotoFx, PhotoSheet, RunwayFx, RunwayHD, SkyFx, SkyHD, TankMacroFx, TankMacroHD} from './planes';
 
-export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain' | 'forge' | 'street' | 'void' | 'lab' | 'museum' | 'hillside';
+export type SetName = 'courtyard' | 'desert' | 'workshop' | 'plain' | 'forge' | 'street' | 'void' | 'lab' | 'museum' | 'hillside' | 'lounge' | 'cabin' | 'sky' | 'hangar' | 'tankmacro' | 'runway' | 'farm' | 'waterhole' | 'studio';
 
 export type PropSpec = {
   type: 'pot' | 'rock' | 'block' | 'pillar' | 'lamp' | 'crate';
@@ -62,6 +64,23 @@ export type FxSpec = {
   hand?: {pos: [number, number, number]; rot?: [number, number, number]; s?: number; open?: [number, number]; openAt?: number; grit?: boolean; point?: boolean; skin?: string; sleeve?: string};
   orePot?: {pos: [number, number, number]; s?: number; specks?: number; glintAt?: number};
   sabres?: {pos: [number, number, number]; rot?: [number, number, number]; s?: number; look?: BladeLook}[];
+  // ---- 03-plane-windows ----
+  cabin?: CabinFx;
+  lounge?: LoungeFx;
+  sky?: SkyFx;
+  hangar?: HangarFx;
+  tankMacro?: TankMacroFx;
+  runway?: RunwayFx;
+  paper?: PaperFx;
+  photo?: PhotoFx;
+  brownie?: {pos: [number, number, number]; rot?: [number, number, number]; s?: number; crackAt?: number; crackDur?: number; split?: number; breakAt?: number};
+  plate?: {pos: [number, number, number]; s?: number}; // a plate of the bet's brownies, anywhere (e.g. on a workshop bench)
+  // ---- 04-emu-war ----
+  farm?: FarmFx;
+  emus?: EmuProps[]; // emus in any set (model sheet)
+  waterhole?: WaterHoleFx;
+  marbles?: MarbleFx;
+  floorboards?: {pos: [number, number, number]; size: [number, number]};
 };
 
 export const SET_DEFAULTS: Record<SetName, {sky: string; ground: string; light: string}> = {
@@ -74,6 +93,15 @@ export const SET_DEFAULTS: Record<SetName, {sky: string; ground: string; light: 
   lab: {sky: 'interior', ground: 'stone', light: 'lab'},
   museum: {sky: 'interior', ground: 'wood', light: 'museum'},
   hillside: {sky: 'golden', ground: 'sand', light: 'golden'},
+  lounge: {sky: 'lounge', ground: 'stone', light: 'lounge'},
+  cabin: {sky: 'cabin', ground: 'wood', light: 'cabin'},
+  sky: {sky: 'highsky', ground: 'stone', light: 'highsky'},
+  hangar: {sky: 'hangar', ground: 'stone', light: 'hangar'},
+  tankmacro: {sky: 'underwater', ground: 'stone', light: 'underwater'},
+  runway: {sky: 'golden', ground: 'grass', light: 'runway'},
+  farm: {sky: 'golden', ground: 'sand', light: 'golden'},
+  studio: {sky: 'studio', ground: 'stone', light: 'studio'},
+  waterhole: {sky: 'golden', ground: 'sand', light: 'golden'},
   void: {sky: 'macro', ground: 'obsidian', light: 'macro'},
 };
 
@@ -98,7 +126,7 @@ export const ToonSet: React.FC<
   };
   const night = (spec.light ?? '') === 'night';
   const storm = (spec.light ?? '') === 'storm';
-  const hdri: HdriName = fx.hdri ?? (spec.set === 'forge' || spec.set === 'museum' ? 'dusk' : spec.set === 'lab' || night || storm ? 'overcast' : 'sunset');
+  const hdri: HdriName = fx.hdri ?? (spec.set === 'forge' || spec.set === 'museum' ? 'dusk' : spec.set === 'lab' || spec.set === 'hangar' || spec.set === 'tankmacro' || night || storm ? 'overcast' : 'sunset');
   const fg = fx.forgeGlow ? fx.forgeGlow[0] + (fx.forgeGlow[1] - fx.forgeGlow[0]) * (p * p * (3 - 2 * p)) : 1;
   const handOpen = fx.hand?.open ? fx.hand.open[0] + (fx.hand.open[1] - fx.hand.open[0]) * Math.min(1, Math.max(0, (p * dur - (fx.hand.openAt ?? 0)) / 0.6)) : 1;
   const dropAlong = fx.museumDrop ? fx.museumDrop[0] + (fx.museumDrop[1] - fx.museumDrop[0]) * p : 0;
@@ -124,7 +152,7 @@ export const ToonSet: React.FC<
       />
       <Env name={hdri} intensity={night ? 0.35 : 0.9} />
       <SkyDome {...sky} />
-      {spec.set !== 'void' && spec.set !== 'courtyard' && spec.set !== 'forge' && spec.set !== 'street' && spec.set !== 'lab' && spec.set !== 'museum' && spec.set !== 'hillside' && (
+      {spec.set !== 'void' && spec.set !== 'courtyard' && spec.set !== 'forge' && spec.set !== 'street' && spec.set !== 'lab' && spec.set !== 'museum' && spec.set !== 'hillside' && !['lounge', 'cabin', 'sky', 'hangar', 'tankmacro', 'runway', 'farm', 'waterhole', 'studio'].includes(spec.set) && (
         <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
           <planeGeometry args={[300, 300]} />
           <Toon color={ground.base} />
@@ -146,6 +174,36 @@ export const ToonSet: React.FC<
         </>
       )}
       {spec.set === 'hillside' && <HillsideHD fx={fx.hill ?? {}} p={p} />}
+      {spec.set === 'lounge' && <LoungeHD fx={fx.lounge ?? {}} />}
+      {spec.set === 'cabin' && <CabinHD fx={fx.cabin ?? {era: 'modern'}} />}
+      {spec.set === 'sky' && <SkyHD fx={fx.sky ?? {}} p={p} />}
+      {spec.set === 'hangar' && <HangarHD fx={fx.hangar ?? {}} dur={dur} />}
+      {spec.set === 'tankmacro' && <TankMacroHD fx={fx.tankMacro ?? {}} />}
+      {spec.set === 'runway' && <RunwayHD fx={fx.runway ?? {}} p={p} />}
+      {spec.set === 'studio' && (
+        <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
+          <planeGeometry args={[200, 200]} />
+          <meshBasicMaterial color="#DCD4C6" toneMapped={false} />
+        </mesh>
+      )}
+      {spec.set === 'farm' && <FarmHD fx={fx.farm ?? {}} />}
+      {spec.set === 'waterhole' && <WaterHoleHD fx={fx.waterhole ?? {}} />}
+      {fx.floorboards && <Floorboards {...fx.floorboards} />}
+      {fx.emus?.map((e, i) => <Emu key={`emu${i}`} {...e} />)}
+      {fx.marbles && <Marbles fx={fx.marbles} />}
+      {fx.paper && <Paper fx={fx.paper} />}
+      {fx.photo && <PhotoSheet fx={fx.photo} />}
+      {fx.brownie && <HeroBrownie {...fx.brownie} />}
+      {fx.plate && (
+        <>
+          {/* a wooden crate to stand the plate on */}
+          <mesh position={[fx.plate.pos[0], fx.plate.pos[1] / 2, fx.plate.pos[2]]} castShadow receiveShadow>
+            <boxGeometry args={[0.62, fx.plate.pos[1], 0.5]} />
+            <meshStandardMaterial color="#6B4426" roughness={0.85} />
+          </mesh>
+          <BrowniePlate pos={fx.plate.pos} s={fx.plate.s} />
+        </>
+      )}
       {fx.cake && <BandedCake pos={[ANVIL[0], 0.56, ANVIL[2]]} strikes={fx.cake.strikes} glow={fx.cake.glow ? fx.cake.glow[0] + (fx.cake.glow[1] - fx.cake.glow[0]) * p : 1} s={fx.cake.s} />}
       {fx.hammerHead && <HammerHead pos={[ANVIL[0], 0.6, ANVIL[2]]} strikes={fx.hammerHead.strikes} />}
       {fx.anvilBlades && (

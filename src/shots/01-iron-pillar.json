@@ -75,7 +75,7 @@
      "holding": "coin"
     },
     {
-     "who": "chotu",
+     "who": "nik",
      "props": [
       "satchel"
      ],
@@ -352,7 +352,7 @@
    },
    "cast": [
     {
-     "who": "chotu",
+     "who": "nik",
      "props": [
       "satchel"
      ],
@@ -510,7 +510,7 @@
    },
    "cast": [
     {
-     "who": "chotu",
+     "who": "nik",
      "props": [
       "satchel"
      ],
@@ -602,7 +602,7 @@
      "facing": 1
     },
     {
-     "who": "chotu",
+     "who": "nik",
      "props": [
       "satchel"
      ],
@@ -664,7 +664,7 @@
    },
    "cast": [
     {
-     "who": "chotu",
+     "who": "nik",
      "props": [
       "satchel"
      ],
@@ -713,7 +713,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "pose": "hammer",
      "pos": [
       0,
@@ -785,7 +785,7 @@
    "focusDist": 1.9,
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "pose": "hammer",
      "pos": [
       0,
@@ -872,7 +872,7 @@
    "duration": 2.75
   },
   {
-   "id": "dada-taps",
+   "id": "gus-taps",
    "beat": 4,
    "stillAt": 1.6,
    "set": "courtyard",
@@ -908,7 +908,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "props": [
       "stick"
      ],
@@ -921,7 +921,7 @@
      "delay": -0.4
     },
     {
-     "who": "chotu",
+     "who": "nik",
      "props": [
       "satchel"
      ],
@@ -1005,7 +1005,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "props": [
       "stick"
      ],
@@ -1017,7 +1017,7 @@
      "facing": 1
     },
     {
-     "who": "chotu",
+     "who": "nik",
      "props": [
       "satchel",
       "leaf"
@@ -1144,7 +1144,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "props": [
       "stick"
      ],
@@ -1337,7 +1337,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "props": [
       "stick"
      ],
@@ -1349,7 +1349,7 @@
      "facing": 1
     },
     {
-     "who": "chotu",
+     "who": "nik",
      "props": [
       "satchel",
       "leaf"

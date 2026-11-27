@@ -1,5 +1,5 @@
 import React from 'react';
-import {AbsoluteFill, Audio, Sequence, staticFile, useVideoConfig} from 'remotion';
+import {AbsoluteFill, Audio, Sequence, getInputProps, staticFile, useVideoConfig} from 'remotion';
 import {Captions, Word} from '../overlays/Captions';
 import {useFontsReady} from '../overlays/fonts';
 import {C} from '../theme';
@@ -53,7 +53,7 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
         );
       })}
 
-      {words && words.length ? <Captions words={words} offset={list.captionOffset ?? 0} placeAt={placeAt} /> : null}
+      {words && words.length && !(getInputProps() as {qaHands?: boolean}).qaHands ? <Captions words={words} offset={list.captionOffset ?? 0} placeAt={placeAt} /> : null}
 
       {list.audio ? <Audio src={staticFile(list.audio)} /> : null}
       {list.music !== false ? <Audio src={staticFile('sfx/music.mp3')} volume={dB(-22)} loop /> : null}

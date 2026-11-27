@@ -1,0 +1,64 @@
+{
+ "voice": {
+  "lufs": -14.0,
+  "true_peak_dbtp": -1.4
+ },
+ "music": {
+  "file": "public/sfx/music.mp3",
+  "lufs": -25.1,
+  "under_speech_lufs": -25.6,
+  "between_lines_lufs": -23.0,
+  "true_peak_dbtp": -14.4
+ },
+ "sfx": {
+  "stem_lufs": -28.4,
+  "stem_max_momentary_lufs": -20.9,
+  "true_peak_dbtp": -8.2,
+  "per_cue_max_momentary_lufs": {
+   "farm-wind": -30.0,
+   "footsteps-dirt": -29.9,
+   "pop-soft": -30.5,
+   "truck-engine": -31.0,
+   "gunfire-distant": -30.4,
+   "gun-jam": -28.8,
+   "bowling-roll": -27.1,
+   "marbles-scatter": -27.6,
+   "marble-click": -34.4,
+   "ding": -21.0
+  },
+  "files": {
+   "farm-wind": "farm-wind.mp3",
+   "footsteps-dirt": "footsteps-dirt.mp3",
+   "pop-soft": "pop-soft.mp3",
+   "truck-engine": "truck-engine.mp3",
+   "gunfire-distant": "gunfire-distant.mp3",
+   "gun-jam": "gun-jam.mp3",
+   "bowling-roll": "bowling-roll.mp3",
+   "marbles-scatter": "marbles-scatter.mp3",
+   "marble-click": "marble-click.mp3",
+   "ding": "ding.mp3"
+  },
+  "missing_skipped": []
+ },
+ "rain": {
+  "lufs_while_playing": -70.0,
+  "fades_at": null
+ },
+ "checks_offending_seconds": [],
+ "checks": {
+  "sfx_windows_within_6dB_of_voice": 0,
+  "music_min_short_term_lufs": -25.7,
+  "music_floor_ok": true
+ },
+ "mix": {
+  "lufs": -13.9,
+  "true_peak_dbtp": -1.0,
+  "seconds": 56.867
+ },
+ "peak_check": {
+  "voice_peak_dbfs": -1.5,
+  "music_peak_dbfs": -15.0,
+  "sfx_peak_dbfs": -8.8,
+  "rain_peak_dbfs": -180.0
+ }
+}

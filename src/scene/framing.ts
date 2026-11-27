@@ -47,14 +47,14 @@ export const castBoxes = (pose: CamPose, fov: number, cast: CharacterProps[]): C
     const rect = (y0: number, y1: number, w: number) => {
       const out: THREE.Vector3[] = [];
       for (const y of [y0, y1])
-        for (const sx of [-1, 1]) out.push(new THREE.Vector3(x, y * k, z).addScaledVector(right, (sx * w * k) / 2));
+        for (const sx of [-1, 1]) out.push(new THREE.Vector3(x, y * k + (c.elev ?? 0), z).addScaledVector(right, (sx * w * k) / 2));
       return out;
     };
     const hy = s.neckY + s.headDY;
     const hr = s.headR * 1.25;
     return {
       who: c.who,
-      face: boxOf(rect(hy - hr, hy + hr + (s.name === 'chotu' ? 0.12 : 0.05), hr * 2)),
+      face: boxOf(rect(hy - hr, hy + hr + (s.name === 'nik' ? 0.12 : 0.05), hr * 2)),
       body: boxOf(rect(s.hipY, s.neckY, s.body.w)),
       legs: boxOf(rect(0, s.hipY, s.body.w)),
     };

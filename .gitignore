@@ -9,5 +9,7 @@ out/.chunks-*/
 out/preview/*.mix.wav
 out/preview/*.video.mp4
 out/qa/*/frames/
+out/qa/*/prev_frames/
+out/qa/*/hands/
 out/*.mix.wav
 out/render.log

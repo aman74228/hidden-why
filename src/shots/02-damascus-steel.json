@@ -172,7 +172,7 @@
      ]
     },
     {
-     "who": "chotu",
+     "who": "nik",
      "pose": "idle",
      "pos": [
       1.75,
@@ -440,7 +440,7 @@
    },
    "cast": [
     {
-     "who": "chotu",
+     "who": "nik",
      "pose": "present",
      "pos": [
       0.15,
@@ -481,9 +481,9 @@
    "duration": 4.2
   },
   {
-   "id": "dada-dirt",
+   "id": "gus-dirt",
    "beat": 4,
-   "stillAt": 2.78,
+   "stillAt": 2.74,
    "set": "lab",
    "fx": {
     "lab": {
@@ -541,7 +541,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "outfit": {
       "body": "#5A3E30",
       "trim": "#B88A5A",
@@ -561,7 +561,7 @@
      "appearAt": 0.45
     },
     {
-     "who": "chotu",
+     "who": "nik",
      "pose": "look-up",
      "pos": [
       -4.6,
@@ -590,7 +590,7 @@
     },
     {
      "name": "grit-trickle",
-     "at": 2.22
+     "at": 2.18
     }
    ],
    "duration": 3.8
@@ -651,7 +651,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "outfit": {
       "body": "#5A3E30",
       "trim": "#B88A5A",
@@ -726,7 +726,7 @@
    },
    "cast": [
     {
-     "who": "chotu",
+     "who": "nik",
      "pose": "look-up",
      "pos": [
       -1.1,
@@ -809,7 +809,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "outfit": {
       "body": "#5A3E30",
       "trim": "#B88A5A",
@@ -1008,7 +1008,7 @@
    },
    "cast": [
     {
-     "who": "dada",
+     "who": "gus",
      "outfit": {
       "body": "#5A3E30",
       "trim": "#B88A5A",
@@ -1078,7 +1078,7 @@
      "facing": -1
     },
     {
-     "who": "chotu",
+     "who": "nik",
      "pose": "gasp",
      "pos": [
       -0.4,

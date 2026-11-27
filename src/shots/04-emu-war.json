@@ -1,0 +1,2653 @@
+{
+ "slug": "04-emu-war",
+ "title": "The War Australia Lost to Birds",
+ "audio": "vo/04-emu-war.mp3",
+ "music": false,
+ "sfx": false,
+ "payoffHold": 0.5,
+ "shots": [
+  {
+   "id": "hook-binoculars",
+   "set": "farm",
+   "nounsOk": {
+    "soldiers": "the hook's question (army) is answered later",
+    "guns": "the hook's question"
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -0.243,
+     1.512,
+     -1.245
+    ],
+    "to": [
+     0.049,
+     1.495,
+     -0.816
+    ],
+    "look": [
+     0.35,
+     1.42,
+     1.325
+    ],
+    "fov": 40
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0.35,
+      1.45
+     ],
+     "elev": 0.46,
+     "facing": 1,
+     "pose": "binoculars",
+     "props": [
+      "binoculars"
+     ]
+    }
+   ],
+   "layout": "manual",
+   "dof": 1.0,
+   "focusDist": 2.0,
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 2.63,
+     "gain": -9
+    }
+   ],
+   "duration": 2.6333
+  },
+  {
+   "id": "hook-emu",
+   "beat": 1,
+   "stillAt": 0.55,
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "emus": [
+      {
+       "pos": [
+        0.3,
+        0.5
+       ],
+       "facing": 1,
+       "gait": "stand",
+       "seed": 2,
+       "s": 0.96,
+       "view": "front",
+       "rise": {
+        "at": -0.1,
+        "dur": 0.24,
+        "from": 1.5
+       }
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.4,
+     1.64,
+     -1.1
+    ],
+    "to": [
+     0.34,
+     1.62,
+     -0.88
+    ],
+    "look": [
+     0.33,
+     1.66,
+     1.45
+    ],
+    "fov": 40
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0.35,
+      1.45
+     ],
+     "elev": 0.46,
+     "facing": 1,
+     "pose": "binoculars",
+     "props": [
+      "binoculars"
+     ],
+     "poses": [
+      {
+       "at": 0.29,
+       "pose": "shock",
+       "props": [
+        "binoculars"
+       ]
+      }
+     ]
+    }
+   ],
+   "layout": "manual",
+   "dof": 1.0,
+   "focusDist": 1.4,
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 1.08,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": -0.1,
+     "gain": -4
+    },
+    {
+     "name": "pop-soft",
+     "at": 0.14,
+     "gain": -6
+    }
+   ],
+   "duration": 1.0667
+  },
+  {
+   "id": "bet-hat",
+   "beat": 2,
+   "stillAt": 0.75,
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "hatPost": [
+      -1.3,
+      1.5,
+      1.2
+     ],
+     "hatPostAt": 1.95,
+     "flocks": [
+      {
+       "n": 3,
+       "center": [
+        -1.4,
+        5.0
+       ],
+       "spread": [
+        2.2,
+        0.8
+       ],
+       "seed": 59,
+       "gait": "walk",
+       "vel": [
+        0.5,
+        0
+       ],
+       "minDist": 0.8
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -1.67,
+     1.749,
+     -4.989
+    ],
+    "to": [
+     -1.111,
+     1.697,
+     -4.057
+    ],
+    "look": [
+     -0.53,
+     1.405,
+     1.475
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      -0.62,
+      1.75
+     ],
+     "facing": 1,
+     "pose": "hat-tap",
+     "props": [
+      "fedora"
+     ],
+     "poses": [
+      {
+       "at": 1.15,
+       "pose": "present",
+       "holding": "fedora",
+       "props": []
+      },
+      {
+       "at": 1.95,
+       "pose": "cross-arms",
+       "holding": null,
+       "props": []
+      }
+     ]
+    },
+    {
+     "who": "nik",
+     "pos": [
+      0.18,
+      1.45
+     ],
+     "elev": 0.46,
+     "facing": 1,
+     "pose": "look-up"
+    }
+   ],
+   "layout": "manual",
+   "dof": 1.0,
+   "focusDist": 2.3,
+   "titleCard": {
+    "label": "The bet",
+    "word": "Vik's hat",
+    "at": 0.15,
+    "duration": 2.85
+   },
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 3.2,
+     "gain": -11
+    },
+    {
+     "name": "pop-soft",
+     "at": 0.3,
+     "gain": -8
+    },
+    {
+     "name": "pop-soft",
+     "at": 0.7,
+     "gain": -8
+    },
+    {
+     "name": "pop-soft",
+     "at": 1.95,
+     "gain": -5
+    }
+   ],
+   "duration": 3.2
+  },
+  {
+   "id": "flock-wheat",
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "flocks": [
+      {
+       "n": 30,
+       "center": [
+        -1,
+        -5.2
+       ],
+       "spread": [
+        16,
+        6.5
+       ],
+       "seed": 3,
+       "gait": "walk",
+       "vel": [
+        0.35,
+        0.12
+       ],
+       "minDist": 0.95
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     3,
+     12,
+     11
+    ],
+    "to": [
+     1.5,
+     5.2,
+     6.5
+    ],
+    "look": [
+     0,
+     0.6,
+     -5.5
+    ],
+    "fov": 44,
+    "lookTo": [
+     0,
+     0.8,
+     -4.5
+    ]
+   },
+   "titleCard": {
+    "label": "Australia",
+    "word": "1932",
+    "at": 0.15,
+    "duration": 2.23
+   },
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 2.53,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.2,
+     "gain": -10
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.65,
+     "gain": -10
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.1,
+     "gain": -10
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.55,
+     "gain": -10
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.0,
+     "gain": -10
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.45,
+     "gain": -10
+    }
+   ],
+   "duration": 2.5333
+  },
+  {
+   "id": "truck-arrives",
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "truck": {
+      "pos": [
+       -1.0,
+       0,
+       4.2
+      ],
+      "drive": {
+       "from": [
+        -7.5,
+        0,
+        4.2
+       ],
+       "at": 0.0,
+       "dur": 2.82,
+       "glide": true
+      },
+      "heldGuns": [
+       {
+        "pos": [
+         -2.45,
+         2.02,
+         0.59
+        ],
+        "rotY": 3.1416
+       },
+       {
+        "pos": [
+         0.15,
+         2.02,
+         0.64
+        ],
+        "rotY": 0
+       }
+      ],
+      "dust": true
+     }
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -7.573,
+     3.254,
+     14.848
+    ],
+    "to": [
+     -1.073,
+     3.254,
+     14.848
+    ],
+    "look": [
+     -8.65,
+     2.171,
+     4.6
+    ],
+    "fov": 42,
+    "lookTo": [
+     -2.15,
+     2.171,
+     4.6
+    ]
+   },
+   "cast": [
+    {
+     "who": "soldier",
+     "pos": [
+      -2.95,
+      4.65
+     ],
+     "elev": 0.83,
+     "facing": -1,
+     "pose": "aim",
+     "seed": 11,
+     "enter": {
+      "from": [
+       -9.45,
+       4.65
+      ],
+      "at": 0.0,
+      "dur": 2.82,
+      "glide": true,
+      "ride": true
+     }
+    },
+    {
+     "who": "soldier",
+     "pos": [
+      -2.15,
+      4.4
+     ],
+     "elev": 0.83,
+     "facing": 1,
+     "pose": "point",
+     "seed": 12,
+     "enter": {
+      "from": [
+       -8.65,
+       4.4
+      ],
+      "at": 0.0,
+      "dur": 2.82,
+      "glide": true,
+      "ride": true
+     }
+    },
+    {
+     "who": "soldier",
+     "pos": [
+      -1.35,
+      4.7
+     ],
+     "elev": 0.83,
+     "facing": 1,
+     "pose": "aim",
+     "seed": 13,
+     "enter": {
+      "from": [
+       -7.85,
+       4.7
+      ],
+      "at": 0.0,
+      "dur": 2.82,
+      "glide": true,
+      "ride": true
+     }
+    }
+   ],
+   "layout": "manual",
+   "titleCard": {
+    "label": "Ammo",
+    "word": "10,000 bullets",
+    "at": 0.9,
+    "duration": 1.77
+   },
+   "sfx": [
+    {
+     "name": "truck-engine",
+     "at": 0,
+     "dur": 2.82,
+     "gain": -4
+    }
+   ],
+   "duration": 2.8333
+  },
+  {
+   "id": "herd",
+   "set": "farm",
+   "nounsOk": {
+    "guns": "soldiers and guns kept out of this frame on request (farmers + flock only); the guns are in the next shot"
+   },
+   "fx": {
+    "farm": {
+     "flocks": [
+      {
+       "n": 20,
+       "center": [
+        0.4,
+        -4.6
+       ],
+       "spread": [
+        6,
+        2.2
+       ],
+       "seed": 7,
+       "gait": "run",
+       "vel": [
+        0.9,
+        1.4
+       ],
+       "minDist": 0.85
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -0.645,
+     1.899,
+     -12.803
+    ],
+    "to": [
+     -0.342,
+     1.844,
+     -12.439
+    ],
+    "look": [
+     0.0,
+     1.155,
+     -7.55
+    ],
+    "fov": 46
+   },
+   "cast": [
+    {
+     "who": "farmer",
+     "pos": [
+      0.62,
+      -7.4
+     ],
+     "facing": 1,
+     "pose": "wave",
+     "holding": "strawhat",
+     "props": [
+      "nohat"
+     ],
+     "seed": 21
+    },
+    {
+     "who": "farmer",
+     "pos": [
+      -0.62,
+      -7.7
+     ],
+     "facing": -1,
+     "pose": "wave",
+     "holding": "strawhat",
+     "props": [
+      "nohat"
+     ],
+     "seed": 22
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 2.7,
+     "gain": -10
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.1,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.4,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.7,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.0,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.3,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.6,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.9,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.2,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.5,
+     "gain": -8
+    }
+   ],
+   "duration": 2.7
+  },
+  {
+   "id": "split-drone",
+   "beat": 3,
+   "stillAt": 1.06,
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "flocks": [
+      {
+       "n": 32,
+       "center": [
+        -0.5,
+        -3.2
+       ],
+       "spread": [
+        5,
+        2.6
+       ],
+       "seed": 9,
+       "gait": "walk",
+       "minDist": 0.7,
+       "split": {
+        "at": 0.4600000000000001,
+        "speed": 3.3,
+        "groups": 7,
+        "dirDeg": [
+         0,
+         32,
+         148,
+         180,
+         212,
+         328,
+         245
+        ]
+       }
+      }
+     ],
+     "guns": [
+      {
+       "pos": [
+        -1.83,
+        1.52,
+        2.87
+       ],
+       "rot": [
+        0,
+        2.521,
+        0
+       ],
+       "sweep": 0.3,
+       "bipod": false
+      },
+      {
+       "pos": [
+        1.6300000000000001,
+        1.52,
+        2.92
+       ],
+       "rot": [
+        0,
+        0.621,
+        0
+       ],
+       "sweep": 0.3,
+       "bipod": false
+      }
+     ],
+     "puffs": {
+      "center": [
+       -0.5,
+       -3.2
+      ],
+      "r": 1.4,
+      "times": [
+       1.01,
+       1.33,
+       1.65,
+       1.97,
+       2.29,
+       2.61
+      ]
+     }
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     1.0,
+     9.6,
+     12.6
+    ],
+    "to": [
+     0.5,
+     8.8,
+     11.6
+    ],
+    "look": [
+     -0.3,
+     0.4,
+     -3.0
+    ],
+    "fov": 54,
+    "lookTo": [
+     -0.3,
+     0.4,
+     -2.6
+    ]
+   },
+   "cast": [
+    {
+     "who": "soldier",
+     "pos": [
+      -1.55,
+      2.75
+     ],
+     "facing": -1,
+     "pose": "shoulder-gun",
+     "seed": 3
+    },
+    {
+     "who": "soldier",
+     "pos": [
+      1.35,
+      2.8
+     ],
+     "facing": 1,
+     "pose": "shoulder-gun",
+     "seed": 4,
+     "props": [
+      "moustache"
+     ]
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 3.02,
+     "gain": -10
+    },
+    {
+     "name": "gunfire-distant",
+     "at": 1.01,
+     "gain": -9
+    },
+    {
+     "name": "gunfire-distant",
+     "at": 1.33,
+     "gain": -9
+    },
+    {
+     "name": "gunfire-distant",
+     "at": 1.65,
+     "gain": -9
+    },
+    {
+     "name": "gunfire-distant",
+     "at": 1.97,
+     "gain": -9
+    },
+    {
+     "name": "gunfire-distant",
+     "at": 2.29,
+     "gain": -9
+    },
+    {
+     "name": "gunfire-distant",
+     "at": 2.61,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.46,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.64,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.82,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.0,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.18,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.36,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.54,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.72,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.9,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.08,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.26,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.44,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.62,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.8,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.98,
+     "gain": -8
+    }
+   ],
+   "duration": 3.0
+  },
+  {
+   "id": "ambush-hide",
+   "set": "waterhole",
+   "fx": {
+    "waterhole": {
+     "gun": {
+      "pos": [
+       0.3,
+       0.86,
+       1.35
+      ],
+      "rot": [
+       0,
+       1.571,
+       0
+      ]
+     },
+     "flocks": [
+      {
+       "n": 14,
+       "center": [
+        0,
+        0
+       ],
+       "spread": [
+        1,
+        1
+       ],
+       "seed": 13,
+       "line": {
+        "from": [
+         15,
+         -27
+        ],
+        "to": [
+         3.5,
+         -12.5
+        ],
+        "speed": 1.6
+       }
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     2.807,
+     1.3430000000000002,
+     5.64
+    ],
+    "to": [
+     2.407,
+     1.243,
+     5.04
+    ],
+    "look": [
+     0.73,
+     0.81,
+     1.275
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "soldier",
+     "pos": [
+      0.95,
+      2.1
+     ],
+     "elev": -0.55,
+     "facing": -1,
+     "pose": "aim",
+     "seed": 5
+    }
+   ],
+   "layout": "manual",
+   "dof": 2.0,
+   "focusDist": [
+    3.4,
+    13.0
+   ],
+   "titleCard": {
+    "label": "Plan B",
+    "word": "The ambush",
+    "at": 0.15,
+    "duration": 1.88
+   },
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 2.18,
+     "gain": -12
+    }
+   ],
+   "duration": 2.2
+  },
+  {
+   "id": "emu-line",
+   "set": "waterhole",
+   "fx": {
+    "waterhole": {
+     "flocks": [
+      {
+       "n": 22,
+       "center": [
+        0,
+        0
+       ],
+       "spread": [
+        1,
+        1
+       ],
+       "seed": 15,
+       "line": {
+        "from": [
+         17,
+         -29
+        ],
+        "to": [
+         2.5,
+         -10.5
+        ],
+        "speed": 1.7
+       }
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -2.2,
+     1.0,
+     -5.0
+    ],
+    "to": [
+     -1.4,
+     0.92,
+     -6.0
+    ],
+    "look": [
+     5,
+     1.0,
+     -14
+    ],
+    "fov": 42,
+    "lookTo": [
+     4,
+     1.0,
+     -12.5
+    ]
+   },
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 2.63,
+     "gain": -12
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.1,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.42,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.74,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.06,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.38,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.7,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.02,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.34,
+     "gain": -8
+    }
+   ],
+   "duration": 2.6333
+  },
+  {
+   "id": "soldier-sweat",
+   "set": "waterhole",
+   "fx": {
+    "waterhole": {
+     "gun": {
+      "pos": [
+       0.3,
+       0.86,
+       1.35
+      ],
+      "rot": [
+       0,
+       1.571,
+       0
+      ]
+     },
+     "flocks": [
+      {
+       "n": 12,
+       "center": [
+        0,
+        0
+       ],
+       "spread": [
+        1,
+        1
+       ],
+       "seed": 17,
+       "line": {
+        "from": [
+         5,
+         -20
+        ],
+        "to": [
+         -1.0,
+         -7.0
+        ],
+        "speed": 1.4
+       }
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     1.386,
+     1.04,
+     4.341
+    ],
+    "to": [
+     1.443,
+     1.036,
+     4.078
+    ],
+    "look": [
+     0.95,
+     1.0,
+     2.1
+    ],
+    "fov": 40
+   },
+   "cast": [
+    {
+     "who": "soldier",
+     "pos": [
+      0.95,
+      2.1
+     ],
+     "elev": -0.55,
+     "facing": -1,
+     "pose": "aim-sweat",
+     "seed": 5
+    }
+   ],
+   "layout": "manual",
+   "dof": 1.6,
+   "focusDist": 1.3,
+   "duration": 2.2667
+  },
+  {
+   "id": "gun-jam",
+   "beat": 4,
+   "stillAt": 0.7,
+   "set": "waterhole",
+   "fx": {
+    "waterhole": {
+     "gun": {
+      "pos": [
+       0.3,
+       0.86,
+       1.35
+      ],
+      "rot": [
+       0,
+       1.571,
+       0
+      ],
+      "jamAt": 0.4
+     },
+     "flocks": [
+      {
+       "n": 14,
+       "center": [
+        -4.6,
+        0.6
+       ],
+       "spread": [
+        3.2,
+        3.0
+       ],
+       "seed": 19,
+       "gait": "walk",
+       "minDist": 0.8,
+       "split": {
+        "at": 0.65,
+        "speed": 4.2,
+        "groups": 5,
+        "dirDeg": [
+         120,
+         150,
+         180,
+         210,
+         240
+        ]
+       }
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     4.256,
+     1.127,
+     1.047
+    ],
+    "to": [
+     4.073,
+     1.114,
+     1.066
+    ],
+    "look": [
+     0.42,
+     0.857,
+     1.45
+    ],
+    "fov": 44
+   },
+   "dof": 1.2,
+   "focusDist": 2.0,
+   "cast": [
+    {
+     "who": "soldier",
+     "pos": [
+      0.42,
+      1.95
+     ],
+     "elev": -0.55,
+     "facing": 1,
+     "pose": "aim-sweat",
+     "seed": 5,
+     "poses": [
+      {
+       "at": 0.45,
+       "pose": "yank"
+      }
+     ]
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "gun-jam",
+     "at": 0.4,
+     "gain": -2
+    },
+    {
+     "name": "gun-jam",
+     "at": 0.7,
+     "gain": -6
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.7,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.86,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.02,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.18,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.34,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.5,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.66,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.82,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.98,
+     "gain": -9
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.14,
+     "gain": -9
+    }
+   ],
+   "duration": 2.2
+  },
+  {
+   "id": "truck-track",
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "truck": {
+      "pos": [
+       0,
+       0,
+       4.2
+      ],
+      "wheelSpin": 8.0,
+      "bumpy": 1,
+      "guns": 1,
+      "dust": true
+     },
+     "scroll": 8.0,
+     "wheatRect": [
+      -30,
+      70,
+      -9,
+      -1.0
+     ],
+     "flocks": [
+      {
+       "n": 6,
+       "center": [
+        -9,
+        2.4
+       ],
+       "spread": [
+        6,
+        0.8
+       ],
+       "seed": 23,
+       "vel": [
+        5.9,
+        0
+       ],
+       "gait": "run",
+       "minDist": 1.2
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     2.062,
+     2.769,
+     18.669
+    ],
+    "to": [
+     0.862,
+     2.569,
+     17.469
+    ],
+    "look": [
+     -0.05,
+     1.425,
+     4.425
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "soldier",
+     "pos": [
+      -1.55,
+      4.65
+     ],
+     "elev": 0.83,
+     "facing": 1,
+     "pose": "aim",
+     "seed": 7,
+     "shake": 1
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "truck-engine",
+     "at": 0,
+     "dur": 2.15,
+     "gain": -3
+    }
+   ],
+   "duration": 2.1333
+  },
+  {
+   "id": "emus-overtake",
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "truck": {
+      "pos": [
+       0,
+       0,
+       4.2
+      ],
+      "wheelSpin": 8.0,
+      "bumpy": 1,
+      "guns": 1,
+      "dust": true
+     },
+     "scroll": 8.0,
+     "wheatRect": [
+      -30,
+      70,
+      -9,
+      -1.0
+     ],
+     "flocks": [
+      {
+       "n": 9,
+       "center": [
+        -13,
+        6.4
+       ],
+       "spread": [
+        9,
+        1.4
+       ],
+       "seed": 29,
+       "vel": [
+        5.9,
+        0
+       ],
+       "gait": "run",
+       "minDist": 1.3
+      },
+      {
+       "n": 7,
+       "center": [
+        -10,
+        2.4
+       ],
+       "spread": [
+        8,
+        0.8
+       ],
+       "seed": 31,
+       "vel": [
+        5.9,
+        0
+       ],
+       "gait": "run",
+       "minDist": 1.3
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -0.138,
+     2.8689999999999998,
+     19.469
+    ],
+    "to": [
+     1.662,
+     2.569,
+     18.869
+    ],
+    "look": [
+     -0.05,
+     1.425,
+     4.425
+    ],
+    "fov": 42
+   },
+   "cast": [
+    {
+     "who": "soldier",
+     "pos": [
+      -1.55,
+      4.65
+     ],
+     "elev": 0.83,
+     "facing": 1,
+     "pose": "aim",
+     "seed": 7,
+     "shake": 1
+    }
+   ],
+   "layout": "manual",
+   "titleCard": {
+    "label": "Top speed",
+    "word": "50 km/h",
+    "at": 0.2,
+    "duration": 2.48
+   },
+   "sfx": [
+    {
+     "name": "truck-engine",
+     "at": 0,
+     "dur": 2.88,
+     "gain": -4
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.0,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.15,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.3,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.45,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.6,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.75,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.9,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.05,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.2,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.35,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.5,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.65,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.8,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 1.95,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.1,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.25,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.4,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.55,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.7,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 2.85,
+     "gain": -8
+    }
+   ],
+   "duration": 2.9
+  },
+  {
+   "id": "gun-pov",
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "truck": {
+      "pos": [
+       0,
+       0,
+       4.2
+      ],
+      "wheelSpin": 8.0,
+      "bumpy": 1,
+      "guns": 1,
+      "dust": true,
+      "bedOnly": true,
+      "gunPost": [
+       -0.9,
+       1.88,
+       0.0
+      ]
+     },
+     "scroll": 8.0,
+     "wheatRect": [
+      -30,
+      70,
+      -9,
+      -1.0
+     ],
+     "flocks": [
+      {
+       "n": 7,
+       "center": [
+        9,
+        3.8000000000000003
+       ],
+       "spread": [
+        6,
+        3.2
+       ],
+       "seed": 37,
+       "vel": [
+        2.95,
+        0
+       ],
+       "gait": "run",
+       "minDist": 1.4,
+       "zigzag": 0.9
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -2.75,
+     2.45,
+     4.32
+    ],
+    "to": [
+     -2.65,
+     2.42,
+     4.3
+    ],
+    "look": [
+     10,
+     1.62,
+     4.25
+    ],
+    "fov": 50,
+    "lookTo": [
+     10,
+     1.58,
+     3.9
+    ]
+   },
+   "shake": 0.05,
+   "sfx": [
+    {
+     "name": "truck-engine",
+     "at": 0,
+     "dur": 2.49,
+     "gain": -2
+    }
+   ],
+   "duration": 2.4667
+  },
+  {
+   "id": "pull-out",
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "truck": {
+      "pos": [
+       0.6000000000000001,
+       0,
+       4.2
+      ],
+      "drive": {
+       "from": [
+        -1.0,
+        0,
+        4.2
+       ],
+       "at": 0.2,
+       "dur": 2.29,
+       "easeIn": true
+      },
+      "guns": 1,
+      "crates": true,
+      "dust": true
+     },
+     "emus": [
+      {
+       "pos": [
+        1.55,
+        0.5
+       ],
+       "facing": 1,
+       "gait": "stand",
+       "seed": 41,
+       "view": "threeq",
+       "blinkAt": [
+        0.9,
+        1.8
+       ]
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     2.0,
+     1.62,
+     -1.0
+    ],
+    "to": [
+     2.25,
+     1.68,
+     -1.35
+    ],
+    "look": [
+     0.45,
+     1.4,
+     3.0
+    ],
+    "fov": 44,
+    "lookTo": [
+     0.35,
+     1.4,
+     3.2
+    ]
+   },
+   "cast": [
+    {
+     "who": "soldier",
+     "pos": [
+      0.25,
+      4.6000000000000005
+     ],
+     "elev": 0.83,
+     "facing": -1,
+     "pose": "frown",
+     "seed": 11,
+     "enter": {
+      "from": [
+       -1.35,
+       4.6000000000000005
+      ],
+      "at": 0.2,
+      "dur": 2.29,
+      "pow": 3,
+      "ride": true,
+      "easeIn": true
+     }
+    }
+   ],
+   "layout": "manual",
+   "dof": 1.2,
+   "focusDist": [
+    1.6,
+    2.2
+   ],
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 2.49,
+     "gain": -10
+    },
+    {
+     "name": "truck-engine",
+     "at": 0.3,
+     "dur": 2.19,
+     "gain": -10
+    }
+   ],
+   "duration": 2.5
+  },
+  {
+   "id": "gus-bowls",
+   "set": "forge",
+   "fx": {
+    "forgeLumps": false,
+    "noSparks": true,
+    "floorboards": {
+     "pos": [
+      0.2,
+      0,
+      1.5
+     ],
+     "size": [
+      7,
+      4.4
+     ]
+    },
+    "marbles": {
+     "mode": "rack",
+     "origin": [
+      0.4,
+      0,
+      1.6
+     ],
+     "rotY": 1.5708,
+     "rollAt": 0.9,
+     "rollFrom": [
+      0,
+      -1.4
+     ],
+     "speed": 0.55
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.048,
+     2.435,
+     9.094
+    ],
+    "to": [
+     0.355,
+     2.264,
+     8.264
+    ],
+    "look": [
+     -0.345,
+     0.84,
+     1.6
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      -1.25,
+      1.55
+     ],
+     "facing": 1,
+     "pose": "present",
+     "holding": "bowling",
+     "poses": [
+      {
+       "at": 0.45,
+       "pose": "bowl"
+      },
+      {
+       "at": 0.85,
+       "pose": "bowl",
+       "holding": null
+      },
+      {
+       "at": 1.5,
+       "pose": "smile-nod",
+       "holding": null
+      }
+     ]
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "bowling-roll",
+     "at": 0.9,
+     "gain": -5
+    }
+   ],
+   "duration": 2.4
+  },
+  {
+   "id": "strike-floor",
+   "set": "forge",
+   "fx": {
+    "forgeLumps": false,
+    "noSparks": true,
+    "floorboards": {
+     "pos": [
+      0.2,
+      0,
+      1.5
+     ],
+     "size": [
+      7,
+      4.4
+     ]
+    },
+    "marbles": {
+     "mode": "rack",
+     "origin": [
+      0.4,
+      0,
+      1.6
+     ],
+     "rotY": 1.5708,
+     "rollAt": 0,
+     "rollFrom": [
+      0,
+      -0.575
+     ],
+     "speed": 0.55
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.3,
+     0.26,
+     3.05
+    ],
+    "to": [
+     0.55,
+     0.22,
+     2.85
+    ],
+    "look": [
+     0.45,
+     0.07,
+     1.6
+    ],
+    "fov": 42,
+    "lookTo": [
+     0.6,
+     0.07,
+     1.6
+    ]
+   },
+   "dof": 1.4,
+   "focusDist": 1.3,
+   "sfx": [
+    {
+     "name": "bowling-roll",
+     "at": 0,
+     "gain": -6
+    },
+    {
+     "name": "marbles-scatter",
+     "at": 0.78,
+     "gain": -2
+    }
+   ],
+   "duration": 1.1667
+  },
+  {
+   "id": "pause-reaction",
+   "set": "forge",
+   "fx": {
+    "forgeLumps": false,
+    "noSparks": true,
+    "floorboards": {
+     "pos": [
+      0.2,
+      0,
+      1.5
+     ],
+     "size": [
+      7,
+      4.4
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     1.389,
+     1.528,
+     4.482
+    ],
+    "to": [
+     1.468,
+     1.519,
+     4.322
+    ],
+    "look": [
+     1.82,
+     1.343,
+     0.975
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      1.5,
+      1.1
+     ],
+     "facing": -1,
+     "pose": "laugh"
+    },
+    {
+     "who": "vik",
+     "pos": [
+      2.15,
+      0.85
+     ],
+     "facing": -1,
+     "pose": "nervous-up",
+     "props": [
+      "fedora"
+     ]
+    }
+   ],
+   "layout": "manual",
+   "duration": 0.7
+  },
+  {
+   "id": "scatter-throw",
+   "set": "forge",
+   "fx": {
+    "forgeLumps": false,
+    "noSparks": true,
+    "floorboards": {
+     "pos": [
+      0.2,
+      0,
+      1.5
+     ],
+     "size": [
+      7,
+      4.4
+     ]
+    },
+    "marbles": {
+     "mode": "scatter",
+     "origin": [
+      0.4,
+      0,
+      1.6
+     ],
+     "rotY": 1.5708,
+     "throwAt": 0.25,
+     "throwFrom": [
+      0.05,
+      -1.45
+     ],
+     "noBall": true
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.428,
+     7.454,
+     10.065
+    ],
+    "to": [
+     0.817,
+     6.853,
+     9.278
+    ],
+    "look": [
+     0.28,
+     0.84,
+     1.6
+    ],
+    "fov": 46
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      -1.3,
+      1.55
+     ],
+     "facing": 1,
+     "pose": "bowl"
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "marbles-scatter",
+     "at": 0.3,
+     "gain": -4
+    },
+    {
+     "name": "marble-click",
+     "at": 0.75,
+     "gain": -6
+    },
+    {
+     "name": "marble-click",
+     "at": 0.95,
+     "gain": -8
+    }
+   ],
+   "duration": 1.6333
+  },
+  {
+   "id": "clip-one",
+   "beat": 5,
+   "stillAt": 0.78,
+   "set": "forge",
+   "fx": {
+    "forgeLumps": false,
+    "noSparks": true,
+    "floorboards": {
+     "pos": [
+      0.2,
+      0,
+      1.5
+     ],
+     "size": [
+      7,
+      4.4
+     ]
+    },
+    "marbles": {
+     "mode": "scatter",
+     "origin": [
+      0.4,
+      0,
+      1.6
+     ],
+     "rotY": 1.5708,
+     "rollAt": -0.6,
+     "rollFrom": [
+      0,
+      -1.102
+     ],
+     "speed": 1.6,
+     "struck": true
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -1.2,
+     1.55,
+     3.4
+    ],
+    "to": [
+     -0.8,
+     1.35,
+     3.0
+    ],
+    "look": [
+     0.7,
+     0.05,
+     1.55
+    ],
+    "fov": 44,
+    "lookTo": [
+     1.0,
+     0.05,
+     1.55
+    ]
+   },
+   "dof": 1.0,
+   "focusDist": 2.0,
+   "sfx": [
+    {
+     "name": "bowling-roll",
+     "at": 0,
+     "gain": -6
+    },
+    {
+     "name": "marble-click",
+     "at": 0.58,
+     "gain": -2
+    }
+   ],
+   "duration": 1.9333
+  },
+  {
+   "id": "gus-rule",
+   "set": "forge",
+   "nounsOk": {
+    "guns": "the bowling ball stands in for the machine gun (the demo's metaphor)"
+   },
+   "fx": {
+    "forgeLumps": false,
+    "noSparks": true,
+    "floorboards": {
+     "pos": [
+      0.2,
+      0,
+      1.5
+     ],
+     "size": [
+      7,
+      4.4
+     ]
+    },
+    "marbles": {
+     "mode": "scatter",
+     "origin": [
+      0.4,
+      0,
+      1.6
+     ],
+     "rotY": 1.5708,
+     "rollAt": -20,
+     "rollFrom": [
+      0,
+      -2
+     ],
+     "speed": 1.6,
+     "struck": true,
+     "noBall": true
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.553,
+     1.789,
+     8.525
+    ],
+    "to": [
+     0.777,
+     1.687,
+     7.761
+    ],
+    "look": [
+     -0.27,
+     0.84,
+     1.825
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "gus",
+     "pos": [
+      -1.0,
+      1.25
+     ],
+     "facing": 1,
+     "pose": "smile-nod",
+     "holding": "bowling"
+    }
+   ],
+   "layout": "manual",
+   "duration": 2.7667
+  },
+  {
+   "id": "emus-spread",
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "flocks": [
+      {
+       "n": 16,
+       "center": [
+        0,
+        -4.5
+       ],
+       "spread": [
+        26,
+        7
+       ],
+       "seed": 43,
+       "gait": "peck",
+       "minDist": 3.0
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -3.5,
+     3.6,
+     9.5
+    ],
+    "to": [
+     2.5,
+     3.2,
+     9.0
+    ],
+    "look": [
+     -0.5,
+     0.7,
+     -4
+    ],
+    "fov": 46,
+    "lookTo": [
+     0.5,
+     0.7,
+     -4
+    ]
+   },
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 2.2,
+     "gain": -8
+    }
+   ],
+   "duration": 2.2
+  },
+  {
+   "id": "empty-post",
+   "set": "farm",
+   "nounsOk": {
+    "hat": "the empty post is the point: the hat is gone"
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -1.356,
+     1.588,
+     -2.16
+    ],
+    "to": [
+     -1.138,
+     1.574,
+     -1.787
+    ],
+    "look": [
+     -0.91,
+     1.46,
+     1.475
+    ],
+    "fov": 44
+   },
+   "dof": 1.0,
+   "focusDist": 2.4,
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      -0.62,
+      1.75
+     ],
+     "facing": 1,
+     "pose": "gasp"
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 1.28,
+     "gain": -11
+    }
+   ],
+   "duration": 1.2667
+  },
+  {
+   "id": "emu-hat",
+   "beat": 6,
+   "stillAt": 0.6,
+   "set": "farm",
+   "fx": {
+    "farm": {
+     "emus": [
+      {
+       "pos": [
+        0.2,
+        0.6
+       ],
+       "vel": [
+        -0.6,
+        0
+       ],
+       "gait": "strut",
+       "seed": 47,
+       "hat": true,
+       "view": "threeq",
+       "facing": 1,
+       "moveAt": 0.7
+      }
+     ],
+     "backdrop": [
+      {
+       "kind": "farmhouse",
+       "pos": [
+        1.2,
+        0,
+        11.5
+       ],
+       "rotY": 3.1416
+      },
+      {
+       "kind": "tree",
+       "pos": [
+        -3.2,
+        0,
+        9.0
+       ],
+       "s": 1.0
+      }
+     ]
+    }
+   },
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.0,
+     1.8,
+     -0.95
+    ],
+    "to": [
+     -0.04,
+     1.76,
+     -0.82
+    ],
+    "look": [
+     -0.06,
+     1.5,
+     0.6
+    ],
+    "fov": 40
+   },
+   "dof": 8.0,
+   "focusDist": 1.3,
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      0.55,
+      5.2
+     ],
+     "facing": 1,
+     "pose": "jaw-drop"
+    }
+   ],
+   "layout": "manual",
+   "sfx": [
+    {
+     "name": "footsteps-dirt",
+     "at": 0.1,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.5,
+     "gain": -8
+    },
+    {
+     "name": "footsteps-dirt",
+     "at": 0.9,
+     "gain": -8
+    }
+   ],
+   "duration": 1.2333
+  },
+  {
+   "id": "pause-vik-drop",
+   "set": "farm",
+   "camera": {
+    "type": "dolly",
+    "from": [
+     -0.331,
+     1.793,
+     -3.191
+    ],
+    "to": [
+     -0.238,
+     1.783,
+     -2.923
+    ],
+    "look": [
+     -0.08,
+     1.625,
+     1.6
+    ],
+    "fov": 44
+   },
+   "cast": [
+    {
+     "who": "vik",
+     "pos": [
+      -0.62,
+      1.75
+     ],
+     "facing": -1,
+     "pose": "jaw-drop"
+    },
+    {
+     "who": "nik",
+     "pos": [
+      0.45,
+      1.45
+     ],
+     "elev": 0.46,
+     "facing": 1,
+     "pose": "laugh"
+    }
+   ],
+   "layout": "manual",
+   "payoff": true,
+   "payoffAt": 0.0,
+   "duration": 0.3
+  },
+  {
+   "id": "loop-binoculars",
+   "set": "farm",
+   "camera": {
+    "type": "dolly",
+    "from": [
+     0.207,
+     1.592,
+     -1.845
+    ],
+    "to": [
+     -0.243,
+     1.512,
+     -1.245
+    ],
+    "look": [
+     0.35,
+     1.42,
+     1.325
+    ],
+    "fov": 40
+   },
+   "dof": 1.0,
+   "focusDist": 2.0,
+   "cast": [
+    {
+     "who": "nik",
+     "pos": [
+      0.35,
+      1.45
+     ],
+     "elev": 0.46,
+     "facing": 1,
+     "pose": "binoculars",
+     "props": [
+      "binoculars"
+     ],
+     "poses": [
+      {
+       "at": 0,
+       "pose": "laugh",
+       "props": []
+      },
+      {
+       "at": 1.2,
+       "pose": "binoculars",
+       "props": [
+        "binoculars"
+       ]
+      }
+     ]
+    }
+   ],
+   "layout": "manual",
+   "fx": {
+    "farm": {
+     "flocks": [
+      {
+       "n": 2,
+       "center": [
+        -0.9,
+        4.8
+       ],
+       "spread": [
+        1.2,
+        0.3
+       ],
+       "seed": 53,
+       "gait": "walk",
+       "vel": [
+        1.9,
+        0
+       ],
+       "minDist": 0.9
+      }
+     ]
+    }
+   },
+   "sfx": [
+    {
+     "name": "farm-wind",
+     "at": 0,
+     "dur": 3.53,
+     "gain": -9
+    }
+   ],
+   "duration": 3.5
+  }
+ ]
+}

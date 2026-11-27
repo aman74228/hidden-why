@@ -726,7 +726,7 @@ export const TapRipple: React.FC<{pos: [number, number, number]; times: number[]
 
 /* ================= rebuild additions ================= */
 
-/* ---------------- Dada's two iron bars (in the courtyard, in the rain) ---------------- */
+/* ---------------- Gus's two iron bars (in the courtyard, in the rain) ---------------- */
 // Left  (x -BAR_DX) = modern clean steel: rain hits it and it flakes orange (rust 0..1).
 // Right (x +BAR_DX) = pillar-style wrought iron: stays dark; a thin glassy sheen spreads
 // up it from the base with a moving highlight (skin 0..1).

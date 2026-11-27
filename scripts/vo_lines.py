@@ -8,7 +8,7 @@ reads  audio/<slug>.lines.json  ({text, spoken?, exaggeration, pause_after} per 
    re-rendered (max 3 tries) and the best try kept
 3. scripts/vo_pauses.py inserts punctuation pauses (no time-stretching)
 4. joins with each line's pause_after; if the total is under --min (52 s) the whole
-   take is re-rendered with cfg 0.5; if over --max (60 s) the between-line pauses
+   take is NOT re-rendered (cfg 0.5 is faster); a warning is printed; if over --max (60 s) the between-line pauses
    shrink first (never below 0.25 s), comma pauses never
 writes audio/<slug>.mp3, audio/<slug>.vo.json (report), captions via scripts/align.py
 usage: vo_lines.py <slug> [--min 52] [--max 60]"""
@@ -26,11 +26,15 @@ V = json.loads((ROOT / "voice.json").read_text())["engines"]["chatterbox"]
 spec = json.loads((ROOT / "audio" / f"{a.slug}.lines.json").read_text())
 lines = spec["lines"]
 work = ROOT / "audio" / "takes" / f"{a.slug}-lines"; work.mkdir(parents=True, exist_ok=True)
-SAME = {"vic": "vik", "vick": "vik", "vics": "viks", "vicks": "viks", "dadda": "dada", "data": "dada", "darda": "dada"}
-NUM = {"1750": ["seventeen", "fifty"]}
+SAME = {"vic": "vik", "vick": "vik", "vics": "viks", "vicks": "viks", "dadda": "dada", "data": "dada", "darda": "dada", "guss": "gus", "gust": "gus", "gas": "gus", "goose": "gus", "emu's": "emus", "nick": "nik", "nicks": "niks", "favorite": "favourite", "kilometers": "kilometres"}
+NUM = {"1750": ["seventeen", "fifty"], "50s": ["fifties"], "20000": ["twenty", "thousand"], "1000": ["a", "thousand"], "12": ["twelve"], "50": ["fifty"], "3": ["three"], "2": ["two"], "1": ["one"], "4": ["four"], "10": ["ten"], "2001": ["two", "thousand", "and", "one"], "10000": ["ten", "thousand"]}
 
 def words(s):
     out = []
+    s = re.sub(r"(\d)[ ,]+(\d{3})\b", r"\1\2", s)  # whisper's "20 000" / "20,000"
+    s = re.sub(r"\$1\b(?![\d,])", "a dollar", s)  # "$1 a day" -> "a dollar a day"
+    s = re.sub(r"\$(\d[\d,]*)", r"\1 dollars", s)  # "$10,000" -> "10000 dollars"
+    s = re.sub(r"(?i)\b(water)(hole)\b", r"\1 \2", s)  # compound written as one word
     for w in s.split():
         n = re.sub(r"[^a-z0-9']", "", w.lower()).replace("'", "")
         out += NUM.get(n, [SAME.get(n, n)]) if n else []
@@ -67,7 +71,37 @@ def take(cfg):
                 best[i] = {"file": j["out"], "wer": round(e, 3), "diff": diff, "try": attempt + 1, "heard": heard}
             if e > 0: nxt.append(i)
         todo = nxt
+    # "take": N in lines.json pins a line to that try (a human listened / whisper mis-heard a clean take)
+    for i, ln in enumerate(lines):
+        if not ln.get("take"): continue
+        f = work / f"line{i+1:02d}-cfg{cfg}-try{ln['take']}.wav"
+        if f.exists():
+            heard = " ".join(w[0] for w in vp.words_of(vp.trim(vp.load(str(f)))))
+            e, diff = wer(ln.get("spoken", ln["text"]), heard)
+            best[i] = {"file": str(f), "wer": round(e, 3), "diff": diff, "try": ln["take"], "heard": heard}
+            print(f"  line {i+1:2d}: pinned to try {ln['take']} (WER {e:.2f})", flush=True)
+    # pick = "lowest_pitch": render every try and keep the clean take with the lowest median pitch
+    for i, ln in enumerate(lines):
+        if ln.get("pick") != "lowest_pitch": continue
+        jobs = [{"text": ln.get("spoken", ln["text"]), "out": str(work / f"line{i+1:02d}-cfg{cfg}-try{t+1}.wav"),
+                 "exaggeration": ln["exaggeration"], "cfg_weight": cfg, "seed": V["seed"] + t} for t in range(ln.get("tries", 3))]
+        new = [j for j in jobs if not Path(j["out"]).exists()]
+        if new: timing.append(render(new))
+        cands = []
+        for t, j in enumerate(jobs):
+            heard = " ".join(w[0] for w in vp.words_of(vp.trim(vp.load(j["out"]))))
+            e, diff = wer(j["text"], heard)
+            hz = median_pitch(j["out"])
+            print(f"  line {i+1:2d} try {t+1}: WER {e:.2f} median pitch {hz:.1f} Hz", flush=True)
+            cands.append((e, hz, {"file": j["out"], "wer": round(e, 3), "diff": diff, "try": t + 1, "heard": heard, "median_pitch_hz": round(hz, 1)}))
+        best[i] = min(cands, key=lambda c: (c[0] > 0, c[0], c[1]))[2]
     return best, timing
+
+def median_pitch(path):
+    import parselmouth
+    f0 = parselmouth.Sound(str(path)).to_pitch_ac(time_step=0.01, pitch_floor=60, pitch_ceiling=500).selected_array["frequency"]
+    f0 = f0[f0 > 0]
+    return float(np.median(f0)) if len(f0) else 0.0
 
 cfg = a.cfg if a.cfg is not None else V["cfg_weight"]
 for round_ in range(2):
@@ -80,8 +114,8 @@ for round_ in range(2):
     pauses = [ln["pause_after"] for ln in lines]
     total = sum(p[1]["seconds"] for p in parts) + sum(pauses)
     print(f"cfg {cfg}: total {total:.2f}s")
-    if total < a.min and cfg < 0.5 and a.cfg is None:
-        cfg = 0.5; print("under the minimum: re-rendering with cfg 0.5"); continue
+    if total < a.min:  # cfg 0.5 only speeds Chatterbox up (LESSONS 8): never retry faster; report it
+        print(f"WARNING: {total:.2f}s is under the {a.min}s minimum (slower pacing needs a LOWER cfg via --cfg, or longer pauses)")
     break
 if total > a.max:  # shrink between-line pauses first (min 0.25 s), proportionally
     over = total - a.max
@@ -106,7 +140,7 @@ rep = {"slug": a.slug, "engine": f"chatterbox/{V['model']}", "seed": V["seed"], 
        "words": nwords, "wpm_overall": round(nwords / (len(y) / SR) * 60, 1), "wpm_speech_only": round(nwords / speech * 60, 1),
        "render": timing, "lines": [{"n": i + 1, "start_s": starts[i], "seconds": parts[i][1]["seconds"], "pause_after": pauses[i],
                                      "exaggeration": lines[i]["exaggeration"], "try": best[i]["try"], "wer": best[i]["wer"], "diff": best[i]["diff"],
-                                     "heard": best[i]["heard"], "punct_pauses": parts[i][1]["pauses"], "unmatched_punct": parts[i][1]["unmatched_punct"]}
+                                     "heard": best[i]["heard"], "median_pitch_hz": best[i].get("median_pitch_hz"), "punct_pauses": parts[i][1]["pauses"], "unmatched_punct": parts[i][1]["unmatched_punct"]}
                                     for i in range(len(lines))]}
 (ROOT / "audio" / f"{a.slug}.vo.json").write_text(json.dumps(rep, indent=1, ensure_ascii=False))
 print(json.dumps({k: rep[k] for k in ["total_s", "words", "wpm_overall", "wpm_speech_only", "cfg_weight"]}))

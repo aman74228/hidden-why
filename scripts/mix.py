@@ -99,6 +99,19 @@ def main():
     k = int(0.08 * SR)
     mask = np.convolve(mask, np.ones(k) / k, mode="same")
 
+    # brief-requested music dips. List form [start_s, end_s, dB] (kept above the floor) or
+    # {"from", "to", "underVoiceDb", "floorExempt"}: serious beats (CLAUDE.md exception) may
+    # sit below the 12 dB floor, e.g. ~18 dB under the voice; those ranges skip the floor lift/check
+    DIPS = []
+    for d in L.get("musicDip", []):
+        if isinstance(d, dict):
+            DIPS.append({"a": d["from"], "b": d["to"], "db": d.get("db"), "under": d.get("underVoiceDb"), "exempt": bool(d.get("floorExempt"))})
+        else:
+            DIPS.append({"a": d[0], "b": d[1], "db": d[2], "under": None, "exempt": False})
+    EXEMPT = [(int(d["a"] * SR), int(d["b"] * SR)) for d in DIPS if d["exempt"]]
+    def exempt(k0, k1):
+        return any(k0 < e1 and e0 < k1 for e0, e1 in EXEMPT)
+
     # ---- music ----
     report = {"voice": {"lufs": round(vI, 1), "true_peak_dbtp": round(vP, 1)}}
     mpath = Path(a.music) if a.music else next((p for p in [ROOT / "public/sfx/music.mp3"] if p.exists()), None)
@@ -135,7 +148,7 @@ def main():
             for k in range(0, N - 3 * SR, hop):
                 Lk = meter(music[k:k + 3 * SR])[0]
                 pos.append(k + 1.5 * SR)
-                gain.append(10 ** (max(0.0, (MUSIC_FLOOR + 0.4) - Lk) / 20))
+                gain.append(1.0 if exempt(k, k + 3 * SR) else 10 ** (max(0.0, (MUSIC_FLOOR + 0.4) - Lk) / 20))
             if max(gain) <= 1.0001:
                 break
             g = np.convolve(np.pad(gain, (2, 2), mode="edge"), np.ones(5) / 5, mode="valid")
@@ -143,6 +156,25 @@ def main():
             music = music * np.interp(np.arange(N), pos, g)[:, None].astype(np.float32)
             music = np.clip(ff(music, f"alimiter=limit={mlim:.4f}:level=false:attack=1:release=80")[:N], -mlim, mlim)
             music = fit(music)
+        dips = []
+        for d in DIPS:
+            a0, a1 = int(d["a"] * SR), min(N, int(d["b"] * SR))
+            Ld = meter(music[a0:a1])[0]
+            if d["under"] is not None:  # absolute target under the voice
+                allowed = round(max(0.0, Ld - (V_LUFS - d["under"])), 1)
+            else:  # relative dip, kept above the floor (quietest 3 s window touching it)
+                w3 = [meter(music[k:k + 3 * SR])[0] for k in range(max(0, a0 - 3 * SR), min(N - 3 * SR, a1), SR // 2)]
+                Lmin = min(w3) if w3 else Ld
+                allowed = round(min(d["db"], max(0.0, Lmin - (MUSIC_FLOOR + 0.3))), 1)
+            ramp = int(0.25 * SR)
+            gd = np.ones(N, np.float32)
+            gd[a0:a1] = 10 ** (-allowed / 20)
+            gd = np.convolve(gd, np.ones(ramp) / ramp, mode="same").astype(np.float32)
+            music = music * gd[:, None]
+            dips.append({"from_s": d["a"], "to_s": d["b"], "applied_db": allowed, "lufs_before": round(Ld, 1),
+                         "lufs_after": round(meter(music[a0:a1])[0], 1), "floor_exempt": d["exempt"]})
+        if dips:
+            report["music_dips"] = dips
         fade = int(0.3 * SR)
         music[-fade:] *= np.linspace(1, 0, fade)[:, None]
         mI, mP, _ = meter(music)
@@ -156,14 +188,14 @@ def main():
     cues = []
     for i, sh in enumerate(L["shots"]):
         for e in sh.get("sfx", []):
-            cues.append((e["name"], starts[i] + jsround(e.get("at", 0) * FPS) / FPS, e.get("dur"), e.get("fadeAt")))
+            cues.append((e["name"], starts[i] + jsround(e.get("at", 0) * FPS) / FPS, e.get("dur"), e.get("fadeAt"), e.get("gain", 0.0)))
         if sh.get("payoff"):
-            cues.append(("ding", starts[i] + jsround(sh.get("payoffAt", 0) * FPS) / FPS, None, None))
+            cues.append(("ding", starts[i] + jsround(sh.get("payoffAt", 0) * FPS) / FPS, None, None, 0.0))
     sfx = np.zeros((N, 2), np.float32)
     rain = np.zeros((N, 2), np.float32)
     used, missing, cue_lufs = {}, set(), {}
     cues.sort(key=lambda c: c[1])
-    for ci, (name, at, dur, fade_at) in enumerate(cues):
+    for ci, (name, at, dur, fade_at, gain_db) in enumerate(cues):
         f = ROOT / "public/sfx" / f"{name}.mp3"
         if not f.exists() and name in PLACEHOLDER:
             f = ROOT / "public/sfx" / PLACEHOLDER[name]
@@ -178,7 +210,7 @@ def main():
         nxt = next((c[1] for c in cues[ci + 1:] if c[0] == name), None)
         if nxt is not None and not dur:  # a repeat cuts the previous one (no stacking)
             x = x[: max(int(0.06 * SR), int((nxt - at) * SR))]
-        x = level(x, RAIN_LUFS, False) if is_rain else level(x, SFX_MOM, True)
+        x = level(x, RAIN_LUFS, False) if is_rain else level(x, SFX_MOM, True) * 10 ** (gain_db / 20)  # per-cue "gain" (dB, <= 0): e.g. distant gunfire 12+ dB under the voice
         # never peak above the voice: soft-limit each cue's transients
         lim = 10 ** ((RAIN_PEAK if is_rain else SFX_PEAK) / 20)
         if np.abs(x).max() > lim:
@@ -236,7 +268,8 @@ def main():
     mus_st = []
     S3 = 3 * SR
     for k in range(0, N - S3 - int(0.5 * SR), SR // 2):
-        mus_st.append(meter(music[k:k + S3])[0])
+        if not exempt(k, k + S3):
+            mus_st.append(meter(music[k:k + S3])[0])
     report["checks"] = {"sfx_windows_within_6dB_of_voice": over, "music_min_short_term_lufs": round(min(mus_st), 1) if mus_st else None,
                         "music_floor_ok": bool(mus_st) and min(mus_st) >= MUSIC_FLOOR}
     if a.stems:

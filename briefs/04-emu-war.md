@@ -1,6 +1,6 @@
 # Brief #4: The War Australia Lost to Birds
-Slug: `04-emu-war` · Strand: Strange war tactics (cartoony, no gore) · Target 54–58 s · 196 spoken words (Chatterbox reads about 237 wpm of speech, so this lands at about 50 s of speech plus pauses)
-Read CLAUDE.md and LESSONS.md first. Cast: **Milo** (curious kid), **Vik** (bets and loses), **Gus** (shows the answer).
+Slug: `04-emu-war` · Strand: Strange war tactics (cartoony, no gore) · Target 54–58 s · 198 spoken words (VO v1: 56.2 s) (Chatterbox reads about 237 wpm of speech, so this lands at about 50 s of speech plus pauses)
+Read CLAUDE.md and LESSONS.md first. Cast: **Nik** (curious kid), **Vik** (bets and loses), **Gus** (shows the answer).
 
 ## Tone note
 This is a comedy of failure, not a shooting video. Never show an emu being hit, wounded or dead: no blood, no carcasses, no feathers exploding. Gunfire reads as dust puffs in empty ground and birds sprinting away unharmed. Soldiers are frustrated, not menacing. The guns are period props, never pointed at the camera.
@@ -25,7 +25,7 @@ This is a comedy of failure, not a shooting video. Never show an emu being hit, 
 | 9 | That's when Gus rolls a bowling ball at a tight pack of marbles. Strike. | 0.6 | 0.4 s |
 | 10 | Then he scatters them across the floor, and the ball hits just one. | 0.55 | 0.5 s (reaction shot) |
 | 11 | You see, a machine gun only wins against a crowd, and the emus refused to be a crowd. | 0.55 | 0.35 s |
-| 12 | And Vik's hat? An emu's wearing it. | 0.75 | 0.4 s |
+| 12 | And Vik's hat? Now an emu's wearing it. | 0.75 | 0.4 s |
 | 13 | So next time someone says birds can't win a war, ask them… | 0.6 | none (loop cut to line 1) |
 Target 54–58 s. If over 60 s, shorten pauses first (minimum 0.25 s). If still over, cut "On day one," from line 4.
 
@@ -57,20 +57,20 @@ Target 54–58 s. If over 60 s, shorten pauses first (minimum 0.25 s). If still 
 ## Shot list (times are targets; re-time to the real voiceover; cut only on sentence boundaries)
 | # | Line | Scene / action | Characters | Camera | On-screen | Viewer must understand |
 |---|---|---|---|---|---|---|
-| 1 | 1 | Milo on a farm fence, binoculars up; an emu head pops up right in front of the lenses | Milo, emu | MCU, quick push-in | — | The enemy is a bird |
-| 2 | 2 | Vik taps his saffron-band fedora, then sets it on a fence post like a trophy, smug | Vik, Milo | MCU, push on the hat | Card: "THE BET: VIK'S HAT" | Stakes, by 5 s |
+| 1 | 1 | Nik on a farm fence, binoculars up; an emu head pops up right in front of the lenses | Nik, emu | MCU, quick push-in | — | The enemy is a bird |
+| 2 | 2 | Vik taps his saffron-band fedora, then sets it on a fence post like a trophy, smug | Vik, Nik | MCU, push on the hat | Card: "THE BET: VIK'S HAT" | Stakes, by 5 s |
 | 3 | 3 | A huge flock of emus wading through golden wheat, stalks flattening; cut to a truck pulling up with three soldiers and two Lewis guns | Emus, soldiers | Wide crane-down, then MCU on the guns | Cards: "AUSTRALIA, 1932" then "10,000 BULLETS" | Big problem, tiny army |
 | 4 | 4 | Farmers wave hats to herd the flock; the flock splits into small groups that bolt in every direction, leaving the soldiers aiming at nothing | Farmers, emus, soldiers | Overhead drone view as the flock splits like a starburst | — | They won't bunch up |
 | 5 | 5 | The water hole: soldiers crouched behind a dirt bank; a long line of emus marching toward the water | Soldiers, emus | Low angle over the gun, rack focus to the emus | Card: "THE AMBUSH" | A trap is set |
 | 6 | 6 | Sweat on a soldier's face; he squeezes; the gun goes "chk"; the pan magazine is stuck; emus scatter unharmed | Soldiers, emus | CU on the soldier, then insert on the jammed gun | — | It failed at the worst moment |
 | 7 | 7 | The truck bouncing across rough ground, gunner hanging on, barrel wobbling wildly; emus running alongside, overtaking it | Soldiers, emus | Tracking side shot, then a shaky POV down the gun | Speed card: "≈ 50 KM/H" | Faster than the truck; can't aim |
 | 8 | 8 | Soldiers loading the truck to leave; one emu watches from the fence and blinks | Soldiers, emu | Wide, slow pull-back | — | The army gave up |
-| 9 | 9 | Gus's workshop: a tight triangle of marbles; Gus rolls the bowling ball; strike, marbles burst apart | Gus, Milo, Vik | Low floor-level insert, then MCU | — | A crowd is easy to hit |
-| 9b | (pause) | Reaction: Milo grins; Vik glances nervously at his hat | Milo, Vik | 2-shot | — | Breather |
+| 9 | 9 | Gus's workshop: a tight triangle of marbles; Gus rolls the bowling ball; strike, marbles burst apart | Gus, Nik, Vik | Low floor-level insert, then MCU | — | A crowd is easy to hit |
+| 9b | (pause) | Reaction: Nik grins; Vik glances nervously at his hat | Nik, Vik | 2-shot | — | Breather |
 | 10 | 10 | Gus scatters the marbles across the floorboards; rolls again; the ball clips one marble and the rest sit untouched | Gus | High angle over the floor, then insert | — | Spread out = nearly impossible to hit |
 | 11 | 11 | Gus holds the bowling ball, nods at the scattered marbles | Gus | MCU | — | Guns beat crowds, not scattered birds |
-| 12 | 12 | Back at the farm fence: an emu stands proudly wearing Vik's fedora, then struts off; Vik's jaw drops; Milo laughs; ding | Emu, Vik, Milo | CU on the emu in the hat, then Vik's face | — | Bet lost, callback |
-| 13 | 13 | Milo back on the fence with binoculars (matches shot 1) | Milo | MCU matching shot 1 | — | Loop into the hook |
+| 12 | 12 | Back at the farm fence: an emu stands proudly wearing Vik's fedora, then struts off; Vik's jaw drops; Nik laughs; ding | Emu, Vik, Nik | CU on the emu in the hat, then Vik's face | — | Bet lost, callback |
+| 13 | 13 | Nik back on the fence with binoculars (matches shot 1) | Nik | MCU matching shot 1 | — | Loop into the hook |
 | 14 | — | Hold 0.5 s, hard cut to shot 1 | — | — | — | Seamless loop |
 
 ## SFX cues (CC0 library only, no whooshes)

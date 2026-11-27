@@ -1,0 +1,349 @@
+{
+ "slug": "03-plane-windows",
+ "engine": "chatterbox/original",
+ "seed": 1750,
+ "cfg_weight": 0.3,
+ "total_s": 56.01,
+ "words": 194,
+ "wpm_overall": 207.8,
+ "wpm_speech_only": 237.4,
+ "render": [],
+ "lines": [
+  {
+   "n": 1,
+   "start_s": 0.0,
+   "seconds": 2.7,
+   "pause_after": 0.45,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Why will you never see a square window on a plane?",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 2,
+   "start_s": 3.15,
+   "seconds": 6.49,
+   "pause_after": 0.35,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "The very first jet airliner, back in the 50s, had big, nearly square windows, so passengers could watch the world go by.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "airliner,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.07,
+      "added": 0.11
+     }
+    ],
+    [
+     "fifties,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.31,
+      "added": -0.13
+     }
+    ],
+    [
+     "big,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.0,
+      "added": 0.18
+     }
+    ],
+    [
+     "windows,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.1,
+      "added": 0.08
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 3,
+   "start_s": 9.99,
+   "seconds": 2.66,
+   "pause_after": 0.5,
+   "exaggeration": 0.7,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Vic bets a week of desserts that round windows are just for looks.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 4,
+   "start_s": 13.15,
+   "seconds": 6.95,
+   "pause_after": 0.4,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "But this jet flew higher than any airliner before, so every single flight pumped the cabin up like a balloon and let it back down again.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "before,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.33,
+      "added": -0.15
+     }
+    ],
+    [
+     "balloon,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.0,
+      "added": 0.18
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 5,
+   "start_s": 20.5,
+   "seconds": 2.89,
+   "pause_after": 0.7,
+   "exaggeration": 0.35,
+   "try": 3,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Within two years, two of them broke apart in the sky.",
+   "median_pitch_hz": 106.5,
+   "punct_pauses": [
+    [
+     "years,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.14,
+      "added": 0.04
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 6,
+   "start_s": 24.09,
+   "seconds": 5.7,
+   "pause_after": 0.3,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So engineers sank a whole plane in a giant water tank and pumped it up and down, again and again, thousands of times.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "down,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.11,
+      "added": 0.07
+     }
+    ],
+    [
+     "again,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.12,
+      "added": 0.06
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 7,
+   "start_s": 30.09,
+   "seconds": 2.76,
+   "pause_after": 0.6,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "until it burst and the crack started at a sharp corner.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "burst,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.0,
+      "added": 0.18
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 8,
+   "start_s": 33.45,
+   "seconds": 3.66,
+   "pause_after": 0.4,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "That's when Gus cuts a square hole and a round hole in paper and pulls.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "paper,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.0,
+      "added": 0.18
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 9,
+   "start_s": 37.51,
+   "seconds": 2.58,
+   "pause_after": 0.5,
+   "exaggeration": 0.6,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "The square tears at the corner, the round one holds.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "corner.",
+     "stop",
+     0.35,
+     {
+      "natural": 0.3,
+      "added": 0.05
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 10,
+   "start_s": 40.59,
+   "seconds": 6.31,
+   "pause_after": 0.4,
+   "exaggeration": 0.5,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "You see, a sharp corner squeezes all the stress into one tiny point, but a smooth curve spreads it gently all the way around.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "see,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.07,
+      "added": 0.11
+     }
+    ],
+    [
+     "point,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.09,
+      "added": 0.09
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 11,
+   "start_s": 47.3,
+   "seconds": 2.74,
+   "pause_after": 0.6,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "so every airliner built since then has rounded windows.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 12,
+   "start_s": 50.64,
+   "seconds": 2.72,
+   "pause_after": 0.4,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "And Vic's Square Brownie, it cracks right at the corner.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "brownie?",
+     "question",
+     0.4,
+     {
+      "natural": 0.19,
+      "added": 0.21
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 13,
+   "start_s": 53.76,
+   "seconds": 2.25,
+   "pause_after": 0.0,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So next time you fly, look out and ask.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "fly,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.07,
+      "added": 0.11
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  }
+ ]
+}
