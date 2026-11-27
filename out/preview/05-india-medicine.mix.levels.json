@@ -1,0 +1,79 @@
+{
+ "voice": {
+  "lufs": -14.0,
+  "true_peak_dbtp": -1.3
+ },
+ "music_dips": [
+  {
+   "from_s": 21.09,
+   "to_s": 28.16,
+   "applied_db": 3.0,
+   "lufs_before": -25.0,
+   "lufs_after": -28.0,
+   "floor_exempt": true
+  }
+ ],
+ "music": {
+  "file": "public/sfx/music.mp3",
+  "lufs": -25.4,
+  "under_speech_lufs": -25.7,
+  "between_lines_lufs": -23.7,
+  "true_peak_dbtp": -14.9
+ },
+ "sfx": {
+  "stem_lufs": -29.8,
+  "stem_max_momentary_lufs": -20.2,
+  "true_peak_dbtp": -9.8,
+  "per_cue_max_momentary_lufs": {
+   "plate-clink": -25.0,
+   "marbles-scatter": -29.8,
+   "airport-chime": -30.5,
+   "pop-soft": -30.8,
+   "marble-click": -35.5,
+   "box-open": -28.0,
+   "shimmer": -31.0,
+   "press-thump": -28.2,
+   "paper-rustle": -28.2,
+   "ding": -21.0
+  },
+  "files": {
+   "plate-clink": "plate-clink.mp3",
+   "marbles-scatter": "marbles-scatter.mp3",
+   "airport-chime": "airport-chime.mp3",
+   "pop-soft": "pop-soft.mp3",
+   "marble-click": "marble-click.mp3",
+   "box-open": "box-open.mp3",
+   "shimmer": "shimmer.mp3",
+   "press-thump": "press-thump.mp3",
+   "paper-rustle": "paper-rustle.mp3",
+   "ding": "ding.mp3"
+  },
+  "missing_skipped": []
+ },
+ "rain": {
+  "lufs_while_playing": -70.0,
+  "fades_at": null
+ },
+ "ambience": {
+  "file": "audio/05-india-medicine.ambience.wav",
+  "lufs": -30.2,
+  "true_peak_dbtp": -16.3
+ },
+ "checks_offending_seconds": [],
+ "checks": {
+  "sfx_windows_within_6dB_of_voice": 0,
+  "music_min_short_term_lufs": -25.7,
+  "music_floor_ok": true
+ },
+ "mix": {
+  "lufs": -13.9,
+  "true_peak_dbtp": -0.9,
+  "seconds": 59.367
+ },
+ "peak_check": {
+  "voice_peak_dbfs": -1.5,
+  "music_peak_dbfs": -15.0,
+  "sfx_peak_dbfs": -10.1,
+  "rain_peak_dbfs": -180.0
+ }
+}

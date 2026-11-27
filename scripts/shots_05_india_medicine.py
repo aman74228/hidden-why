@@ -42,8 +42,8 @@ D = {n: round(clip_dur(n), 3) for n in {c for _, c, _, _ in seg}}
 FROM = {
   "hook": 0.0,                                   # Nik runs in with the box and asks Gus
   "bet": 2.0,                                    # Vik sets the tin down, arms crossed, smug
-  "london": 0.0,                                 # whole clip + 0.47 s hold
-  "usa": 0.5,
+  "london": 3.0,                                 # after Gus's hand leaves Nik's cheek (1.6-2.9 s); rest is a hold
+  "usa": 0.0,                                    # ends at 4.0 s (Vik's jacket goes see-through in the smoke after 4.1 s)
   "clinic": 0.8,
   "same-pill": 1.0,
   "factory": 0.3,
@@ -74,11 +74,11 @@ shots = [
   # 3-4 London pharmacy: every 4th box glows and pops away
   {"id": "london", "beat": 3, "stillAt": round(LINE4 + 1.5, 2), "captionY": 0.74, "flowHold": True,
    "titleCard": {"label": "London", "word": "1 in 4 medicines", "at": round(LINE4, 2), "duration": round(dur("london") - LINE4 - 0.15, 2)},
-   "sfx": [{"name": "airport-chime", "at": 0.15, "gain": -8}] + [{"name": "pop-soft", "at": t, "gain": -6} for t in (5.0, 5.25, 5.5, 5.8, 6.1)]},
+   "sfx": [{"name": "airport-chime", "at": 0.15, "gain": -8}] + [{"name": "pop-soft", "at": t - 3.0, "gain": -6} for t in (5.0, 5.25, 5.5, 5.8, 6.1)]},
   # 5 USA counter: amber bottles, 4 in 10 vanish
-  {"id": "usa", "captionY": 0.62,
+  {"id": "usa", "captionY": 0.62, "flowTo": 4.0, "flowZoom": 1.12,
    "titleCard": {"label": "USA", "word": "4 in 10 generics", "at": 0.2, "duration": round(dur("usa") - 0.35, 2)},
-   "sfx": [{"name": "marble-click", "at": 0.4, "gain": -8}] + [{"name": "pop-soft", "at": t, "gain": -6} for t in (2.2, 2.5, 2.9, 3.3)]},
+   "sfx": [{"name": "marble-click", "at": 0.4, "gain": -8}] + [{"name": "pop-soft", "at": t, "gain": -6} for t in (2.7, 3.0, 3.4, 3.8)]},
   # 6 village clinic: the vaccine cold box goes empty (serious beat: music dips 3 dB)
   {"id": "clinic", "beat": 4, "stillAt": 4.6, "captionY": 0.74,
    "titleCard": {"label": "UNICEF vaccines", "word": "~6 in 10", "at": UNICEF, "duration": round(dur("clinic") - UNICEF - 0.15, 2)},
@@ -107,6 +107,10 @@ for s in shots:
     sid = s["id"]
     clip = next(c for i, c, _, _ in seg if i == sid)
     s["flow"] = {"clip": f"flow/05/{clip}.mp4", "from": FROM[sid], "clipDur": D[clip]}
+    if "flowTo" in s:  # cut away early: hold the last clean frame
+        s["flow"]["to"] = s.pop("flowTo"); s["flow"]["holdZoom"] = 0.06; s["flow"]["zoomAt"] = [0.5, 0.15]
+    if "flowZoom" in s:  # constant crop (garbled shelf text out of frame)
+        z = s.pop("flowZoom"); s["flow"]["zoom"] = [z, z]
     if s.pop("flowHold", False):
         s["flow"]["holdZoom"] = 0.06
         s["flow"]["zoomAt"] = [0.5, 0.45]
@@ -117,7 +121,7 @@ assert [s["id"] for s in shots] == [x[0] for x in seg]
 fr = [round(b * FPS) for _, _, _, b in seg]
 for i, s in enumerate(shots):
     s["duration"] = round((fr[i] - (fr[i - 1] if i else 0)) / FPS, 4)
-    left = s["flow"]["clipDur"] - s["flow"]["from"]
+    left = min(s["flow"].get("to", 99), s["flow"]["clipDur"]) - s["flow"]["from"]
     if s["duration"] > left + 0.02 and "holdZoom" not in s["flow"]:
         raise SystemExit(f"{s['id']}: needs {s['duration']:.2f} s but clip has {left:.2f} s from {s['flow']['from']}")
 L = {"slug": SLUG, "title": "What If India Stopped Making Medicine?", "audio": f"vo/{SLUG}.mp3", "kind": "flow",

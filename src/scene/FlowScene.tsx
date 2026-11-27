@@ -74,7 +74,7 @@ export const FlowScene: React.FC<{shot: Shot; frames: number}> = ({shot, frames}
   const qaHands = Boolean((getInputProps() as {qaHands?: boolean}).qaHands);
   const fl = shot.flow!;
   const frame = Math.min(raw, frames - 1);
-  const avail = Math.floor(((fl.clipDur ?? 8) - (fl.from ?? 0)) * fps) - 1; // last frame of the clip inside this shot
+  const avail = Math.floor((Math.min(fl.to ?? Infinity, fl.clipDur ?? 8) - (fl.from ?? 0)) * fps) - 1; // last frame used (clip end, or `to`)
   const local = Math.min(frame, avail);
   // hold: last frame + slow push-in; optional zoom over the whole shot
   const holdK = frame > avail ? (frame - avail) / Math.max(1, frames - 1 - avail) : 0;

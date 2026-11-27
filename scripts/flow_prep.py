@@ -70,7 +70,8 @@ for s in L["shots"]:
     if s.get("flow"):
         x = clean[s["flow"]["clip"]]
         i0 = int(s["flow"].get("from", 0) * SR)
-        take = x[i0:i0 + n]
+        end = int(s["flow"]["to"] * SR) if s["flow"].get("to") else len(x)
+        take = x[i0:min(i0 + n, end)]
         seg[:len(take)] = take
         k = int(0.03 * SR)  # tiny fades at every cut (no clicks)
         seg[:k] *= np.linspace(0, 1, k)[:, None]

@@ -85,33 +85,33 @@
     },
     {
      "name": "pop-soft",
-     "at": 5.0,
+     "at": 2.0,
      "gain": -6
     },
     {
      "name": "pop-soft",
-     "at": 5.25,
+     "at": 2.25,
      "gain": -6
     },
     {
      "name": "pop-soft",
-     "at": 5.5,
+     "at": 2.5,
      "gain": -6
     },
     {
      "name": "pop-soft",
-     "at": 5.8,
+     "at": 2.8,
      "gain": -6
     },
     {
      "name": "pop-soft",
-     "at": 6.1,
+     "at": 3.0999999999999996,
      "gain": -6
     }
    ],
    "flow": {
     "clip": "flow/05/03.mp4",
-    "from": 0.0,
+    "from": 3.0,
     "clipDur": 8.043,
     "holdZoom": 0.06,
     "zoomAt": [
@@ -140,29 +140,39 @@
     },
     {
      "name": "pop-soft",
-     "at": 2.2,
+     "at": 2.7,
      "gain": -6
     },
     {
      "name": "pop-soft",
-     "at": 2.5,
+     "at": 3.0,
      "gain": -6
     },
     {
      "name": "pop-soft",
-     "at": 2.9,
+     "at": 3.4,
      "gain": -6
     },
     {
      "name": "pop-soft",
-     "at": 3.3,
+     "at": 3.8,
      "gain": -6
     }
    ],
    "flow": {
     "clip": "flow/05/04.mp4",
-    "from": 0.5,
-    "clipDur": 8.043
+    "from": 0.0,
+    "clipDur": 8.043,
+    "to": 4.0,
+    "holdZoom": 0.06,
+    "zoomAt": [
+     0.5,
+     0.15
+    ],
+    "zoom": [
+     1.12,
+     1.12
+    ]
    },
    "set": "studio",
    "cast": [],
