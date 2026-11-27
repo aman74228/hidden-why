@@ -1,0 +1,79 @@
+{
+ "slug": "05-india-medicine",
+ "cfg_weight": 0.3,
+ "note": "brief table: per-line exaggeration and pause after; line 12 loops into line 1 (no pause)",
+ "lines": [
+  {
+   "n": 1,
+   "text": "What if India stopped making medicine… tomorrow?",
+   "exaggeration": 0.65,
+   "pause_after": 0.4
+  },
+  {
+   "n": 2,
+   "text": "Vik bets his whole chocolate stash that nobody would even notice.",
+   "exaggeration": 0.7,
+   "pause_after": 0.35
+  },
+  {
+   "n": 3,
+   "text": "But Gus just walks Nik into a pharmacy in London, and taps the shelf.",
+   "exaggeration": 0.55,
+   "pause_after": 0.3
+  },
+  {
+   "n": 4,
+   "text": "About one in every four medicines here comes from India, and they blink out of existence.",
+   "exaggeration": 0.6,
+   "pause_after": 0.4
+  },
+  {
+   "n": 5,
+   "text": "So they jump to America, where about four in ten generic prescriptions are Indian, and those boxes vanish too.",
+   "exaggeration": 0.6,
+   "pause_after": 0.4
+  },
+  {
+   "n": 6,
+   "text": "Then to a village clinic, where most of UNICEF's children's vaccines were made in India… and the cold box goes empty.",
+   "exaggeration": 0.5,
+   "pause_after": 0.6
+  },
+  {
+   "n": 7,
+   "text": "Now Vik is sweating, but he asks the real question: why India?",
+   "exaggeration": 0.7,
+   "pause_after": 0.4
+  },
+  {
+   "n": 8,
+   "text": "Gus holds up two pills that do exactly the same job.",
+   "exaggeration": 0.55,
+   "pause_after": 0.3
+  },
+  {
+   "n": 9,
+   "text": "When a medicine's patent runs out, anyone can make it, and Indian factories learned to make the same pill for a tiny fraction of the price, by the billions.",
+   "exaggeration": 0.55,
+   "pause_after": 0.4
+  },
+  {
+   "n": 10,
+   "text": "In two thousand and one, one Indian company took an HIV treatment that cost ten thousand dollars a year, and offered it for under a dollar a day.",
+   "exaggeration": 0.55,
+   "pause_after": 0.5
+  },
+  {
+   "n": 11,
+   "text": "And Vik? He hands over his chocolate… then reaches for a headache pill. Made in India.",
+   "exaggeration": 0.75,
+   "pause_after": 0.4
+  },
+  {
+   "n": 12,
+   "text": "So next time you open a medicine box, check the back, and ask…",
+   "exaggeration": 0.6,
+   "pause_after": 0.0
+  }
+ ]
+}

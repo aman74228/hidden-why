@@ -26,12 +26,14 @@ V = json.loads((ROOT / "voice.json").read_text())["engines"]["chatterbox"]
 spec = json.loads((ROOT / "audio" / f"{a.slug}.lines.json").read_text())
 lines = spec["lines"]
 work = ROOT / "audio" / "takes" / f"{a.slug}-lines"; work.mkdir(parents=True, exist_ok=True)
-SAME = {"vic": "vik", "vick": "vik", "vics": "viks", "vicks": "viks", "dadda": "dada", "data": "dada", "darda": "dada", "guss": "gus", "gust": "gus", "gas": "gus", "goose": "gus", "emu's": "emus", "favorite": "favourite", "kilometers": "kilometres"}
-NUM = {"1750": ["seventeen", "fifty"], "50s": ["fifties"], "20000": ["twenty", "thousand"], "1000": ["a", "thousand"], "12": ["twelve"], "50": ["fifty"], "3": ["three"], "2": ["two"], "1": ["one"]}
+SAME = {"vic": "vik", "vick": "vik", "vics": "viks", "vicks": "viks", "dadda": "dada", "data": "dada", "darda": "dada", "guss": "gus", "gust": "gus", "gas": "gus", "goose": "gus", "emu's": "emus", "nick": "nik", "nicks": "niks", "favorite": "favourite", "kilometers": "kilometres"}
+NUM = {"1750": ["seventeen", "fifty"], "50s": ["fifties"], "20000": ["twenty", "thousand"], "1000": ["a", "thousand"], "12": ["twelve"], "50": ["fifty"], "3": ["three"], "2": ["two"], "1": ["one"], "4": ["four"], "10": ["ten"], "2001": ["two", "thousand", "and", "one"], "10000": ["ten", "thousand"]}
 
 def words(s):
     out = []
     s = re.sub(r"(\d)[ ,]+(\d{3})\b", r"\1\2", s)  # whisper's "20 000" / "20,000"
+    s = re.sub(r"\$1\b(?![\d,])", "a dollar", s)  # "$1 a day" -> "a dollar a day"
+    s = re.sub(r"\$(\d[\d,]*)", r"\1 dollars", s)  # "$10,000" -> "10000 dollars"
     s = re.sub(r"(?i)\b(water)(hole)\b", r"\1 \2", s)  # compound written as one word
     for w in s.split():
         n = re.sub(r"[^a-z0-9']", "", w.lower()).replace("'", "")
