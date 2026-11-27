@@ -57,7 +57,7 @@
  "ambience": {
   "file": "audio/05-india-medicine.ambience.wav",
   "lufs": -30.2,
-  "true_peak_dbtp": -16.3
+  "true_peak_dbtp": -16.4
  },
  "checks_offending_seconds": [],
  "checks": {
