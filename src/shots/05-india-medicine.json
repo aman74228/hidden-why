@@ -126,12 +126,19 @@
   {
    "id": "usa",
    "captionY": 0.62,
-   "titleCard": {
-    "label": "USA",
-    "word": "4 in 10 generics",
-    "at": 0.2,
-    "duration": 5.92
-   },
+   "overlays": [
+    {
+     "kind": "card",
+     "label": "USA",
+     "word": "4 IN 10 GENERICS",
+     "at": 0.2,
+     "pos": [
+      0.5,
+      0.86
+     ],
+     "scale": 1.4
+    }
+   ],
    "sfx": [
     {
      "name": "marble-click",
@@ -187,7 +194,7 @@
     "label": "UNICEF vaccines",
     "word": "~6 in 10",
     "at": 2.11,
-    "duration": 4.72
+    "duration": 2.89
    },
    "sfx": [
     {

@@ -77,11 +77,12 @@ shots = [
    "sfx": [{"name": "airport-chime", "at": 0.15, "gain": -8}] + [{"name": "pop-soft", "at": t - 3.0, "gain": -6} for t in (5.0, 5.25, 5.5, 5.8, 6.1)]},
   # 5 USA counter: amber bottles, 4 in 10 vanish
   {"id": "usa", "captionY": 0.62, "flowTo": 4.0, "flowZoom": 1.12,
-   "titleCard": {"label": "USA", "word": "4 in 10 generics", "at": 0.2, "duration": round(dur("usa") - 0.35, 2)},
+   # the stat card sits on the counter, not at the top: 04 cuts to a close-up where Nik's face fills the top third
+   "overlays": [{"kind": "card", "label": "USA", "word": "4 IN 10 GENERICS", "at": 0.2, "pos": [0.5, 0.86], "scale": 1.4}],
    "sfx": [{"name": "marble-click", "at": 0.4, "gain": -8}] + [{"name": "pop-soft", "at": t, "gain": -6} for t in (2.7, 3.0, 3.4, 3.8)]},
   # 6 village clinic: the vaccine cold box goes empty (serious beat: music dips 3 dB)
   {"id": "clinic", "beat": 4, "stillAt": 4.6, "captionY": 0.74,
-   "titleCard": {"label": "UNICEF vaccines", "word": "~6 in 10", "at": UNICEF, "duration": round(dur("clinic") - UNICEF - 0.15, 2)},
+   "titleCard": {"label": "UNICEF vaccines", "word": "~6 in 10", "at": UNICEF, "duration": round(5.0 - UNICEF, 2)},  # gone before the Gus close-up (clip 6.0 s) and Vik leaning in: it would cover their faces,
    "sfx": [{"name": "box-open", "at": 1.3, "gain": -6}, {"name": "shimmer", "at": 3.0, "gain": -10}] + [{"name": "pop-soft", "at": t, "gain": -8} for t in (3.4, 3.7, 4.0)]},
   # 7-8 the same pill: gold box vs plain box; price tags pop on "exactly the same job"
   {"id": "same-pill", "beat": 5, "stillAt": round(EXACTLY + 0.8, 2), "captionY": 0.82,
