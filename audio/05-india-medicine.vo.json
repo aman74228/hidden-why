@@ -1,0 +1,365 @@
+{
+ "slug": "05-india-medicine",
+ "engine": "chatterbox/original",
+ "seed": 1750,
+ "cfg_weight": 0.3,
+ "total_s": 58.87,
+ "words": 197,
+ "wpm_overall": 200.8,
+ "wpm_speech_only": 226.3,
+ "render": [],
+ "lines": [
+  {
+   "n": 1,
+   "start_s": 0.0,
+   "seconds": 2.93,
+   "pause_after": 0.4,
+   "exaggeration": 0.65,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "What if India stopped making medicine tomorrow?",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "medicine…",
+     "ellipsis",
+     0.55,
+     {
+      "natural": 0.0,
+      "added": 0.55
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 2,
+   "start_s": 3.33,
+   "seconds": 2.83,
+   "pause_after": 0.35,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Vic bets his whole chocolate stash that nobody would even notice.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 3,
+   "start_s": 6.51,
+   "seconds": 3.65,
+   "pause_after": 0.3,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "But Gus just walks Nick into a pharmacy in London and taps the shelf.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "London,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.0,
+      "added": 0.18
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 4,
+   "start_s": 10.46,
+   "seconds": 4.16,
+   "pause_after": 0.4,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "About one in every four medicines here comes from India, and they blink out of existence.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "India,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.2,
+      "added": -0.02
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 5,
+   "start_s": 15.02,
+   "seconds": 5.87,
+   "pause_after": 0.4,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So they jump to America, where about 4 in 10 generic prescriptions are Indian, and those boxes vanish too.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "America,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.31,
+      "added": -0.13
+     }
+    ],
+    [
+     "Indian,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.2,
+      "added": -0.02
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 6,
+   "start_s": 21.285,
+   "seconds": 6.38,
+   "pause_after": 0.6,
+   "exaggeration": 0.5,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Then, to a village clinic, where most of UNICEF's children's vaccines were made in India, and the cold box goes empty.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "clinic,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.33,
+      "added": -0.15
+     }
+    ],
+    [
+     "India…",
+     "ellipsis",
+     0.55,
+     {
+      "natural": 0.34,
+      "added": 0.21
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 7,
+   "start_s": 28.265,
+   "seconds": 3.63,
+   "pause_after": 0.4,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.167,
+   "diff": [
+    [
+     "now vik",
+     "navik"
+    ]
+   ],
+   "heard": "Navik is sweating, but he asks the real question, why India?",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "sweating,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.0,
+      "added": 0.18
+     }
+    ],
+    [
+     "question:",
+     "colon",
+     0.3,
+     {
+      "natural": 0.16,
+      "added": 0.14
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 8,
+   "start_s": 32.295,
+   "seconds": 2.57,
+   "pause_after": 0.3,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Gus holds up two pills that do exactly the same job.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 9,
+   "start_s": 35.165,
+   "seconds": 7.14,
+   "pause_after": 0.4,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.034,
+   "diff": [
+    [
+     "learned",
+     "learn"
+    ]
+   ],
+   "heard": "When a medicine's patent runs out, anyone can make it, and Indian factories learn to make the same pill for a tiny fraction of the price, by the billions.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "out,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.07,
+      "added": 0.11
+     }
+    ],
+    [
+     "it,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.34,
+      "added": -0.16
+     }
+    ],
+    [
+     "price,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.11,
+      "added": 0.07
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 10,
+   "start_s": 42.705,
+   "seconds": 7.17,
+   "pause_after": 0.5,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "In 2001, one Indian company took an HIV treatment that cost $10 ,000 a year and offered it for under a dollar a day.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "year,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.0,
+      "added": 0.18
+     }
+    ]
+   ],
+   "unmatched_punct": [
+    "one,"
+   ]
+  },
+  {
+   "n": 11,
+   "start_s": 50.375,
+   "seconds": 4.77,
+   "pause_after": 0.4,
+   "exaggeration": 0.75,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "And Vik, he hands over his chocolate, then reaches for a headache pill, made in India.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "Vik?",
+     "question",
+     0.4,
+     {
+      "natural": 0.14,
+      "added": 0.26
+     }
+    ],
+    [
+     "chocolate…",
+     "ellipsis",
+     0.55,
+     {
+      "natural": 0.26,
+      "added": 0.29
+     }
+    ],
+    [
+     "pill.",
+     "stop",
+     0.35,
+     {
+      "natural": 0.1,
+      "added": 0.25
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 12,
+   "start_s": 55.545,
+   "seconds": 3.33,
+   "pause_after": 0.0,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So next time you open a medicine box, check the back and ask.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "box,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.11,
+      "added": 0.07
+     }
+    ],
+    [
+     "back,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.02,
+      "added": 0.16
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  }
+ ]
+}

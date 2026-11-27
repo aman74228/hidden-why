@@ -43,7 +43,9 @@
    "n": 7,
    "text": "Now Vik is sweating, but he asks the real question: why India?",
    "exaggeration": 0.7,
-   "pause_after": 0.4
+   "pause_after": 0.4,
+   "take": 1,
+   "take_note": "try 1 is clean ('now Vik' run together as 'navik'); try 3 says 'asked'"
   },
   {
    "n": 8,

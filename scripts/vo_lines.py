@@ -71,6 +71,15 @@ def take(cfg):
                 best[i] = {"file": j["out"], "wer": round(e, 3), "diff": diff, "try": attempt + 1, "heard": heard}
             if e > 0: nxt.append(i)
         todo = nxt
+    # "take": N in lines.json pins a line to that try (a human listened / whisper mis-heard a clean take)
+    for i, ln in enumerate(lines):
+        if not ln.get("take"): continue
+        f = work / f"line{i+1:02d}-cfg{cfg}-try{ln['take']}.wav"
+        if f.exists():
+            heard = " ".join(w[0] for w in vp.words_of(vp.trim(vp.load(str(f)))))
+            e, diff = wer(ln.get("spoken", ln["text"]), heard)
+            best[i] = {"file": str(f), "wer": round(e, 3), "diff": diff, "try": ln["take"], "heard": heard}
+            print(f"  line {i+1:2d}: pinned to try {ln['take']} (WER {e:.2f})", flush=True)
     # pick = "lowest_pitch": render every try and keep the clean take with the lowest median pitch
     for i, ln in enumerate(lines):
         if ln.get("pick") != "lowest_pitch": continue

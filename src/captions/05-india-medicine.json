@@ -1,0 +1,987 @@
+[
+ {
+  "word": "What",
+  "start": 0.0,
+  "end": 0.2
+ },
+ {
+  "word": "if",
+  "start": 0.2,
+  "end": 0.4
+ },
+ {
+  "word": "India",
+  "start": 0.4,
+  "end": 0.62
+ },
+ {
+  "word": "stopped",
+  "start": 0.62,
+  "end": 0.94
+ },
+ {
+  "word": "making",
+  "start": 0.94,
+  "end": 1.2
+ },
+ {
+  "word": "medicine…",
+  "start": 1.2,
+  "end": 1.64
+ },
+ {
+  "word": "tomorrow?",
+  "start": 1.64,
+  "end": 2.63
+ },
+ {
+  "word": "Vik",
+  "start": 3.33,
+  "end": 3.59
+ },
+ {
+  "word": "bets",
+  "start": 3.59,
+  "end": 3.79
+ },
+ {
+  "word": "his",
+  "start": 3.79,
+  "end": 3.95
+ },
+ {
+  "word": "whole",
+  "start": 3.95,
+  "end": 4.17
+ },
+ {
+  "word": "chocolate",
+  "start": 4.17,
+  "end": 4.47
+ },
+ {
+  "word": "stash",
+  "start": 4.47,
+  "end": 4.71
+ },
+ {
+  "word": "that",
+  "start": 4.71,
+  "end": 4.91
+ },
+ {
+  "word": "nobody",
+  "start": 4.91,
+  "end": 5.17
+ },
+ {
+  "word": "would",
+  "start": 5.17,
+  "end": 5.39
+ },
+ {
+  "word": "even",
+  "start": 5.39,
+  "end": 5.57
+ },
+ {
+  "word": "notice.",
+  "start": 5.57,
+  "end": 5.87
+ },
+ {
+  "word": "But",
+  "start": 6.51,
+  "end": 6.71
+ },
+ {
+  "word": "Gus",
+  "start": 6.71,
+  "end": 6.91
+ },
+ {
+  "word": "just",
+  "start": 6.91,
+  "end": 7.15
+ },
+ {
+  "word": "walks",
+  "start": 7.15,
+  "end": 7.43
+ },
+ {
+  "word": "Nik",
+  "start": 7.43,
+  "end": 7.67
+ },
+ {
+  "word": "into",
+  "start": 7.67,
+  "end": 7.91
+ },
+ {
+  "word": "a",
+  "start": 7.91,
+  "end": 8.05
+ },
+ {
+  "word": "pharmacy",
+  "start": 8.05,
+  "end": 8.29
+ },
+ {
+  "word": "in",
+  "start": 8.29,
+  "end": 8.55
+ },
+ {
+  "word": "London,",
+  "start": 8.55,
+  "end": 8.93
+ },
+ {
+  "word": "and",
+  "start": 8.93,
+  "end": 9.35
+ },
+ {
+  "word": "taps",
+  "start": 9.35,
+  "end": 9.55
+ },
+ {
+  "word": "the",
+  "start": 9.55,
+  "end": 9.73
+ },
+ {
+  "word": "shelf.",
+  "start": 9.73,
+  "end": 9.97
+ },
+ {
+  "word": "About",
+  "start": 10.46,
+  "end": 10.72
+ },
+ {
+  "word": "one",
+  "start": 10.72,
+  "end": 11.0
+ },
+ {
+  "word": "in",
+  "start": 11.0,
+  "end": 11.14
+ },
+ {
+  "word": "every",
+  "start": 11.14,
+  "end": 11.34
+ },
+ {
+  "word": "four",
+  "start": 11.34,
+  "end": 11.6
+ },
+ {
+  "word": "medicines",
+  "start": 11.6,
+  "end": 11.88
+ },
+ {
+  "word": "here",
+  "start": 11.88,
+  "end": 12.22
+ },
+ {
+  "word": "comes",
+  "start": 12.22,
+  "end": 12.42
+ },
+ {
+  "word": "from",
+  "start": 12.42,
+  "end": 12.64
+ },
+ {
+  "word": "India,",
+  "start": 12.64,
+  "end": 12.94
+ },
+ {
+  "word": "and",
+  "start": 13.3,
+  "end": 13.36
+ },
+ {
+  "word": "they",
+  "start": 13.36,
+  "end": 13.46
+ },
+ {
+  "word": "blink",
+  "start": 13.46,
+  "end": 13.68
+ },
+ {
+  "word": "out",
+  "start": 13.68,
+  "end": 13.9
+ },
+ {
+  "word": "of",
+  "start": 13.9,
+  "end": 13.98
+ },
+ {
+  "word": "existence.",
+  "start": 13.98,
+  "end": 14.32
+ },
+ {
+  "word": "So",
+  "start": 15.02,
+  "end": 15.18
+ },
+ {
+  "word": "they",
+  "start": 15.18,
+  "end": 15.28
+ },
+ {
+  "word": "jump",
+  "start": 15.28,
+  "end": 15.46
+ },
+ {
+  "word": "to",
+  "start": 15.46,
+  "end": 15.62
+ },
+ {
+  "word": "America,",
+  "start": 15.62,
+  "end": 15.92
+ },
+ {
+  "word": "where",
+  "start": 16.35,
+  "end": 16.41
+ },
+ {
+  "word": "about",
+  "start": 16.41,
+  "end": 16.57
+ },
+ {
+  "word": "four",
+  "start": 16.57,
+  "end": 16.93
+ },
+ {
+  "word": "in",
+  "start": 16.93,
+  "end": 17.13
+ },
+ {
+  "word": "ten",
+  "start": 17.13,
+  "end": 17.45
+ },
+ {
+  "word": "generic",
+  "start": 17.45,
+  "end": 17.83
+ },
+ {
+  "word": "prescriptions",
+  "start": 17.83,
+  "end": 18.37
+ },
+ {
+  "word": "are",
+  "start": 18.37,
+  "end": 18.63
+ },
+ {
+  "word": "Indian,",
+  "start": 18.63,
+  "end": 18.99
+ },
+ {
+  "word": "and",
+  "start": 19.33,
+  "end": 19.45
+ },
+ {
+  "word": "those",
+  "start": 19.45,
+  "end": 19.59
+ },
+ {
+  "word": "boxes",
+  "start": 19.59,
+  "end": 19.91
+ },
+ {
+  "word": "vanish",
+  "start": 19.91,
+  "end": 20.25
+ },
+ {
+  "word": "too.",
+  "start": 20.25,
+  "end": 20.61
+ },
+ {
+  "word": "Then",
+  "start": 21.285,
+  "end": 21.565
+ },
+ {
+  "word": "to",
+  "start": 21.665,
+  "end": 21.805
+ },
+ {
+  "word": "a",
+  "start": 21.805,
+  "end": 21.925
+ },
+ {
+  "word": "village",
+  "start": 21.925,
+  "end": 22.145
+ },
+ {
+  "word": "clinic,",
+  "start": 22.145,
+  "end": 22.545
+ },
+ {
+  "word": "where",
+  "start": 22.755,
+  "end": 22.935
+ },
+ {
+  "word": "most",
+  "start": 22.935,
+  "end": 23.115
+ },
+ {
+  "word": "of",
+  "start": 23.115,
+  "end": 23.335
+ },
+ {
+  "word": "UNICEF's",
+  "start": 23.335,
+  "end": 23.795
+ },
+ {
+  "word": "children's",
+  "start": 23.795,
+  "end": 24.215
+ },
+ {
+  "word": "vaccines",
+  "start": 24.215,
+  "end": 24.515
+ },
+ {
+  "word": "were",
+  "start": 24.515,
+  "end": 24.775
+ },
+ {
+  "word": "made",
+  "start": 24.775,
+  "end": 24.935
+ },
+ {
+  "word": "in",
+  "start": 24.935,
+  "end": 25.075
+ },
+ {
+  "word": "India…",
+  "start": 25.075,
+  "end": 25.435
+ },
+ {
+  "word": "and",
+  "start": 26.065,
+  "end": 26.225
+ },
+ {
+  "word": "the",
+  "start": 26.225,
+  "end": 26.325
+ },
+ {
+  "word": "cold",
+  "start": 26.325,
+  "end": 26.545
+ },
+ {
+  "word": "box",
+  "start": 26.545,
+  "end": 26.845
+ },
+ {
+  "word": "goes",
+  "start": 26.845,
+  "end": 27.045
+ },
+ {
+  "word": "empty.",
+  "start": 27.045,
+  "end": 27.445
+ },
+ {
+  "word": "Now",
+  "start": 28.265,
+  "end": 28.665
+ },
+ {
+  "word": "Vik",
+  "start": 28.265,
+  "end": 28.665
+ },
+ {
+  "word": "is",
+  "start": 28.665,
+  "end": 28.785
+ },
+ {
+  "word": "sweating,",
+  "start": 28.785,
+  "end": 29.025
+ },
+ {
+  "word": "but",
+  "start": 29.385,
+  "end": 29.405
+ },
+ {
+  "word": "he",
+  "start": 29.405,
+  "end": 29.505
+ },
+ {
+  "word": "asks",
+  "start": 29.505,
+  "end": 29.725
+ },
+ {
+  "word": "the",
+  "start": 29.725,
+  "end": 29.925
+ },
+ {
+  "word": "real",
+  "start": 29.925,
+  "end": 30.125
+ },
+ {
+  "word": "question:",
+  "start": 30.125,
+  "end": 30.505
+ },
+ {
+  "word": "why",
+  "start": 30.965,
+  "end": 31.185
+ },
+ {
+  "word": "India?",
+  "start": 31.185,
+  "end": 31.585
+ },
+ {
+  "word": "Gus",
+  "start": 32.295,
+  "end": 32.535
+ },
+ {
+  "word": "holds",
+  "start": 32.535,
+  "end": 32.755
+ },
+ {
+  "word": "up",
+  "start": 32.755,
+  "end": 32.895
+ },
+ {
+  "word": "two",
+  "start": 32.895,
+  "end": 33.095
+ },
+ {
+  "word": "pills",
+  "start": 33.095,
+  "end": 33.335
+ },
+ {
+  "word": "that",
+  "start": 33.335,
+  "end": 33.535
+ },
+ {
+  "word": "do",
+  "start": 33.535,
+  "end": 33.655
+ },
+ {
+  "word": "exactly",
+  "start": 33.655,
+  "end": 33.975
+ },
+ {
+  "word": "the",
+  "start": 33.975,
+  "end": 34.215
+ },
+ {
+  "word": "same",
+  "start": 34.215,
+  "end": 34.415
+ },
+ {
+  "word": "job.",
+  "start": 34.415,
+  "end": 34.715
+ },
+ {
+  "word": "When",
+  "start": 35.165,
+  "end": 35.325
+ },
+ {
+  "word": "a",
+  "start": 35.325,
+  "end": 35.425
+ },
+ {
+  "word": "medicine's",
+  "start": 35.425,
+  "end": 35.825
+ },
+ {
+  "word": "patent",
+  "start": 35.825,
+  "end": 36.025
+ },
+ {
+  "word": "runs",
+  "start": 36.025,
+  "end": 36.285
+ },
+ {
+  "word": "out,",
+  "start": 36.285,
+  "end": 36.565
+ },
+ {
+  "word": "anyone",
+  "start": 36.835,
+  "end": 36.975
+ },
+ {
+  "word": "can",
+  "start": 36.975,
+  "end": 37.195
+ },
+ {
+  "word": "make",
+  "start": 37.195,
+  "end": 37.375
+ },
+ {
+  "word": "it,",
+  "start": 37.375,
+  "end": 37.615
+ },
+ {
+  "word": "and",
+  "start": 37.755,
+  "end": 37.875
+ },
+ {
+  "word": "Indian",
+  "start": 37.875,
+  "end": 38.155
+ },
+ {
+  "word": "factories",
+  "start": 38.155,
+  "end": 38.595
+ },
+ {
+  "word": "learned",
+  "start": 38.595,
+  "end": 38.855
+ },
+ {
+  "word": "to",
+  "start": 38.855,
+  "end": 39.075
+ },
+ {
+  "word": "make",
+  "start": 39.075,
+  "end": 39.215
+ },
+ {
+  "word": "the",
+  "start": 39.215,
+  "end": 39.375
+ },
+ {
+  "word": "same",
+  "start": 39.375,
+  "end": 39.555
+ },
+ {
+  "word": "pill",
+  "start": 39.555,
+  "end": 39.735
+ },
+ {
+  "word": "for",
+  "start": 39.735,
+  "end": 39.935
+ },
+ {
+  "word": "a",
+  "start": 39.935,
+  "end": 40.095
+ },
+ {
+  "word": "tiny",
+  "start": 40.095,
+  "end": 40.295
+ },
+ {
+  "word": "fraction",
+  "start": 40.295,
+  "end": 40.675
+ },
+ {
+  "word": "of",
+  "start": 40.675,
+  "end": 40.855
+ },
+ {
+  "word": "the",
+  "start": 40.855,
+  "end": 40.955
+ },
+ {
+  "word": "price,",
+  "start": 40.955,
+  "end": 41.235
+ },
+ {
+  "word": "by",
+  "start": 41.545,
+  "end": 41.625
+ },
+ {
+  "word": "the",
+  "start": 41.625,
+  "end": 41.745
+ },
+ {
+  "word": "billions.",
+  "start": 41.745,
+  "end": 41.985
+ },
+ {
+  "word": "In",
+  "start": 42.705,
+  "end": 42.845
+ },
+ {
+  "word": "two",
+  "start": 42.845,
+  "end": 43.625
+ },
+ {
+  "word": "thousand",
+  "start": 43.625,
+  "end": 43.925
+ },
+ {
+  "word": "and",
+  "start": 43.625,
+  "end": 43.925
+ },
+ {
+  "word": "one,",
+  "start": 43.625,
+  "end": 43.925
+ },
+ {
+  "word": "one",
+  "start": 43.925,
+  "end": 44.105
+ },
+ {
+  "word": "Indian",
+  "start": 44.105,
+  "end": 44.385
+ },
+ {
+  "word": "company",
+  "start": 44.385,
+  "end": 44.705
+ },
+ {
+  "word": "took",
+  "start": 44.705,
+  "end": 44.985
+ },
+ {
+  "word": "an",
+  "start": 44.985,
+  "end": 45.105
+ },
+ {
+  "word": "HIV",
+  "start": 45.105,
+  "end": 45.465
+ },
+ {
+  "word": "treatment",
+  "start": 45.465,
+  "end": 45.845
+ },
+ {
+  "word": "that",
+  "start": 45.845,
+  "end": 46.065
+ },
+ {
+  "word": "cost",
+  "start": 46.065,
+  "end": 46.225
+ },
+ {
+  "word": "ten",
+  "start": 46.225,
+  "end": 46.525
+ },
+ {
+  "word": "thousand",
+  "start": 46.525,
+  "end": 47.025
+ },
+ {
+  "word": "dollars",
+  "start": 46.525,
+  "end": 47.025
+ },
+ {
+  "word": "a",
+  "start": 47.025,
+  "end": 47.205
+ },
+ {
+  "word": "year,",
+  "start": 47.205,
+  "end": 47.585
+ },
+ {
+  "word": "and",
+  "start": 47.585,
+  "end": 48.065
+ },
+ {
+  "word": "offered",
+  "start": 48.065,
+  "end": 48.365
+ },
+ {
+  "word": "it",
+  "start": 48.365,
+  "end": 48.525
+ },
+ {
+  "word": "for",
+  "start": 48.525,
+  "end": 48.665
+ },
+ {
+  "word": "under",
+  "start": 48.665,
+  "end": 48.865
+ },
+ {
+  "word": "a",
+  "start": 48.865,
+  "end": 49.045
+ },
+ {
+  "word": "dollar",
+  "start": 49.045,
+  "end": 49.245
+ },
+ {
+  "word": "a",
+  "start": 49.245,
+  "end": 49.505
+ },
+ {
+  "word": "day.",
+  "start": 49.505,
+  "end": 49.705
+ },
+ {
+  "word": "And",
+  "start": 50.375,
+  "end": 50.535
+ },
+ {
+  "word": "Vik?",
+  "start": 50.535,
+  "end": 50.715
+ },
+ {
+  "word": "He",
+  "start": 51.195,
+  "end": 51.295
+ },
+ {
+  "word": "hands",
+  "start": 51.295,
+  "end": 51.475
+ },
+ {
+  "word": "over",
+  "start": 51.475,
+  "end": 51.675
+ },
+ {
+  "word": "his",
+  "start": 51.675,
+  "end": 51.815
+ },
+ {
+  "word": "chocolate…",
+  "start": 51.815,
+  "end": 52.115
+ },
+ {
+  "word": "then",
+  "start": 52.765,
+  "end": 52.825
+ },
+ {
+  "word": "reaches",
+  "start": 52.825,
+  "end": 53.045
+ },
+ {
+  "word": "for",
+  "start": 53.045,
+  "end": 53.265
+ },
+ {
+  "word": "a",
+  "start": 53.265,
+  "end": 53.345
+ },
+ {
+  "word": "headache",
+  "start": 53.345,
+  "end": 53.545
+ },
+ {
+  "word": "pill.",
+  "start": 53.545,
+  "end": 53.805
+ },
+ {
+  "word": "Made",
+  "start": 54.275,
+  "end": 54.395
+ },
+ {
+  "word": "in",
+  "start": 54.395,
+  "end": 54.655
+ },
+ {
+  "word": "India.",
+  "start": 54.655,
+  "end": 54.955
+ },
+ {
+  "word": "So",
+  "start": 55.545,
+  "end": 55.705
+ },
+ {
+  "word": "next",
+  "start": 55.705,
+  "end": 55.845
+ },
+ {
+  "word": "time",
+  "start": 55.845,
+  "end": 56.045
+ },
+ {
+  "word": "you",
+  "start": 56.045,
+  "end": 56.165
+ },
+ {
+  "word": "open",
+  "start": 56.165,
+  "end": 56.365
+ },
+ {
+  "word": "a",
+  "start": 56.365,
+  "end": 56.505
+ },
+ {
+  "word": "medicine",
+  "start": 56.505,
+  "end": 56.745
+ },
+ {
+  "word": "box,",
+  "start": 56.745,
+  "end": 57.105
+ },
+ {
+  "word": "check",
+  "start": 57.415,
+  "end": 57.535
+ },
+ {
+  "word": "the",
+  "start": 57.535,
+  "end": 57.695
+ },
+ {
+  "word": "back,",
+  "start": 57.695,
+  "end": 57.955
+ },
+ {
+  "word": "and",
+  "start": 57.955,
+  "end": 58.435
+ },
+ {
+  "word": "ask…",
+  "start": 58.435,
+  "end": 58.675
+ }
+]
