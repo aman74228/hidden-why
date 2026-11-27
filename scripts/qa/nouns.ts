@@ -118,6 +118,7 @@ for (const w of words) {
   if (i < 0) i = L.shots.length - 1;
   const shot = L.shots[i];
   if (shot.nounsOk?.[thing]) continue;
+  if (shot.flow) continue; // footage (Google Flow): nothing to project; checked by eye on the contact sheet
   const p = Math.min(1, Math.max(0, (f - starts[i]) / Math.max(1, frames[i] - 1)));
   const m = effectiveCamera(shot);
   const pose = resolveMove(m, shot.cast ?? [])(p);

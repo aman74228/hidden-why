@@ -4,7 +4,11 @@ ONE reusable studio. Never create a new project per Short. Each Short = a brief 
 **Before starting any Short, read LESSONS.md** (everything fixed on Short #1: hook, no voids/flat frames, inserts, mix levels, render pitfalls, partial re-render, script & story rules). Check against it before showing stills.
 
 ## Stack
-Remotion + three.js (React Three Fiber), 1080x1920, 30 fps. No AI video generators.
+Remotion + three.js (React Three Fiber), 1080x1920, 30 fps. No AI video generators by default.
+Exception, "What if" Shorts: Google Flow clips are allowed when the brief asks for them. They live in
+public/flow/<NN>/ (README.md maps clip -> lines), are cut to the VO (trim or hold, never speed-ramp),
+upscaled with lanczos (scripts/flow_prep.py) and assembled by the shot list (`"flow"` shots, src/scene/FlowScene.tsx).
+Flow clips: no dialogue, no text; keep children away from medicine/pills in prompts (the safety filter blocks those).
 
 ## Cast (reusable rigs; reskin outfits per story, keep faces/colours)
 - Nik: asks the question in the hook. Small kid, oversized round head, orange kurta, cowlick. Wide eyes, points.
