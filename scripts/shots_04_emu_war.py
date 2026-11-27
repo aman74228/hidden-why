@@ -10,13 +10,13 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parent.parent
 PI = math.pi
 VIK = {"who": "vik"}
-MILO = {"who": "milo"}
+NIK = {"who": "nik"}
 GUS = {"who": "gus"}
 SOLDIER = {"who": "soldier"}
 FARMER = {"who": "farmer"}
 
-H_ = {"milo": 1.42, "vik": 2.2, "gus": 1.62, "soldier": 1.9, "farmer": 1.8}
-W_ = {"milo": 0.62, "vik": 0.6, "gus": 0.88, "soldier": 0.62, "farmer": 0.66}
+H_ = {"nik": 1.42, "vik": 2.2, "gus": 1.62, "soldier": 1.9, "farmer": 1.8}
+W_ = {"nik": 0.62, "vik": 0.6, "gus": 0.88, "soldier": 0.62, "farmer": 0.66}
 
 def body(m, crop=0.0):
     """points of a cast member: head top, sides at chest, feet (or crop height); includes elev"""
@@ -117,20 +117,20 @@ TRUCK_STOP = [-1.0, 0, ROAD_Z]
 BED_Y = 0.83
 WH_GUN = [0.3, 0.86, 1.35]             # Lewis gun on the dirt bank, barrel to the water (-z)
 SHOP = [0.4, 0, 1.6]
-DROP_CAST = [c(VIK, pos=[-0.62, 1.75], facing=-1, pose="jaw-drop"), c(MILO, pos=[0.45, 1.45], elev=0.46, facing=1, pose="laugh")]
+DROP_CAST = [c(VIK, pos=[-0.62, 1.75], facing=-1, pose="jaw-drop"), c(NIK, pos=[0.45, 1.45], elev=0.46, facing=1, pose="laugh")]
 DROP_CAM = None                    # marble play area on the floorboards (ball rolls +x)
 
-# the hook: Milo climbing the gate (road side), binoculars on the field; camera in the field
-HOOK_MILO = c(MILO, pos=[0.35, 1.45], elev=0.46, facing=1, pose="binoculars", props=["binoculars"])
-HOOK = frame(body(HOOK_MILO, crop=0.42) + [[0.35, 0.9, 1.2]], az=188, el=2, fov=40, push=0.22, swing=-5, box=(0.12, 0.88, 0.1, 0.86))
+# the hook: Nik climbing the gate (road side), binoculars on the field; camera in the field
+HOOK_NIK = c(NIK, pos=[0.35, 1.45], elev=0.46, facing=1, pose="binoculars", props=["binoculars"])
+HOOK = frame(body(HOOK_NIK, crop=0.42) + [[0.35, 0.9, 1.2]], az=188, el=2, fov=40, push=0.22, swing=-5, box=(0.12, 0.88, 0.1, 0.86))
 BIRDS_T = rel("hook-emu", word_t("birds", T(1)))
 HOOK_EMU = {"pos": [0.3, 0.5], "facing": 1, "gait": "stand", "seed": 2, "s": 0.96, "view": "front", "rise": {"at": round(BIRDS_T - 0.24, 2), "dur": 0.24, "from": 1.5}}  # face-on, head right in front of the lenses on "birds"
 HOOK_B = dolly([0.4, 1.64, -1.1], [0.34, 1.62, -0.88], [0.33, 1.66, 1.45], fov=40)  # emu head (z 0.5) sits in front of the binoculars' plane (~z 0.85)
 
-# Vik at the gate (road side), Milo still on the gate
+# Vik at the gate (road side), Nik still on the gate
 BET_VIK = c(VIK, pos=[-0.62, 1.75], facing=1, pose="hat-tap", props=["fedora"],
             poses=[{"at": 1.15, "pose": "present", "holding": "fedora", "props": []}, {"at": 1.95, "pose": "cross-arms", "holding": None, "props": []}])
-BET_MILO = c(MILO, pos=[0.18, 1.45], elev=0.46, facing=1, pose="look-up")
+BET_NIK = c(NIK, pos=[0.18, 1.45], elev=0.46, facing=1, pose="look-up")
 HAT_AT = 1.95
 
 # truck: three soldiers ride the bed in
@@ -164,7 +164,7 @@ GUNNER = c(SOLDIER, pos=[-1.55, ROAD_Z + 0.45], elev=BED_Y, facing=1, pose="aim"
 
 # workshop
 SHOP_GUS = c(GUS, pos=[-1.25, 1.55], facing=1, pose="present", holding="bowling")
-SHOP_MILO = c(MILO, pos=[1.5, 1.1], facing=-1, pose="look-up")
+SHOP_NIK = c(NIK, pos=[1.5, 1.1], facing=-1, pose="look-up")
 SHOP_VIK = c(VIK, pos=[2.15, 0.85], facing=-1, pose="cross-arms", props=["fedora"])
 BALL_SPEED_A = 0.55
 RELEASE = 0.9
@@ -194,20 +194,20 @@ _pull = body(c(SOLDIER, pos=[-1.35, ROAD_Z + 0.4], elev=BED_Y), crop=0.4) + body
 PULL_CAM = frame(_pull, az=200, el=3, fov=44, push=0.1, swing=-3, box=(0.08, 0.92, 0.12, 0.92))
 
 shots = [
-  # 1 HOOK: Milo on the gate, binoculars up; an emu head pops up right in front of the lenses on "birds?"
+  # 1 HOOK: Nik on the gate, binoculars up; an emu head pops up right in front of the lenses on "birds?"
   {"id": "hook-binoculars", "set": "farm", "nounsOk": {"soldiers": "the hook's question (army) is answered later", "guns": "the hook's question"},
-   "camera": HOOK, "cast": [HOOK_MILO], "layout": "manual", "dof": 1.0, "focusDist": 2.0,
+   "camera": HOOK, "cast": [HOOK_NIK], "layout": "manual", "dof": 1.0, "focusDist": 2.0,
    "sfx": [WIND("hook-binoculars")]},
   # 1b ...to birds? an emu head pops up right in front of the lenses (tighter, quick push)
   {"id": "hook-emu", "beat": 1, "stillAt": 0.55, "set": "farm",
    "fx": {"farm": {"emus": [HOOK_EMU]}},
-   "camera": HOOK_B, "cast": [c(HOOK_MILO, poses=[{"at": round(BIRDS_T + 0.15, 2), "pose": "shock", "props": ["binoculars"]}])], "layout": "manual", "dof": 1.0, "focusDist": 1.4,
+   "camera": HOOK_B, "cast": [c(HOOK_NIK, poses=[{"at": round(BIRDS_T + 0.15, 2), "pose": "shock", "props": ["binoculars"]}])], "layout": "manual", "dof": 1.0, "focusDist": 1.4,
    "sfx": [WIND("hook-emu"), {"name": "footsteps-dirt", "at": round(BIRDS_T - 0.24, 2), "gain": -4}, {"name": "pop-soft", "at": round(BIRDS_T, 2), "gain": -6}]},
   # 2 the bet: Vik taps his saffron-band fedora, then sets it on the gate post like a trophy
   {"id": "bet-hat", "beat": 2, "stillAt": 0.75, "set": "farm",
    "fx": {"farm": {"hatPost": GATE_POST, "hatPostAt": HAT_AT, "flocks": [{"n": 3, "center": [-1.4, ROAD_Z + 0.8], "spread": [2.2, 0.8], "seed": 59, "gait": "walk", "vel": [0.5, 0], "minDist": 0.8}]}},
-   "camera": frame(body(BET_VIK, crop=0.25) + body(BET_MILO, crop=0.35) + [[GATE_POST[0] - 0.25, GATE_POST[1] + 0.2, GATE_POST[2]]], az=186, el=3, fov=44, push=0.18, swing=-4),
-   "cast": [BET_VIK, BET_MILO], "layout": "manual", "dof": 1.0, "focusDist": 2.3,
+   "camera": frame(body(BET_VIK, crop=0.25) + body(BET_NIK, crop=0.35) + [[GATE_POST[0] - 0.25, GATE_POST[1] + 0.2, GATE_POST[2]]], az=186, el=3, fov=44, push=0.18, swing=-4),
+   "cast": [BET_VIK, BET_NIK], "layout": "manual", "dof": 1.0, "focusDist": 2.3,
    "titleCard": {"label": "The bet", "word": "Vik's hat", "at": 0.15, "duration": round(dur("bet-hat") - 0.35, 2)},
    "sfx": [WIND("bet-hat", -11), {"name": "pop-soft", "at": 0.3, "gain": -8}, {"name": "pop-soft", "at": 0.7, "gain": -8}, {"name": "pop-soft", "at": HAT_AT, "gain": -5}]},
   # 3a twenty thousand emus wading through the golden wheat (crane down)
@@ -294,7 +294,7 @@ shots = [
    "cast": [c(SOLDIER, pos=[-1.35 + 1.6, ROAD_Z + 0.4], elev=BED_Y, facing=-1, pose="frown", seed=11, enter={"from": [-1.35, ROAD_Z + 0.4], "at": 0.2, "dur": round(dur("pull-out") - 0.2, 2), "pow": 3, "ride": True, "easeIn": True})],
    "layout": "manual", "dof": 1.2, "focusDist": [1.6, 2.2],
    "sfx": [WIND("pull-out", -10), {"name": "truck-engine", "at": 0.3, "dur": round(dur("pull-out") - 0.3, 2), "gain": -10}]},
-  # 9a Gus rolls a bowling ball at a tight pack of marbles (Milo and Vik watch)
+  # 9a Gus rolls a bowling ball at a tight pack of marbles (Nik and Vik watch)
   {"id": "gus-bowls", "set": "forge",
    "fx": {"forgeLumps": False, "noSparks": True, "floorboards": FLOOR,
           "marbles": {"mode": "rack", "origin": SHOP, "rotY": round(PI / 2, 4), "rollAt": RELEASE, "rollFrom": [0, -1.4], "speed": BALL_SPEED_A}},
@@ -308,11 +308,11 @@ shots = [
           "marbles": {"mode": "rack", "origin": SHOP, "rotY": round(PI / 2, 4), "rollAt": 0, "rollFrom": [0, round(-1.4 + travel_a, 3)], "speed": BALL_SPEED_A}},
    "camera": dolly([0.3, 0.26, 3.05], [0.55, 0.22, 2.85], [0.45, 0.07, 1.6], look_to=[0.6, 0.07, 1.6], fov=42), "dof": 1.4, "focusDist": 1.3,
    "sfx": [{"name": "bowling-roll", "at": 0, "gain": -6}, {"name": "marbles-scatter", "at": round((1.4 - travel_a - 0.144) / BALL_SPEED_A, 2), "gain": -2}]},
-  # (pause, "Strike.") reaction: Milo grins; Vik glances nervously up at his hat
+  # (pause, "Strike.") reaction: Nik grins; Vik glances nervously up at his hat
   {"id": "pause-reaction", "set": "forge",
    "fx": {"forgeLumps": False, "noSparks": True, "floorboards": FLOOR},
-   "camera": frame(body(SHOP_MILO, crop=0.3) + body(SHOP_VIK, crop=0.45), az=-6, el=3, fov=44, push=0.05, swing=1),
-   "cast": [c(SHOP_MILO, pose="laugh"), c(SHOP_VIK, pose="nervous-up")], "layout": "manual"},
+   "camera": frame(body(SHOP_NIK, crop=0.3) + body(SHOP_VIK, crop=0.45), az=-6, el=3, fov=44, push=0.05, swing=1),
+   "cast": [c(SHOP_NIK, pose="laugh"), c(SHOP_VIK, pose="nervous-up")], "layout": "manual"},
   # 10a then he scatters them across the floorboards (high angle)
   {"id": "scatter-throw", "set": "forge",
    "fx": {"forgeLumps": False, "noSparks": True, "floorboards": FLOOR,
@@ -349,7 +349,7 @@ shots = [
    "camera": dolly([0.0, 1.8, -0.95], [-0.04, 1.76, -0.82], [-0.06, 1.5, 0.6], fov=40), "dof": 8.0, "focusDist": 1.3,
    "cast": [c(VIK, pos=[0.55, 5.2], facing=1, pose="jaw-drop")], "layout": "manual",
    "sfx": [{"name": "footsteps-dirt", "at": 0.1, "gain": -8}, {"name": "footsteps-dirt", "at": 0.5, "gain": -8}, {"name": "footsteps-dirt", "at": 0.9, "gain": -8}]},
-  # (pause) payoff: Vik's jaw drops, Milo laughs; ding on Vik's face
+  # (pause) payoff: Vik's jaw drops, Nik laughs; ding on Vik's face
   {"id": "pause-vik-drop", "set": "farm",
    "camera": DROP_CAM,
    "cast": DROP_CAST, "layout": "manual",
@@ -357,7 +357,7 @@ shots = [
   # 13 back on the gate with the binoculars; lands exactly on frame 1 (loop)
   {"id": "loop-binoculars", "set": "farm",
    "camera": dolly([HOOK["from"][0] + 0.45, HOOK["from"][1] + 0.08, HOOK["from"][2] - 0.6], HOOK["from"], HOOK["look"], fov=HOOK["fov"]), "dof": 1.0, "focusDist": 2.0,
-   "cast": [c(HOOK_MILO, poses=[{"at": 0, "pose": "laugh", "props": []}, {"at": 1.2, "pose": "binoculars", "props": ["binoculars"]}])], "layout": "manual",
+   "cast": [c(HOOK_NIK, poses=[{"at": 0, "pose": "laugh", "props": []}, {"at": 1.2, "pose": "binoculars", "props": ["binoculars"]}])], "layout": "manual",
    "fx": {"farm": {"flocks": [{"n": 2, "center": [-0.9, ROAD_Z + 0.6], "spread": [1.2, 0.3], "seed": 53, "gait": "walk", "vel": [1.9, 0], "minDist": 0.9}]}},
    "sfx": [WIND("loop-binoculars")]},
 ]

@@ -1,6 +1,6 @@
 # Brief #3 — Why Plane Windows Can't Be Square
 Slug: `03-plane-windows` · Strand: Everyday object design · Target ≤ 60 s · 194 spoken words (v2: +28 words; Chatterbox reads ~240 wpm speech-only on this script, cfg does not slow it)
-Read CLAUDE.md + LESSONS.md first. Cast names are now **Milo** (curious kid, was Milo), **Gus** (old craftsman, was Gus), **Vik** (unchanged).
+Read CLAUDE.md + LESSONS.md first. Cast names are now **Nik** (curious kid, was Nik), **Gus** (old craftsman, was Gus), **Vik** (unchanged).
 
 ## Tone note
 Two real airliners broke up in 1954 and people died. Treat that beat with respect: no people shown in danger, no falling bodies or wreckage gore. Show it as a distant silver plane silhouette coming apart in clouds, music dips, one quiet beat. Vik's bet is about desserts, never about the crash.
@@ -49,20 +49,20 @@ Target 52–60 s. If over 60 s, shorten between-sentence pauses first (min 0.25 
 ## Shot list (times are targets; re-time to the real voiceover; cut only on sentence boundaries)
 | # | Line | Scene / action | Characters | Camera | On-screen | Viewer must understand |
 |---|---|---|---|---|---|---|
-| 1 | 1 | Milo presses his face to a modern plane's oval window, then turns to camera curious | Milo | MCU, slow push-in | — | Everyone knows plane windows are round |
-| 2 | 2 | Cut to the 1950s lounge: the silver jet outside, sun flaring through big near-square cabin windows | Milo, Vik | Wide, glide past the jet | Card: "THE FIRST JET AIRLINER" | Old jets had square windows |
-| 3 | 3 | Vik slaps a plate of square brownies on a lounge table, smug | Vik, Milo | MCU, quick push on plate | Card: "THE BET" | Stakes: his desserts |
-| 4 | 4 | The jet climbs high above clouds; cut inside: the cabin wall gently swells, then relaxes, like breathing; a balloon in Milo's hands inflates in sync | Milo | Wide sky → interior insert | — | Each flight stretches the body |
-| 5 | 5 | Far away in the clouds, a small silver silhouette comes apart; music dips; Milo's face falls | Milo | Very wide, slow; then CU of Milo | — | Real consequence, respectful |
+| 1 | 1 | Nik presses his face to a modern plane's oval window, then turns to camera curious | Nik | MCU, slow push-in | — | Everyone knows plane windows are round |
+| 2 | 2 | Cut to the 1950s lounge: the silver jet outside, sun flaring through big near-square cabin windows | Nik, Vik | Wide, glide past the jet | Card: "THE FIRST JET AIRLINER" | Old jets had square windows |
+| 3 | 3 | Vik slaps a plate of square brownies on a lounge table, smug | Vik, Nik | MCU, quick push on plate | Card: "THE BET" | Stakes: his desserts |
+| 4 | 4 | The jet climbs high above clouds; cut inside: the cabin wall gently swells, then relaxes, like breathing; a balloon in Nik's hands inflates in sync | Nik | Wide sky → interior insert | — | Each flight stretches the body |
+| 5 | 5 | Far away in the clouds, a small silver silhouette comes apart; music dips; Nik's face falls | Nik | Very wide, slow; then CU of Nik | — | Real consequence, respectful |
 | 6 | 6 | Hangar: a whole fuselage lowered into the giant water tank; pumps thump; the cycle counter ticks fast | Engineers (background), Vik watching | Wide crane-down, then insert on counter | Card: "THE WATER TANK TEST" | They simulated thousands of flights |
 | 7 | 7 | Underwater close-up: a thin crack shoots out from a sharp corner of a square cut-out; bubbles burst | — | Macro push on the corner | — | The weak point is the corner |
-| 8 | 8 | Gus's workshop: Gus holds the paper with a square hole and a round hole, grips both edges | Gus, Milo, Vik | MCU | — | A simple test at home |
+| 8 | 8 | Gus's workshop: Gus holds the paper with a square hole and a round hole, grips both edges | Gus, Nik, Vik | MCU | — | A simple test at home |
 | 9 | 9 | He pulls: the square hole rips from its corner; the round one just stretches | Gus | Insert on paper, slow-motion moment | — | Proof, in-world |
-| 9b | (pause) | Reaction: Vik's eyes go wide; Milo grins | Vik, Milo | 2-shot | — | Breather |
+| 9b | (pause) | Reaction: Vik's eyes go wide; Nik grins | Vik, Nik | 2-shot | — | Breather |
 | 10 | 10 | Over the paper: the torn corner, then the smooth curve, with Gus's finger tracing around the round hole | Gus | Insert, then MCU of Gus explaining with his hands | — | Corners concentrate, curves spread |
 | 11 | 11 | Modern airliner taking off; push in on its rounded windows | — | Wide → push-in | — | The fix lives on today |
-| 12 | 12 | Vik picks up a square brownie; a crack runs from its corner; it snaps in half; Milo laughs; ding | Vik, Milo | CU on brownie, then Vik's face drop | — | Bet lost, callback |
-| 13 | 13 | Milo back at the modern oval window, looking out (matches shot 1) | Milo | MCU matching shot 1 | — | Loop into the hook |
+| 12 | 12 | Vik picks up a square brownie; a crack runs from its corner; it snaps in half; Nik laughs; ding | Vik, Nik | CU on brownie, then Vik's face drop | — | Bet lost, callback |
+| 13 | 13 | Nik back at the modern oval window, looking out (matches shot 1) | Nik | MCU matching shot 1 | — | Loop into the hook |
 | 14 | — | Hold 0.5 s, hard cut to shot 1 | — | — | — | Seamless loop |
 
 ## SFX cues (CC0 library only, no whooshes)

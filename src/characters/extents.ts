@@ -7,7 +7,7 @@ const D = Math.PI / 180;
 // pose's animation cycle: [left, right] — includes arms, hands and fingers.
 export const reachX = (who: CastName, pose: PoseName = 'idle', facing: 1 | -1 = 1, scale = 1): [number, number] => {
   const s = CAST[who];
-  // at least as wide as the head (Milo's head is wider than his body)
+  // at least as wide as the head (Nik's head is wider than his body)
   const half = Math.max(s.body.w / 2, s.headR * s.headSX * 1.15);
   let l = half;
   let r = half;

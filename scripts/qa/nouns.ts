@@ -28,7 +28,7 @@ const NOUN: Record<string, string> = {
   hat: 'hat',
   marble: 'marbles', marbles: 'marbles',
   ball: 'ball', bowling: 'ball',
-  milo: 'milo', vik: 'vik', gus: 'gus',
+  nik: 'nik', vik: 'vik', gus: 'gus',
 };
 
 const cam = new THREE.PerspectiveCamera(DEFAULT_FOV, ASPECT, 0.1, 400);
@@ -94,7 +94,7 @@ const anchors = (shot: any, t: number): Record<string, V3[]> => {
       x = c.enter.from[0] + (x - c.enter.from[0]) * k;
       z = c.enter.from[1] + (z - c.enter.from[1]) * k;
     }
-    const k = c.who === 'milo' || c.who === 'vik' || c.who === 'gus' ? c.who : c.who === 'soldier' ? 'soldiers' : 'farmers';
+    const k = c.who === 'nik' || c.who === 'vik' || c.who === 'gus' ? c.who : c.who === 'soldier' ? 'soldiers' : 'farmers';
     for (const y of [0.4, 1.0, 1.6]) add(k, [x, y + e, z]);
     let holding = c.holding, props = c.props ?? [];
     for (const p of c.poses ?? []) if (t >= p.at) {

@@ -28,13 +28,13 @@ eleven_v3 tags carry the direction: [curious] hook, [sarcastic] Vik's lines, [wa
 ## Shot list
 | Time | Scene | Characters | Camera | On-screen text |
 |---|---|---|---|---|
-| 0–5 s | Stone courtyard, dark iron pillar with bell-shaped top, heavy rain, then sun breaks through | — then Milo tiny at base | Low push-in up the pillar | "1,600 YEARS" |
-| 5–10 s | Pillar beside Milo for scale; cut to a bicycle covered in orange rust | Milo | Wide, slow pan | "7 METRES · 6+ TONNES" |
-| 10–15 s | Vik arrives, arms crossed, laughing | Milo, Vik | Close-up on Vik | — |
+| 0–5 s | Stone courtyard, dark iron pillar with bell-shaped top, heavy rain, then sun breaks through | — then Nik tiny at base | Low push-in up the pillar | "1,600 YEARS" |
+| 5–10 s | Pillar beside Nik for scale; cut to a bicycle covered in orange rust | Nik | Wide, slow pan | "7 METRES · 6+ TONNES" |
+| 10–15 s | Vik arrives, arms crossed, laughing | Nik, Vik | Close-up on Vik | — |
 | 15–19 s | Vik scratches pillar with a coin; grey shiny streak | Vik | Macro close-up | Card "GUESS 1 / PAINT" crossed out |
-| 19–24 s | Night time-lapse: moon passes, nobody comes; Vik asleep against a wall | Vik, Milo | Static wide, stars moving | Card "GUESS 2 / POLISHING" crossed out |
+| 19–24 s | Night time-lapse: moon passes, nobody comes; Vik asleep against a wall | Vik, Nik | Static wide, stars moving | Card "GUESS 2 / POLISHING" crossed out |
 | 24–31 s | Forge flashback: glowing iron lumps hammered together; grey specks in the metal | Gus (ancient smith outfit) | Slow orbit | Card "GUESS 3 / FAKE" crossed out |
-| 31–34 s | Courtyard; Gus taps pillar; soft ring | Gus, Milo, Vik | Medium, gentle push-in | — |
+| 31–34 s | Courtyard; Gus taps pillar; soft ring | Gus, Nik, Vik | Medium, gentle push-in | — |
 | 34–40 s | Zoom into metal: glowing "P" particles inside the iron | — | Push into surface | "PHOSPHORUS ×20" |
 | 40–48 s | Rain droplets → sun drying, ×3; thin glassy blue layer grows over the iron | — | Macro, slow drift | "PROTECTIVE SKIN" |
 | 48–52 s | Split screen: modern steel flaking orange vs pillar sealed | — | Static | "TOO CLEAN" vs "SELF-SEALED" |

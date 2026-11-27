@@ -4,7 +4,7 @@
 // character faces (the pointing arm).
 
 // Core poses (CLAUDE.md) + story extras.
-export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad', 'nervous', 'defeated', 'binoculars', 'hat-tap', 'wave', 'aim', 'jaw-drop', 'bowl', 'aim-sweat', 'nervous-up', 'yank', 'shoulder-gun'] as const;
+export const POSES = ['idle', 'talk', 'point', 'laugh', 'cross-arms', 'shock', 'nod', 'cross-laugh', 'cross-talk', 'sleep', 'hammer', 'tap', 'proud', 'look-up', 'coin-tap', 'stomp', 'smile-nod', 'peek', 'gasp', 'present', 'slam', 'lean', 'deadpan', 'lift', 'frown', 'sad', 'nervous', 'defeated', 'binoculars', 'hat-tap', 'wave', 'aim', 'jaw-drop', 'bowl', 'aim-sweat', 'nervous-up', 'yank', 'shoulder-gun', 'curious', 'hold-out'] as const;
 export type PoseName = (typeof POSES)[number];
 
 export type EyeStyle = 'dot' | 'wide' | 'smug' | 'calm' | 'happy' | 'closed';
@@ -278,6 +278,12 @@ export const poseAt = (pose: PoseName, t: number, seed = 0): PoseState => {
       const tr = s(ph * 31) * 1.2;
       return {...base, armA: [78 + tr, -14], armB: [64, -42], bodyRot: -4, headRot: -3 + tr * 0.3, eyes: 'wide', mouth: 'flat', brow: 0.5, browIn: 0.7, sweat: true};
     }
+    case 'curious':
+      // head tilted, one brow up, eyes wide, small 'o' — the question face
+      return {...base, headRot: 9 + s(ph * 1.2) * 1.5, eyes: 'wide', mouth: 'O', mouthOpen: 0.3, brow: 0.9, armA: [24, -50]};
+    case 'hold-out':
+      // one arm held straight out, offering something (handing it over)
+      return {...base, armA: [82 + s(ph * 2) * 2, -6], bodyRot: -3, headRot: 4, mouth: 'smile', brow: 0.4};
     case 'shoulder-gun':
       // gun shouldered and pointing away from the lens: both hands in at the chest, cheek down to the sights
       return {...base, armA: [34, -118], armB: [22, -104], bodyRot: -3, headRot: -7, headDY: -0.02, eyes: 'smug', mouth: 'flat', brow: -0.3};

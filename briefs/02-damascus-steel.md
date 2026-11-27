@@ -52,28 +52,28 @@ The 0.5 s pause after line 8 ("…traces of vanadium.") holds the silent reactio
 |---|---|---|---|---|---|---|---|
 | 1 | 0–1.5 | "Modern factories. Lasers." | Vik's lab: a red laser beam sweeps across the sabre on a scanner bed; sparks; monitor flashes "PATTERN: UNKNOWN" | Vik leaning in, goggles on head | Medium close-up, fast push-in | — | Modern tech is attacking this sword |
 | 2 | 1.5–2.5 | "Supercomputers." | Monitor wall: progress bar stuck at 0%, red "ERROR" | Vik's face lit by screens, frowning | Close-up over the shoulder | — | Even computers fail |
-| 3 | 2.5–4.5 | "…none of them can copy this sword." | Milo lifts the sabre from the scanner into the light; the watered pattern glints | Milo (awed), Vik behind | Low angle, slow orbit | — | THIS is the sword |
+| 3 | 2.5–4.5 | "…none of them can copy this sword." | Nik lifts the sabre from the scanner into the light; the watered pattern glints | Nik (awed), Vik behind | Low angle, slow orbit | — | THIS is the sword |
 | 4 | 4.5–8 | "covered in swirls, like water frozen inside steel" | Macro slide along the blade: flowing light/dark waves; a drop of water rolls along it for the "water" comparison | — | Macro tracking along blade (real textured blade, never a void) | Title card: "DAMASCUS STEEL / 1,000+ YEARS" | The famous pattern |
-| 5 | 8–10 | "Vik scoffs. Give me one day." | Vik slams his gold trophy on the workbench | Vik, Milo | Medium, quick push on trophy | — | Vik is cocky |
-| 6 | 10–13.5 | "If I can't copy it, I'll melt my own trophy." | Vik taps the trophy engraved "VIK #1"; Milo gasps | Vik, Milo | Insert on engraving, then 2-shot | Card: "THE BET" | The stakes |
+| 5 | 8–10 | "Vik scoffs. Give me one day." | Vik slams his gold trophy on the workbench | Vik, Nik | Medium, quick push on trophy | — | Vik is cocky |
+| 6 | 10–13.5 | "If I can't copy it, I'll melt my own trophy." | Vik taps the trophy engraved "VIK #1"; Nik gasps | Vik, Nik | Insert on engraving, then 2-shot | Card: "THE BET" | The stakes |
 | 7 | 13.5–16 | "Try one. He folds the steel…" | Vik at the press folding a glowing bar: fold, hammer, fold (3 quick beats) | Vik in apron, goggles | Medium, cut on each fold | Card: "TRY 1 / FOLDING" | He's trying hard |
 | 8 | 16–18.5 | "Pretty lines. Wrong pattern. Fake." | Insert: his bar has STRAIGHT stripes; split by a cut to the sabre's flowing waves for comparison, side by side on the bench | — | Overhead insert | Card crossed out: "FOLDING" | Close, but not the same |
 | 9 | 18.5–21 | "Try two. The purest iron…" | Vik unboxes a gleaming "99.99% Fe" bar like a prize | Vik smug | Medium close | Card: "TRY 2 / PURE IRON" | He thinks purer = better |
 | 10 | 21–23 | "The swirls don't even show up." | Insert: his finished blade is blank, uniform, featureless; Vik's smile drops | Vik | Insert then reaction CU | Card crossed out | Purity made it WORSE (plant for the payoff) |
-| 11 | 23–25 | "Try three. Same furnace, same heat…" | Vik copies from an old parchment recipe, crucible into the furnace, thermometer dial | Vik, Milo holding the parchment | Fast cuts: parchment → crucible → dial | Card: "TRY 3 / THE RECIPE" | Exact copy |
+| 11 | 23–25 | "Try three. Same furnace, same heat…" | Vik copies from an old parchment recipe, crucible into the furnace, thermometer dial | Vik, Nik holding the parchment | Fast cuts: parchment → crucible → dial | Card: "TRY 3 / THE RECIPE" | Exact copy |
 | 12 | 25–27 | "…the exact old recipe. Blank." | He cracks open the crucible: a plain cake; forged blade: blank again. Vik's eye twitches | Vik | Insert, then CU of face | Card crossed out | Total failure |
-| 13 | 27–29 | "That's when it got weird." | Forge door creaks open; warm light spills into the cold lab; Gus stands in the doorway | Gus (smith outfit), Vik, Milo turn | Wide, slow push-in | — | Someone knows |
+| 13 | 27–29 | "That's when it got weird." | Forge door creaks open; warm light spills into the cold lab; Gus stands in the doorway | Gus (smith outfit), Vik, Nik turn | Wide, slow push-in | — | Someone knows |
 | 14 | 29–32 | "Gus opens his hand. A pinch of dark dirt." | Gus's palm opens: glittering black ore grit | Gus | Insert, macro on palm (textured grit, warm light) | — | The answer is… dirt? |
 | 15 | 32–35 | "You see, this steel was made in India, from certain ores." | Ore hillside: dark ore seams in red earth; a basket of ore; a clay crucible glowing in a village furnace | Gus (narrating gesture) | Wide pan, then insert of crucible | Card: "WOOTZ STEEL · INDIA" | Where it came from |
 | 16 | 35–38.5 | "a tiny secret. Traces of vanadium." | Close-up of the ore in the crucible: a few tiny specks glint violet-silver among the dark grit (subtle, in-world, not a diagram) | — | Macro push | Card: "VANADIUM / TINY TRACES" | The secret ingredient |
-| 17 | 38.5–39 | (silent 0.5 s) | REACTION: Vik's jaw drops; Milo looks at the dirt then the sword | Vik, Milo | 2-shot | — | Breather between the two halves of the explanation |
+| 17 | 38.5–39 | (silent 0.5 s) | REACTION: Vik's jaw drops; Nik looks at the dirt then the sword | Vik, Nik | 2-shot | — | Breather between the two halves of the explanation |
 | 18 | 39–43 | "While the smith hammered, those traces pulled the carbon into bands." | Forge: Gus hammers a glowing cake; with each strike, flowing bands visibly appear on the surface of the hot steel (in-world, on the metal) | Gus | Medium, then macro on the steel surface | — | Hammering + traces = swirls |
 | 19 | 43–45 | "No traces, no swirls." | Side-by-side on the anvil: Vik's blank blade vs a swirled blade | Gus's hand pointing | Overhead insert | — | The rule in one picture |
 | 20 | 45–48 | "Around 1750, those mines ran dry." | Ore hillside: last basket scrapes empty rock; dust | — | Wide, slow pull-back | Card: "~1750" | The source ran out |
 | 21 | 48–50 | "And the recipe died with them." | Forge goes dark: the last ember fades on the anvil | Gus silhouette | Slow push | — | Lost forever |
-| 22 | 50–52.5 | "Vik's trophy? Melting." | Lab: the gold trophy slumps into a crucible, Vik peeking through his fingers | Vik, Milo | CU on trophy, then Vik | — | Bet collected |
+| 22 | 50–52.5 | "Vik's trophy? Melting." | Lab: the gold trophy slumps into a crucible, Vik peeking through his fingers | Vik, Nik | CU on trophy, then Vik | — | Bet collected |
 | 23 | 52.5–55 | "Perfectly pure. Not a single swirl." | Poured trophy ingot: shiny, plain, zero pattern. Ding | Vik (deadpan stare) | Insert, then CU face drop | — | Callback: pure = no swirls |
-| 24 | 55–59.5 | "So today, with all our factories, lasers, supercomputers…" | Back in the lab: Milo places the sabre on the scanner; the laser beam powers up (matches shot 1) | Milo, Vik | Medium, push-in matching shot 1's framing | — | Loop into the hook |
+| 24 | 55–59.5 | "So today, with all our factories, lasers, supercomputers…" | Back in the lab: Nik places the sabre on the scanner; the laser beam powers up (matches shot 1) | Nik, Vik | Medium, push-in matching shot 1's framing | — | Loop into the hook |
 | 25 | 59.5–60 | — | Hold 0.5 s on the laser beam, hard cut to frame 1 | — | — | — | Seamless loop |
 
 ## SFX cues (library only, CC0, no whooshes)

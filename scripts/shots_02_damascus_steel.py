@@ -13,15 +13,15 @@ SMITH = {"body": "#5A3E30", "trim": "#B88A5A", "legs": "#C9B48E", "shoes": "#3A2
 GUS_SMITH = {"who": "gus", "outfit": SMITH, "props": ["apron", "headwrap"]}
 VIK = {"who": "vik", "props": ["goggles"]}
 VIK_APRON = {"who": "vik", "props": ["apron", "goggles"]}
-MILO = {"who": "milo"}
+NIK = {"who": "nik"}
 ANVIL = [0.72, 0, 0.12]
 
 
 # ---- auto-framing: choose the camera distance so every listed point fits the
 # portrait frame (x 7-93%, y 6-90%) at the END of the move; the move starts
 # `push` further out and `swing` degrees around (always gliding).
-H_ = {"milo": 1.42, "vik": 2.2, "gus": 1.62}
-W_ = {"milo": 0.62, "vik": 0.6, "gus": 0.88}
+H_ = {"nik": 1.42, "vik": 2.2, "gus": 1.62}
+W_ = {"nik": 0.62, "vik": 0.6, "gus": 0.88}
 
 def body(m, crop=0.0):
     """points of a cast member: head top, sides at chest, feet (or crop height)"""
@@ -118,18 +118,18 @@ def path(a, b, look_a=None, look_b=None, fov=42):
 
 # cast placements (kept clear of every camera path; see path_ok)
 BET_VIK = c(VIK, pose="slam", pos=[3.3, 0.45], facing=-1, poses=[{"at": 0.9, "pose": "proud"}])
-BET_CHOTU = c(MILO, pose="idle", pos=[1.75, 0.8], facing=1, poses=[{"at": 0.4, "pose": "gasp"}])
+BET_CHOTU = c(NIK, pose="idle", pos=[1.75, 0.8], facing=1, poses=[{"at": 0.4, "pose": "gasp"}])
 PRESS_VIK = c(VIK_APRON, pose="hammer", pos=[-1.95, 1.2], facing=-1, holding="hammer", delay=-0.3)
 PURE_VIK = c(VIK, pose="present", pos=[3.3, 0.45], facing=-1, poses=[{"at": 0, "pose": "present"}])
-REC_CHOTU = c(MILO, pose="present", pos=[0.15, 0.55], facing=-1, holding="parchment")
+REC_CHOTU = c(NIK, pose="present", pos=[0.15, 0.55], facing=-1, holding="parchment")
 REC_VIK = c(VIK_APRON, pose="point", pos=[-2.5, 0.3], facing=1)
 DOOR_DADA = c(GUS_SMITH, pose="idle", pos=[-3.6, -3.35], facing=1, appearAt=0.45)
-DOOR_CHOTU = c(MILO, pose="look-up", pos=[-4.6, -1.2], facing=1)
+DOOR_CHOTU = c(NIK, pose="look-up", pos=[-4.6, -1.2], facing=1)
 DOOR_VIK = c(VIK, pose="shock", pos=[-2.2, -0.6], facing=-1)
 HILL_DADA = c(GUS_SMITH, pose="point", pos=[-1.7, -1.55], facing=1)
 FORGE_DADA = c(GUS_SMITH, pose="hammer", pos=[0, 0], facing=1, holding="hammer", delay=-0.25)
 MELT_VIK = c(VIK, pose="peek", pos=[1.35, 0.85], facing=-1)
-MELT_CHOTU = c(MILO, pose="gasp", pos=[-0.4, 1.15], facing=1)
+MELT_CHOTU = c(NIK, pose="gasp", pos=[-0.4, 1.15], facing=1)
 
 press_w = frame([[-2.7, 0.75, 0.9], [-2.7, 2.35, 0.9], [-3.2, 1.2, 0.9]] + body(PRESS_VIK, crop=0.3), az=10, el=0, fov=44, push=0)
 pure_w = frame([[2.15, 1.0, 0.0], [2.45, 1.3, 0.0]] + body(PURE_VIK, crop=0.4), az=-8, el=2, fov=44, push=0)
@@ -195,8 +195,8 @@ shots = [
    "sfx": [{"name": "shimmer", "at": rel("india-vanadium", word_t("traces", T(8)))}]},
   # (pause) silent reaction
   {"id": "pause-reaction", "set": "lab", "fx": {"lab": {"door": [1, 1], "sabre": "scanner"}},
-   "camera": frame(body(c(MILO, pos=[-1.1, 1.3])) + body(c(VIK, pos=[0.35, 1.25]), crop=0.4), az=0, el=3, fov=44, push=0.05, swing=1),
-   "cast": [c(MILO, pose="look-up", pos=[-1.1, 1.3], facing=1), c(VIK, pose="shock", pos=[0.35, 1.25], facing=-1)], "layout": "manual"},
+   "camera": frame(body(c(NIK, pos=[-1.1, 1.3])) + body(c(VIK, pos=[0.35, 1.25]), crop=0.4), az=0, el=3, fov=44, push=0.05, swing=1),
+   "cast": [c(NIK, pose="look-up", pos=[-1.1, 1.3], facing=1), c(VIK, pose="shock", pos=[0.35, 1.25], facing=-1)], "layout": "manual"},
   # line 9a: the smith hammers; push into the cake as bands appear with each strike
   {"id": "smith-bands", "beat": 5, "stillAt": rel("smith-bands", word_t("bands")) + 0.3, "set": "forge", "grade": "flashback",
    "fx": {"forgeLumps": False, "cake": {"strikes": strikes}, "sparks": {"pos": [0.72, 0.6, 0.12], "times": strikes, "color": "#FFD76A"}},

@@ -7,10 +7,11 @@ ONE reusable studio. Never create a new project per Short. Each Short = a brief 
 Remotion + three.js (React Three Fiber), 1080x1920, 30 fps. No AI video generators.
 
 ## Cast (reusable rigs; reskin outfits per story, keep faces/colours)
-- Milo: asks the question in the hook. Small kid, oversized round head, orange kurta, cowlick. Wide eyes, points.
+- Nik: asks the question in the hook. Small kid, oversized round head, orange kurta, cowlick. Wide eyes, points.
 - Vik: the mocker, guesses wrong 3 times, proven wrong at payoff. Tall, lanky, teal jacket, smug half-lidded eyes, raised eyebrow. Arms crossed, smirk.
 - Gus: old craftsman, never explains, only shows. Short, round, white beard, cream shawl, small round spectacles. Calm nod, tiny smile.
-Names changed Nov 2026: Milo was Chotu, Gus was Dada (Short #1 audio and its captions still say the old names).
+Names changed Nov 2026: Nik was Milo (and before that Chotu), Gus was Dada (Short #1 audio and its captions still say the old names; no published caption says Milo).
+Model sheet + hard rules: **CHARACTERS.md** (read before any Short; check every still against public/characters/sheet.png).
 Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 
 ## Look

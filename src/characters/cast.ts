@@ -1,7 +1,7 @@
 // Cast specs. Faces/colours are fixed; outfits can be reskinned per story via
 // the `outfit` prop on <Character/> (body, sleeve, legs, trim).
 
-export type CastName = 'milo' | 'vik' | 'gus' | 'soldier' | 'farmer';
+export type CastName = 'nik' | 'vik' | 'gus' | 'soldier' | 'farmer';
 
 export type Outfit = {body: string; sleeve: string; legs: string; trim: string; shoes: string};
 
@@ -33,11 +33,40 @@ export type CastSpec = {
   eyes: 'wide' | 'smug' | 'calm';
   mouth: 'smile' | 'smirk' | 'flat';
   outfit: Outfit;
+  // set by viewSpec() for the 3/4 and side views (front: all undefined)
+  view?: CharView;
+  faceDX?: number; // face features slide toward the facing side
+  eyeNear?: number; // eye spread multipliers (near / far eye)
+  eyeFar?: number;
+  farEye?: boolean; // false: the far eye is hidden (side view)
+  decorDX?: number; // shirt/kurta details slide toward the facing side
+};
+
+export type CharView = 'front' | 'threeq' | 'side';
+
+// 3/4 and side views of the same rig: nothing is redrawn, the flat parts are re-spaced
+// (narrower torso, shoulders and stance; face features shifted to the facing side; far eye
+// smaller or hidden). Proportions, outline weight and palette stay exactly on-model.
+export const viewSpec = (s: CastSpec, view: CharView = 'front'): CastSpec => {
+  if (view === 'front') return s;
+  const q = view === 'side' ? 1 : 0.55;
+  return {
+    ...s,
+    view,
+    body: {...s.body, w: s.body.w * (1 - 0.36 * q)},
+    shoulderX: s.shoulderX * (1 - 0.88 * q),
+    legGap: s.legGap * (1 - 0.85 * q),
+    faceDX: s.headR * (view === 'side' ? 0.42 : 0.3),
+    eyeNear: view === 'side' ? 0.62 : 0.86,
+    eyeFar: 1 - 0.6 * q,
+    farEye: view !== 'side',
+    decorDX: s.body.w * 0.2 * q,
+  };
 };
 
 export const CAST: Record<CastName, CastSpec> = {
-  milo: {
-    name: 'milo',
+  nik: {
+    name: 'nik',
     height: 1.42,
     skin: '#C98A5B',
     hair: '#3B2320',

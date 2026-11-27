@@ -18,19 +18,19 @@ cuts = [0, 2.8, 5.0, 6.75, 8.25, 9.9, 12.6, 14.3, 17.45, 19.8, 23.3, 25.15, 27.8
         35.0, 37.2, 39.45, 42.65, 45.7, 48.55, 50.95, 53.95, 57.35, 59.7, 61.0, 61.75]
 
 VIK_RAIN = {"who": "vik", "props": ["umbrella"]}
-MILO = {"who": "milo", "props": ["satchel"]}
+NIK = {"who": "nik", "props": ["satchel"]}
 GUS = {"who": "gus", "props": ["stick"]}
 
 def c(base, **kw):
     d = dict(base); d.update(kw); return d
 
 shots = [
-  # 1 hook: frame 1 = Vik smugly tapping a coin on the pillar in the rain, Milo looking up
+  # 1 hook: frame 1 = Vik smugly tapping a coin on the pillar in the rain, Nik looking up
   {"id": "hook-coin-tap", "beat": 1, "stillAt": 0.0, "set": "courtyard", "sky": "storm", "light": "storm",
    "fx": {"pillar": PILLAR, "rain": [1, 1], "sparks": {"pos": [0.16, 1.55, -2.32], "times": [0.55, 1.45]}},
    "camera": {"type": "dolly", "from": [0.75, 0.72, 4.1], "to": [0.6, 0.8, 3.15], "look": [0.15, 1.5, -2.4], "lookTo": [0.12, 1.6, -2.4], "fov": 44},
    "cast": [c(VIK_RAIN, pose="coin-tap", pos=[0.86, -2.42], facing=-1, holding="coin"),
-            c(MILO, pose="look-up", pos=[-0.4, -1.6], facing=1)],
+            c(NIK, pose="look-up", pos=[-0.4, -1.6], facing=1)],
    "layout": "manual", "roll": [2.5, 1.0],
    "sfx": [{"name": "rain-soft", "at": 0, "dur": 6.75, "fadeAt": 2.8},
            {"name": "metal-ting", "at": 0.55}, {"name": "metal-ting", "at": 1.45}]},
@@ -56,7 +56,7 @@ shots = [
   # 5 Vik laughs
   {"id": "vik-laughs", "beat": 2, "set": "courtyard", "light": "golden", "fx": {"pillar": PILLAR, "rain": [0.25, 0.15], "beams": True},
    "camera": {"type": "fit", "focus": ["vik"], "crop": 0.6, "band": [0.24, 0.97], "angleDeg": -14, "orbitDeg": 14, "push": 0.18},
-   "cast": [c(MILO, pose="idle", pos=[-0.7, 0.4], facing=1),
+   "cast": [c(NIK, pose="idle", pos=[-0.7, 0.4], facing=1),
             c(VIK_RAIN, pose="laugh", pos=[0.7, 0.5], facing=-1, enter={"from": [2.6, 1.0], "at": 0, "dur": 0.8})]},
   # 6 Vik: "Easy. Somebody painted it."
   {"id": "vik-paint", "beat": 2, "set": "courtyard", "light": "golden", "fx": {"pillar": PILLAR, "rain": [0.15, 0.1]},
@@ -72,20 +72,20 @@ shots = [
   # 8 Vik: "Then someone polishes it every night." (dusk)
   {"id": "vik-polish", "beat": 3, "set": "courtyard", "sky": "dusk", "light": "dusk", "fx": {"pillar": PILLAR},
    "camera": {"type": "fit", "angleDeg": -20, "orbitDeg": 18, "push": 0.15},
-   "cast": [c(MILO, pose="idle", pos=[-0.8, -1.5], facing=1), c(VIK_RAIN, pose="point", pos=[0.75, -1.4], facing=-1, props=[])],
+   "cast": [c(NIK, pose="idle", pos=[-0.8, -1.5], facing=1), c(VIK_RAIN, pose="point", pos=[0.75, -1.4], facing=-1, props=[])],
    "titleCard": {"label": "Guess 2", "word": "Polishing", "at": 0.15, "duration": 2.2}},
   # 9 night time-lapse
   {"id": "night-watch", "beat": 3, "set": "courtyard", "sky": "night", "light": "night", "fx": {"pillar": PILLAR, "night": True},
    "props": [{"type": "block", "pos": [-2.1, 0, 0.05], "scale": 1.5, "color": "#C99068"}],
    "camera": {"type": "dolly", "from": [0.6, 0.9, 7.6], "to": [-0.3, 1.0, 6.7], "look": [-1.2, 1.35, -1], "lookTo": [-1.2, 1.6, -1], "fov": 44},
    "cast": [{"who": "vik", "pose": "sleep", "pos": [-2.0, 0.75], "facing": 1},
-            c(MILO, pose="idle", pos=[-0.8, 1.0], facing=-1)], "layout": "manual",
+            c(NIK, pose="idle", pos=[-0.8, 1.0], facing=-1)], "layout": "manual",
    "titleCard": {"label": "Guess 2", "word": "Polishing", "at": 0, "duration": 3.4, "crossed": True, "crossAt": 2.3, "intro": False},
    "sfx": [{"name": "crickets", "at": 0, "dur": 3.5}]},
   # 10 Vik: "Fine. It's a modern fake." (morning)
   {"id": "vik-fake", "beat": 3, "set": "courtyard", "sky": "noon", "light": "noon", "fx": {"pillar": PILLAR, "motes": True},
    "camera": {"type": "fit", "focus": ["vik"], "crop": 0.55, "band": [0.28, 0.97], "angleDeg": 18, "orbitDeg": -14, "push": 0.2},
-   "cast": [c(MILO, pose="idle", pos=[-0.7, -1.2], facing=1), {"who": "vik", "pose": "cross-talk", "pos": [0.6, -1.2], "facing": -1}],
+   "cast": [c(NIK, pose="idle", pos=[-0.7, -1.2], facing=1), {"who": "vik", "pose": "cross-talk", "pos": [0.6, -1.2], "facing": -1}],
    "titleCard": {"label": "Guess 3", "word": "Fake", "at": 0.1, "duration": 1.9}},
   # 11 forge wide
   {"id": "forge-wide", "beat": 3, "stillAt": 1.6, "set": "forge", "grade": "flashback", "fx": {"merge": [0, 0.3]},
@@ -108,7 +108,7 @@ shots = [
   {"id": "gus-taps", "beat": 4, "stillAt": 1.6, "set": "courtyard", "light": "golden", "fx": {"pillar": PILLAR, "ripple": {"pos": [-0.19, 0.98, -2.42], "times": [0.85, 1.25]}},
    "camera": {"type": "fit", "push": 0.22, "angleDeg": 8, "orbitDeg": 10, "band": [0.16, 0.78]},
    "cast": [c(GUS, pose="tap", pos=[-1.06, -2.42], facing=1, delay=-0.4),
-            c(MILO, pose="look-up", pos=[1.0, -1.7], facing=-1),
+            c(NIK, pose="look-up", pos=[1.0, -1.7], facing=-1),
             {"who": "vik", "pose": "cross-arms", "pos": [2.1, -1.7], "facing": -1}], "layout": "manual",
    "sfx": [{"name": "metal-ting", "at": 0.85}]},
   # 15 "You see, that stuff is phosphorus." Gus with two bars in the rain
@@ -116,7 +116,7 @@ shots = [
    "fx": {"pillar": PILLAR, "rain": [0.9, 0.9], "bars": {"skin": [0, 0.08], "rust": [0, 0.12]}},
    "camera": {"type": "dolly", "from": [-3.25, 1.05, 6.7], "to": [-3.4, 1.05, 6.15], "look": [-3.4, 0.95, 1.2], "lookTo": [-3.4, 0.95, 1.2], "fov": 56},
    "cast": [c(GUS, pose="point", pos=[-4.5, 1.2], facing=1),
-            c(MILO, pose="look-up", pos=[-2.3, 1.3], facing=-1, props=["satchel", "leaf"])], "layout": "manual",
+            c(NIK, pose="look-up", pos=[-2.3, 1.3], facing=-1, props=["satchel", "leaf"])], "layout": "manual",
    "titleCard": {"label": "The secret", "word": "Phosphorus", "at": 0.45, "duration": 1.7},
    "sfx": [{"name": "rain-soft", "at": 0, "dur": 2.2}]},
   # 16 INSERT: phosphorus inside the iron, x20
@@ -140,11 +140,11 @@ shots = [
    "camera": {"type": "dolly", "from": [-2.3, 0.9, 2.0], "to": [-2.6, 1.5, 1.7], "look": [-3.0, 1.0, 1.2], "lookTo": [-3.0, 1.6, 1.2], "fov": 38},
    "roll": [-3, 1], "dof": 1.6, "focusDist": 0.8,
    "sfx": [{"name": "drip", "at": 0.5}, {"name": "drip", "at": 1.5}]},
-  # 20 "A raincoat the pillar made for itself." Gus smiles, Milo under a leaf
+  # 20 "A raincoat the pillar made for itself." Gus smiles, Nik under a leaf
   {"id": "raincoat", "beat": 5, "set": "courtyard", "light": "golden", "fx": {"pillar": PILLAR, "rain": [0.3, 0.2], "bars": {"skin": [1, 1], "rust": [0.55, 0.7]}},
    "camera": {"type": "dolly", "from": [-3.4, 1.05, 6.8], "to": [-3.4, 1.05, 6.2], "look": [-3.4, 0.95, 1.2], "lookTo": [-3.4, 0.95, 1.2], "fov": 56},
    "cast": [c(GUS, pose="smile-nod", pos=[-4.5, 1.2], facing=1),
-            c(MILO, pose="laugh", pos=[-2.3, 1.3], facing=-1, props=["satchel", "leaf"])], "layout": "manual"},
+            c(NIK, pose="laugh", pos=[-2.3, 1.3], facing=-1, props=["satchel", "leaf"])], "layout": "manual"},
   # 21 modern steel: too clean, it rusts and flakes
   {"id": "steel-rusts", "beat": 5, "set": "courtyard", "sky": "storm", "light": "storm", "fx": {"rain": [0.9, 0.9], "bars": {"skin": [1, 1], "rust": [0.7, 1]}},
    "camera": {"type": "dolly", "from": [-4.5, 1.0, 3.1], "to": [-4.05, 1.2, 1.95], "look": [-3.8, 1.25, 1.2], "lookTo": [-3.8, 1.2, 1.2], "fov": 38},

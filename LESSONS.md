@@ -5,7 +5,7 @@ with CLAUDE.md before starting any Short; check each section before showing stil
 
 ## 1. Hook (0–3 s)
 - Frame 1 is already the story: a character *doing* the hook action (Vik tapping the
-  coin on the pillar in the rain, Milo looking up). No establishing shot, no logo, no fade-in.
+  coin on the pillar in the rain, Nik looking up). No establishing shot, no logo, no fade-in.
 - The action must read as motion: a visible wind-up and strike (two taps), a tiny spark
   and a matching SFX on each hit, and a slow push-in. Every character fully in frame.
 - No frozen poses anywhere: every character breathes, blinks (1.5–4 s gaps, 4 frames)
@@ -26,7 +26,7 @@ with CLAUDE.md before starting any Short; check each section before showing stil
   Never a blob on a stick (lollipop / ice-cream cone).
 - Characters are billboards drawn on top: they cannot stand *behind* a prop. For a
   demo, put the props in the foreground, fully visible, and the characters beside them
-  pointing (Gus left, Milo right), never in front of them.
+  pointing (Gus left, Nik right), never in front of them.
 
 ## 3. Object inserts
 - 3+ per Short; at most ~1.5 s each; each one must be identifiable in a single frame.
@@ -128,7 +128,7 @@ with CLAUDE.md before starting any Short; check each section before showing stil
   demo read on a phone, stage the holder right behind the prop and the second character close
   beside it, so the group is ~1.5 m wide.
 - QA now flags half faces/bodies on the left, right or top frame edge (`scripts/qa/crops.ts`). A
-  deliberate tight reaction crop is declared on the shot: `"allowCrop": "<reason>"` (e.g. Milo's sad
+  deliberate tight reaction crop is declared on the shot: `"allowCrop": "<reason>"` (e.g. Nik's sad
   close-up after "broke apart in the sky"). If a character, framed whole, would block the shot's
   subject (the windows), take them out instead. Start a move wide on a whole figure and push in; never
   reveal a character through the frame edge.

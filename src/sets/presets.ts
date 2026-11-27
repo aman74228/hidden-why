@@ -19,6 +19,7 @@ export type LightPreset = {
 };
 
 export const SKIES: Record<string, SkyPreset> = {
+  studio: {top: '#ECE6DA', horizon: '#ECE6DA', bottom: '#ECE6DA'},
   golden: {top: '#3E4A9A', horizon: '#FFC27A', bottom: '#F29D5C', sun: '#FFE3A3', sunDir: [-0.6, 0.18, -1]},
   noon: {top: '#3C7BD0', horizon: '#BFE3F2', bottom: '#E6D2A6', sun: '#FFF6D8', sunDir: [0.3, 0.7, -1]},
   dusk: {top: '#231E5C', horizon: '#E8735A', bottom: '#6B3C6E', sun: '#FFB27A', sunDir: [0.7, 0.06, -1]},
@@ -45,6 +46,8 @@ export const GROUNDS: Record<string, GroundPreset> = {
 };
 
 export const LIGHTS: Record<string, LightPreset> = {
+  // model sheet: neutral, untinted, so the palette reads exactly as in the code
+  studio: {key: '#FFFFFF', keyIntensity: 1.2, keyDir: [3, 6, 5], sky: '#FFFFFF', shade: '#C9CCDA', hemi: 0.8, ambient: '#FFFFFF', ambientIntensity: 0.8, fog: '#ECE6DA', fogNear: 60, fogFar: 200, charTint: '#FFFFFF', rim: '#FFF4DC'},
   // ---- 03-plane-windows ----
   lounge: {
     key: '#FFC27A', keyIntensity: 2.6, keyDir: [-4, 6, 5],

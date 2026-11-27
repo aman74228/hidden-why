@@ -16,7 +16,7 @@
       },
       "cast": [
         {
-          "who": "milo",
+          "who": "nik",
           "pose": "point",
           "pos": [
             -0.62,
@@ -122,7 +122,7 @@
       },
       "cast": [
         {
-          "who": "milo",
+          "who": "nik",
           "pose": "talk",
           "pos": [
             -0.75,

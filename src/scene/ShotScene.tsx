@@ -2,7 +2,7 @@ import {Bloom, DepthOfField, EffectComposer, Vignette} from '@react-three/postpr
 import {Grain} from '../overlays/Grain';
 import {ThreeCanvas} from '@remotion/three';
 import React, {useMemo} from 'react';
-import {AbsoluteFill, useCurrentFrame, useVideoConfig} from 'remotion';
+import {AbsoluteFill, useCurrentFrame, useVideoConfig, getInputProps} from 'remotion';
 import * as THREE from 'three';
 import {CameraRig} from '../camera/CameraRig';
 import {DEFAULT_FOV, resolveMove} from '../camera/moves';
@@ -22,6 +22,8 @@ import type {Shot} from './types';
 // final frame.
 export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot, frames}) => {
   const shot = useMemo(() => resolveShot(rawShot), [rawShot]);
+  // QA hand-count pass (render with --props='{"qaHands":true}'): cast only, hands/arms in ID colours on black
+  const qaHands = Boolean((getInputProps() as {qaHands?: boolean}).qaHands);
   const raw = useCurrentFrame();
   const {fps, width, height} = useVideoConfig();
   const frame = Math.min(raw, frames - 1);
@@ -104,19 +106,21 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
       >
         <SceneCtx.Provider value={ctx}>
           <CameraRig pos={pos} look={look} fov={fov} roll={shot.roll ? shot.roll[0] + (shot.roll[1] - shot.roll[0]) * p : 0} />
-          <ToonSet set={shot.set} props={shot.props} fx={fxNow} p={p} dur={shot.duration} resolved={resolved} />
+          {qaHands ? <color attach="background" args={['#000000']} /> : <ToonSet set={shot.set} props={shot.props} fx={fxNow} p={p} dur={shot.duration} resolved={resolved} />}
           {cast.map((c, i) => (
-            <Character key={`${c.who}-${i}`} {...c} />
+            <Character key={`${c.who}-${i}`} {...c} qaId={i} />
           ))}
           <FrameCheck samples={samples} fov={fov} shotId={shot.id} />
+          {!qaHands && (
           <EffectComposer multisampling={2}>
             <DepthOfField worldFocusDistance={Array.isArray(shot.focusDist) ? shot.focusDist[0] + (shot.focusDist[1] - shot.focusDist[0]) * (p * p * (3 - 2 * p)) : shot.focusDist ?? focus.dist} worldFocusRange={shot.focusDist ? 1.2 : focus.range} bokehScale={shot.dof ?? 2.2} />
             <Bloom luminanceThreshold={0.85} luminanceSmoothing={0.2} intensity={0.85} mipmapBlur radius={0.7} />
             <Vignette offset={0.32} darkness={0.5} />
           </EffectComposer>
+          )}
         </SceneCtx.Provider>
       </ThreeCanvas>
-      {shot.grade === 'flashback' ? (
+      {shot.grade === 'flashback' && !qaHands ? (
         <AbsoluteFill
           style={{
             background: 'radial-gradient(ellipse at 50% 45%, rgba(255,200,120,0.10) 40%, rgba(60,28,20,0.55) 100%)',
@@ -124,7 +128,7 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
           }}
         />
       ) : null}
-      {shot.labels?.map((l, i) => (
+      {!qaHands && shot.labels?.map((l, i) => (
         <div
           key={i}
           style={{
@@ -148,10 +152,9 @@ export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot
           {l.text}
         </div>
       ))}
-      <Grain frame={raw} />
-      {cards.map((c, i) => (
-        <TitleCard key={i} {...c} frame={frame} maxBottom={cardMaxBottoms[i]} />
-      ))}
+      {!qaHands && <Grain frame={raw} />}
+      {!qaHands &&
+        cards.map((c, i) => <TitleCard key={i} {...c} frame={frame} maxBottom={cardMaxBottoms[i]} />)}
     </AbsoluteFill>
   );
 };
