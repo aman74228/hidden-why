@@ -28,8 +28,9 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 - Ending: hold payoff 0.5 s, hard cut so it loops into the first frame.
 
 ## Audio
-- Voiceover: Chatterbox (Resemble AI, MIT), original model, built-in default voice (no cloning), exaggeration 0.5 base / cfg 0.3 / fixed seed 1750, all in voice.json (`"engine": "chatterbox"`; the ElevenLabs settings stay under `engines.elevenlabs` to switch back). Render line by line from audio/<slug>.lines.json (per-line exaggeration + pause after) with `scripts/vo_lines.py <slug>`: it whisper-checks every line (max 3 tries), inserts punctuation pauses (`scripts/vo_pauses.py`), joins, and writes audio/<slug>.mp3 + captions. No speed-up, ever.
-- Word timestamps: Chatterbox gives none, so captions come from forced alignment of the final MP3 to the brief's script (scripts/align.py, faster-whisper; fallback: ffmpeg silencedetect).
+- Voiceover (from the next Short): Liam, ElevenLabs eleven_v3, ~164 wpm, script 155–160 words, final length 55–60 s. Do NOT use Chatterbox for the final VO (it ran ~237 wpm on Short #3). Switch voice.json to `"engine": "elevenlabs"` (Liam settings live under `engines.elevenlabs`); keep Chatterbox for tests only. No speed-up, ever.
+- Pauses between sentences: 0.25–0.4 s in the first 15 s; only the payoff and respectful beats get longer ones.
+- Word timestamps: if the engine gives none, captions come from forced alignment of the final MP3 to the brief's script (scripts/align.py, faster-whisper; fallback: ffmpeg silencedetect).
 
 ### Sound sourcing (CC0 only; Freesound is out — it blocks the cloud machine)
 - Order: 1) Kenney CC0 packs (kenney.nl blocks the cloud machine too, so use Kenney's own uploads on opengameart.org); 2) OpenGameArt.org filtered to CC0 (search with field_art_licenses_tid[]=4, then confirm CC0 on the item page); 3) Wikimedia Commons CC0/PD as a fallback (upload.wikimedia.org currently answers 429 to the cloud machine).
@@ -46,6 +47,19 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 - Every SFX at least 6 dB under the voice.
 - Rain at -32 LUFS, fading out at the first cut.
 - Nothing peaks above the voice.
+
+## Build checks (from analytics on Shorts 01–03; details in LESSONS.md §11)
+1. Frame 0 is in motion: a character or the key object already doing something strange. No title card, no fade-in, no empty/establishing frame first.
+2. On-screen hook text in the first 2 s: the hook claim in ≤5 words, large and centred.
+3. Vik's bet, with the stake object on screen, lands by 5 s. If the VO puts it later, flag it; don't re-time around it.
+4. No shot longer than 3 s in the first 15 s; cut on sentence boundaries.
+5. Voice: Liam / eleven_v3, ~164 wpm, 155–160 words, final 55–60 s. No Chatterbox for the final VO.
+6. Sentence pauses 0.25–0.4 s in the first 15 s (longer only at the payoff and respectful beats).
+7. The end frame loops cleanly into frame 0.
+QA on every preview and render:
+- Contact-sheet frames at 0, 1, 2, 5, 10, 15 s: each shows the exact noun being spoken; none empty or text-only.
+- Report the time Vik's bet lands, the VO wpm and the total length.
+- If any of checks 1–5 fails: STOP and tell Aman before the full render.
 
 ## Workflow per Short
 1. Read /briefs/<slug>.md and /audio/<slug>.mp3.
