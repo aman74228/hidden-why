@@ -32,7 +32,7 @@ export type Shot = SetSpec & {
   focusDist?: number | [number, number]; // metres, overrides the cast-based focus; [from, to] = rack focus over the shot
   sfx?: {name: string; at: number; volume?: number; dur?: number; gain?: number}[]; // public/sfx/<name>.mp3, `at` seconds into the shot
   // ---- shots cut from Google Flow clips (scripts/flow_prep.py upscales them) ----
-  flow?: {clip: string; from?: number; to?: number; freeze?: {at: number; dur: number; zoom?: number}; clipDur?: number; zoom?: [number, number]; holdZoom?: number; zoomAt?: [number, number]};
+  flow?: {clip: string; from?: number; to?: number; freeze?: {at: number; dur: number; zoom?: number; cut?: {after: number; zoom: [number, number]; origin: [number, number]}}; clipDur?: number; zoom?: [number, number]; holdZoom?: number; zoomAt?: [number, number]};
   overlays?: FlowOverlay[];
   captionY?: number; // fixed caption centre (fraction from top) for this shot
   allowFace?: string; // CHARACTERS.md rule 4: a declared, intended overlap with a face

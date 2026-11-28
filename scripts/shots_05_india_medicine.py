@@ -81,7 +81,11 @@ shots = [
    "sfx": [{"name": "plate-clink", "at": 0.6, "gain": -4}, {"name": "marbles-scatter", "at": 0.75, "gain": -8}]},
   # 3-4 London pharmacy: every 4th box glows and pops away
   {"id": "london", "beat": 3, "stillAt": round(LINE4 + 1.5, 2), "captionY": 0.74, "flowTo": LON_END,
-   "flowFreeze": {"at": LON_FREEZE, "dur": LON_FD, "zoom": 0.06},
+   # freeze: 2.5 s wide + push-in, then a hard cut to a tight crop on the glowing upper boxes (visible
+   # x 0.12-0.50, y 0.08-0.46 of the frame: between Nik's and Gus's faces, so no face in frame; 1.8x
+   # cannot avoid them) with its own push-in, until "and they"; back to the wide clip as it resumes
+   "flowFreeze": {"at": LON_FREEZE, "dur": LON_FD, "zoom": 0.04,
+                  "cut": {"after": 2.5, "zoom": [2.63, 2.78], "origin": [round(0.12 / (1 - 1 / 2.63), 4), round(0.08 / (1 - 1 / 2.63), 4)]}},
    "titleCard": {"label": "London", "word": "1 in 4 medicines", "at": round(LINE4, 2), "duration": round(dur("london") - LINE4 - 0.15, 2)},
    "sfx": [{"name": "airport-chime", "at": 0.15, "gain": -8}] + [{"name": "pop-soft", "at": round(t - 3.0 + LON_FD, 2), "gain": -6} for t in (4.77, 4.92, 5.08, 5.25)]},
   # 5 USA counter: amber bottles, 4 in 10 vanish

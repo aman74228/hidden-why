@@ -81,7 +81,13 @@ export const FlowScene: React.FC<{shot: Shot; frames: number}> = ({shot, frames}
   const f0 = fz ? Math.round((fz.at - (fl.from ?? 0)) * fps) : Infinity;
   const fd = fz ? Math.round(fz.dur * fps) : 0;
   const clipFrame = frame < f0 ? frame : frame < f0 + fd ? f0 : frame - fd;
-  const freezeK = fz ? Math.min(1, Math.max(0, (frame - f0) / Math.max(1, fd))) : 0;
+  // optional hard cut inside the freeze to a tight crop (`cut.after` s in), with its own slow push-in;
+  // the wide push-in runs only until that cut and stays at its value when the clip resumes
+  const cut = fz?.cut;
+  const fw = cut ? Math.round(cut.after * fps) : fd;
+  const freezeK = fz ? Math.min(1, Math.max(0, (frame - f0) / Math.max(1, fw))) : 0;
+  const inCut = cut !== undefined && frame >= f0 + fw && frame < f0 + fd;
+  const cutK = inCut ? (frame - f0 - fw) / Math.max(1, fd - fw) : 0;
   const ease = (k: number) => 0.5 - 0.5 * Math.cos(Math.PI * k);
   const local = Math.min(clipFrame, avail);
   // hold: last frame + slow push-in; optional zoom over the whole shot
@@ -91,7 +97,13 @@ export const FlowScene: React.FC<{shot: Shot; frames: number}> = ({shot, frames}
   const cards = shot.titleCards ?? (shot.titleCard ? [shot.titleCard] : []);
   return (
     <AbsoluteFill style={{background: C.indigoDeep, overflow: 'hidden'}}>
-      <AbsoluteFill style={{transform: `scale(${zoom})`, transformOrigin: `${(fl.zoomAt ?? [0.5, 0.5])[0] * 100}% ${(fl.zoomAt ?? [0.5, 0.5])[1] * 100}%`}}>
+      <AbsoluteFill
+        style={
+          inCut
+            ? {transform: `scale(${cut!.zoom[0] + (cut!.zoom[1] - cut!.zoom[0]) * ease(cutK)})`, transformOrigin: `${cut!.origin[0] * 100}% ${cut!.origin[1] * 100}%`}
+            : {transform: `scale(${zoom})`, transformOrigin: `${(fl.zoomAt ?? [0.5, 0.5])[0] * 100}% ${(fl.zoomAt ?? [0.5, 0.5])[1] * 100}%`}
+        }
+      >
         <Freeze frame={local}>
           <OffthreadVideo src={staticFile(hdPath(fl.clip))} startFrom={Math.round((fl.from ?? 0) * fps)} muted style={{width: '100%', height: '100%', objectFit: 'cover'}} />
         </Freeze>
