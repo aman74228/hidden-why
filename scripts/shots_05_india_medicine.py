@@ -54,6 +54,14 @@ FROM = {
 EXACTLY = rel("same-pill", word_t("exactly", T(8)))
 MADE = rel("payoff", word_t("made", T(11)))
 UNICEF = rel("clinic", word_t("unicef's", T(6)))
+# London: play 03 from 3.0 s (after Gus's hand leaves Nik's cheek) to a full-shelf frame (4.5 s, boxes glowing),
+# freeze it with a slow push-in under line 4, then resume so the first box pops (clip 4.75 s) on "blink".
+# The shot cuts at clip time LON_END: no end-of-shot hold.
+LON_FREEZE, LON_POP = 4.5, 4.75
+BLINK = rel("london", word_t("blink", T(4)))
+LON_END = round(LON_POP + dur("london") - BLINK, 3)
+LON_FD = round(dur("london") - (LON_END - 3.0), 3)
+assert LON_END <= D["03"], LON_END
 LINE4 = rel("london", T(4))
 CARD_LAND = rel("office-2001", word_t("under", T(10))) - 0.25
 P = FROM["payoff"]
@@ -72,9 +80,10 @@ shots = [
    "titleCard": {"label": "The bet", "word": "Vik's chocolate", "at": 0.15, "duration": round(dur("bet") - 0.3, 2)},
    "sfx": [{"name": "plate-clink", "at": 0.6, "gain": -4}, {"name": "marbles-scatter", "at": 0.75, "gain": -8}]},
   # 3-4 London pharmacy: every 4th box glows and pops away
-  {"id": "london", "beat": 3, "stillAt": round(LINE4 + 1.5, 2), "captionY": 0.74, "flowHold": True,
+  {"id": "london", "beat": 3, "stillAt": round(LINE4 + 1.5, 2), "captionY": 0.74, "flowTo": LON_END,
+   "flowFreeze": {"at": LON_FREEZE, "dur": LON_FD, "zoom": 0.06},
    "titleCard": {"label": "London", "word": "1 in 4 medicines", "at": round(LINE4, 2), "duration": round(dur("london") - LINE4 - 0.15, 2)},
-   "sfx": [{"name": "airport-chime", "at": 0.15, "gain": -8}] + [{"name": "pop-soft", "at": t - 3.0, "gain": -6} for t in (5.0, 5.25, 5.5, 5.8, 6.1)]},
+   "sfx": [{"name": "airport-chime", "at": 0.15, "gain": -8}] + [{"name": "pop-soft", "at": round(t - 3.0 + LON_FD, 2), "gain": -6} for t in (4.77, 4.92, 5.08, 5.25)]},
   # 5 USA counter: amber bottles, 4 in 10 vanish
   {"id": "usa", "captionY": 0.62, "flowTo": 4.0, "flowZoom": 1.12,
    # the stat card sits on the counter, not at the top: 04 cuts to a close-up where Nik's face fills the top third
@@ -108,6 +117,8 @@ for s in shots:
     sid = s["id"]
     clip = next(c for i, c, _, _ in seg if i == sid)
     s["flow"] = {"clip": f"flow/05/{clip}.mp4", "from": FROM[sid], "clipDur": D[clip]}
+    if "flowFreeze" in s:  # mid-shot freeze (no end hold)
+        s["flow"]["freeze"] = s.pop("flowFreeze"); s["flow"]["to"] = s.pop("flowTo"); s["flow"]["zoomAt"] = [0.5, 0.4]
     if "flowTo" in s:  # cut away early: hold the last clean frame
         s["flow"]["to"] = s.pop("flowTo"); s["flow"]["holdZoom"] = 0.06; s["flow"]["zoomAt"] = [0.5, 0.15]
     if "flowZoom" in s:  # constant crop (garbled shelf text out of frame)
@@ -122,7 +133,7 @@ assert [s["id"] for s in shots] == [x[0] for x in seg]
 fr = [round(b * FPS) for _, _, _, b in seg]
 for i, s in enumerate(shots):
     s["duration"] = round((fr[i] - (fr[i - 1] if i else 0)) / FPS, 4)
-    left = min(s["flow"].get("to", 99), s["flow"]["clipDur"]) - s["flow"]["from"]
+    left = min(s["flow"].get("to", 99), s["flow"]["clipDur"]) - s["flow"]["from"] + s["flow"].get("freeze", {}).get("dur", 0)
     if s["duration"] > left + 0.02 and "holdZoom" not in s["flow"]:
         raise SystemExit(f"{s['id']}: needs {s['duration']:.2f} s but clip has {left:.2f} s from {s['flow']['from']}")
 L = {"slug": SLUG, "title": "What If India Stopped Making Medicine?", "audio": f"vo/{SLUG}.mp3", "kind": "flow",

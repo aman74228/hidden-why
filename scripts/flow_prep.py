@@ -71,7 +71,14 @@ for s in L["shots"]:
         x = clean[s["flow"]["clip"]]
         i0 = int(s["flow"].get("from", 0) * SR)
         end = int(s["flow"]["to"] * SR) if s["flow"].get("to") else len(x)
-        take = x[i0:min(i0 + n, end)]
+        fz = s["flow"].get("freeze")
+        if fz:  # mid-shot freeze: silence while the picture holds (tiny fades either side)
+            iz, nd, k = int(fz["at"] * SR), int(round(fz["dur"] * FPS) / FPS * SR), int(0.03 * SR)
+            a, b = x[i0:iz].copy(), x[iz:end].copy()
+            a[-k:] *= np.linspace(1, 0, k)[:, None]; b[:k] *= np.linspace(0, 1, k)[:, None]
+            take = np.concatenate([a, np.zeros((nd, 2), np.float32), b])[:n]
+        else:
+            take = x[i0:min(i0 + n, end)]
         seg[:len(take)] = take
         k = int(0.03 * SR)  # tiny fades at every cut (no clicks)
         seg[:k] *= np.linspace(0, 1, k)[:, None]

@@ -75,10 +75,18 @@ export const FlowScene: React.FC<{shot: Shot; frames: number}> = ({shot, frames}
   const fl = shot.flow!;
   const frame = Math.min(raw, frames - 1);
   const avail = Math.floor((Math.min(fl.to ?? Infinity, fl.clipDur ?? 8) - (fl.from ?? 0)) * fps) - 1; // last frame used (clip end, or `to`)
-  const local = Math.min(frame, avail);
+  // optional mid-shot freeze: clip frame at `freeze.at` (clip seconds) held for `freeze.dur` s with a
+  // slow push-in that stays in after the clip resumes (no snap back)
+  const fz = fl.freeze;
+  const f0 = fz ? Math.round((fz.at - (fl.from ?? 0)) * fps) : Infinity;
+  const fd = fz ? Math.round(fz.dur * fps) : 0;
+  const clipFrame = frame < f0 ? frame : frame < f0 + fd ? f0 : frame - fd;
+  const freezeK = fz ? Math.min(1, Math.max(0, (frame - f0) / Math.max(1, fd))) : 0;
+  const ease = (k: number) => 0.5 - 0.5 * Math.cos(Math.PI * k);
+  const local = Math.min(clipFrame, avail);
   // hold: last frame + slow push-in; optional zoom over the whole shot
-  const holdK = frame > avail ? (frame - avail) / Math.max(1, frames - 1 - avail) : 0;
-  const zoom = (fl.zoom ? fl.zoom[0] + (fl.zoom[1] - fl.zoom[0]) * (frame / Math.max(1, frames - 1)) : 1) * (1 + (fl.holdZoom ?? 0.05) * holdK);
+  const holdK = clipFrame > avail ? (clipFrame - avail) / Math.max(1, frames - 1 - fd - avail) : 0;
+  const zoom = (fl.zoom ? fl.zoom[0] + (fl.zoom[1] - fl.zoom[0]) * (frame / Math.max(1, frames - 1)) : 1) * (1 + (fl.holdZoom ?? 0.05) * holdK) * (1 + (fz?.zoom ?? 0.06) * ease(freezeK));
   if (qaHands) return <AbsoluteFill style={{background: '#000'}} />;
   const cards = shot.titleCards ?? (shot.titleCard ? [shot.titleCard] : []);
   return (
