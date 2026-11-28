@@ -28,7 +28,7 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 - Ending: hold payoff 0.5 s, hard cut so it loops into the first frame.
 
 ## Audio
-- Voiceover (from the next Short): Liam, ElevenLabs eleven_v3, ~164 wpm, script 155–160 words, final length 55–60 s. Do NOT use Chatterbox for the final VO (it ran ~237 wpm on Short #3). Switch voice.json to `"engine": "elevenlabs"` (Liam settings live under `engines.elevenlabs`); keep Chatterbox for tests only. No speed-up, ever.
+- Voiceover: Chatterbox (Resemble AI, MIT), original model, built-in default voice, base exaggeration 0.5 / cfg 0.3 / fixed seed 1750 (voice.json, `"engine": "chatterbox"`; ElevenLabs is off, no credits). Render line by line with `scripts/vo_lines.py <slug>` (whisper check, `scripts/vo_pauses.py`). Pace fix (Short #3 ran ~237 wpm): slow every line with a pitch-preserving stretch of 0.88–0.92 (rubberband, else ffmpeg atempo), never speed up. Target overall ≤200 wpm including pauses; script ~170–185 words; final length 55–65 s (a little over 60 is OK).
 - Pauses between sentences: 0.25–0.4 s in the first 15 s; only the payoff and respectful beats get longer ones.
 - Word timestamps: if the engine gives none, captions come from forced alignment of the final MP3 to the brief's script (scripts/align.py, faster-whisper; fallback: ffmpeg silencedetect).
 
@@ -53,7 +53,7 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 2. On-screen hook text in the first 2 s: the hook claim in ≤5 words, large and centred.
 3. Vik's bet, with the stake object on screen, lands by 5 s. If the VO puts it later, flag it; don't re-time around it.
 4. No shot longer than 3 s in the first 15 s; cut on sentence boundaries.
-5. Voice: Liam / eleven_v3, ~164 wpm, 155–160 words, final 55–60 s. No Chatterbox for the final VO.
+5. Voice: Chatterbox, slowed 0.88–0.92 (pitch-preserving), overall ≤200 wpm incl. pauses, ~170–185 words, final 55–65 s.
 6. Sentence pauses 0.25–0.4 s in the first 15 s (longer only at the payoff and respectful beats).
 7. The end frame loops cleanly into frame 0.
 QA on every preview and render:

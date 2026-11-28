@@ -148,8 +148,9 @@ Build rules (from the next Short):
 3. Vik's bet (with the stake object on screen) lands by 5 s. If the VO puts it later, flag it; don't
    re-time around it.
 4. No shot longer than 3 s in the first 15 s. Cut on sentence boundaries.
-5. Voice: Liam, ElevenLabs eleven_v3, ~164 wpm, 155–160 words. Final length 55–60 s. Do not use
-   Chatterbox for the final VO.
+5. Voice: Chatterbox (ElevenLabs is off: no credits). Slow every line with a pitch-preserving stretch
+   of 0.88–0.92, never speed up. Overall ≤200 wpm including pauses, ~170–185 words, final 55–65 s
+   (a little over 60 is OK).
 6. Pauses between sentences: 0.25–0.4 s in the first 15 s. Only the payoff and the respectful beats
    get longer pauses.
 7. The end frame loops cleanly into frame 0, as now.
