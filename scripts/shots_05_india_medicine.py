@@ -27,7 +27,8 @@ seg = [
   ("london", "03", T(3) - PRE, T(5) - PRE),
   ("usa", "04", T(5) - PRE, T(6) - PRE),
   ("clinic", "05", T(6) - PRE, T(7) - PRE),
-  ("same-pill", "06", T(7) - PRE, T(9) - PRE),
+  ("sweat", "05", T(7) - PRE, T(8) - PRE),
+  ("same-pill", "06", T(8) - PRE, T(9) - PRE),
   ("factory", "07", T(9) - PRE, T(10) - PRE),
   ("office-2001", "09", T(10) - PRE, T(11) - PRE),
   ("payoff", "08", T(11) - PRE, T(12) - PRE),
@@ -44,13 +45,15 @@ FROM = {
   "bet": 2.0,                                    # Vik sets the tin down, arms crossed, smug
   "london": 3.0,                                 # after Gus's hand leaves Nik's cheek (1.6-2.9 s); rest is a hold
   "usa": 0.0,                                    # ends at 4.0 s (Vik's jacket goes see-through in the smoke after 4.1 s)
-  "clinic": 0.8,
+  "clinic": 0.0,                                 # from 0 so the tail (Vik worried) is left for line 7
+  "sweat": None,                                 # = the rest of 05 after clinic (continuous), then a hold on Vik
   "same-pill": 1.0,
   "factory": 0.3,
   "office-2001": round(D["09"] - dur("office-2001"), 3),   # ends on the push-in onto the blank tag
   "payoff": 0.6,                                 # hands over the tin, rubs his temple, turns the box over
   "loop": round(D["01"] - dur("loop"), 3),       # the last 3.7 s of 01, then a hard cut to frame 1
 }
+FROM["sweat"] = round(FROM["clinic"] + dur("clinic"), 3)
 EXACTLY = rel("same-pill", word_t("exactly", T(8)))
 MADE = rel("payoff", word_t("made", T(11)))
 UNICEF = rel("clinic", word_t("unicef's", T(6)))
@@ -82,10 +85,10 @@ shots = [
   # 3-4 London pharmacy: every 4th box glows and pops away
   {"id": "london", "beat": 3, "stillAt": round(LINE4 + 1.5, 2), "captionY": 0.74, "flowTo": LON_END,
    # freeze: 2.5 s wide + push-in, then a hard cut to a tight crop on the glowing upper boxes (visible
-   # x 0.12-0.50, y 0.08-0.46 of the frame: between Nik's and Gus's faces, so no face in frame; 1.8x
+   # x 0.14-0.50, y 0.0-0.357 of the frame: above Nik's hair, left of Gus's head, so no head in frame; 1.8x
    # cannot avoid them) with its own push-in, until "and they"; back to the wide clip as it resumes
    "flowFreeze": {"at": LON_FREEZE, "dur": LON_FD, "zoom": 0.04,
-                  "cut": {"after": 2.5, "zoom": [2.63, 2.78], "origin": [round(0.12 / (1 - 1 / 2.63), 4), round(0.08 / (1 - 1 / 2.63), 4)]}},
+                  "cut": {"after": 2.5, "zoom": [2.8, 2.95], "origin": [round(0.14 / (1 - 1 / 2.8), 4), 0.0]}},
    "titleCard": {"label": "London", "word": "1 in 4 medicines", "at": round(LINE4, 2), "duration": round(dur("london") - LINE4 - 0.15, 2)},
    "sfx": [{"name": "airport-chime", "at": 0.15, "gain": -8}] + [{"name": "pop-soft", "at": round(t - 3.0 + LON_FD, 2), "gain": -6} for t in (4.77, 4.92, 5.08, 5.25)]},
   # 5 USA counter: amber bottles, 4 in 10 vanish
@@ -96,11 +99,14 @@ shots = [
   # 6 village clinic: the vaccine cold box goes empty (serious beat: music dips 3 dB)
   {"id": "clinic", "beat": 4, "stillAt": 4.6, "captionY": 0.74,
    "titleCard": {"label": "UNICEF vaccines", "word": "~6 in 10", "at": UNICEF, "duration": round(5.0 - UNICEF, 2)},  # gone before the Gus close-up (clip 6.0 s) and Vik leaning in: it would cover their faces,
-   "sfx": [{"name": "box-open", "at": 1.3, "gain": -6}, {"name": "shimmer", "at": 3.0, "gain": -10}] + [{"name": "pop-soft", "at": t, "gain": -8} for t in (3.4, 3.7, 4.0)]},
+   "sfx": [{"name": "box-open", "at": 2.1, "gain": -6}, {"name": "shimmer", "at": 3.8, "gain": -10}] + [{"name": "pop-soft", "at": t, "gain": -8} for t in (4.2, 4.5, 4.8)]},
+  # 7 "Now Vik is sweating...": the end of 05 (Vik at right, worried), last frame held with a slow push-in toward him
+  {"id": "sweat", "captionY": 0.68, "flowHoldAt": [0.76, 0.22]},
   # 7-8 the same pill: gold box vs plain box; price tags pop on "exactly the same job"
   {"id": "same-pill", "beat": 5, "stillAt": round(EXACTLY + 0.8, 2), "captionY": 0.82,
-   "overlays": [{"kind": "tag", "text": "₹₹₹₹", "at": EXACTLY, "pos": [0.25, 0.36], "rot": -5, "scale": 1.5},
-                {"kind": "tag", "text": "₹", "at": round(EXACTLY + 0.25, 2), "pos": [0.77, 0.36], "rot": 4, "scale": 1.5}],
+   # tags ~2x, each just above its own box (gold x 0.06-0.46, plain x 0.55-0.92, tops ~0.47 in clip 06 at 2.4-3.9 s)
+   "overlays": [{"kind": "tag", "text": "₹₹₹₹", "at": EXACTLY, "pos": [0.285, 0.405], "rot": -4, "scale": 2.6},
+                {"kind": "tag", "text": "₹", "at": round(EXACTLY + 0.25, 2), "pos": [0.745, 0.405], "rot": 4, "scale": 2.6}],
    "sfx": [{"name": "pop-soft", "at": EXACTLY, "gain": -4}, {"name": "pop-soft", "at": round(EXACTLY + 0.25, 2), "gain": -6}]},
   # 9 one factory: presses stamping tablets, boxes on the conveyor
   {"id": "factory", "captionY": 0.72,
@@ -127,6 +133,8 @@ for s in shots:
         s["flow"]["to"] = s.pop("flowTo"); s["flow"]["holdZoom"] = 0.06; s["flow"]["zoomAt"] = [0.5, 0.15]
     if "flowZoom" in s:  # constant crop (garbled shelf text out of frame)
         z = s.pop("flowZoom"); s["flow"]["zoom"] = [z, z]
+    if "flowHoldAt" in s:
+        s["flow"]["holdZoom"] = 0.08; s["flow"]["zoomAt"] = s.pop("flowHoldAt")
     if s.pop("flowHold", False):
         s["flow"]["holdZoom"] = 0.06
         s["flow"]["zoomAt"] = [0.5, 0.45]
