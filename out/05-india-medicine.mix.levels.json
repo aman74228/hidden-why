@@ -21,7 +21,7 @@
   "true_peak_dbtp": -14.9
  },
  "sfx": {
-  "stem_lufs": -29.7,
+  "stem_lufs": -29.9,
   "stem_max_momentary_lufs": -20.2,
   "true_peak_dbtp": -9.8,
   "per_cue_max_momentary_lufs": {
@@ -31,7 +31,7 @@
    "pop-soft": -30.8,
    "marble-click": -35.5,
    "box-open": -28.0,
-   "shimmer": -31.0,
+   "shimmer": -35.0,
    "press-thump": -28.2,
    "paper-rustle": -28.2,
    "ding": -21.0
