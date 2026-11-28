@@ -1,0 +1,887 @@
+[
+ {
+  "word": "What",
+  "start": 0.0,
+  "end": 0.4
+ },
+ {
+  "word": "if",
+  "start": 0.4,
+  "end": 0.58
+ },
+ {
+  "word": "all",
+  "start": 0.58,
+  "end": 0.94
+ },
+ {
+  "word": "the",
+  "start": 0.94,
+  "end": 1.16
+ },
+ {
+  "word": "ants",
+  "start": 1.16,
+  "end": 1.46
+ },
+ {
+  "word": "disappeared?",
+  "start": 1.46,
+  "end": 1.86
+ },
+ {
+  "word": "Good!",
+  "start": 2.5,
+  "end": 3.26
+ },
+ {
+  "word": "Nobody",
+  "start": 3.76,
+  "end": 3.96
+ },
+ {
+  "word": "would",
+  "start": 3.96,
+  "end": 4.22
+ },
+ {
+  "word": "even",
+  "start": 4.22,
+  "end": 4.44
+ },
+ {
+  "word": "notice!",
+  "start": 4.44,
+  "end": 4.7
+ },
+ {
+  "word": "Vik",
+  "start": 5.25,
+  "end": 5.55
+ },
+ {
+  "word": "bets",
+  "start": 5.55,
+  "end": 5.79
+ },
+ {
+  "word": "his",
+  "start": 5.79,
+  "end": 5.97
+ },
+ {
+  "word": "whole",
+  "start": 5.97,
+  "end": 6.25
+ },
+ {
+  "word": "picnic",
+  "start": 6.25,
+  "end": 6.57
+ },
+ {
+  "word": "on",
+  "start": 6.57,
+  "end": 6.81
+ },
+ {
+  "word": "it.",
+  "start": 6.81,
+  "end": 7.01
+ },
+ {
+  "word": "But",
+  "start": 7.34,
+  "end": 7.48
+ },
+ {
+  "word": "there",
+  "start": 7.48,
+  "end": 7.64
+ },
+ {
+  "word": "are",
+  "start": 7.64,
+  "end": 7.8
+ },
+ {
+  "word": "about",
+  "start": 7.8,
+  "end": 8.0
+ },
+ {
+  "word": "twenty",
+  "start": 8.0,
+  "end": 8.36
+ },
+ {
+  "word": "quadrillion",
+  "start": 8.36,
+  "end": 8.9
+ },
+ {
+  "word": "ants",
+  "start": 8.9,
+  "end": 9.2
+ },
+ {
+  "word": "on",
+  "start": 9.2,
+  "end": 9.38
+ },
+ {
+  "word": "Earth,",
+  "start": 9.38,
+  "end": 9.64
+ },
+ {
+  "word": "and",
+  "start": 9.82,
+  "end": 9.96
+ },
+ {
+  "word": "together",
+  "start": 9.96,
+  "end": 10.34
+ },
+ {
+  "word": "they",
+  "start": 10.66,
+  "end": 10.72
+ },
+ {
+  "word": "outweigh",
+  "start": 10.72,
+  "end": 11.08
+ },
+ {
+  "word": "every",
+  "start": 11.08,
+  "end": 11.4
+ },
+ {
+  "word": "wild",
+  "start": 11.4,
+  "end": 11.72
+ },
+ {
+  "word": "bird",
+  "start": 11.72,
+  "end": 11.96
+ },
+ {
+  "word": "and",
+  "start": 11.96,
+  "end": 12.16
+ },
+ {
+  "word": "mammal",
+  "start": 12.16,
+  "end": 12.44
+ },
+ {
+  "word": "combined.",
+  "start": 12.44,
+  "end": 12.84
+ },
+ {
+  "word": "That's",
+  "start": 13.41,
+  "end": 13.69
+ },
+ {
+  "word": "about",
+  "start": 13.69,
+  "end": 13.87
+ },
+ {
+  "word": "two",
+  "start": 13.87,
+  "end": 14.13
+ },
+ {
+  "word": "and",
+  "start": 14.13,
+  "end": 14.25
+ },
+ {
+  "word": "a",
+  "start": 14.25,
+  "end": 14.35
+ },
+ {
+  "word": "half",
+  "start": 14.35,
+  "end": 14.49
+ },
+ {
+  "word": "million",
+  "start": 14.49,
+  "end": 14.79
+ },
+ {
+  "word": "for",
+  "start": 14.79,
+  "end": 15.07
+ },
+ {
+  "word": "every",
+  "start": 15.07,
+  "end": 15.33
+ },
+ {
+  "word": "person.",
+  "start": 15.33,
+  "end": 15.63
+ },
+ {
+  "word": "So",
+  "start": 16.28,
+  "end": 16.52
+ },
+ {
+  "word": "when",
+  "start": 16.52,
+  "end": 16.78
+ },
+ {
+  "word": "they",
+  "start": 16.78,
+  "end": 16.9
+ },
+ {
+  "word": "vanish,",
+  "start": 16.9,
+  "end": 17.22
+ },
+ {
+  "word": "everything",
+  "start": 17.79,
+  "end": 17.91
+ },
+ {
+  "word": "they",
+  "start": 17.91,
+  "end": 18.11
+ },
+ {
+  "word": "were",
+  "start": 18.11,
+  "end": 18.25
+ },
+ {
+  "word": "carrying",
+  "start": 18.25,
+  "end": 18.73
+ },
+ {
+  "word": "just…",
+  "start": 18.73,
+  "end": 20.68
+ },
+ {
+  "word": "drops.",
+  "start": 20.68,
+  "end": 20.8
+ },
+ {
+  "word": "Ants",
+  "start": 21.59,
+  "end": 21.97
+ },
+ {
+  "word": "are",
+  "start": 21.97,
+  "end": 22.05
+ },
+ {
+  "word": "the",
+  "start": 22.05,
+  "end": 22.17
+ },
+ {
+  "word": "planet's",
+  "start": 22.17,
+  "end": 22.57
+ },
+ {
+  "word": "cleanup",
+  "start": 22.57,
+  "end": 22.91
+ },
+ {
+  "word": "crew.",
+  "start": 22.91,
+  "end": 23.21
+ },
+ {
+  "word": "Without",
+  "start": 23.64,
+  "end": 23.86
+ },
+ {
+  "word": "them,",
+  "start": 23.86,
+  "end": 24.18
+ },
+ {
+  "word": "fallen",
+  "start": 24.47,
+  "end": 24.61
+ },
+ {
+  "word": "fruit,",
+  "start": 24.61,
+  "end": 25.01
+ },
+ {
+  "word": "dead",
+  "start": 25.38,
+  "end": 25.52
+ },
+ {
+  "word": "leaves",
+  "start": 25.52,
+  "end": 25.82
+ },
+ {
+  "word": "and",
+  "start": 26.02,
+  "end": 26.12
+ },
+ {
+  "word": "bugs",
+  "start": 26.12,
+  "end": 26.34
+ },
+ {
+  "word": "pile",
+  "start": 26.34,
+  "end": 26.72
+ },
+ {
+  "word": "up",
+  "start": 26.72,
+  "end": 26.92
+ },
+ {
+  "word": "and",
+  "start": 26.92,
+  "end": 27.1
+ },
+ {
+  "word": "rot",
+  "start": 27.1,
+  "end": 27.34
+ },
+ {
+  "word": "right",
+  "start": 27.34,
+  "end": 27.62
+ },
+ {
+  "word": "where",
+  "start": 27.62,
+  "end": 27.82
+ },
+ {
+  "word": "they",
+  "start": 27.82,
+  "end": 27.94
+ },
+ {
+  "word": "land.",
+  "start": 27.94,
+  "end": 28.2
+ },
+ {
+  "word": "Then",
+  "start": 28.77,
+  "end": 28.97
+ },
+ {
+  "word": "the",
+  "start": 28.97,
+  "end": 29.09
+ },
+ {
+  "word": "ground",
+  "start": 29.09,
+  "end": 29.29
+ },
+ {
+  "word": "changes.",
+  "start": 29.29,
+  "end": 29.73
+ },
+ {
+  "word": "Ant",
+  "start": 30.32,
+  "end": 30.42
+ },
+ {
+  "word": "tunnels",
+  "start": 30.42,
+  "end": 30.68
+ },
+ {
+  "word": "let",
+  "start": 30.68,
+  "end": 30.92
+ },
+ {
+  "word": "air",
+  "start": 30.92,
+  "end": 31.16
+ },
+ {
+  "word": "and",
+  "start": 31.16,
+  "end": 31.42
+ },
+ {
+  "word": "water",
+  "start": 31.42,
+  "end": 31.64
+ },
+ {
+  "word": "into",
+  "start": 31.64,
+  "end": 31.9
+ },
+ {
+  "word": "the",
+  "start": 31.9,
+  "end": 32.04
+ },
+ {
+  "word": "soil,",
+  "start": 32.04,
+  "end": 32.28
+ },
+ {
+  "word": "and",
+  "start": 32.66,
+  "end": 32.74
+ },
+ {
+  "word": "without",
+  "start": 32.74,
+  "end": 32.98
+ },
+ {
+  "word": "them,",
+  "start": 32.98,
+  "end": 33.28
+ },
+ {
+  "word": "it",
+  "start": 33.55,
+  "end": 33.67
+ },
+ {
+  "word": "packs",
+  "start": 33.67,
+  "end": 33.89
+ },
+ {
+  "word": "down",
+  "start": 33.89,
+  "end": 34.15
+ },
+ {
+  "word": "hard.",
+  "start": 34.15,
+  "end": 34.43
+ },
+ {
+  "word": "So",
+  "start": 34.98,
+  "end": 35.26
+ },
+ {
+  "word": "Gus",
+  "start": 35.26,
+  "end": 35.56
+ },
+ {
+  "word": "waters",
+  "start": 35.56,
+  "end": 35.92
+ },
+ {
+  "word": "two",
+  "start": 35.92,
+  "end": 36.2
+ },
+ {
+  "word": "pots.",
+  "start": 36.2,
+  "end": 36.48
+ },
+ {
+  "word": "The",
+  "start": 37.06,
+  "end": 37.22
+ },
+ {
+  "word": "one",
+  "start": 37.22,
+  "end": 37.4
+ },
+ {
+  "word": "full",
+  "start": 37.4,
+  "end": 37.64
+ },
+ {
+  "word": "of",
+  "start": 37.64,
+  "end": 37.8
+ },
+ {
+  "word": "tunnels",
+  "start": 37.8,
+  "end": 38.1
+ },
+ {
+  "word": "drinks",
+  "start": 38.1,
+  "end": 38.4
+ },
+ {
+  "word": "the",
+  "start": 38.4,
+  "end": 38.62
+ },
+ {
+  "word": "water",
+  "start": 38.62,
+  "end": 38.82
+ },
+ {
+  "word": "straight",
+  "start": 38.82,
+  "end": 39.14
+ },
+ {
+  "word": "down",
+  "start": 39.14,
+  "end": 39.4
+ },
+ {
+  "word": "to",
+  "start": 39.4,
+  "end": 39.56
+ },
+ {
+  "word": "the",
+  "start": 39.56,
+  "end": 39.66
+ },
+ {
+  "word": "roots.",
+  "start": 39.66,
+  "end": 39.94
+ },
+ {
+  "word": "The",
+  "start": 40.46,
+  "end": 40.58
+ },
+ {
+  "word": "packed",
+  "start": 40.58,
+  "end": 40.82
+ },
+ {
+  "word": "one?",
+  "start": 40.82,
+  "end": 41.14
+ },
+ {
+  "word": "It",
+  "start": 41.49,
+  "end": 41.73
+ },
+ {
+  "word": "just",
+  "start": 41.73,
+  "end": 41.97
+ },
+ {
+  "word": "spills",
+  "start": 41.97,
+  "end": 42.37
+ },
+ {
+  "word": "over.",
+  "start": 42.37,
+  "end": 42.77
+ },
+ {
+  "word": "And",
+  "start": 43.36,
+  "end": 43.66
+ },
+ {
+  "word": "the",
+  "start": 43.66,
+  "end": 43.8
+ },
+ {
+  "word": "seeds?",
+  "start": 43.8,
+  "end": 44.12
+ },
+ {
+  "word": "Many",
+  "start": 44.7,
+  "end": 44.9
+ },
+ {
+  "word": "plants",
+  "start": 44.9,
+  "end": 45.28
+ },
+ {
+  "word": "rely",
+  "start": 45.28,
+  "end": 45.62
+ },
+ {
+  "word": "on",
+  "start": 45.62,
+  "end": 45.82
+ },
+ {
+  "word": "ants",
+  "start": 45.82,
+  "end": 46.12
+ },
+ {
+  "word": "to",
+  "start": 46.12,
+  "end": 46.36
+ },
+ {
+  "word": "carry",
+  "start": 46.36,
+  "end": 46.56
+ },
+ {
+  "word": "their",
+  "start": 46.56,
+  "end": 46.76
+ },
+ {
+  "word": "seeds",
+  "start": 46.76,
+  "end": 47.04
+ },
+ {
+  "word": "underground.",
+  "start": 47.04,
+  "end": 47.6
+ },
+ {
+  "word": "Now",
+  "start": 48.26,
+  "end": 48.4
+ },
+ {
+  "word": "they",
+  "start": 48.4,
+  "end": 48.6
+ },
+ {
+  "word": "just",
+  "start": 48.6,
+  "end": 48.76
+ },
+ {
+  "word": "lie",
+  "start": 48.76,
+  "end": 49.0
+ },
+ {
+  "word": "there.",
+  "start": 49.0,
+  "end": 49.3
+ },
+ {
+  "word": "So",
+  "start": 49.77,
+  "end": 49.99
+ },
+ {
+  "word": "forests",
+  "start": 49.99,
+  "end": 50.39
+ },
+ {
+  "word": "start",
+  "start": 50.39,
+  "end": 50.87
+ },
+ {
+  "word": "to",
+  "start": 50.87,
+  "end": 51.03
+ },
+ {
+  "word": "thin,",
+  "start": 51.03,
+  "end": 51.39
+ },
+ {
+  "word": "one",
+  "start": 51.65,
+  "end": 51.91
+ },
+ {
+  "word": "missing",
+  "start": 51.91,
+  "end": 52.25
+ },
+ {
+  "word": "tiny",
+  "start": 52.25,
+  "end": 52.63
+ },
+ {
+  "word": "worker",
+  "start": 52.63,
+  "end": 52.95
+ },
+ {
+  "word": "at",
+  "start": 52.95,
+  "end": 53.17
+ },
+ {
+  "word": "a",
+  "start": 53.17,
+  "end": 53.29
+ },
+ {
+  "word": "time.",
+  "start": 53.29,
+  "end": 53.59
+ },
+ {
+  "word": "And",
+  "start": 54.32,
+  "end": 54.54
+ },
+ {
+  "word": "Vik's",
+  "start": 54.54,
+  "end": 54.78
+ },
+ {
+  "word": "picnic?",
+  "start": 54.78,
+  "end": 55.08
+ },
+ {
+  "word": "Buried",
+  "start": 55.61,
+  "end": 55.91
+ },
+ {
+  "word": "under",
+  "start": 55.91,
+  "end": 56.21
+ },
+ {
+  "word": "rotting",
+  "start": 56.21,
+  "end": 56.53
+ },
+ {
+  "word": "leaves.",
+  "start": 56.53,
+  "end": 56.95
+ },
+ {
+  "word": "Turns",
+  "start": 57.44,
+  "end": 57.58
+ },
+ {
+  "word": "out",
+  "start": 57.58,
+  "end": 57.8
+ },
+ {
+  "word": "he'd",
+  "start": 57.8,
+  "end": 58.06
+ },
+ {
+  "word": "miss",
+  "start": 58.06,
+  "end": 58.22
+ },
+ {
+  "word": "them",
+  "start": 58.22,
+  "end": 58.44
+ },
+ {
+  "word": "after",
+  "start": 58.44,
+  "end": 58.68
+ },
+ {
+  "word": "all.",
+  "start": 58.68,
+  "end": 58.98
+ },
+ {
+  "word": "So",
+  "start": 59.5,
+  "end": 59.66
+ },
+ {
+  "word": "next",
+  "start": 59.66,
+  "end": 59.82
+ },
+ {
+  "word": "time",
+  "start": 59.82,
+  "end": 60.06
+ },
+ {
+  "word": "you",
+  "start": 60.06,
+  "end": 60.18
+ },
+ {
+  "word": "step",
+  "start": 60.18,
+  "end": 60.34
+ },
+ {
+  "word": "on",
+  "start": 60.34,
+  "end": 60.54
+ },
+ {
+  "word": "one,",
+  "start": 60.54,
+  "end": 60.82
+ },
+ {
+  "word": "ask",
+  "start": 61.11,
+  "end": 61.29
+ },
+ {
+  "word": "yourself…",
+  "start": 61.29,
+  "end": 61.81
+ }
+]

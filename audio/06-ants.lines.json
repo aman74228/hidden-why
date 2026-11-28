@@ -54,7 +54,8 @@
    "n": 7,
    "text": "Ants are the planet's cleanup crew. Without them, fallen fruit, dead leaves and bugs pile up and rot right where they land.",
    "pause_after": 0.35,
-   "exaggeration": 0.55
+   "exaggeration": 0.55,
+   "take": 2
   },
   {
    "n": 8,

@@ -1,0 +1,381 @@
+{
+ "slug": "06-ants",
+ "engine": "chatterbox/original",
+ "seed": 1750,
+ "cfg_weight": 0.3,
+ "stretch": 0.9,
+ "flow_lines": [
+  1,
+  2
+ ],
+ "total_s": 61.84,
+ "words": 177,
+ "wpm_overall": 171.7,
+ "wpm_speech_only": 192.1,
+ "render": [],
+ "lines": [
+  {
+   "n": 1,
+   "start_s": 0.0,
+   "seconds": 2.25,
+   "pause_after": 0.25,
+   "exaggeration": null,
+   "try": "flow",
+   "wer": 0.0,
+   "diff": [],
+   "heard": "What if all the ants disappeared?",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 2,
+   "start_s": 2.5,
+   "seconds": 2.5,
+   "pause_after": 0.25,
+   "exaggeration": null,
+   "try": "flow",
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Good. Nobody would even notice.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 3,
+   "start_s": 5.25,
+   "seconds": 1.79,
+   "pause_after": 0.3,
+   "exaggeration": 0.7,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Vic bets his whole picnic on it.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 4,
+   "start_s": 7.34,
+   "seconds": 5.77,
+   "pause_after": 0.3,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "But there are about 20 quadrillion ants on Earth, and together, they outweigh every wild bird and mammal combined.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "Earth,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.36,
+      "added": -0.18
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 5,
+   "start_s": 13.41,
+   "seconds": 2.57,
+   "pause_after": 0.3,
+   "exaggeration": 0.55,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "That's about two and a half million for every person.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 6,
+   "start_s": 16.28,
+   "seconds": 4.91,
+   "pause_after": 0.4,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So when they vanish, everything they were carrying just drops.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "vanish,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.11,
+      "added": 0.07
+     }
+    ],
+    [
+     "just…",
+     "ellipsis",
+     0.55,
+     {
+      "natural": 0.0,
+      "added": 0.55
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 7,
+   "start_s": 21.59,
+   "seconds": 6.83,
+   "pause_after": 0.35,
+   "exaggeration": 0.55,
+   "try": 2,
+   "wer": 0.091,
+   "diff": [
+    [
+     "cleanup",
+     "clean up"
+    ]
+   ],
+   "heard": "Ants are the planet's clean -up crew. Without them, fallen fruit, dead leaves, and bugs pile up and rot right where they land.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "crew.",
+     "stop",
+     0.35,
+     {
+      "natural": 0.32,
+      "added": 0.03
+     }
+    ],
+    [
+     "them,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.09,
+      "added": 0.09
+     }
+    ],
+    [
+     "fruit,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.09,
+      "added": 0.09
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 8,
+   "start_s": 28.77,
+   "seconds": 5.86,
+   "pause_after": 0.35,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "Then the ground changes. Ant tunnels let air and water into the soil, and without them, it packs down hard.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "changes.",
+     "stop",
+     0.35,
+     {
+      "natural": 0.42,
+      "added": -0.07
+     }
+    ],
+    [
+     "soil,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.1,
+      "added": 0.08
+     }
+    ],
+    [
+     "them,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.07,
+      "added": 0.11
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 9,
+   "start_s": 34.98,
+   "seconds": 1.78,
+   "pause_after": 0.3,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So, Gus waters two pots.",
+   "median_pitch_hz": null,
+   "punct_pauses": [],
+   "unmatched_punct": []
+  },
+  {
+   "n": 10,
+   "start_s": 37.06,
+   "seconds": 5.9,
+   "pause_after": 0.4,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "The one full of tunnels drinks the water straight down to the roots. The packed one, it just spills over.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "roots.",
+     "stop",
+     0.35,
+     {
+      "natural": 0.29,
+      "added": 0.06
+     }
+    ],
+    [
+     "one?",
+     "question",
+     0.4,
+     {
+      "natural": 0.31,
+      "added": 0.09
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 11,
+   "start_s": 43.36,
+   "seconds": 6.06,
+   "pause_after": 0.35,
+   "exaggeration": 0.55,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "And the seeds? Many plants rely on ants to carry their seeds underground. Now they just lie there.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "seeds?",
+     "question",
+     0.4,
+     {
+      "natural": 0.32,
+      "added": 0.08
+     }
+    ],
+    [
+     "underground.",
+     "stop",
+     0.35,
+     {
+      "natural": 0.27,
+      "added": 0.08
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 12,
+   "start_s": 49.77,
+   "seconds": 4.0,
+   "pause_after": 0.55,
+   "exaggeration": 0.5,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So forests start to thin, one missing tiny worker at a time.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "thin,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.3,
+      "added": -0.12
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 13,
+   "start_s": 54.32,
+   "seconds": 4.78,
+   "pause_after": 0.4,
+   "exaggeration": 0.75,
+   "try": 2,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "And Vic's picnic, buried under rotting leaves, turns out he'd miss them after all.",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "picnic?",
+     "question",
+     0.4,
+     {
+      "natural": 0.23,
+      "added": 0.17
+     }
+    ],
+    [
+     "leaves.",
+     "stop",
+     0.35,
+     {
+      "natural": 0.2,
+      "added": 0.15
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  },
+  {
+   "n": 14,
+   "start_s": 59.5,
+   "seconds": 2.34,
+   "pause_after": 0.0,
+   "exaggeration": 0.6,
+   "try": 1,
+   "wer": 0.0,
+   "diff": [],
+   "heard": "So next time you step on one, ask yourself...",
+   "median_pitch_hz": null,
+   "punct_pauses": [
+    [
+     "one,",
+     "comma",
+     0.18,
+     {
+      "natural": 0.11,
+      "added": 0.07
+     }
+    ]
+   ],
+   "unmatched_punct": []
+  }
+ ]
+}
