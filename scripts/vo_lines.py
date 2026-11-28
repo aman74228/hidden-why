@@ -10,6 +10,11 @@ reads  audio/<slug>.lines.json  ({text, spoken?, exaggeration, pause_after} per 
 4. joins with each line's pause_after; if the total is under --min (52 s) the whole
    take is NOT re-rendered (cfg 0.5 is faster); a warning is printed; if over --max (60 s) the between-line pauses
    shrink first (never below 0.25 s), comma pauses never
+"stretch": 0.90 (top level, 0.88-0.92): every Chatterbox take is slowed with a pitch-preserving
+   time-stretch (ffmpeg rubberband, else atempo) BEFORE the pause insertion and the whisper timing.
+   Never below 1x duration (never sped up).
+[FLOW] lines ("flow": {"clip": "flow/06/01.mp4", "from": s, "to": s}): spoken inside a Google Flow clip;
+   not rendered: that excerpt of the clip's own audio is used (no stretch), whisper-timed for captions.
 writes audio/<slug>.mp3, audio/<slug>.vo.json (report), captions via scripts/align.py
 usage: vo_lines.py <slug> [--min 52] [--max 60]"""
 import argparse, difflib, json, re, subprocess, sys
@@ -27,7 +32,7 @@ spec = json.loads((ROOT / "audio" / f"{a.slug}.lines.json").read_text())
 lines = spec["lines"]
 work = ROOT / "audio" / "takes" / f"{a.slug}-lines"; work.mkdir(parents=True, exist_ok=True)
 SAME = {"vic": "vik", "vick": "vik", "vics": "viks", "vicks": "viks", "dadda": "dada", "data": "dada", "darda": "dada", "guss": "gus", "gust": "gus", "gas": "gus", "goose": "gus", "emu's": "emus", "nick": "nik", "nicks": "niks", "favorite": "favourite", "kilometers": "kilometres"}
-NUM = {"1750": ["seventeen", "fifty"], "50s": ["fifties"], "20000": ["twenty", "thousand"], "1000": ["a", "thousand"], "12": ["twelve"], "50": ["fifty"], "3": ["three"], "2": ["two"], "1": ["one"], "4": ["four"], "10": ["ten"], "2001": ["two", "thousand", "and", "one"], "10000": ["ten", "thousand"]}
+NUM = {"1750": ["seventeen", "fifty"], "50s": ["fifties"], "20000": ["twenty", "thousand"], "1000": ["a", "thousand"], "12": ["twelve"], "50": ["fifty"], "3": ["three"], "2": ["two"], "1": ["one"], "4": ["four"], "10": ["ten"], "2001": ["two", "thousand", "and", "one"], "10000": ["ten", "thousand"], "20": ["twenty"], "25": ["two", "and", "a", "half"]}
 
 def words(s):
     out = []
@@ -35,6 +40,7 @@ def words(s):
     s = re.sub(r"\$1\b(?![\d,])", "a dollar", s)  # "$1 a day" -> "a dollar a day"
     s = re.sub(r"\$(\d[\d,]*)", r"\1 dollars", s)  # "$10,000" -> "10000 dollars"
     s = re.sub(r"(?i)\b(water)(hole)\b", r"\1 \2", s)  # compound written as one word
+    s = re.sub(r"(?i)\bclean[- ]up\b", "cleanup", s)  # "clean-up" / "clean up"
     for w in s.split():
         n = re.sub(r"[^a-z0-9']", "", w.lower()).replace("'", "")
         out += NUM.get(n, [SAME.get(n, n)]) if n else []
@@ -51,10 +57,36 @@ def render(jobs):
     if r.returncode: sys.exit(r.stderr[-3000:])
     return json.loads(r.stdout.strip().splitlines()[-1])
 
+FLOWL = {i for i, ln in enumerate(lines) if ln.get("flow")}
+
+def flow_excerpt(i):
+    f = lines[i]["flow"]
+    out = work / f"line{i+1:02d}-flow.wav"
+    subprocess.run(["ffmpeg", "-v", "error", "-y", "-ss", str(f["from"]), "-to", str(f["to"]), "-i", str(ROOT / "public" / f["clip"]),
+                    "-ac", "1", "-ar", str(vp.SR), str(out)], check=True)
+    return str(out)
+
+STRETCH = spec.get("stretch")
+assert STRETCH is None or 0.85 <= STRETCH <= 1.0, "stretch must slow down (0.88-0.92), never speed up"
+def stretched(path):
+    if not STRETCH or STRETCH >= 1.0: return path
+    out = str(path).replace(".wav", f"-x{STRETCH}.wav")
+    if not Path(out).exists():
+        r = subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(path), "-af", f"rubberband=tempo={STRETCH}:pitch=1:pitchq=quality:formant=preserved", out])
+        if r.returncode:
+            subprocess.run(["ffmpeg", "-v", "error", "-y", "-i", str(path), "-af", f"atempo={STRETCH}", out], check=True)
+    return out
+
 def take(cfg):
     best = {}
     timing = []
-    todo = list(range(len(lines)))
+    for i in FLOWL:
+        fx = flow_excerpt(i)
+        heard = " ".join(w[0] for w in vp.words_of(vp.trim(vp.load(fx))))
+        e, diff = wer(lines[i]["text"], heard)
+        print(f"  line {i+1:2d} [FLOW] {lines[i]['flow']['clip']} {lines[i]['flow']['from']}-{lines[i]['flow']['to']} s: WER {e:.2f} {diff if diff else ''}", flush=True)
+        best[i] = {"file": fx, "wer": round(e, 3), "diff": diff, "try": "flow", "heard": heard}
+    todo = [i for i in range(len(lines)) if i not in FLOWL]
     for attempt in range(3):
         if not todo: break
         jobs = [{"text": lines[i].get("spoken", lines[i]["text"]), "out": str(work / f"line{i+1:02d}-cfg{cfg}-try{attempt+1}.wav"),
@@ -109,8 +141,24 @@ for round_ in range(2):
     parts = []
     for i, ln in enumerate(lines):
         outp = work / f"line{i+1:02d}-final.wav"
-        info = vp.process(best[i]["file"], ln.get("spoken", ln["text"]), outp)
+        if i in FLOWL:  # verbatim excerpt (lip sync): no trim, no pause insertion
+            x = vp.load(best[i]["file"]); vp.save(x, outp)
+            w = vp.words_of(x)
+            info = {"seconds": round(len(x) / vp.SR, 2), "speech_seconds": round((w[-1][2] - w[0][1]) if w else len(x) / vp.SR, 2),
+                    "words": w, "pauses": [], "unmatched_punct": []}
+        else:
+            info = vp.process(stretched(best[i]["file"]), ln.get("spoken", ln["text"]), outp)
         parts.append((outp, info))
+    # [FLOW] excerpts: match their loudness to the narration lines (median), so the voice stem is even
+    if FLOWL:
+        def lufs(path):
+            r = subprocess.run(["ffmpeg", "-hide_banner", "-nostats", "-i", str(path), "-af", "ebur128", "-f", "null", "-"], capture_output=True, text=True).stderr
+            return float(re.findall(r"I:\s+(-?[\d.]+) LUFS", r)[-1])
+        ref = float(np.median([lufs(parts[i][0]) for i in range(len(lines)) if i not in FLOWL]))
+        for i in FLOWL:
+            g = 10 ** ((ref - lufs(parts[i][0])) / 20)
+            vp.save(vp.load(parts[i][0]) * g, parts[i][0])
+            parts[i][1]["gain_db"] = round(20 * np.log10(g), 1)
     pauses = [ln["pause_after"] for ln in lines]
     total = sum(p[1]["seconds"] for p in parts) + sum(pauses)
     print(f"cfg {cfg}: total {total:.2f}s")
@@ -136,7 +184,7 @@ subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-
                input=y.astype(np.float32).tobytes(), check=True)
 nwords = sum(len(ln["text"].split()) for ln in lines)
 speech = sum(p[1]["speech_seconds"] for p in parts)
-rep = {"slug": a.slug, "engine": f"chatterbox/{V['model']}", "seed": V["seed"], "cfg_weight": cfg, "total_s": round(len(y) / SR, 2),
+rep = {"slug": a.slug, "engine": f"chatterbox/{V['model']}", "seed": V["seed"], "cfg_weight": cfg, "stretch": STRETCH, "flow_lines": sorted(i + 1 for i in FLOWL), "total_s": round(len(y) / SR, 2),
        "words": nwords, "wpm_overall": round(nwords / (len(y) / SR) * 60, 1), "wpm_speech_only": round(nwords / speech * 60, 1),
        "render": timing, "lines": [{"n": i + 1, "start_s": starts[i], "seconds": parts[i][1]["seconds"], "pause_after": pauses[i],
                                      "exaggeration": lines[i]["exaggeration"], "try": best[i]["try"], "wer": best[i]["wer"], "diff": best[i]["diff"],

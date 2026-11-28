@@ -1,0 +1,102 @@
+{
+ "slug": "06-ants",
+ "cfg_weight": 0.3,
+ "stretch": 0.9,
+ "note": "brief #6 table: [FLOW] lines 1-2 are the clips' own speech (verbatim excerpts, not rendered); narration slowed 0.90 pitch-preserving; line 14 loops into line 1 (no pause)",
+ "lines": [
+  {
+   "n": 1,
+   "text": "What if all the ants disappeared?",
+   "pause_after": 0.25,
+   "flow": {
+    "clip": "flow/06/01.mp4",
+    "from": 4.95,
+    "to": 7.2
+   },
+   "exaggeration": null
+  },
+  {
+   "n": 2,
+   "text": "Good! Nobody would even notice!",
+   "pause_after": 0.25,
+   "flow": {
+    "clip": "flow/06/02.mp4",
+    "from": 1.6,
+    "to": 4.1
+   },
+   "exaggeration": null
+  },
+  {
+   "n": 3,
+   "text": "Vik bets his whole picnic on it.",
+   "pause_after": 0.3,
+   "exaggeration": 0.7
+  },
+  {
+   "n": 4,
+   "text": "But there are about twenty quadrillion ants on Earth, and together they outweigh every wild bird and mammal combined.",
+   "pause_after": 0.3,
+   "exaggeration": 0.55
+  },
+  {
+   "n": 5,
+   "text": "That's about two and a half million for every person.",
+   "pause_after": 0.3,
+   "exaggeration": 0.55
+  },
+  {
+   "n": 6,
+   "text": "So when they vanish, everything they were carrying just… drops.",
+   "pause_after": 0.4,
+   "exaggeration": 0.6
+  },
+  {
+   "n": 7,
+   "text": "Ants are the planet's cleanup crew. Without them, fallen fruit, dead leaves and bugs pile up and rot right where they land.",
+   "pause_after": 0.35,
+   "exaggeration": 0.55
+  },
+  {
+   "n": 8,
+   "text": "Then the ground changes. Ant tunnels let air and water into the soil, and without them, it packs down hard.",
+   "pause_after": 0.35,
+   "exaggeration": 0.55
+  },
+  {
+   "n": 9,
+   "text": "So Gus waters two pots.",
+   "pause_after": 0.3,
+   "exaggeration": 0.6
+  },
+  {
+   "n": 10,
+   "text": "The one full of tunnels drinks the water straight down to the roots. The packed one? It just spills over.",
+   "pause_after": 0.4,
+   "exaggeration": 0.6
+  },
+  {
+   "n": 11,
+   "text": "And the seeds? Many plants rely on ants to carry their seeds underground. Now they just lie there.",
+   "pause_after": 0.35,
+   "exaggeration": 0.55
+  },
+  {
+   "n": 12,
+   "text": "So forests start to thin, one missing tiny worker at a time.",
+   "pause_after": 0.55,
+   "exaggeration": 0.5
+  },
+  {
+   "n": 13,
+   "text": "And Vik's picnic? Buried under rotting leaves. Turns out he'd miss them after all.",
+   "pause_after": 0.4,
+   "exaggeration": 0.75
+  },
+  {
+   "n": 14,
+   "text": "So next time you step on one, ask yourself…",
+   "pause_after": 0.0,
+   "exaggeration": 0.6
+  }
+ ]
+}
