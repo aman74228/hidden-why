@@ -1,0 +1,55 @@
+{
+ "flow/05/01.mp4": {
+  "seconds": 8.04,
+  "speech_removed": [
+   [
+    2.7,
+    5.8,
+    "What if India stopped making medicine, tomorrow?"
+   ]
+  ]
+ },
+ "flow/05/02.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/05/03.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/05/04.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/05/05.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/05/06.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/05/07.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/05/08.mp4": {
+  "seconds": 8.04,
+  "speech_removed": [
+   [
+    0.82,
+    2.82,
+    "Hehehehehe!"
+   ],
+   [
+    2.82,
+    6.1,
+    "Ha ha ha ha!"
+   ]
+  ]
+ },
+ "flow/05/09.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ }
+}

@@ -9,6 +9,7 @@ import {DEFAULT_FOV, resolveMove} from '../camera/moves';
 import {CAST} from '../characters/cast';
 import {Character} from '../characters/Character';
 import {TitleCard} from '../overlays/TitleCard';
+import {FlowScene} from './FlowScene';
 import {GROUNDS, LIGHTS, SKIES, mixLight, mixSky} from '../sets/presets';
 import {ToonSet, resolveSet} from '../sets/ToonSet';
 import {C, FONT} from '../theme';
@@ -20,7 +21,10 @@ import type {Shot} from './types';
 // One shot = one toon set + cast + camera move (+ optional title card).
 // `frames` is the shot's own length; extra frames (payoff hold) freeze on the
 // final frame.
-export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot, frames}) => {
+export const ShotScene: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot, frames}) =>
+  rawShot.flow ? <FlowScene shot={rawShot} frames={frames} /> : <ToonShot shot={rawShot} frames={frames} />;
+
+const ToonShot: React.FC<{shot: Shot; frames: number}> = ({shot: rawShot, frames}) => {
   const shot = useMemo(() => resolveShot(rawShot), [rawShot]);
   // QA hand-count pass (render with --props='{"qaHands":true}'): cast only, hands/arms in ID colours on black
   const qaHands = Boolean((getInputProps() as {qaHands?: boolean}).qaHands);

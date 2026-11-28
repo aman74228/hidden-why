@@ -37,6 +37,11 @@ export const Short: React.FC<{list: ShotList; words: Word[] | null}> = ({list, w
         const p = Math.min(1, Math.max(0, (f - starts[i]) / Math.max(1, frames[i] - 1)));
         return shotBoxesAt(list.shots[i], p);
       });
+      // Flow shots carry their own caption height (faces are in the footage, not in our rigs)
+      const f0 = Math.round(t0 * fps);
+      let i0 = starts.findIndex((s, k) => f0 >= s && f0 < s + frames[k]);
+      if (i0 < 0) i0 = list.shots.length - 1;
+      if (list.shots[i0].captionY !== undefined) return list.shots[i0].captionY as number;
       return placeCaption(boxes, w, h);
     },
     [list, fps, starts.join(','), frames.join(',')],

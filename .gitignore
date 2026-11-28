@@ -13,3 +13,4 @@ out/qa/*/prev_frames/
 out/qa/*/hands/
 out/*.mix.wav
 out/render.log
+public/flow/*/hd/

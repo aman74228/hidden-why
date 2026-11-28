@@ -4,7 +4,11 @@ ONE reusable studio. Never create a new project per Short. Each Short = a brief 
 **Before starting any Short, read LESSONS.md** (everything fixed on Short #1: hook, no voids/flat frames, inserts, mix levels, render pitfalls, partial re-render, script & story rules). Check against it before showing stills.
 
 ## Stack
-Remotion + three.js (React Three Fiber), 1080x1920, 30 fps. No AI video generators.
+Remotion + three.js (React Three Fiber), 1080x1920, 30 fps. No AI video generators by default.
+Exception, "What if" Shorts: Google Flow clips are allowed when the brief asks for them. They live in
+public/flow/<NN>/ (README.md maps clip -> lines), are cut to the VO (trim or hold, never speed-ramp),
+upscaled with lanczos (scripts/flow_prep.py) and assembled by the shot list (`"flow"` shots, src/scene/FlowScene.tsx).
+Flow clips: no text. Dialogue only for lines marked [FLOW] in the brief (keep that clip's speech at −14 LUFS, duck music under it, don't render those lines in Chatterbox); all other Flow audio is ambience only (−30 LUFS). Keep children away from medicine/pills in prompts (the safety filter blocks those).
 
 ## Cast (reusable rigs; reskin outfits per story, keep faces/colours)
 - Nik: asks the question in the hook. Small kid, oversized round head, orange kurta, cowlick. Wide eyes, points.
@@ -24,8 +28,9 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 - Ending: hold payoff 0.5 s, hard cut so it loops into the first frame.
 
 ## Audio
-- Voiceover: Chatterbox (Resemble AI, MIT), original model, built-in default voice (no cloning), exaggeration 0.5 base / cfg 0.3 / fixed seed 1750, all in voice.json (`"engine": "chatterbox"`; the ElevenLabs settings stay under `engines.elevenlabs` to switch back). Render line by line from audio/<slug>.lines.json (per-line exaggeration + pause after) with `scripts/vo_lines.py <slug>`: it whisper-checks every line (max 3 tries), inserts punctuation pauses (`scripts/vo_pauses.py`), joins, and writes audio/<slug>.mp3 + captions. No speed-up, ever.
-- Word timestamps: Chatterbox gives none, so captions come from forced alignment of the final MP3 to the brief's script (scripts/align.py, faster-whisper; fallback: ffmpeg silencedetect).
+- Voiceover: Chatterbox (Resemble AI, MIT), original model, built-in default voice, base exaggeration 0.5 / cfg 0.3 / fixed seed 1750 (voice.json, `"engine": "chatterbox"`; ElevenLabs is off, no credits). Render line by line with `scripts/vo_lines.py <slug>` (whisper check, `scripts/vo_pauses.py`). Pace fix (Short #3 ran ~237 wpm): slow every line with a pitch-preserving stretch of 0.88–0.92 (rubberband, else ffmpeg atempo), never speed up. Target overall ≤200 wpm including pauses; script ~170–185 words; final length 55–65 s (a little over 60 is OK).
+- Pauses between sentences: 0.25–0.4 s in the first 15 s; only the payoff and respectful beats get longer ones.
+- Word timestamps: if the engine gives none, captions come from forced alignment of the final MP3 to the brief's script (scripts/align.py, faster-whisper; fallback: ffmpeg silencedetect).
 
 ### Sound sourcing (CC0 only; Freesound is out — it blocks the cloud machine)
 - Order: 1) Kenney CC0 packs (kenney.nl blocks the cloud machine too, so use Kenney's own uploads on opengameart.org); 2) OpenGameArt.org filtered to CC0 (search with field_art_licenses_tid[]=4, then confirm CC0 on the item page); 3) Wikimedia Commons CC0/PD as a fallback (upload.wikimedia.org currently answers 429 to the cloud machine).
@@ -42,6 +47,19 @@ Poses: idle, talk, point, laugh, cross-arms, shock, nod.
 - Every SFX at least 6 dB under the voice.
 - Rain at -32 LUFS, fading out at the first cut.
 - Nothing peaks above the voice.
+
+## Build checks (from analytics on Shorts 01–03; details in LESSONS.md §11)
+1. Frame 0 is in motion: a character or the key object already doing something strange. No title card, no fade-in, no empty/establishing frame first.
+2. On-screen hook text in the first 2 s: the hook claim in ≤5 words, large and centred.
+3. Vik's bet, with the stake object on screen, lands by 5 s. If the VO puts it later, flag it; don't re-time around it.
+4. No shot longer than 3 s in the first 15 s; cut on sentence boundaries.
+5. Voice: Chatterbox, slowed 0.88–0.92 (pitch-preserving), overall ≤200 wpm incl. pauses, ~170–185 words, final 55–65 s.
+6. Sentence pauses 0.25–0.4 s in the first 15 s (longer only at the payoff and respectful beats).
+7. The end frame loops cleanly into frame 0.
+QA on every preview and render:
+- Contact-sheet frames at 0, 1, 2, 5, 10, 15 s: each shows the exact noun being spoken; none empty or text-only.
+- Report the time Vik's bet lands, the VO wpm and the total length.
+- If any of checks 1–5 fails: STOP and tell Aman before the full render.
 
 ## Workflow per Short
 1. Read /briefs/<slug>.md and /audio/<slug>.mp3.

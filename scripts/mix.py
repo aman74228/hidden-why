@@ -165,7 +165,7 @@ def main():
             else:  # relative dip, kept above the floor (quietest 3 s window touching it)
                 w3 = [meter(music[k:k + 3 * SR])[0] for k in range(max(0, a0 - 3 * SR), min(N - 3 * SR, a1), SR // 2)]
                 Lmin = min(w3) if w3 else Ld
-                allowed = round(min(d["db"], max(0.0, Lmin - (MUSIC_FLOOR + 0.3))), 1)
+                allowed = round(d["db"] if d.get("exempt") else min(d["db"], max(0.0, Lmin - (MUSIC_FLOOR + 0.3))), 1)
             ramp = int(0.25 * SR)
             gd = np.ones(N, np.float32)
             gd[a0:a1] = 10 ** (-allowed / 20)
@@ -259,7 +259,26 @@ def main():
         n = len(a) // W
         r = np.sqrt((a[: n * W] ** 2).mean(axis=(1, 2)) if a.ndim == 3 else (a[: n * W].reshape(n, W, 2) ** 2).mean(axis=(1, 2)))
         return 20 * np.log10(r + 1e-9)
-    vw, sw, rw = win_db(voice), win_db(sfx + rain), win_db(music)
+    # ---- ambience bed (e.g. the Flow clips' own room tone, speech stripped): list key "ambience" ----
+    amb = np.zeros((N, 2), np.float32)
+    if L.get("ambience"):
+        amb = fit(decode(ROOT / L["ambience"]["file"]))
+        if np.abs(amb).max() > 1e-5:
+            amb = fit(level(amb, L["ambience"].get("lufs", -30.0)))
+            for _ in range(2):  # level, then tame the odd peak (never above -18 dBFS), re-level
+                amb = fit(ff(amb, f"alimiter=limit={10 ** (-18 / 20):.4f}:level=false:attack=2:release=60"))
+                amb = fit(level(amb, L["ambience"].get("lufs", -30.0)))
+        # same rule as the SFX: every 400 ms window >= 7 dB under the voice (typical level in the pauses)
+        # ...counting the (already ducked) SFX in the same window: the two together must stay under it
+        ar, sd = rms_w(amb), rms_w(sfx)
+        room = np.sqrt(np.maximum((ref * 10 ** (-7 / 20)) ** 2 - sd ** 2, (ref * 10 ** (-13 / 20)) ** 2))
+        ga = np.minimum(1.0, room / ar)
+        ga = np.minimum(ga, np.convolve(np.pad(ga, (1, 1), mode="edge"), np.ones(3) / 3, mode="valid"))
+        gsa = np.concatenate([np.repeat(ga, W), np.full(N - nW * W, ga[-1] if nW else 1.0)])
+        gsa = np.minimum(gsa, np.convolve(gsa, np.ones(kk) / kk, mode="same")).astype(np.float32)
+        amb *= gsa[:, None]
+        report["ambience"] = {"file": L["ambience"]["file"], "lufs": round(meter(amb)[0], 1), "true_peak_dbtp": round(meter(amb)[1], 1)}
+    vw, sw, rw = win_db(voice), win_db(sfx + rain + amb), win_db(music)
     speech_w = vw > -40
     v_typ_db = float(np.median(vw[speech_w]))
     bad = ((sw > vw - 6) & speech_w) | ((sw > v_typ_db - 6) & ~speech_w)
@@ -274,10 +293,10 @@ def main():
                         "music_floor_ok": bool(mus_st) and min(mus_st) >= MUSIC_FLOOR}
     if a.stems:
         Path(a.stems).mkdir(parents=True, exist_ok=True)
-        for nm, st in (("voice", voice), ("music", music), ("sfx", sfx), ("rain", rain)):
+        for nm, st in (("voice", voice), ("music", music), ("sfx", sfx), ("rain", rain), ("ambience", amb)):
             subprocess.run(["ffmpeg", "-v", "error", "-y", "-f", "f32le", "-ar", str(SR), "-ac", "2", "-i", "-", "-c:a", "pcm_s16le",
                             str(Path(a.stems) / f"{nm}.wav")], input=st.astype(np.float32).tobytes(), check=True)
-    mix = voice + music + sfx + rain
+    mix = voice + music + sfx + rain + amb
     mix = ff(mix, "alimiter=limit=0.89:level=false:attack=2:release=60")[:N]
     fI, fP, _ = meter(mix)
     report["mix"] = {"lufs": round(fI, 1), "true_peak_dbtp": round(fP, 1), "seconds": round(total, 3)}

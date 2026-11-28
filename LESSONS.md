@@ -132,3 +132,31 @@ with CLAUDE.md before starting any Short; check each section before showing stil
   close-up after "broke apart in the sky"). If a character, framed whole, would block the shot's
   subject (the windows), take them out instead. Start a move wide on a whole figure and push in; never
   reveal a character through the frame edge.
+
+## 11. From analytics (Shorts 01–03)
+What happened:
+- Views: Pillar 957, Sword 307, Plane windows 31. About half of viewers swipe away in the first
+  second, so YouTube stops showing the Short to more people.
+- The weakest stretch on all three is 10–17 s. Plane windows also sagged at 24–28 s, on long sentences.
+- After about 30 s we beat similar Shorts: Gus's demos and the payoffs work. Keep them as they are.
+- The Plane windows VO ran ~237 wpm (Chatterbox). Too fast.
+
+Build rules (from the next Short):
+1. Frame 0 is in motion, with a character or the key object already doing something strange. No title
+   card, no fade-in, no empty or establishing frame first.
+2. On-screen text in the first 2 s says the hook claim in 5 words or fewer, large and centred.
+3. Vik's bet (with the stake object on screen) lands by 5 s. If the VO puts it later, flag it; don't
+   re-time around it.
+4. No shot longer than 3 s in the first 15 s. Cut on sentence boundaries.
+5. Voice: Chatterbox (ElevenLabs is off: no credits). Slow every line with a pitch-preserving stretch
+   of 0.88–0.92, never speed up. Overall ≤200 wpm including pauses, ~170–185 words, final 55–65 s
+   (a little over 60 is OK).
+6. Pauses between sentences: 0.25–0.4 s in the first 15 s. Only the payoff and the respectful beats
+   get longer pauses.
+7. The end frame loops cleanly into frame 0, as now.
+
+QA additions (every preview and render):
+- Contact-sheet frames at 0, 1, 2, 5, 10 and 15 s. Each must show the exact noun being spoken, and
+  none can be an empty or text-only frame.
+- Report: the time Vik's bet lands, the VO wpm, and the total length.
+- If any of rules 1–5 fails, stop and tell Aman before rendering the full video.
