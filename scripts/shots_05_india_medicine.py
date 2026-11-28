@@ -101,7 +101,7 @@ shots = [
    "titleCard": {"label": "UNICEF vaccines", "word": "~6 in 10", "at": UNICEF, "duration": round(5.0 - UNICEF, 2)},  # gone before the Gus close-up (clip 6.0 s) and Vik leaning in: it would cover their faces,
    "sfx": [{"name": "box-open", "at": 2.1, "gain": -6}, {"name": "shimmer", "at": 3.8, "gain": -14}] + [{"name": "pop-soft", "at": t, "gain": -11} for t in (4.2, 4.5, 4.8)]},
   # 7 "Now Vik is sweating...": the end of 05 (Vik at right, worried), last frame held with a slow push-in toward him
-  {"id": "sweat", "captionY": 0.68, "flowHoldAt": [0.76, 0.22]},
+  {"id": "sweat", "captionY": 0.78, "flowHoldAt": [0.76, 0.22]},
   # 7-8 the same pill: gold box vs plain box; price tags pop on "exactly the same job"
   {"id": "same-pill", "beat": 5, "stillAt": round(EXACTLY + 0.8, 2), "captionY": 0.82,
    # tags ~2x, each just above its own box (gold x 0.06-0.46, plain x 0.55-0.92, tops ~0.47 in clip 06 at 2.4-3.9 s)
