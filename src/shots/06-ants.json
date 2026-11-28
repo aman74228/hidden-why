@@ -1,0 +1,526 @@
+{
+ "slug": "06-ants",
+ "title": "What If All the Ants Disappeared?",
+ "audio": "vo/06-ants.mp3",
+ "kind": "flow",
+ "music": false,
+ "sfx": false,
+ "ambience": {
+  "file": "audio/06-ants.ambience.wav",
+  "lufs": -30.0
+ },
+ "payoffHold": 0.5,
+ "shots": [
+  {
+   "id": "hook",
+   "duration": 2.5,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/01.mp4",
+    "from": 4.95,
+    "clipDur": 8.043,
+    "zoom": [
+     1.5,
+     1.5
+    ],
+    "zoomAt": [
+     0.39,
+     0.36
+    ]
+   },
+   "captionY": 0.9,
+   "sfx": [],
+   "overlays": [
+    {
+     "kind": "card",
+     "word": "NO MORE ANTS?",
+     "at": 0.0,
+     "until": 2.0,
+     "noPop": true,
+     "pos": [
+      0.5,
+      0.765
+     ],
+     "scale": 2.0
+    }
+   ]
+  },
+  {
+   "id": "bet",
+   "duration": 2.7,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/02.mp4",
+    "from": 1.6,
+    "clipDur": 8.043
+   },
+   "captionY": 0.86,
+   "sfx": [
+    {
+     "name": "plate-clink",
+     "at": 0.05,
+     "gain": -10
+    }
+   ]
+  },
+  {
+   "id": "picnic",
+   "duration": 2.0667,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/02.mp4",
+    "from": 4.3,
+    "clipDur": 8.043,
+    "zoom": [
+     1.8,
+     1.8
+    ],
+    "zoomAt": [
+     0.5,
+     0.95
+    ]
+   },
+   "captionY": 0.86,
+   "sfx": [],
+   "titleCard": {
+    "label": "The bet",
+    "word": "Vik's picnic",
+    "at": 0.1,
+    "duration": 1.87
+   }
+  },
+  {
+   "id": "quadrillion",
+   "duration": 2.6333,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/01.mp4",
+    "from": 0.0,
+    "clipDur": 8.043,
+    "zoom": [
+     1.35,
+     1.35
+    ],
+    "zoomAt": [
+     0.69,
+     1.0
+    ]
+   },
+   "captionY": 0.62,
+   "sfx": [],
+   "titleCard": {
+    "label": "Ants on Earth",
+    "word": "20 quadrillion",
+    "at": 0.1,
+    "duration": 2.43
+   }
+  },
+  {
+   "id": "outweigh",
+   "duration": 3.4333,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/03.mp4",
+    "from": 0.0,
+    "clipDur": 8.043,
+    "freeze": {
+     "at": 1.1,
+     "dur": 2.333,
+     "zoom": 0.0,
+     "cut": {
+      "after": 0.0,
+      "zoom": [
+       2.0,
+       2.15
+      ],
+      "origin": [
+       0.34,
+       0.5
+      ]
+     }
+    },
+    "to": 1.11
+   },
+   "captionY": 0.82,
+   "sfx": [
+    {
+     "name": "counter-tick",
+     "at": 0.15,
+     "gain": -16
+    },
+    {
+     "name": "counter-tick",
+     "at": 0.5,
+     "gain": -16
+    },
+    {
+     "name": "counter-tick",
+     "at": 0.85,
+     "gain": -16
+    }
+   ],
+   "titleCard": {
+    "label": "Together they outweigh",
+    "word": "all wild birds + mammals",
+    "at": 0.1,
+    "duration": 3.23
+   }
+  },
+  {
+   "id": "person",
+   "duration": 2.9,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/09.mp4",
+    "from": 0.3,
+    "clipDur": 8.043
+   },
+   "captionY": 0.82,
+   "sfx": []
+  },
+  {
+   "id": "vanish",
+   "duration": 5.3,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/03.mp4",
+    "from": 1.14,
+    "clipDur": 8.043,
+    "zoom": [
+     1.0,
+     1.3
+    ],
+    "zoomAt": [
+     0.45,
+     0.6
+    ]
+   },
+   "captionY": 0.82,
+   "sfx": [
+    {
+     "name": "shimmer",
+     "at": 0.46,
+     "gain": -12
+    },
+    {
+     "name": "pop-soft",
+     "at": 0.86,
+     "gain": -12
+    },
+    {
+     "name": "pop-soft",
+     "at": 2.06,
+     "gain": -12
+    },
+    {
+     "name": "pop-soft",
+     "at": 3.06,
+     "gain": -12
+    },
+    {
+     "name": "pop-soft",
+     "at": 3.86,
+     "gain": -12
+    },
+    {
+     "name": "pop-soft",
+     "at": 4.36,
+     "gain": -12
+    }
+   ]
+  },
+  {
+   "id": "mess",
+   "duration": 2.0333,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/04.mp4",
+    "from": 0.0,
+    "clipDur": 8.043
+   },
+   "captionY": 0.84,
+   "sfx": []
+  },
+  {
+   "id": "mess-noses",
+   "duration": 5.1333,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/04.mp4",
+    "from": 2.033,
+    "clipDur": 8.043,
+    "zoom": [
+     1.15,
+     1.15
+    ],
+    "zoomAt": [
+     0.35,
+     0.75
+    ]
+   },
+   "captionY": 0.84,
+   "sfx": []
+  },
+  {
+   "id": "soil",
+   "duration": 6.2333,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/05.mp4",
+    "from": 0.8,
+    "clipDur": 8.043
+   },
+   "captionY": 0.7,
+   "sfx": [
+    {
+     "name": "press-thump",
+     "at": 4.45,
+     "gain": -12
+    }
+   ]
+  },
+  {
+   "id": "demo",
+   "duration": 2.9333,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/06.mp4",
+    "from": 0.0,
+    "clipDur": 8.043,
+    "to": 3.0
+   },
+   "captionY": 0.84,
+   "sfx": [
+    {
+     "name": "drip",
+     "at": 1.5,
+     "gain": -12
+    },
+    {
+     "name": "bubbles",
+     "at": 2.0,
+     "gain": -14
+    }
+   ]
+  },
+  {
+   "id": "demo-tunnels",
+   "duration": 2.6,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/06.mp4",
+    "from": 3.0,
+    "clipDur": 8.043,
+    "to": 3.05,
+    "zoom": [
+     1.8,
+     1.8
+    ],
+    "zoomAt": [
+     0.0,
+     0.725
+    ],
+    "holdZoom": 0.05
+   },
+   "captionY": 0.88,
+   "sfx": [],
+   "overlays": [
+    {
+     "kind": "label",
+     "text": "TUNNELS",
+     "at": 0.1,
+     "pos": [
+      0.43,
+      0.77
+     ],
+     "scale": 1.0
+    }
+   ]
+  },
+  {
+   "id": "demo-packed",
+   "duration": 0.9667,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/06.mp4",
+    "from": 3.0,
+    "clipDur": 8.043,
+    "to": 3.05,
+    "zoom": [
+     1.8,
+     1.8
+    ],
+    "zoomAt": [
+     1.0,
+     0.725
+    ],
+    "holdZoom": 0.05
+   },
+   "captionY": 0.88,
+   "sfx": [],
+   "overlays": [
+    {
+     "kind": "label",
+     "text": "PACKED",
+     "at": 0.1,
+     "pos": [
+      0.57,
+      0.77
+     ],
+     "scale": 1.0
+    }
+   ]
+  },
+  {
+   "id": "demo-spill",
+   "duration": 1.8667,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/06.mp4",
+    "from": 3.0,
+    "clipDur": 8.043
+   },
+   "captionY": 0.68,
+   "sfx": [
+    {
+     "name": "water-splash",
+     "at": 0.45,
+     "gain": -12
+    }
+   ]
+  },
+  {
+   "id": "seeds",
+   "duration": 2.7667,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/07.mp4",
+    "from": 1.0,
+    "clipDur": 8.043
+   },
+   "captionY": 0.7,
+   "sfx": [
+    {
+     "name": "grit-trickle",
+     "at": 0.6,
+     "gain": -14
+    }
+   ]
+  },
+  {
+   "id": "seeds-pile",
+   "duration": 2.1333,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/07.mp4",
+    "from": 2.4,
+    "clipDur": 8.043,
+    "to": 2.45,
+    "zoom": [
+     1.8,
+     1.8
+    ],
+    "zoomAt": [
+     0.3875,
+     1.0
+    ],
+    "holdZoom": 0.06
+   },
+   "captionY": 0.62,
+   "sfx": []
+  },
+  {
+   "id": "seeds-lie",
+   "duration": 1.5,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/07.mp4",
+    "from": 2.4,
+    "clipDur": 8.043,
+    "to": 2.45,
+    "zoom": [
+     2.6,
+     2.6
+    ],
+    "zoomAt": [
+     0.4188,
+     0.89
+    ],
+    "holdZoom": 0.06
+   },
+   "captionY": 0.62,
+   "sfx": []
+  },
+  {
+   "id": "forest",
+   "duration": 4.5667,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/07.mp4",
+    "from": 3.476,
+    "clipDur": 8.043
+   },
+   "captionY": 0.7,
+   "sfx": []
+  },
+  {
+   "id": "payoff",
+   "duration": 2.8,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/08.mp4",
+    "from": 0.0,
+    "clipDur": 8.043
+   },
+   "captionY": 0.7,
+   "sfx": []
+  },
+  {
+   "id": "payoff-laugh",
+   "duration": 2.3667,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/08.mp4",
+    "from": 5.2,
+    "clipDur": 8.043
+   },
+   "captionY": 0.7,
+   "sfx": [],
+   "payoff": true,
+   "payoffAt": 1.36
+  },
+  {
+   "id": "loop",
+   "duration": 2.4,
+   "set": "studio",
+   "cast": [],
+   "flow": {
+    "clip": "flow/06/09.mp4",
+    "from": 5.643,
+    "clipDur": 8.043
+   },
+   "captionY": 0.82,
+   "sfx": []
+  }
+ ]
+}

@@ -40,7 +40,7 @@ export type Shot = SetSpec & {
 
 // overlays on Flow shots: price tags, a rubber stamp, a card landing on an object.
 // pos: [x, y] fractions, or keyframes [[t, x, y], ...] (seconds into the shot) to follow a moving object
-export type FlowOverlay = {kind: 'tag' | 'stamp' | 'card'; at: number; until?: number; pos?: [number, number] | [number, number, number][]; rot?: number; scale?: number; text?: string; label?: string; word?: string};
+export type FlowOverlay = {kind: 'tag' | 'stamp' | 'card' | 'label'; at: number; until?: number; noPop?: boolean; pos?: [number, number] | [number, number, number][]; rot?: number; scale?: number; text?: string; label?: string; word?: string};
 
 export type ShotList = {
   slug: string;

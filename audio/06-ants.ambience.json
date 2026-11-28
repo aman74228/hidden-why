@@ -1,0 +1,62 @@
+{
+ "flow/06/01.mp4": {
+  "seconds": 8.04,
+  "speech_removed": [
+   [
+    4.78,
+    7.78,
+    "What if all the ants disappeared?"
+   ]
+  ]
+ },
+ "flow/06/02.mp4": {
+  "seconds": 8.04,
+  "speech_removed": [
+   [
+    1.78,
+    3.78,
+    "Good nobody would even notice"
+   ]
+  ]
+ },
+ "flow/06/03.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/06/04.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/06/05.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/06/06.mp4": {
+  "seconds": 8.04,
+  "speech_removed": [
+   [
+    4.14,
+    6.14,
+    "Huh"
+   ]
+  ]
+ },
+ "flow/06/07.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ },
+ "flow/06/08.mp4": {
+  "seconds": 8.04,
+  "speech_removed": [
+   [
+    6.42,
+    8.42,
+    "Hahahaha"
+   ]
+  ]
+ },
+ "flow/06/09.mp4": {
+  "seconds": 8.04,
+  "speech_removed": []
+ }
+}

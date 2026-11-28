@@ -29,7 +29,7 @@ const Overlay: React.FC<{o: FlowOverlay; frame: number; fps: number}> = ({o, fra
   const t = frame / fps;
   if (t < o.at || (o.until !== undefined && t >= o.until)) return null;
   const f0 = Math.round(o.at * fps);
-  const pop = spring({frame: frame - f0, fps, config: {damping: 11, stiffness: 180, mass: 0.6}});
+  const pop = o.noPop ? 1 : spring({frame: frame - f0, fps, config: {damping: 11, stiffness: 180, mass: 0.6}});
   const [x, y] = track(o.pos, t);
   const s = o.scale ?? 1;
   const base: React.CSSProperties = {position: 'absolute', left: `${x * 100}%`, top: `${y * 100}%`, fontFamily: FONT, whiteSpace: 'nowrap'};
@@ -53,6 +53,16 @@ const Overlay: React.FC<{o: FlowOverlay; frame: number; fps: number}> = ({o, fra
           <div style={{border: `3px solid ${C.accent}`, borderRadius: 9, padding: '4px 18px 0', color: C.accent, fontWeight: 800, fontSize: 48, letterSpacing: 3, textShadow: `0 0 2px ${C.ink}`}}>
             {o.text ?? 'MADE IN INDIA'}
           </div>
+        </div>
+      </div>
+    );
+  }
+  if (o.kind === 'label') {
+    // small indigo pill with a saffron border (e.g. under a pot in a demo)
+    return (
+      <div style={{...base, transform: `translate(-50%, -50%) rotate(${o.rot ?? 0}deg) scale(${s * (0.4 + 0.6 * pop)})`, opacity: Math.min(1, pop * 2)}}>
+        <div style={{background: C.indigo, border: `5px solid ${C.accent}`, borderRadius: 16, padding: '6px 22px 2px', color: C.white, fontWeight: 800, fontSize: 46, letterSpacing: 3, boxShadow: `0 6px 0 ${C.ink}`}}>
+          {o.text}
         </div>
       </div>
     );

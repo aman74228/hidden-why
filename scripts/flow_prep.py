@@ -75,6 +75,7 @@ for s in L["shots"]:
         if fz:  # mid-shot freeze: silence while the picture holds (tiny fades either side)
             iz, nd, k = int(fz["at"] * SR), int(round(fz["dur"] * FPS) / FPS * SR), int(0.03 * SR)
             a, b = x[i0:iz].copy(), x[iz:end].copy()
+            k = max(1, min(k, len(a), len(b)))
             a[-k:] *= np.linspace(1, 0, k)[:, None]; b[:k] *= np.linspace(0, 1, k)[:, None]
             take = np.concatenate([a, np.zeros((nd, 2), np.float32), b])[:n]
         else:
