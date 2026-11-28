@@ -99,7 +99,7 @@ shots = [
   # 6 village clinic: the vaccine cold box goes empty (serious beat: music dips 3 dB)
   {"id": "clinic", "beat": 4, "stillAt": 4.6, "captionY": 0.74,
    "titleCard": {"label": "UNICEF vaccines", "word": "~6 in 10", "at": UNICEF, "duration": round(5.0 - UNICEF, 2)},  # gone before the Gus close-up (clip 6.0 s) and Vik leaning in: it would cover their faces,
-   "sfx": [{"name": "box-open", "at": 2.1, "gain": -6}, {"name": "shimmer", "at": 3.8, "gain": -10}] + [{"name": "pop-soft", "at": t, "gain": -8} for t in (4.2, 4.5, 4.8)]},
+   "sfx": [{"name": "box-open", "at": 2.1, "gain": -6}, {"name": "shimmer", "at": 3.8, "gain": -14}] + [{"name": "pop-soft", "at": t, "gain": -11} for t in (4.2, 4.5, 4.8)]},
   # 7 "Now Vik is sweating...": the end of 05 (Vik at right, worried), last frame held with a slow push-in toward him
   {"id": "sweat", "captionY": 0.68, "flowHoldAt": [0.76, 0.22]},
   # 7-8 the same pill: gold box vs plain box; price tags pop on "exactly the same job"

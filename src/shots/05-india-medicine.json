@@ -216,22 +216,22 @@
     {
      "name": "shimmer",
      "at": 3.8,
-     "gain": -10
+     "gain": -14
     },
     {
      "name": "pop-soft",
      "at": 4.2,
-     "gain": -8
+     "gain": -11
     },
     {
      "name": "pop-soft",
      "at": 4.5,
-     "gain": -8
+     "gain": -11
     },
     {
      "name": "pop-soft",
      "at": 4.8,
-     "gain": -8
+     "gain": -11
     }
    ],
    "flow": {

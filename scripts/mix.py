@@ -269,8 +269,10 @@ def main():
                 amb = fit(ff(amb, f"alimiter=limit={10 ** (-18 / 20):.4f}:level=false:attack=2:release=60"))
                 amb = fit(level(amb, L["ambience"].get("lufs", -30.0)))
         # same rule as the SFX: every 400 ms window >= 7 dB under the voice (typical level in the pauses)
-        ar = rms_w(amb)
-        ga = np.minimum(1.0, (ref * 10 ** (-7 / 20)) / ar)
+        # ...counting the (already ducked) SFX in the same window: the two together must stay under it
+        ar, sd = rms_w(amb), rms_w(sfx)
+        room = np.sqrt(np.maximum((ref * 10 ** (-7 / 20)) ** 2 - sd ** 2, (ref * 10 ** (-13 / 20)) ** 2))
+        ga = np.minimum(1.0, room / ar)
         ga = np.minimum(ga, np.convolve(np.pad(ga, (1, 1), mode="edge"), np.ones(3) / 3, mode="valid"))
         gsa = np.concatenate([np.repeat(ga, W), np.full(N - nW * W, ga[-1] if nW else 1.0)])
         gsa = np.minimum(gsa, np.convolve(gsa, np.ones(kk) / kk, mode="same")).astype(np.float32)
